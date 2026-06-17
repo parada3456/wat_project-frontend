@@ -27,6 +27,9 @@ import 'package:wat_project_frontend/presentation/social_radar/screens/friend_re
 import 'package:wat_project_frontend/presentation/social_radar/screens/friends_list_page.dart';
 import 'package:wat_project_frontend/presentation/social_radar/screens/radar_map_page.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
+import 'package:wat_project_frontend/presentation/navigation/screens/main_shell_page.dart';
+import 'package:wat_project_frontend/presentation/home/screens/home_page.dart';
+
 class AppRouter {
   final AuthSessionManager _authManager;
 
@@ -58,13 +61,32 @@ class AppRouter {
         path: '/register',
         builder: (context, state) => const RegisterPage(),
       ),
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const TempTestScreen(),
+      ShellRoute(
+        builder: (context, state, child) {
+          return MainShellPage(child: child);
+        },
+        routes: [
+          GoRoute(
+            path: '/home',
+            builder: (context, state) => const HomePage(),
+          ),
+          GoRoute(
+            path: '/expenses',
+            builder: (context, state) => const ExpenseHistoryPage(),
+          ),
+          GoRoute(
+            path: '/jobs',
+            builder: (context, state) => const JobSearchPage(),
+          ),
+          GoRoute(
+            path: '/profile',
+            builder: (context, state) => const ProfilePage(),
+          ),
+        ],
       ),
       GoRoute(
-        path: '/profile',
-        builder: (context, state) => const ProfilePage(),
+        path: '/home/debug',
+        builder: (context, state) => const TempTestScreen(),
       ),
       GoRoute(
         path: '/profile/edit',
@@ -119,10 +141,6 @@ class AppRouter {
         builder: (context, state) => const RadarMapPage(),
       ),
       GoRoute(
-        path: '/expenses',
-        builder: (context, state) => const ExpenseHistoryPage(),
-      ),
-      GoRoute(
         path: '/expenses/create',
         builder: (context, state) => const CreateExpensePage(),
       ),
@@ -137,10 +155,6 @@ class AppRouter {
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationCenterPage(),
-      ),
-      GoRoute(
-        path: '/jobs',
-        builder: (context, state) => const JobSearchPage(),
       ),
       GoRoute(
         path: '/jobs/details',
