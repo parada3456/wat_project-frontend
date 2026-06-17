@@ -1,0 +1,101 @@
+# Project Spec
+
+## What I'm building
+work and travel project with 5
+
+## Stack
+- Frontend: flutter
+- Backend: Node.js
+- DB: PostgreSQL
+
+## Rules (from spec-driven-development skill)
+- Write spec before any code
+- Small atomic tasks only
+- Tests required before merging
+
+## flutter project structure
+- lib
+    - core
+        - theme
+            - app_theme.dart
+            - app_colors.dart
+        - widgets
+            - custom_button.dart
+            - loading_indicator.dart
+        - l10n
+            - app_en.arb
+            - app_th.arb
+        - providers
+            - theme_provider.dart
+            - app_language_provider.dart
+        - utils
+        - extensions
+    - data
+        - sources
+            - api_client
+                - interceptors 
+                    - auth_interceptor.dart
+                    - logging_interceptor.dart
+                - api_client.dart (retrofit)
+                - api_models
+                    - login_model.dart
+        - db
+            - auth_local_storage.dart
+                - app_database.dart 
+            - location
+                - location_service_impl.dart
+        - entities
+            - user_entity.dart
+            - post_entity.dart
+        - repositories_impl
+            - auth_repository_impl.dart
+            - post_repository_impl.dart
+        - mappers
+            - post_mapper.dart
+    - domain
+        - repositories
+            - auth_repository.dart (abstract interface)
+            - post_repository.dart (abstract interface)
+        - usecases
+            - login_usecase.dart
+            - get_posts_usecase.dart
+            - create_post_usecase.dart
+        - models
+            - user_model.dart
+            - post_model.dart
+        - services
+            - location_service.dart (abstract interface)
+            - auth_service.dart (abstract interface)
+        - exceptions
+            - network_exception.dart
+            - api_exception.dart
+            - auth_exception.dart
+    - features
+        - auth
+            - bloc
+                - auth_bloc.dart
+                - auth_event.dart
+                - auth_state.dart
+            - presentation
+                - screens
+                    - login_screen.dart
+                    - register_screen.dart
+                - widgets
+                    - login_form.dart
+        - post
+            - bloc
+                - post_bloc.dart
+                - post_event.dart
+                - post_state.dart
+            - presentation
+                - screens
+                    - post_list_screen.dart
+                    - post_detail_screen.dart
+                - widgets
+                    - post_card_widget.dart
+    - di (getIt, but use @module)
+        - api_module.dart
+        - bloc_module.dart
+    - routes
+        - app_routes.dart
+    - main.dart

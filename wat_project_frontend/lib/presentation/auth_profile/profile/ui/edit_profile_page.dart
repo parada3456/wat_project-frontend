@@ -1,0 +1,201 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/di/inject.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
+import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_event.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_state.dart';
+
+class ProfileEditScreen extends StatefulWidget {
+  const ProfileEditScreen({super.key});
+
+  @override
+  State<ProfileEditScreen> createState() => _ProfileEditScreenState();
+}
+
+class _ProfileEditScreenState extends State<ProfileEditScreen> {
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _bioController = TextEditingController();
+  final _avatarController = TextEditingController();
+  bool _initialized = false;
+  bool _wasSaving = false;
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _bioController.dispose();
+    _avatarController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<ProfileBloc>()..add(const GetProfileEvent()),
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            onPressed: () => context.pop(),
+          ),
+          title: const Text(
+            'Edit Profile',
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        body: SafeArea(
+          child: BlocConsumer<ProfileBloc, ProfileState>(
+            listener: (context, state) {
+              if (state is ProfileFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.errorMessage),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                setState(() {
+                  _wasSaving = false;
+                });
+              } else if (state is ProfileSuccess) {
+                if (!_initialized) {
+                  _firstNameController.text = state.profile.user.firstName ?? '';
+                  _lastNameController.text = state.profile.user.lastName ?? '';
+                  _bioController.text = state.profile.profile.bio ?? '';
+                  _avatarController.text = state.profile.profile.avatarUrl ?? '';
+                  setState(() {
+                    _initialized = true;
+                  });
+                }
+                if (_wasSaving) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Profile successfully updated!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  context.pop();
+                }
+              }
+            },
+            builder: (context, state) {
+              final isLoading = state is ProfileLoading;
+
+              return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: AppDimension.space32),
+                    // Profile Image area
+                    Center(
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: AppColors.surface,
+                              shape: BoxShape.circle,
+                              image: _avatarController.text.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(_avatarController.text),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
+                            ),
+                            child: _avatarController.text.isEmpty
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 50,
+                                    color: AppColors.white,
+                                  )
+                                : null,
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(AppDimension.space8),
+                              decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.edit,
+                                size: 17,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppDimension.space32),
+                    // Inputs
+                    WatInputField(
+                      label: 'FirstName',
+                      hint: 'Enter First Name',
+                      controller: _firstNameController,
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    WatInputField(
+                      label: 'LastName',
+                      hint: 'Enter Last Name',
+                      controller: _lastNameController,
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    WatInputField(
+                      label: 'Bio',
+                      hint: 'Tell us about yourself',
+                      controller: _bioController,
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    WatInputField(
+                      label: 'AvatarUrl',
+                      hint: 'Enter Image URL',
+                      controller: _avatarController,
+                      onChanged: (val) {
+                        setState(() {}); // refresh preview image
+                      },
+                    ),
+                    const SizedBox(height: AppDimension.space32),
+                    // Save Button
+                    WatButton(
+                      label: 'Save Changes',
+                      isLoading: isLoading,
+                      onPressed: () {
+                        setState(() {
+                          _wasSaving = true;
+                        });
+                        context.read<ProfileBloc>().add(
+                              UpdateProfileSubmittedEvent(
+                                firstName: _firstNameController.text.trim(),
+                                lastName: _lastNameController.text.trim(),
+                                bio: _bioController.text.trim(),
+                                avatarUrl: _avatarController.text.trim(),
+                              ),
+                            );
+                      },
+                    ),
+                    const SizedBox(height: AppDimension.space32),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
