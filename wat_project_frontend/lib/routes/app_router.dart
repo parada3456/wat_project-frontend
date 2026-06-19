@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/edit_profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/profile_page.dart';
@@ -29,6 +30,7 @@ import 'package:wat_project_frontend/presentation/social_radar/screens/radar_map
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/presentation/navigation/screens/main_shell_page.dart';
 import 'package:wat_project_frontend/presentation/home/screens/home_page.dart';
+import 'package:wat_project_frontend/presentation/admin_dashboard/screens/admin_dashboard_page.dart';
 
 class AppRouter {
   final AuthSessionManager _authManager;
@@ -155,6 +157,27 @@ class AppRouter {
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationCenterPage(),
+      ),
+      GoRoute(
+        path: '/admin',
+        builder: (context, state) => const AdminDashboardPage(),
+        redirect: (context, state) {
+          final session = _authManager.currentSession;
+          if (session == null) return '/login';
+          final parts = session.token.split('.');
+          if (parts.length >= 2) {
+            try {
+              final payload = parts[1];
+              final normalized = base64.normalize(payload);
+              final decoded = utf8.decode(base64Decode(normalized));
+              final Map<String, dynamic> claims = jsonDecode(decoded) as Map<String, dynamic>;
+              if (claims['is_admin'] == true) {
+                return null;
+              }
+            } catch (_) {}
+          }
+          return '/home';
+        },
       ),
       GoRoute(
         path: '/jobs/details',

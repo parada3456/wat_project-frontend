@@ -14,6 +14,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:go_router/go_router.dart' as _i583;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:wat_project_frontend/data/repository_impl/admin_repo_impl.dart'
+    as _i789;
 import 'package:wat_project_frontend/data/repository_impl/auth_repo_impl.dart'
     as _i643;
 import 'package:wat_project_frontend/data/repository_impl/expense_repo_impl.dart'
@@ -30,6 +32,8 @@ import 'package:wat_project_frontend/data/repository_impl/notification_repo_impl
     as _i590;
 import 'package:wat_project_frontend/data/repository_impl/user_repo_impl.dart'
     as _i399;
+import 'package:wat_project_frontend/data/sources/api/admin_api_client.dart'
+    as _i389;
 import 'package:wat_project_frontend/data/sources/api/api_client.dart' as _i904;
 import 'package:wat_project_frontend/data/sources/api/auth_api_client.dart'
     as _i599;
@@ -58,6 +62,8 @@ import 'package:wat_project_frontend/domain/providers/locale_provider.dart'
     as _i455;
 import 'package:wat_project_frontend/domain/providers/theme_provider.dart'
     as _i634;
+import 'package:wat_project_frontend/domain/repositories/admin_repository.dart'
+    as _i244;
 import 'package:wat_project_frontend/domain/repositories/auth_repository.dart'
     as _i416;
 import 'package:wat_project_frontend/domain/repositories/expense_repository.dart'
@@ -76,10 +82,18 @@ import 'package:wat_project_frontend/domain/repositories/user_repository.dart'
     as _i455;
 import 'package:wat_project_frontend/domain/services/auth_manager.dart'
     as _i349;
+import 'package:wat_project_frontend/domain/usecases/adjust_points_usecase.dart'
+    as _i639;
 import 'package:wat_project_frontend/domain/usecases/delete_account_usecase.dart'
     as _i257;
 import 'package:wat_project_frontend/domain/usecases/forgot_password_usecase.dart'
     as _i997;
+import 'package:wat_project_frontend/domain/usecases/get_admin_stats_usecase.dart'
+    as _i931;
+import 'package:wat_project_frontend/domain/usecases/get_admin_user_detail_usecase.dart'
+    as _i495;
+import 'package:wat_project_frontend/domain/usecases/get_admin_users_usecase.dart'
+    as _i81;
 import 'package:wat_project_frontend/domain/usecases/get_badges_usecase.dart'
     as _i914;
 import 'package:wat_project_frontend/domain/usecases/get_credit_score_history_usecase.dart'
@@ -94,6 +108,8 @@ import 'package:wat_project_frontend/domain/usecases/get_profile_usecase.dart'
     as _i835;
 import 'package:wat_project_frontend/domain/usecases/get_user_usecase.dart'
     as _i283;
+import 'package:wat_project_frontend/domain/usecases/list_pending_verifications_usecase.dart'
+    as _i578;
 import 'package:wat_project_frontend/domain/usecases/login_usecase.dart'
     as _i717;
 import 'package:wat_project_frontend/domain/usecases/logout_usecase.dart'
@@ -108,6 +124,10 @@ import 'package:wat_project_frontend/domain/usecases/update_location_usecase.dar
     as _i745;
 import 'package:wat_project_frontend/domain/usecases/update_profile_usecase.dart'
     as _i549;
+import 'package:wat_project_frontend/domain/usecases/verify_admin_mission_usecase.dart'
+    as _i516;
+import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_bloc.dart'
+    as _i280;
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart'
     as _i1031;
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart'
@@ -177,6 +197,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i388.JobApiService>(
       () => apiModule.jobApi(gh<_i361.Dio>(instanceName: 'mainDio')),
     );
+    gh.lazySingleton<_i389.AdminApiService>(
+      () => apiModule.adminApi(gh<_i361.Dio>(instanceName: 'mainDio')),
+    );
     gh.factory<_i337.FriendRepoImpl>(
       () => _i337.FriendRepoImpl(gh<_i913.FriendApiService>()),
     );
@@ -239,14 +262,48 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i448.MissionRepository>(
       () => repositoryModule.missionRepository(gh<_i1043.MissionRepoImpl>()),
     );
+    gh.factory<_i789.AdminRepoImpl>(
+      () => _i789.AdminRepoImpl(gh<_i389.AdminApiService>()),
+    );
     gh.factory<_i381.JourneyRepository>(
       () => repositoryModule.journeyRepository(gh<_i864.JourneyRepoImpl>()),
     );
     gh.factory<_i1013.FriendRepository>(
       () => repositoryModule.friendRepository(gh<_i337.FriendRepoImpl>()),
     );
+    gh.factory<_i244.AdminRepository>(
+      () => repositoryModule.adminRepository(gh<_i789.AdminRepoImpl>()),
+    );
+    gh.factory<_i639.AdjustPointsUseCase>(
+      () => _i639.AdjustPointsUseCase(gh<_i244.AdminRepository>()),
+    );
+    gh.factory<_i931.GetAdminStatsUseCase>(
+      () => _i931.GetAdminStatsUseCase(gh<_i244.AdminRepository>()),
+    );
+    gh.factory<_i495.GetAdminUserDetailUseCase>(
+      () => _i495.GetAdminUserDetailUseCase(gh<_i244.AdminRepository>()),
+    );
+    gh.factory<_i81.GetAdminUsersUseCase>(
+      () => _i81.GetAdminUsersUseCase(gh<_i244.AdminRepository>()),
+    );
+    gh.factory<_i578.ListPendingVerificationsUseCase>(
+      () => _i578.ListPendingVerificationsUseCase(gh<_i244.AdminRepository>()),
+    );
+    gh.factory<_i516.VerifyAdminMissionUseCase>(
+      () => _i516.VerifyAdminMissionUseCase(gh<_i244.AdminRepository>()),
+    );
     gh.factory<_i455.UserRepository>(
       () => repositoryModule.userRepository(gh<_i399.UserRepoImpl>()),
+    );
+    gh.factory<_i280.AdminDashboardBloc>(
+      () => blocModule.adminDashboardBloc(
+        gh<_i931.GetAdminStatsUseCase>(),
+        gh<_i578.ListPendingVerificationsUseCase>(),
+        gh<_i516.VerifyAdminMissionUseCase>(),
+        gh<_i81.GetAdminUsersUseCase>(),
+        gh<_i495.GetAdminUserDetailUseCase>(),
+        gh<_i639.AdjustPointsUseCase>(),
+      ),
     );
     gh.factory<_i39.JobRepository>(
       () => repositoryModule.jobRepository(gh<_i451.JobRepoImpl>()),
