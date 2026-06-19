@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/review_stars_row.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class WriteReviewPage extends StatefulWidget {

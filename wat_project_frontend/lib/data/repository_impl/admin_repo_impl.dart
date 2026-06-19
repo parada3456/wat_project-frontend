@@ -23,7 +23,7 @@ class AdminRepoImpl implements AdminRepository {
   @override
   Future<List<UserMissionModel>> listPendingVerifications() async {
     final response = await _adminApi.listPendingVerifications();
-    final List<dynamic> list = response['data'] ?? [];
+    final List<dynamic> list = (response['data'] as List<dynamic>?) ?? [];
     return list.map((e) => UserMissionEntity.fromJson(e as Map<String, dynamic>).toModel()).toList();
   }
 
@@ -65,7 +65,7 @@ class AdminRepoImpl implements AdminRepository {
   @override
   Future<List<UserModel>> listUsers(String search) async {
     final response = await _adminApi.listUsers(search);
-    final List<dynamic> list = response['data'] ?? [];
+    final List<dynamic> list = (response['data'] as List<dynamic>?) ?? [];
     return list.map((e) => UserEntity.fromJson(e as Map<String, dynamic>).toModel()).toList();
   }
 

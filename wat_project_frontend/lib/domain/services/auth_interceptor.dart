@@ -118,7 +118,7 @@ class AuthInterceptor extends Interceptor {
     );
 
     try {
-      final response = await _authDio.request(
+      final response = await _authDio.request<dynamic>(
         requestOptions.path,
         data: requestOptions.data,
         queryParameters: requestOptions.queryParameters,

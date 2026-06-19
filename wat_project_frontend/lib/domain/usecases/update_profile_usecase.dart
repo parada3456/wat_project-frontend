@@ -3,9 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/user_profile.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
-import 'package:wat_project_frontend/domain/models/credit_score_model.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/update_profile_request.dart';
 
 @injectable

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:wat_project_frontend/data/entities/admin_stats_entity.dart';
-import 'package:wat_project_frontend/data/entities/user_mission_entity.dart';
 import 'package:wat_project_frontend/data/entities/user_entity.dart';
 import 'package:wat_project_frontend/data/entities/points_adjustment_result_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/verify_mission_response.dart';
