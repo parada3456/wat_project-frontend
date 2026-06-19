@@ -84,6 +84,8 @@ import 'package:wat_project_frontend/domain/usecases/get_badges_usecase.dart'
     as _i914;
 import 'package:wat_project_frontend/domain/usecases/get_credit_score_history_usecase.dart'
     as _i822;
+import 'package:wat_project_frontend/domain/usecases/get_home_data_usecase.dart'
+    as _i921;
 import 'package:wat_project_frontend/domain/usecases/get_login_usecase.dart'
     as _i937;
 import 'package:wat_project_frontend/domain/usecases/get_posts_usecase.dart'
@@ -122,11 +124,11 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final localModule = _$LocalModule();
     final dioModule = _$DioModule();
-    final blocModule = _$BlocModule();
     final apiModule = _$ApiModule();
     final authModule = _$AuthModule();
     final repositoryModule = _$RepositoryModule();
     final routerModule = _$RouterModule();
+    final blocModule = _$BlocModule();
     gh.factory<_i374.GetPostsUseCase>(() => _i374.GetPostsUseCase());
     gh.lazySingleton<_i558.FlutterSecureStorage>(() => localModule.storage);
     gh.lazySingleton<_i455.LocaleProvider>(() => _i455.LocaleProvider());
@@ -134,9 +136,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => dioModule.authDio(),
       instanceName: 'authDio',
-    );
-    gh.factory<_i906.HomeBloc>(
-      () => blocModule.homeBloc(gh<_i374.GetPostsUseCase>()),
     );
     gh.lazySingleton<_i599.AuthApiService>(
       () => apiModule.authApi(gh<_i361.Dio>(instanceName: 'authDio')),
@@ -263,6 +262,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i455.UserRepository>(),
       ),
     );
+    gh.factory<_i921.GetHomeDataUseCase>(
+      () => _i921.GetHomeDataUseCase(
+        gh<_i455.UserRepository>(),
+        gh<_i381.JourneyRepository>(),
+        gh<_i448.MissionRepository>(),
+      ),
+    );
     gh.factory<_i257.DeleteAccountUseCase>(
       () => _i257.DeleteAccountUseCase(gh<_i455.UserRepository>()),
     );
@@ -301,6 +307,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i257.DeleteAccountUseCase>(),
       ),
     );
+    gh.factory<_i906.HomeBloc>(
+      () => blocModule.homeBloc(gh<_i921.GetHomeDataUseCase>()),
+    );
     return this;
   }
 }
@@ -309,8 +318,6 @@ class _$LocalModule extends _i6.LocalModule {}
 
 class _$DioModule extends _i193.DioModule {}
 
-class _$BlocModule extends _i784.BlocModule {}
-
 class _$ApiModule extends _i788.ApiModule {}
 
 class _$AuthModule extends _i406.AuthModule {}
@@ -318,3 +325,5 @@ class _$AuthModule extends _i406.AuthModule {}
 class _$RepositoryModule extends _i317.RepositoryModule {}
 
 class _$RouterModule extends _i671.RouterModule {}
+
+class _$BlocModule extends _i784.BlocModule {}

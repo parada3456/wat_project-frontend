@@ -8,7 +8,7 @@ abstract class DioModule {
   Dio authDio() {
     final dio = Dio(
       BaseOptions(
-        baseUrl: 'http://localhost:3005/api/v1', // Update based on environment
+        baseUrl: 'http://localhost:8080/api/v1', // Update based on environment
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
       ),
@@ -22,7 +22,7 @@ abstract class DioModule {
   Dio mainDio(@Named('authDio') Dio authDio, AuthSessionManager authManager) {
     final dio = Dio(
       BaseOptions(
-        baseUrl: 'http://localhost:3005/api/v1',
+        baseUrl: 'http://localhost:8080/api/v1',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
       ),

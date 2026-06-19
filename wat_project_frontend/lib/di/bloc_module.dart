@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/get_posts_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/get_home_data_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/login_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/register_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/forgot_password_usecase.dart';
@@ -20,7 +20,7 @@ import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 @module
 abstract class BlocModule {
   @injectable
-  HomeBloc homeBloc(GetPostsUseCase getPostsUseCase) => HomeBloc(getPostsUseCase);
+  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
 
   @injectable
   LoginBloc loginBloc(
