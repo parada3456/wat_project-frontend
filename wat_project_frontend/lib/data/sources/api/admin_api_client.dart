@@ -4,6 +4,8 @@ import 'package:wat_project_frontend/data/entities/admin_stats_entity.dart';
 import 'package:wat_project_frontend/data/entities/user_entity.dart';
 import 'package:wat_project_frontend/data/entities/points_adjustment_result_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/verify_mission_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pending_verifications_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/users_list_response.dart';
 
 part 'admin_api_client.g.dart';
 
@@ -15,7 +17,7 @@ abstract class AdminApiService {
   Future<AdminStatsEntity> getStats();
 
   @GET('/admin/user-missions')
-  Future<Map<String, dynamic>> listPendingVerifications();
+  Future<PendingVerificationsResponse> listPendingVerifications();
 
   @PATCH('/admin/user-missions/{id}/verify')
   Future<VerifyMissionResponse> verifyMission(
@@ -24,7 +26,7 @@ abstract class AdminApiService {
   );
 
   @GET('/admin/users')
-  Future<Map<String, dynamic>> listUsers(@Query('q') String search);
+  Future<UsersListResponse> listUsers(@Query('q') String search);
 
   @GET('/admin/users/{id}')
   Future<UserEntity> getUserDetail(@Path('id') String id);

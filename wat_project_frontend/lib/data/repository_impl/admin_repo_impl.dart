@@ -5,8 +5,6 @@ import 'package:wat_project_frontend/domain/models/points_adjustment_result_mode
 import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
 import 'package:wat_project_frontend/domain/models/user_model.dart';
 import 'package:wat_project_frontend/domain/repositories/admin_repository.dart';
-import 'package:wat_project_frontend/data/entities/user_mission_entity.dart';
-import 'package:wat_project_frontend/data/entities/user_entity.dart';
 
 @injectable
 class AdminRepoImpl implements AdminRepository {
@@ -23,8 +21,7 @@ class AdminRepoImpl implements AdminRepository {
   @override
   Future<List<UserMissionModel>> listPendingVerifications() async {
     final response = await _adminApi.listPendingVerifications();
-    final List<dynamic> list = (response['data'] as List<dynamic>?) ?? [];
-    return list.map((e) => UserMissionEntity.fromJson(e as Map<String, dynamic>).toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
@@ -65,8 +62,7 @@ class AdminRepoImpl implements AdminRepository {
   @override
   Future<List<UserModel>> listUsers(String search) async {
     final response = await _adminApi.listUsers(search);
-    final List<dynamic> list = (response['data'] as List<dynamic>?) ?? [];
-    return list.map((e) => UserEntity.fromJson(e as Map<String, dynamic>).toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
