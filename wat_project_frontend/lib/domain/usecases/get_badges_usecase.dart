@@ -15,7 +15,7 @@ class GetBadgesUseCase {
       final result = await _repository.getBadges();
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

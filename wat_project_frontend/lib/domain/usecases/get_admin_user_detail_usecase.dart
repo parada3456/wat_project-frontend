@@ -15,7 +15,7 @@ class GetAdminUserDetailUseCase {
       final result = await _repository.getUserDetail(id);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

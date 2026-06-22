@@ -32,8 +32,8 @@ class AuthRepoImpl implements AuthRepository {
   }
 
   @override
-  Future<void> logout() async {
-    return _api.logout();
+  Future<void> logout(String refreshToken) async {
+    return _api.logout({'refresh_token': refreshToken});
   }
 
   @override

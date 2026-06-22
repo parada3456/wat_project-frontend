@@ -15,7 +15,7 @@ class RefreshTokenUseCase {
       final result = await _repository.refresh(refreshToken);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

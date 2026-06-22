@@ -15,7 +15,7 @@ class ResetPasswordUseCase {
       await _repository.resetPassword(token, newPassword);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

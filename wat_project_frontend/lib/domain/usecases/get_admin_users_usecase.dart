@@ -15,7 +15,7 @@ class GetAdminUsersUseCase {
       final result = await _repository.listUsers(search);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

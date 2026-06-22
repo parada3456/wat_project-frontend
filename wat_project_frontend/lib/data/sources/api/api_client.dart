@@ -8,6 +8,6 @@ part 'api_client.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
-  @GET('/user/me')
+  @GET('/users/me')
   Future<UserEntity> getMe();
 }

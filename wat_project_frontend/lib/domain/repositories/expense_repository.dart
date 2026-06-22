@@ -8,6 +8,6 @@ abstract class ExpenseRepository {
   Future<ExpenseDetailResponse> getExpenseDetail(String id);
   Future<void> deleteExpense(String id);
   Future<List<ExpenseSplitModel>> listPendingExpenses();
-  Future<void> paySplit(String id, File file);
-  Future<void> approveSplit(String id);
+  Future<void> paySplit(String expenseId, String splitId, File file);
+  Future<void> approveSplit(String expenseId, String splitId);
 }

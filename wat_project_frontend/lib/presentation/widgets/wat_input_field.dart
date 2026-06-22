@@ -7,6 +7,7 @@ class WatInputField extends StatelessWidget {
   final TextEditingController? controller;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
+  final String? errorText;
 
   const WatInputField({
     super.key,
@@ -16,6 +17,7 @@ class WatInputField extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.onChanged,
+    this.errorText,
   });
 
   @override
@@ -38,6 +40,7 @@ class WatInputField extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.backgroundAlt,
             borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+            border: errorText != null ? Border.all(color: Colors.red.shade300) : null,
           ),
           child: Row(
             children: [
@@ -65,6 +68,16 @@ class WatInputField extends StatelessWidget {
             ],
           ),
         ),
+        if (errorText != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            errorText!,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.red.shade400,
+            ),
+          ),
+        ]
       ],
     );
   }

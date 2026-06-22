@@ -17,7 +17,7 @@ class JobRepoImpl implements JobRepository {
   @override
   Future<List<JobPostingModel>> listJobs(Map<String, dynamic> filters) async {
     final response = await _api.listJobs(filters);
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
@@ -33,7 +33,12 @@ class JobRepoImpl implements JobRepository {
   @override
   Future<List<UserCartModel>> listCart() async {
     final response = await _api.listCart();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
+  }
+
+  @override
+  Future<void> updateCartStatus(String cartId, String status) async {
+    return _api.updateCartStatus(cartId, {'status': status});
   }
 
   @override
@@ -43,12 +48,12 @@ class JobRepoImpl implements JobRepository {
 
   @override
   Future<List<JobReviewModel>> listReviews(String? jobId) async {
-    final response = await _api.getAllReviews(jobId);
-    return response.map((e) => e.toModel()).toList();
+    final response = await _api.getJobReviews(jobId ?? '');
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
   Future<void> createReview(CreateReviewRequest request) async {
-    return _api.createReview(request);
+    return _api.createReview(request.jobId, request);
   }
 }

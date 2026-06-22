@@ -5,5 +5,5 @@ abstract class MissionRepository {
   Future<List<UserMissionModel>> listMissions();
   Future<MissionDetailResponse> getMissionDetail(String id);
   Future<void> submitProof(String id, File file);
-  Future<void> toggleTask(String id, bool completed);
+  Future<void> toggleTask(String userMissionId, String taskId, bool completed);
 }

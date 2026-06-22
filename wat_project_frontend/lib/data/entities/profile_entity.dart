@@ -21,7 +21,7 @@ class ProfileEntity {
   @JsonKey(name: 'location_updated_at')
   final String? locationUpdatedAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final String? updatedAt;
 
   ProfileEntity({
     required this.profileId,
@@ -32,7 +32,7 @@ class ProfileEntity {
     required this.radarVisibility,
     this.currentCoordinates,
     this.locationUpdatedAt,
-    required this.updatedAt,
+    this.updatedAt,
   });
 
   factory ProfileEntity.fromJson(Map<String, dynamic> json) => _$ProfileEntityFromJson(json);
@@ -47,6 +47,6 @@ class ProfileEntity {
         currentCoordinates: currentCoordinates,
         locationUpdatedAt:
             locationUpdatedAt != null ? DateTime.parse(locationUpdatedAt!) : null,
-        updatedAt: DateTime.parse(updatedAt),
+        updatedAt: updatedAt != null ? DateTime.parse(updatedAt!) : DateTime.now(),
       );
 }

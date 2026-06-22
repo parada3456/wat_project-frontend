@@ -4,6 +4,9 @@ import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/auth_repository.dart';
 import 'package:wat_project_frontend/domain/models/auth_tokens.dart';
 
+import 'package:dio/dio.dart';
+import 'package:wat_project_frontend/core/error/exceptions.dart';
+
 @injectable
 class RegisterUseCase {
   final AuthRepository _repository;
@@ -15,7 +18,7 @@ class RegisterUseCase {
       final result = await _repository.register(email, password, firstName, lastName);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

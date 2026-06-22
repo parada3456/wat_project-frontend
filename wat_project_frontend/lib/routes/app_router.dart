@@ -1,10 +1,11 @@
 
-import 'dart:convert';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/edit_profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/ui/register_page.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/login/ui/register_page_2.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/screens/user_settings_page.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/create_expense_page.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/expense_details_page.dart';
@@ -57,11 +58,15 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/login',
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => const LoginPage(),
       ),
+      // GoRoute(
+      //   path: '/register',
+      //   builder: (context, state) => const RegisterPage(),
+      // ),
       GoRoute(
-        path: '/register',
-        builder: (context, state) => const RegisterPage(),
+        path: '/register2',
+        builder: (context, state) => const RegisterPage2(),
       ),
       ShellRoute(
         builder: (context, state, child) {
@@ -161,23 +166,23 @@ class AppRouter {
       GoRoute(
         path: '/admin',
         builder: (context, state) => const AdminDashboardPage(),
-        redirect: (context, state) {
-          final session = _authManager.currentSession;
-          if (session == null) return '/login';
-          final parts = session.token.split('.');
-          if (parts.length >= 2) {
-            try {
-              final payload = parts[1];
-              final normalized = base64.normalize(payload);
-              final decoded = utf8.decode(base64Decode(normalized));
-              final Map<String, dynamic> claims = jsonDecode(decoded) as Map<String, dynamic>;
-              if (claims['is_admin'] == true) {
-                return null;
-              }
-            } catch (_) {}
-          }
-          return '/home';
-        },
+        // redirect: (context, state) {
+        //   final session = _authManager.currentSession;
+        //   if (session == null) return '/login';
+        //   final parts = session.token.split('.');
+        //   if (parts.length >= 2) {
+        //     try {
+        //       final payload = parts[1];
+        //       final normalized = base64.normalize(payload);
+        //       final decoded = utf8.decode(base64Decode(normalized));
+        //       final Map<String, dynamic> claims = jsonDecode(decoded) as Map<String, dynamic>;
+        //       if (claims['is_admin'] == true) {
+        //         return null;
+        //       }
+        //     } catch (_) {}
+        //   }
+        //   return '/home';
+        // },
       ),
       GoRoute(
         path: '/jobs/details',

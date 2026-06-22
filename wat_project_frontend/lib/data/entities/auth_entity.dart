@@ -5,8 +5,11 @@ part 'auth_entity.g.dart';
 
 @JsonSerializable()
 class AuthEntity {
+  @JsonKey(name: 'access_token')
   final String token;
+  @JsonKey(name: 'refresh_token')
   final String refreshToken;
+  @JsonKey(name: 'expires_at')
   final String expiresAt; // Backend returns ISO8601 string
 
   AuthEntity({

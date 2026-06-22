@@ -15,7 +15,7 @@ class VerifyAdminMissionUseCase {
       final result = await _repository.verifyMission(id, approved, rejectionReason);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

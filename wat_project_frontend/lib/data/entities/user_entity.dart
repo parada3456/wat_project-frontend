@@ -15,11 +15,11 @@ class UserEntity {
   @JsonKey(name: 'current_phase_id')
   final String? currentPhaseId;
   @JsonKey(name: 'total_lifetime_points')
-  final int totalLifetimePoints;
+  final int? totalLifetimePoints;
   @JsonKey(name: 'current_phase_points')
-  final int currentPhasePoints;
+  final int? currentPhasePoints;
   @JsonKey(name: 'mission_streak')
-  final int missionStreak;
+  final int? missionStreak;
   @JsonKey(name: 'arrival_date')
   final String? arrivalDate;
   @JsonKey(name: 'job_start_date')
@@ -35,9 +35,9 @@ class UserEntity {
     this.firstName,
     this.lastName,
     this.currentPhaseId,
-    required this.totalLifetimePoints,
-    required this.currentPhasePoints,
-    required this.missionStreak,
+    this.totalLifetimePoints,
+    this.currentPhasePoints,
+    this.missionStreak,
     this.arrivalDate,
     this.jobStartDate,
     required this.createdAt,
@@ -52,12 +52,12 @@ class UserEntity {
         firstName: firstName,
         lastName: lastName,
         currentPhaseId: currentPhaseId,
-        totalLifetimePoints: totalLifetimePoints,
-        currentPhasePoints: currentPhasePoints,
-        missionStreak: missionStreak,
+        totalLifetimePoints: totalLifetimePoints ?? 0,
+        currentPhasePoints: currentPhasePoints ?? 0,
+        missionStreak: missionStreak ?? 0,
         arrivalDate: arrivalDate != null ? DateTime.parse(arrivalDate!) : null,
         jobStartDate: jobStartDate != null ? DateTime.parse(jobStartDate!) : null,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
+        createdAt: createdAt != null ? DateTime.parse(createdAt!) : DateTime.now(),
+        updatedAt: updatedAt != null ? DateTime.parse(updatedAt!) : DateTime.now(),
       );
 }

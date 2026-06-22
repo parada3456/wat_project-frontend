@@ -20,30 +20,28 @@ class _MissionApiService implements MissionApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<UserMissionEntity>> listMissions() async {
+  Future<ListResponse<UserMissionEntity>> listMissions() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<UserMissionEntity>>(
+    final _options = _setStreamType<ListResponse<UserMissionEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/missions',
+            'user-missions',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<UserMissionEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ListResponse<UserMissionEntity> _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                UserMissionEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = ListResponse<UserMissionEntity>.fromJson(
+        _result.data!,
+        (json) => UserMissionEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -61,7 +59,7 @@ class _MissionApiService implements MissionApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/missions/${id}',
+            'user-missions/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -102,7 +100,7 @@ class _MissionApiService implements MissionApiService {
           )
           .compose(
             _dio.options,
-            '/missions/${id}/verify',
+            'user-missions/${id}/proof',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -112,7 +110,11 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<void> toggleTask(String id, Map<String, dynamic> body) async {
+  Future<void> toggleTask(
+    String userMissionId,
+    String taskId,
+    Map<String, dynamic> body,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -122,7 +124,7 @@ class _MissionApiService implements MissionApiService {
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/tasks/${id}',
+            'user-missions/${userMissionId}/tasks/${taskId}',
             queryParameters: queryParameters,
             data: _data,
           )

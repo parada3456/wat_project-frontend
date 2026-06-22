@@ -12,13 +12,13 @@ class CreditScoreEntity {
   @JsonKey(name: 'current_score')
   final int currentScore;
   @JsonKey(name: 'last_updated')
-  final String lastUpdated;
+  final String? lastUpdated;
 
   CreditScoreEntity({
     required this.creditId,
     required this.userId,
     required this.currentScore,
-    required this.lastUpdated,
+    this.lastUpdated,
   });
 
   factory CreditScoreEntity.fromJson(Map<String, dynamic> json) =>
@@ -28,6 +28,6 @@ class CreditScoreEntity {
         creditId: creditId,
         userId: userId,
         currentScore: currentScore,
-        lastUpdated: DateTime.parse(lastUpdated),
+        lastUpdated: lastUpdated != null ? DateTime.parse(lastUpdated!) : DateTime.now(),
       );
 }

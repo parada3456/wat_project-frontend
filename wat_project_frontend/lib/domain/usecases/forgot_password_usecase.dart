@@ -15,7 +15,7 @@ class ForgotPasswordUseCase {
       await _repository.forgotPassword(email);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

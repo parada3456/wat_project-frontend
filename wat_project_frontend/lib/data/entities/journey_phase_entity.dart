@@ -9,6 +9,7 @@ class JourneyPhaseEntity {
   final String phaseId;
   @JsonKey(name: 'phase_number')
   final int phaseNumber;
+  @JsonKey(name: 'name')
   final String title;
   final String? description;
   @JsonKey(name: 'created_at')

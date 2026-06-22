@@ -8,17 +8,23 @@ part of 'radar_entry.dart';
 
 RadarEntry _$RadarEntryFromJson(Map<String, dynamic> json) => RadarEntry(
   userId: json['user_id'] as String,
-  name: json['name'] as String,
-  avatarUrl: json['avatar_url'] as String,
-  lat: (json['lat'] as num).toDouble(),
-  lng: (json['lng'] as num).toDouble(),
+  username: json['username'] as String,
+  firstName: json['first_name'] as String?,
+  lastName: json['last_name'] as String?,
+  avatarUrl: json['avatar_url'] as String?,
+  latitude: (json['latitude'] as num).toDouble(),
+  longitude: (json['longitude'] as num).toDouble(),
+  distance: (json['distance'] as num?)?.toDouble(),
 );
 
 Map<String, dynamic> _$RadarEntryToJson(RadarEntry instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
-      'name': instance.name,
+      'username': instance.username,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
       'avatar_url': instance.avatarUrl,
-      'lat': instance.lat,
-      'lng': instance.lng,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'distance': instance.distance,
     };

@@ -17,7 +17,7 @@ class ExpenseRepoImpl implements ExpenseRepository {
   @override
   Future<List<ExpenseTransactionModel>> listExpenses() async {
     final response = await _api.listExpenses();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
@@ -38,16 +38,16 @@ class ExpenseRepoImpl implements ExpenseRepository {
   @override
   Future<List<ExpenseSplitModel>> listPendingExpenses() async {
     final response = await _api.listPendingExpenses();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
-  Future<void> paySplit(String id, File file) async {
-    return _api.paySplit(id, file);
+  Future<void> paySplit(String expenseId, String splitId, File file) async {
+    return _api.paySplit(expenseId, splitId, file);
   }
 
   @override
-  Future<void> approveSplit(String id) async {
-    return _api.approveSplit(id);
+  Future<void> approveSplit(String expenseId, String splitId) async {
+    return _api.approveSplit(expenseId, splitId);
   }
 }

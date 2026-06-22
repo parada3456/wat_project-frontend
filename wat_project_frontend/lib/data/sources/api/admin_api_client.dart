@@ -4,8 +4,10 @@ import 'package:wat_project_frontend/data/entities/admin_stats_entity.dart';
 import 'package:wat_project_frontend/data/entities/user_entity.dart';
 import 'package:wat_project_frontend/data/entities/points_adjustment_result_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/verify_mission_response.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/pending_verifications_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/users_list_response.dart';
+
+import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+import 'package:wat_project_frontend/data/entities/user_mission_entity.dart';
 
 part 'admin_api_client.g.dart';
 
@@ -13,25 +15,25 @@ part 'admin_api_client.g.dart';
 abstract class AdminApiService {
   factory AdminApiService(Dio dio, {String baseUrl}) = _AdminApiService;
 
-  @GET('/admin/dashboard/stats')
+  @GET('admin/dashboard/stats')
   Future<AdminStatsEntity> getStats();
 
-  @GET('/admin/user-missions')
-  Future<PendingVerificationsResponse> listPendingVerifications();
+  @GET('admin/user-missions')
+  Future<ListResponse<UserMissionEntity>> listPendingVerifications();
 
-  @PATCH('/admin/user-missions/{id}/verify')
+  @PATCH('admin/user-missions/{id}/verify')
   Future<VerifyMissionResponse> verifyMission(
     @Path('id') String id,
     @Body() Map<String, dynamic> body,
   );
 
-  @GET('/admin/users')
+  @GET('admin/users')
   Future<UsersListResponse> listUsers(@Query('q') String search);
 
-  @GET('/admin/users/{id}')
+  @GET('admin/users/{id}')
   Future<UserEntity> getUserDetail(@Path('id') String id);
 
-  @POST('/admin/users/{id}/adjust-points')
+  @POST('admin/users/{id}/adjust-points')
   Future<PointsAdjustmentResultEntity> adjustPoints(
     @Path('id') String id,
     @Body() Map<String, dynamic> body,

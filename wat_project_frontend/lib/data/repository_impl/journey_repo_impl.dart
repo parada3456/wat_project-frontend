@@ -16,19 +16,19 @@ class JourneyRepoImpl implements JourneyRepository {
   @override
   Future<List<JourneyPhaseModel>> listPhases() async {
     final response = await _api.listPhases();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
   Future<bool> advancePhase() async {
     final response = await _api.advancePhase();
-    return response['success'] ?? false;
+    return response.transitioned;
   }
 
   @override
   Future<List<UserPhaseHistoryModel>> getHistory() async {
     final response = await _api.getHistory();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
@@ -39,12 +39,12 @@ class JourneyRepoImpl implements JourneyRepository {
   @override
   Future<List<UserBadgeModel>> listBadges() async {
     final response = await _api.listBadges();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
   Future<List<PointLedgerModel>> getCreditHistory() async {
     final response = await _api.getCreditHistory();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 }

@@ -15,7 +15,7 @@ class MissionRepoImpl implements MissionRepository {
   @override
   Future<List<UserMissionModel>> listMissions() async {
     final response = await _api.listMissions();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
@@ -29,7 +29,10 @@ class MissionRepoImpl implements MissionRepository {
   }
 
   @override
-  Future<void> toggleTask(String id, bool completed) async {
-    return _api.toggleTask(id, {'completed': completed});
+  Future<void> toggleTask(String userMissionId, String taskId, bool completed) async {
+    return _api.toggleTask(userMissionId, taskId, {
+      'completed': completed,
+      'isCompleted': completed,
+    });
   }
 }

@@ -19,7 +19,7 @@ ProfileEntity _$ProfileEntityFromJson(Map<String, dynamic> json) =>
       ),
       currentCoordinates: json['current_coordinates'] as String?,
       locationUpdatedAt: json['location_updated_at'] as String?,
-      updatedAt: json['updated_at'] as String,
+      updatedAt: json['updated_at'] as String?,
     );
 
 Map<String, dynamic> _$ProfileEntityToJson(ProfileEntity instance) =>

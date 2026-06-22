@@ -8,38 +8,38 @@ import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class RegisterPage2 extends StatefulWidget {
+  const RegisterPage2({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterPage2> createState() => _RegisterPage2State();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final _nameController = TextEditingController();
+class _RegisterPage2State extends State<RegisterPage2> {
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _hometownController = TextEditingController();
 
-  String? _nameError;
+  String? _firstNameError;
+  String? _lastNameError;
   String? _emailError;
   String? _passwordError;
-  String? _hometownError;
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _hometownController.dispose();
     super.dispose();
   }
 
   String? _getError(LoginState state, String field) {
-    if (field == 'name' && _nameError != null) return _nameError;
+    if (field == 'firstName' && _firstNameError != null) return _firstNameError;
+    if (field == 'lastName' && _lastNameError != null) return _lastNameError;
     if (field == 'email' && _emailError != null) return _emailError;
     if (field == 'password' && _passwordError != null) return _passwordError;
-    if (field == 'hometown' && _hometownError != null) return _hometownError;
 
     if (state is LoginFailure && state.apiError != null) {
       try {
@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
             onPressed: () => Navigator.pop(context),
           ),
           title: const Text(
-            'Create Account',
+            'Create Account (v2)',
             style: TextStyle(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
@@ -130,12 +130,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const SizedBox(height: AppDimension.space32),
                     WatInputField(
-                      label: 'FullName',
-                      hint: 'Enter your name',
-                      controller: _nameController,
-                      errorText: _getError(state, 'name'),
+                      label: 'FirstName',
+                      hint: 'Enter your first name',
+                      controller: _firstNameController,
+                      errorText: _getError(state, 'firstName'),
                       onChanged: (_) {
-                        if (_nameError != null) setState(() => _nameError = null);
+                        if (_firstNameError != null) setState(() => _firstNameError = null);
+                      },
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    WatInputField(
+                      label: 'LastName',
+                      hint: 'Enter your last name',
+                      controller: _lastNameController,
+                      errorText: _getError(state, 'lastName'),
+                      onChanged: (_) {
+                        if (_lastNameError != null) setState(() => _lastNameError = null);
                       },
                     ),
                     const SizedBox(height: AppDimension.space16),
@@ -159,42 +169,33 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (_passwordError != null) setState(() => _passwordError = null);
                       },
                     ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'HomeTown',
-                      hint: 'Select your hometown',
-                      controller: _hometownController,
-                      errorText: _getError(state, 'hometown'),
-                      onChanged: (_) {
-                        if (_hometownError != null) setState(() => _hometownError = null);
-                      },
-                      suffixIcon: const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
                     const SizedBox(height: AppDimension.space32),
                     WatButton(
                       label: 'SignUp',
                       isLoading: isLoading,
                       onPressed: () {
-                        final fullName = _nameController.text.trim();
+                        final firstName = _firstNameController.text.trim();
+                        final lastName = _lastNameController.text.trim();
                         final email = _emailController.text.trim();
                         final password = _passwordController.text.trim();
-                        final hometown = _hometownController.text.trim();
 
                         setState(() {
-                          _nameError = null;
+                          _firstNameError = null;
+                          _lastNameError = null;
                           _emailError = null;
                           _passwordError = null;
-                          _hometownError = null;
                         });
 
                         bool isValid = true;
                         final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-                        if (fullName.isEmpty) {
-                          _nameError = 'Name is required';
+                        if (firstName.isEmpty) {
+                          _firstNameError = 'First name is required';
+                          isValid = false;
+                        }
+
+                        if (lastName.isEmpty) {
+                          _lastNameError = 'Last name is required';
                           isValid = false;
                         }
 
@@ -218,11 +219,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           setState(() {});
                           return;
                         }
-
-                        // Split full name into first name and last name
-                        final nameParts = fullName.split(' ');
-                        final firstName = nameParts.first;
-                        final lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
 
                         context.read<LoginBloc>().add(
                               RegisterSubmittedEvent(

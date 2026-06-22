@@ -12,13 +12,13 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) => UserEntity(
   firstName: json['first_name'] as String?,
   lastName: json['last_name'] as String?,
   currentPhaseId: json['current_phase_id'] as String?,
-  totalLifetimePoints: (json['total_lifetime_points'] as num).toInt(),
-  currentPhasePoints: (json['current_phase_points'] as num).toInt(),
-  missionStreak: (json['mission_streak'] as num).toInt(),
+  totalLifetimePoints: (json['total_lifetime_points'] as num?)?.toInt(),
+  currentPhasePoints: (json['current_phase_points'] as num?)?.toInt(),
+  missionStreak: (json['mission_streak'] as num?)?.toInt(),
   arrivalDate: json['arrival_date'] as String?,
   jobStartDate: json['job_start_date'] as String?,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
 );
 
 Map<String, dynamic> _$UserEntityToJson(UserEntity instance) =>

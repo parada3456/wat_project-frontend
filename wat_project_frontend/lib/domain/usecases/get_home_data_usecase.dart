@@ -65,7 +65,7 @@ class GetHomeDataUseCase {
         isMock: false,
       ));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

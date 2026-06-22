@@ -19,18 +19,21 @@ class FriendRepoImpl implements FriendRepository {
   @override
   Future<List<FriendshipModel>> listPendingRequests() async {
     final response = await _api.listPendingRequests();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
   Future<void> respondToRequest(String friendshipId, bool accept) async {
-    return _api.respondToRequest({'friendship_id': friendshipId, 'accept': accept});
+    return _api.respondToRequest(friendshipId, {
+      'accept': accept,
+      'status': accept ? 'Accepted' : 'Rejected',
+    });
   }
 
   @override
   Future<List<FriendshipModel>> listFriends() async {
     final response = await _api.listFriends();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override

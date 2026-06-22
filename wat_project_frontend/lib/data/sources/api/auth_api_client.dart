@@ -7,26 +7,26 @@ part 'auth_api_client.g.dart';
 abstract class AuthApiService {
   factory AuthApiService(Dio dio, {String baseUrl}) = _AuthApiService;
 
-  @POST('/auth/register')
+  @POST('auth/register')
   @Extra({'needLogin': false})
   Future<LoginEntity> register(@Body() RegisterRequest request);
 
-  @POST('/auth/login')
+  @POST('auth/login')
   @Extra({'needLogin': false})
   Future<LoginEntity> login(@Body() LoginRequest request);
 
-  @POST('/auth/logout')
-  Future<void> logout();
+  @POST('auth/logout')
+  Future<void> logout(@Body() Map<String, dynamic> body);
 
-  @POST('/auth/refresh')
+  @POST('auth/refresh')
   @Extra({'needLogin': false})
   Future<AuthEntity> refresh(@Body() AuthRefreshRequest request);
 
-  @POST('/auth/forgot-password')
+  @POST('auth/forgot-password')
   @Extra({'needLogin': false})
   Future<void> forgotPassword(@Body() Map<String, dynamic> body);
 
-  @POST('/auth/reset-password')
+  @POST('auth/reset-password')
   @Extra({'needLogin': false})
   Future<void> resetPassword(@Body() Map<String, dynamic> body);
 }

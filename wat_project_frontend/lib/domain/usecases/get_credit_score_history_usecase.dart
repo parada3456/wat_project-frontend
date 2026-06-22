@@ -15,7 +15,7 @@ class GetCreditScoreHistoryUseCase {
       final result = await _repository.getCreditScoreHistory();
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

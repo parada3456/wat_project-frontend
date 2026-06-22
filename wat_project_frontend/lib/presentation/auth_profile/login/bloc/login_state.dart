@@ -1,4 +1,5 @@
 import 'package:wat_project_frontend/domain/models/auth_tokens.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/api_error.dart';
 
 abstract class LoginState {
   const LoginState();
@@ -19,7 +20,9 @@ class LoginSuccess extends LoginState {
 
 class LoginFailure extends LoginState {
   final String errorMessage;
-  const LoginFailure(this.errorMessage);
+  final ApiError? apiError;
+
+  const LoginFailure(this.errorMessage, {this.apiError});
 }
 
 class ForgotPasswordSuccess extends LoginState {

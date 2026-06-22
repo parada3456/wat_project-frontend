@@ -15,7 +15,7 @@ class AdjustPointsUseCase {
       final result = await _repository.adjustPoints(id, pointsDelta, reason);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

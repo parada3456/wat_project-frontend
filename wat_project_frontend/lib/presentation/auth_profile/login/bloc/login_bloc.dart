@@ -8,6 +8,7 @@ import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_event.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_state.dart';
+import 'package:wat_project_frontend/core/error/failures.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase _loginUseCase;
@@ -41,7 +42,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(const LoginLoading());
     final result = await _loginUseCase(event.email, event.password);
     await result.fold(
-      (failure) async => emit(LoginFailure(failure.message)),
+      (failure) async {
+        if (failure is BackendFailure) {
+          emit(LoginFailure(failure.message, apiError: failure.apiError));
+        } else {
+          emit(LoginFailure(failure.message));
+        }
+      },
       (tokens) async {
         await _authManager.saveSession(tokens, null);
         try {
@@ -67,7 +74,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       event.lastName,
     );
     await result.fold(
-      (failure) async => emit(LoginFailure(failure.message)),
+      (failure) async {
+        if (failure is BackendFailure) {
+          emit(LoginFailure(failure.message, apiError: failure.apiError));
+        } else {
+          emit(LoginFailure(failure.message));
+        }
+      },
       (tokens) async {
         await _authManager.saveSession(tokens, null);
         try {
@@ -110,7 +123,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(const LoginLoading());
-    final result = await _logoutUseCase();
+    final refreshToken = _authManager.currentSession?.refreshToken ?? '';
+    final result = await _logoutUseCase(refreshToken);
     result.fold(
       (failure) => emit(LoginFailure(failure.message)),
       (_) async {

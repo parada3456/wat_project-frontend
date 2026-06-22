@@ -4,30 +4,40 @@ import 'package:wat_project_frontend/data/sources/api/api_model/user_profile_res
 import 'package:wat_project_frontend/data/entities/badge_entity.dart';
 import 'package:wat_project_frontend/data/entities/point_ledger_entity.dart';
 
+import 'package:wat_project_frontend/data/entities/user_entity.dart';
+
+import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+
 part 'user_api_client.g.dart';
 
 @RestApi()
 abstract class UserApiService {
   factory UserApiService(Dio dio, {String baseUrl}) = _UserApiService;
 
-  @GET('/user/profile')
+  @GET('users/me')
   Future<UserProfileResponse> getProfile();
 
-  @PATCH('/user/profile')
+  @PATCH('users/me')
   Future<void> updateProfile(@Body() UpdateProfileRequest request);
 
-  @PATCH('/user/settings')
+  @PATCH('users/me/settings')
   Future<void> updateSettings(@Body() Map<String, dynamic> settings);
 
-  @DELETE('/user/account')
+  @DELETE('users/me')
   Future<void> deleteAccount(@Body() Map<String, dynamic> body);
 
-  @GET('/user/badges')
-  Future<List<BadgeEntity>> getBadges();
+  @GET('users/{id}')
+  Future<UserEntity> getUserPublicProfile(@Path('id') String id);
 
-  @GET('/user/credit-history')
-  Future<List<PointLedgerEntity>> getCreditScoreHistory();
+  @GET('user/badges')
+  Future<ListResponse<BadgeEntity>> getBadges();
 
-  @POST('/user/location')
+  @GET('user/points/ledger')
+  Future<ListResponse<PointLedgerEntity>> getPointsLedger();
+
+  @GET('user/credit-score/history')
+  Future<ListResponse<PointLedgerEntity>> getCreditScoreHistory();
+
+  @PATCH('profile/location')
   Future<void> updateLocation(@Body() Map<String, dynamic> body);
 }

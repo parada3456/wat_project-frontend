@@ -13,5 +13,17 @@ class LoginEntity {
     required this.userId,
   });
 
-  factory LoginEntity.fromJson(Map<String, dynamic> json) => _$LoginEntityFromJson(json);
+  factory LoginEntity.fromJson(Map<String, dynamic> json) {
+    return LoginEntity(
+      userId: json['user_id'] as String,
+      auth: AuthEntity.fromJson(json),
+    );
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'user_id': userId,
+        'access_token': auth.token,
+        'refresh_token': auth.refreshToken,
+        'expires_at': auth.expiresAt,
+      };
 }

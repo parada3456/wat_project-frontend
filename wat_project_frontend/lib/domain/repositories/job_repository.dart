@@ -6,6 +6,7 @@ abstract class JobRepository {
   Future<JobDetailResponse> getJobDetail(String id);
   Future<void> addToCart(String jobId);
   Future<List<UserCartModel>> listCart();
+  Future<void> updateCartStatus(String cartId, String status);
   Future<void> removeFromCart(String cartId);
   Future<List<JobReviewModel>> listReviews(String? jobId);
   Future<void> createReview(CreateReviewRequest request);

@@ -15,7 +15,7 @@ class ListPendingVerificationsUseCase {
       final result = await _repository.listPendingVerifications();
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

@@ -13,7 +13,7 @@ class NotificationRepoImpl implements NotificationRepository {
   @override
   Future<List<NotificationModel>> listNotifications() async {
     final response = await _api.listNotifications();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override

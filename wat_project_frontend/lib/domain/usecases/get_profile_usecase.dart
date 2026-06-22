@@ -19,7 +19,7 @@ class GetProfileUseCase {
         creditScore: response.creditScore.toModel(),
       ));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

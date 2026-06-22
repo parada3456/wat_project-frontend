@@ -42,15 +42,27 @@ class UserRepoImpl implements UserRepository {
   }
 
   @override
+  Future<UserModel> getUserPublicProfile(String id) async {
+    final response = await _userApi.getUserPublicProfile(id);
+    return response.toModel();
+  }
+
+  @override
   Future<List<BadgeModel>> getBadges() async {
     final response = await _userApi.getBadges();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
+  }
+
+  @override
+  Future<List<PointLedgerModel>> getPointsLedger() async {
+    final response = await _userApi.getPointsLedger();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override
   Future<List<PointLedgerModel>> getCreditScoreHistory() async {
     final response = await _userApi.getCreditScoreHistory();
-    return response.map((e) => e.toModel()).toList();
+    return response.data.map((e) => e.toModel()).toList();
   }
 
   @override

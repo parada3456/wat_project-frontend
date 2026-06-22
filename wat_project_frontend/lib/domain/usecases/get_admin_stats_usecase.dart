@@ -15,7 +15,7 @@ class GetAdminStatsUseCase {
       final result = await _repository.getStats();
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

@@ -10,7 +10,9 @@ abstract class UserRepository {
   Future<void> updateProfile(UpdateProfileRequest request);
   Future<void> updateSettings(Map<String, dynamic> settings);
   Future<void> deleteAccount(String currentPassword);
+  Future<UserModel> getUserPublicProfile(String id);
   Future<List<BadgeModel>> getBadges();
+  Future<List<PointLedgerModel>> getPointsLedger();
   Future<List<PointLedgerModel>> getCreditScoreHistory();
   Future<void> updateLocation(double latitude, double longitude);
 }

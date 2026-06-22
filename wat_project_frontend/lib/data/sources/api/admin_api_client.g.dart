@@ -29,7 +29,7 @@ class _AdminApiService implements AdminApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/admin/dashboard/stats',
+            'admin/dashboard/stats',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -47,25 +47,28 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<PendingVerificationsResponse> listPendingVerifications() async {
+  Future<ListResponse<UserMissionEntity>> listPendingVerifications() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PendingVerificationsResponse>(
+    final _options = _setStreamType<ListResponse<UserMissionEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/admin/user-missions',
+            'admin/user-missions',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PendingVerificationsResponse _value;
+    late ListResponse<UserMissionEntity> _value;
     try {
-      _value = PendingVerificationsResponse.fromJson(_result.data!);
+      _value = ListResponse<UserMissionEntity>.fromJson(
+        _result.data!,
+        (json) => UserMissionEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -87,7 +90,7 @@ class _AdminApiService implements AdminApiService {
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/admin/user-missions/${id}/verify',
+            'admin/user-missions/${id}/verify',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -114,7 +117,7 @@ class _AdminApiService implements AdminApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/admin/users',
+            'admin/users',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -141,7 +144,7 @@ class _AdminApiService implements AdminApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/admin/users/${id}',
+            'admin/users/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -172,7 +175,7 @@ class _AdminApiService implements AdminApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/admin/users/${id}/adjust-points',
+            'admin/users/${id}/adjust-points',
             queryParameters: queryParameters,
             data: _data,
           )
