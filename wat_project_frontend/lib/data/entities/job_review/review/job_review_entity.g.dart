@@ -24,8 +24,8 @@ JobReviewEntity _$JobReviewEntityFromJson(Map<String, dynamic> json) =>
           .toDouble(),
       scoreOvertimeAvailability: (json['score_overtime_availability'] as num)
           .toDouble(),
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$JobReviewEntityToJson(JobReviewEntity instance) =>
@@ -44,6 +44,6 @@ Map<String, dynamic> _$JobReviewEntityToJson(JobReviewEntity instance) =>
       'score_housing': instance.scoreHousing,
       'score_second_job_feasibility': instance.scoreSecondJobFeasibility,
       'score_overtime_availability': instance.scoreOvertimeAvailability,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

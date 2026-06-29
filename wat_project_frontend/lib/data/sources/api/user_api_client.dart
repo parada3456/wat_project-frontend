@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/profile/user_entity.dart';
+import 'package:wat_project_frontend/data/entities/user/profile_entity.dart';
+import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/badge_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
+import 'package:wat_project_frontend/data/entities/user/user_profile_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/assign_job_request.dart';
 
-import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_password_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_profile_request.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/profile/user_profile_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_settings_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/delete_account_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_location_request.dart';
@@ -20,7 +21,7 @@ abstract class UserApiService {
   factory UserApiService(Dio dio, {String baseUrl}) = _UserApiService;
 
   @GET('users/me')
-  Future<UserProfileResponse> getProfile();
+  Future<UserProfileEntity> getProfile();
 
   @DELETE('users/me')
   Future<void> deleteAccount(@Body() DeleteAccountRequest request);
@@ -32,16 +33,16 @@ abstract class UserApiService {
   Future<void> updateSettings(@Body() UpdateSettingsRequest request);
 
   @GET('users/{id}')
-  Future<UserEntity> getUserPublicProfile(@Path('id') String id);
+  Future<ProfileEntity> getUserPublicProfile(@Path('id') String id);
 
   @GET('user/badges')
-  Future<ListResponse<BadgeEntity>> getBadges();
+  Future<PaginationResponse<BadgeEntity>> getBadges();
 
   @GET('user/points/ledger')
-  Future<ListResponse<PointLedgerEntity>> getPointsLedger();
+  Future<PaginationResponse<PointLedgerEntity>> getPointsLedger();
 
   @GET('user/credit-score/history')
-  Future<ListResponse<PointLedgerEntity>> getCreditScoreHistory();
+  Future<PaginationResponse<PointLedgerEntity>> getCreditScoreHistory();
 
   @PATCH('profile/location')
   Future<void> updateLocation(@Body() UpdateLocationRequest request);

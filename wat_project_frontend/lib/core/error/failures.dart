@@ -39,5 +39,6 @@ Failure mapExceptionToFailure(Object e) {
     }
     return ServerFailure(e.message ?? 'Unknown network error occurred');
   }
+  print("server failure");
   return ServerFailure(e.toString());
 }

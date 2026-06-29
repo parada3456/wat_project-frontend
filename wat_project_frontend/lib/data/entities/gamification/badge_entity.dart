@@ -14,7 +14,7 @@ class BadgeEntity {
   @JsonKey(name: 'icon_url')
   final String? iconUrl;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
 
   BadgeEntity({
     required this.badgeId,
@@ -26,6 +26,7 @@ class BadgeEntity {
   });
 
   factory BadgeEntity.fromJson(Map<String, dynamic> json) => _$BadgeEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$BadgeEntityToJson(this);
 
   BadgeModel toModel() => BadgeModel(
         badgeId: badgeId,
@@ -33,6 +34,6 @@ class BadgeEntity {
         description: description,
         triggerType: triggerType,
         iconUrl: iconUrl,
-        createdAt: DateTime.parse(createdAt),
+        createdAt: createdAt,
       );
 }

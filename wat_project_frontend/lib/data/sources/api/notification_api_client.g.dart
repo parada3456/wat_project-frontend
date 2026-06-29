@@ -20,12 +20,12 @@ class _NotificationApiService implements NotificationApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ListResponse<NotificationEntity>> listNotifications() async {
+  Future<PaginationResponse<NotificationEntity>> listNotifications() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<NotificationEntity>>(
+    final _options = _setStreamType<PaginationResponse<NotificationEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,9 +36,9 @@ class _NotificationApiService implements NotificationApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<NotificationEntity> _value;
+    late PaginationResponse<NotificationEntity> _value;
     try {
-      _value = ListResponse<NotificationEntity>.fromJson(
+      _value = PaginationResponse<NotificationEntity>.fromJson(
         _result.data!,
         (json) => NotificationEntity.fromJson(json as Map<String, dynamic>),
       );

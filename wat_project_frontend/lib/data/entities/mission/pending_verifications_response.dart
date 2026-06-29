@@ -10,4 +10,5 @@ class PendingVerificationsResponse {
   PendingVerificationsResponse({required this.data});
 
   factory PendingVerificationsResponse.fromJson(Map<String, dynamic> json) => _$PendingVerificationsResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$PendingVerificationsResponseToJson(this);
 }

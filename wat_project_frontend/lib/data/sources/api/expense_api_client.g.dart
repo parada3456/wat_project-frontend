@@ -20,25 +20,28 @@ class _ExpenseApiService implements ExpenseApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ListResponse<ExpenseTransactionEntity>> listExpenses() async {
+  Future<PaginationResponse<ExpenseTransactionEntity>> listExpenses() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<ExpenseTransactionEntity>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'expenses',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<PaginationResponse<ExpenseTransactionEntity>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                'expenses',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<ExpenseTransactionEntity> _value;
+    late PaginationResponse<ExpenseTransactionEntity> _value;
     try {
-      _value = ListResponse<ExpenseTransactionEntity>.fromJson(
+      _value = PaginationResponse<ExpenseTransactionEntity>.fromJson(
         _result.data!,
         (json) =>
             ExpenseTransactionEntity.fromJson(json as Map<String, dynamic>),
@@ -71,12 +74,12 @@ class _ExpenseApiService implements ExpenseApiService {
   }
 
   @override
-  Future<InvalidType> getExpenseDetail(String id) async {
+  Future<ExpenseDetailResponse> getExpenseDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InvalidType>(
+    final _options = _setStreamType<ExpenseDetailResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -87,9 +90,9 @@ class _ExpenseApiService implements ExpenseApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvalidType _value;
+    late ExpenseDetailResponse _value;
     try {
-      _value = InvalidType.fromJson(_result.data!);
+      _value = ExpenseDetailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -117,12 +120,12 @@ class _ExpenseApiService implements ExpenseApiService {
   }
 
   @override
-  Future<ListResponse<ExpenseSplitEntity>> listPendingExpenses() async {
+  Future<PaginationResponse<ExpenseSplitEntity>> listPendingExpenses() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<ExpenseSplitEntity>>(
+    final _options = _setStreamType<PaginationResponse<ExpenseSplitEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -133,9 +136,9 @@ class _ExpenseApiService implements ExpenseApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<ExpenseSplitEntity> _value;
+    late PaginationResponse<ExpenseSplitEntity> _value;
     try {
-      _value = ListResponse<ExpenseSplitEntity>.fromJson(
+      _value = PaginationResponse<ExpenseSplitEntity>.fromJson(
         _result.data!,
         (json) => ExpenseSplitEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -147,14 +150,14 @@ class _ExpenseApiService implements ExpenseApiService {
   }
 
   @override
-  Future<ListResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(
+  Future<PaginationResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(
     String ids,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'ids': ids};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<ExpenseSplitEntity>>(
+    final _options = _setStreamType<PaginationResponse<ExpenseSplitEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -165,9 +168,9 @@ class _ExpenseApiService implements ExpenseApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<ExpenseSplitEntity> _value;
+    late PaginationResponse<ExpenseSplitEntity> _value;
     try {
-      _value = ListResponse<ExpenseSplitEntity>.fromJson(
+      _value = PaginationResponse<ExpenseSplitEntity>.fromJson(
         _result.data!,
         (json) => ExpenseSplitEntity.fromJson(json as Map<String, dynamic>),
       );

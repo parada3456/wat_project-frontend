@@ -20,7 +20,7 @@ class PointLedgerEntity {
   final int phaseBalanceAfter;
   final String? note;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
 
   PointLedgerEntity({
     required this.ledgerId,
@@ -34,8 +34,8 @@ class PointLedgerEntity {
     required this.createdAt,
   });
 
-  factory PointLedgerEntity.fromJson(Map<String, dynamic> json) =>
-      _$PointLedgerEntityFromJson(json);
+  factory PointLedgerEntity.fromJson(Map<String, dynamic> json) => _$PointLedgerEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$PointLedgerEntityToJson(this);
 
   PointLedgerModel toModel() => PointLedgerModel(
         ledgerId: ledgerId,
@@ -46,6 +46,6 @@ class PointLedgerEntity {
         lifetimeBalanceAfter: lifetimeBalanceAfter,
         phaseBalanceAfter: phaseBalanceAfter,
         note: note,
-        createdAt: DateTime.parse(createdAt),
+        createdAt: createdAt,
       );
 }

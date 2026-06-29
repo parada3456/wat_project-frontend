@@ -7,7 +7,7 @@ abstract class AdminRepository {
   Future<AdminStatsModel> getStats();
   Future<List<UserMissionModel>> listPendingVerifications();
   Future<UserMissionModel> verifyMission(String id, bool approved, String? rejectionReason);
-  Future<List<UserModel>> listUsers(String search);
+  // Future<List<UserModel>> listUsers(String search);
   Future<UserModel> getUserDetail(String id);
   Future<PointsAdjustmentResultModel> adjustPoints(String id, int pointsDelta, String reason);
 }

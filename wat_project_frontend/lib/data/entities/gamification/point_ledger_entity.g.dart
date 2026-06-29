@@ -16,7 +16,7 @@ PointLedgerEntity _$PointLedgerEntityFromJson(Map<String, dynamic> json) =>
       lifetimeBalanceAfter: (json['lifetime_balance_after'] as num).toInt(),
       phaseBalanceAfter: (json['phase_balance_after'] as num).toInt(),
       note: json['note'] as String?,
-      createdAt: json['created_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$PointLedgerEntityToJson(PointLedgerEntity instance) =>
@@ -29,7 +29,7 @@ Map<String, dynamic> _$PointLedgerEntityToJson(PointLedgerEntity instance) =>
       'lifetime_balance_after': instance.lifetimeBalanceAfter,
       'phase_balance_after': instance.phaseBalanceAfter,
       'note': instance.note,
-      'created_at': instance.createdAt,
+      'created_at': instance.createdAt.toIso8601String(),
     };
 
 const _$PointSourceTypeEnumMap = {

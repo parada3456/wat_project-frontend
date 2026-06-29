@@ -77,11 +77,11 @@ class AdminDashboardBloc extends Bloc<AdminDashboardEvent, AdminDashboardState> 
     Emitter<AdminDashboardState> emit,
   ) async {
     emit(const AdminDashboardLoading());
-    final result = await _getAdminUsersUseCase(event.search);
-    result.fold(
-      (failure) => emit(AdminDashboardFailure(failure.message)),
-      (users) => emit(AdminDashboardUsersSuccess(users)),
-    );
+    // final result = await _getAdminUsersUseCase(event.search);
+    // result.fold(
+    //   (failure) => emit(AdminDashboardFailure(failure.message)),
+    //   (users) => emit(AdminDashboardUsersSuccess(users)),
+    // );
   }
 
   Future<void> _onUserDetailRequested(

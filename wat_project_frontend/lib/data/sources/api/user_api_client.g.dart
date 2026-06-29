@@ -20,12 +20,12 @@ class _UserApiService implements UserApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<InvalidType> getProfile() async {
+  Future<UserProfileEntity> getProfile() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InvalidType>(
+    final _options = _setStreamType<UserProfileEntity>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,9 +36,9 @@ class _UserApiService implements UserApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvalidType _value;
+    late UserProfileEntity _value;
     try {
-      _value = InvalidType.fromJson(_result.data!);
+      _value = UserProfileEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -107,12 +107,12 @@ class _UserApiService implements UserApiService {
   }
 
   @override
-  Future<UserEntity> getUserPublicProfile(String id) async {
+  Future<ProfileEntity> getUserPublicProfile(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<UserEntity>(
+    final _options = _setStreamType<ProfileEntity>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -123,9 +123,9 @@ class _UserApiService implements UserApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserEntity _value;
+    late ProfileEntity _value;
     try {
-      _value = UserEntity.fromJson(_result.data!);
+      _value = ProfileEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -134,12 +134,12 @@ class _UserApiService implements UserApiService {
   }
 
   @override
-  Future<ListResponse<BadgeEntity>> getBadges() async {
+  Future<PaginationResponse<BadgeEntity>> getBadges() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<BadgeEntity>>(
+    final _options = _setStreamType<PaginationResponse<BadgeEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -150,9 +150,9 @@ class _UserApiService implements UserApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<BadgeEntity> _value;
+    late PaginationResponse<BadgeEntity> _value;
     try {
-      _value = ListResponse<BadgeEntity>.fromJson(
+      _value = PaginationResponse<BadgeEntity>.fromJson(
         _result.data!,
         (json) => BadgeEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -164,12 +164,12 @@ class _UserApiService implements UserApiService {
   }
 
   @override
-  Future<ListResponse<PointLedgerEntity>> getPointsLedger() async {
+  Future<PaginationResponse<PointLedgerEntity>> getPointsLedger() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<PointLedgerEntity>>(
+    final _options = _setStreamType<PaginationResponse<PointLedgerEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -180,9 +180,9 @@ class _UserApiService implements UserApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<PointLedgerEntity> _value;
+    late PaginationResponse<PointLedgerEntity> _value;
     try {
-      _value = ListResponse<PointLedgerEntity>.fromJson(
+      _value = PaginationResponse<PointLedgerEntity>.fromJson(
         _result.data!,
         (json) => PointLedgerEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -194,12 +194,12 @@ class _UserApiService implements UserApiService {
   }
 
   @override
-  Future<ListResponse<PointLedgerEntity>> getCreditScoreHistory() async {
+  Future<PaginationResponse<PointLedgerEntity>> getCreditScoreHistory() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<PointLedgerEntity>>(
+    final _options = _setStreamType<PaginationResponse<PointLedgerEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -210,9 +210,9 @@ class _UserApiService implements UserApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<PointLedgerEntity> _value;
+    late PaginationResponse<PointLedgerEntity> _value;
     try {
-      _value = ListResponse<PointLedgerEntity>.fromJson(
+      _value = PaginationResponse<PointLedgerEntity>.fromJson(
         _result.data!,
         (json) => PointLedgerEntity.fromJson(json as Map<String, dynamic>),
       );

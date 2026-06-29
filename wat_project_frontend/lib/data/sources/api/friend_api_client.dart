@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:wat_project_frontend/data/entities/friend/friendship_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend_radar/radar_entry.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend/send_friend_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend/respond_friend_request.dart';
 
@@ -16,7 +16,7 @@ abstract class FriendApiService {
   Future<void> sendRequest(@Body() SendFriendRequest request);
 
   @GET('friend-requests')
-  Future<ListResponse<FriendshipEntity>> listPendingRequests();
+  Future<PaginationResponse<FriendshipEntity>> listPendingRequests();
 
   @PATCH('friend-requests/{id}')
   Future<void> respondToRequest(
@@ -25,7 +25,7 @@ abstract class FriendApiService {
   );
 
   @GET('friends')
-  Future<ListResponse<FriendshipEntity>> listFriends();
+  Future<PaginationResponse<FriendshipEntity>> listFriends();
 
   @DELETE('friends/{id}')
   Future<void> removeFriend(@Path('id') String id);

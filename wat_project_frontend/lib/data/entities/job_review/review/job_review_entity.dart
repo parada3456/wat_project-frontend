@@ -34,9 +34,9 @@ class JobReviewEntity {
   @JsonKey(name: 'score_overtime_availability')
   final double scoreOvertimeAvailability;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   JobReviewEntity({
     required this.reviewId,
@@ -58,23 +58,24 @@ class JobReviewEntity {
   });
 
   factory JobReviewEntity.fromJson(Map<String, dynamic> json) => _$JobReviewEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$JobReviewEntityToJson(this);
 
   JobReviewModel toModel() => JobReviewModel(
-        reviewId: reviewId,
-        jobId: jobId,
-        userId: userId,
-        ratingStars: ratingStars,
-        reviewText: reviewText,
-        tipsForNextGeneration: tipsForNextGeneration,
-        scoreAgency: scoreAgency,
-        scoreJob: scoreJob,
-        scoreCoworkers: scoreCoworkers,
-        scoreTown: scoreTown,
-        scoreHours: scoreHours,
-        scoreHousing: scoreHousing,
-        scoreSecondJobFeasibility: scoreSecondJobFeasibility,
-        scoreOvertimeAvailability: scoreOvertimeAvailability,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
-      );
+    reviewId: reviewId,
+    jobId: jobId,
+    userId: userId,
+    ratingStars: ratingStars,
+    reviewText: reviewText,
+    tipsForNextGeneration: tipsForNextGeneration,
+    scoreAgency: scoreAgency,
+    scoreJob: scoreJob,
+    scoreCoworkers: scoreCoworkers,
+    scoreTown: scoreTown,
+    scoreHours: scoreHours,
+    scoreHousing: scoreHousing,
+    scoreSecondJobFeasibility: scoreSecondJobFeasibility,
+    scoreOvertimeAvailability: scoreOvertimeAvailability,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

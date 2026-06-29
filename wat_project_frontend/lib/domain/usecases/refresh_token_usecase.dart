@@ -13,7 +13,7 @@ class RefreshTokenUseCase {
   Future<Either<Failure, AuthTokens>> call(String refreshToken) async {
     try {
       final result = await _repository.refresh(refreshToken);
-      return Right(result);
+      return Right(result.toModel());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

@@ -5,24 +5,29 @@ part 'auth_entity.g.dart';
 
 @JsonSerializable()
 class AuthEntity {
-  @JsonKey(name: 'access_token')
+  @JsonKey(name: 'AccessToken')
   final String token;
-  @JsonKey(name: 'refresh_token')
+  @JsonKey(name: 'RefreshToken')
   final String refreshToken;
-  @JsonKey(name: 'expires_at')
-  final String expiresAt; 
+  @JsonKey(name: 'TokenType')
+  final String tokenType;
+  @JsonKey(name: 'ExpiresAt')
+  final DateTime expiresAt; 
 
   AuthEntity({
     required this.token,
     required this.refreshToken,
+    required this.tokenType,
     required this.expiresAt,
   });
 
   factory AuthEntity.fromJson(Map<String, dynamic> json) => _$AuthEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$AuthEntityToJson(this);
 
   AuthModel toModel() => AuthModel(
-        token: token,
-        refreshToken: refreshToken,
-        expiresAt: DateTime.parse(expiresAt),
-      );
+    token: token,
+    refreshToken: refreshToken,
+    tokenType: tokenType,
+    expiresAt: expiresAt,
+  );
 }

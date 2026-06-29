@@ -17,8 +17,8 @@ class PointsAdjustmentResultEntity {
     required this.ledgerId,
   });
 
-  factory PointsAdjustmentResultEntity.fromJson(Map<String, dynamic> json) =>
-      _$PointsAdjustmentResultEntityFromJson(json);
+  factory PointsAdjustmentResultEntity.fromJson(Map<String, dynamic> json) => _$PointsAdjustmentResultEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$PointsAdjustmentResultEntityToJson(this);
 
   PointsAdjustmentResultModel toModel() => PointsAdjustmentResultModel(
         userId: userId,

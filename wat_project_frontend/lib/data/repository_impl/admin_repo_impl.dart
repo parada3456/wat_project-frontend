@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/admin_api_client.dart';
 import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
 import 'package:wat_project_frontend/domain/models/points_adjustment_result_model.dart';
@@ -61,11 +62,11 @@ class AdminRepoImpl implements AdminRepository {
     );
   }
 
-  @override
-  Future<List<UserModel>> listUsers(String search) async {
-    final response = await _adminApi.listUsers(search);
-    return response.data.map((e) => e.toModel()).toList();
-  }
+  // @override
+  // Future<List<UserAccountEntity>> listUsers(String search) async {
+  //   final response = await _adminApi.listUsers(search);
+  //   return response.data.map((e) => e.toModel()).toList();
+  // }
 
   @override
   Future<UserModel> getUserDetail(String id) async {

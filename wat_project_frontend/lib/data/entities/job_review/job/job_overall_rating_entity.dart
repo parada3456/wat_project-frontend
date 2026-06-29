@@ -30,7 +30,7 @@ class JobOverallRatingEntity {
   @JsonKey(name: 'review_count')
   final int reviewCount;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   JobOverallRatingEntity({
     required this.ratingSummaryId,
@@ -48,8 +48,8 @@ class JobOverallRatingEntity {
     required this.updatedAt,
   });
 
-  factory JobOverallRatingEntity.fromJson(Map<String, dynamic> json) =>
-      _$JobOverallRatingEntityFromJson(json);
+  factory JobOverallRatingEntity.fromJson(Map<String, dynamic> json) => _$JobOverallRatingEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$JobOverallRatingEntityToJson(this);
 
   JobOverallRatingModel toModel() => JobOverallRatingModel(
         ratingSummaryId: ratingSummaryId,
@@ -64,6 +64,6 @@ class JobOverallRatingEntity {
         secondJobFeasibilityRate: secondJobFeasibilityRate,
         overtimeAvailabilityRate: overtimeAvailabilityRate,
         reviewCount: reviewCount,
-        updatedAt: DateTime.parse(updatedAt),
+        updatedAt: updatedAt,
       );
 }

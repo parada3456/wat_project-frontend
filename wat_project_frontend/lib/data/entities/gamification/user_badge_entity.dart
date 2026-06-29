@@ -14,7 +14,7 @@ class UserBadgeEntity {
   @JsonKey(name: 'source_id')
   final String? sourceId;
   @JsonKey(name: 'earned_at')
-  final String earnedAt;
+  final DateTime earnedAt;
 
   UserBadgeEntity({
     required this.userBadgeId,
@@ -24,14 +24,14 @@ class UserBadgeEntity {
     required this.earnedAt,
   });
 
-  factory UserBadgeEntity.fromJson(Map<String, dynamic> json) =>
-      _$UserBadgeEntityFromJson(json);
+  factory UserBadgeEntity.fromJson(Map<String, dynamic> json) => _$UserBadgeEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$UserBadgeEntityToJson(this);
 
   UserBadgeModel toModel() => UserBadgeModel(
         userBadgeId: userBadgeId,
         userId: userId,
         badgeId: badgeId,
         sourceId: sourceId,
-        earnedAt: DateTime.parse(earnedAt),
+        earnedAt: earnedAt,
       );
 }

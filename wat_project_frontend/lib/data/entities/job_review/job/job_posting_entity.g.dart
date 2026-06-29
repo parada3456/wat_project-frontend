@@ -22,9 +22,13 @@ JobPostingEntity _$JobPostingEntityFromJson(Map<String, dynamic> json) =>
       availableSlots: (json['available_slots'] as num).toInt(),
       description: json['description'] as String?,
       sourceUrl: json['source_url'] as String?,
-      scrapeAt: json['scrape_at'] as String?,
-      postedAt: json['posted_at'] as String?,
-      updatedAt: json['updated_at'] as String,
+      scrapeAt: json['scrape_at'] == null
+          ? null
+          : DateTime.parse(json['scrape_at'] as String),
+      postedAt: json['posted_at'] == null
+          ? null
+          : DateTime.parse(json['posted_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$JobPostingEntityToJson(JobPostingEntity instance) =>
@@ -43,7 +47,7 @@ Map<String, dynamic> _$JobPostingEntityToJson(JobPostingEntity instance) =>
       'available_slots': instance.availableSlots,
       'description': instance.description,
       'source_url': instance.sourceUrl,
-      'scrape_at': instance.scrapeAt,
-      'posted_at': instance.postedAt,
-      'updated_at': instance.updatedAt,
+      'scrape_at': instance.scrapeAt?.toIso8601String(),
+      'posted_at': instance.postedAt?.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

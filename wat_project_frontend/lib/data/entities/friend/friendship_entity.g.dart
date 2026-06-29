@@ -12,8 +12,8 @@ FriendshipEntity _$FriendshipEntityFromJson(Map<String, dynamic> json) =>
       userId1: json['user_id_1'] as String,
       userId2: json['user_id_2'] as String,
       status: $enumDecode(_$FriendshipStatusEnumMap, json['status']),
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$FriendshipEntityToJson(FriendshipEntity instance) =>
@@ -22,8 +22,8 @@ Map<String, dynamic> _$FriendshipEntityToJson(FriendshipEntity instance) =>
       'user_id_1': instance.userId1,
       'user_id_2': instance.userId2,
       'status': _$FriendshipStatusEnumMap[instance.status]!,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };
 
 const _$FriendshipStatusEnumMap = {

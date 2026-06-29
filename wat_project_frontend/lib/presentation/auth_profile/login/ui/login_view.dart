@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/login_header.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_event.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_state.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -69,9 +68,10 @@ class _LoginViewState extends State<LoginView> {
     if (field == 'email' && _emailError != null) return _emailError;
     if (field == 'password' && _passwordError != null) return _passwordError;
 
-    if (state is LoginFailure && state.apiError != null) {
+    final status = state.status;
+    if (status is UILoadFailed && status.apiError != null) {
       try {
-        return state.apiError!.details.firstWhere((e) => e.field == field).reason;
+        return status.apiError!.details.firstWhere((e) => e.field == field).reason;
       } catch (_) {
         return null;
       }
@@ -83,21 +83,26 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is LoginFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
-        } else if (state is ForgotPasswordSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Forgot password email sent successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
+        print('status: ${state.status}');
+        state.status.whenOrNull(
+          loadFailed: (message, apiError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(message ?? 'An error occurred'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          loadSuccess: (message) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(message ?? 'Login successful!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            context.push('/home');
+          },
+        );
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -158,7 +163,7 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(height: AppDimension.space32),
                     WatButton(
                       label: 'SignIn',
-                      isLoading: state is LoginLoading,
+                      isLoading: state.status is UILoading,
                       onPressed: () {
                         final email = _emailController.text.trim();
                         final password = _passwordController.text.trim();
@@ -205,7 +210,7 @@ class _LoginViewState extends State<LoginView> {
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
                         GestureDetector(
-                          onTap: () => context.push('/register2'),
+                          onTap: () => context.push('/register'),
                           child: const Text(
                             'SignUp',
                             style: TextStyle(

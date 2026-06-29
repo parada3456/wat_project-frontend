@@ -12,7 +12,7 @@ BadgeEntity _$BadgeEntityFromJson(Map<String, dynamic> json) => BadgeEntity(
   description: json['description'] as String?,
   triggerType: $enumDecode(_$BadgeTriggerTypeEnumMap, json['trigger_type']),
   iconUrl: json['icon_url'] as String?,
-  createdAt: json['created_at'] as String,
+  createdAt: DateTime.parse(json['created_at'] as String),
 );
 
 Map<String, dynamic> _$BadgeEntityToJson(BadgeEntity instance) =>
@@ -22,7 +22,7 @@ Map<String, dynamic> _$BadgeEntityToJson(BadgeEntity instance) =>
       'description': instance.description,
       'trigger_type': _$BadgeTriggerTypeEnumMap[instance.triggerType]!,
       'icon_url': instance.iconUrl,
-      'created_at': instance.createdAt,
+      'created_at': instance.createdAt.toIso8601String(),
     };
 
 const _$BadgeTriggerTypeEnumMap = {

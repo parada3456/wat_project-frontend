@@ -16,9 +16,9 @@ class UserTaskEntity {
   @JsonKey(name: 'is_completed')
   final bool isCompleted;
   @JsonKey(name: 'completed_at')
-  final String? completedAt;
+  final DateTime? completedAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   UserTaskEntity({
     required this.userTaskId,
@@ -31,6 +31,7 @@ class UserTaskEntity {
   });
 
   factory UserTaskEntity.fromJson(Map<String, dynamic> json) => _$UserTaskEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$UserTaskEntityToJson(this);
 
   UserTaskModel toModel() => UserTaskModel(
         userTaskId: userTaskId,
@@ -38,7 +39,7 @@ class UserTaskEntity {
         taskId: taskId,
         userMissionId: userMissionId,
         isCompleted: isCompleted,
-        completedAt: completedAt != null ? DateTime.parse(completedAt!) : null,
-        updatedAt: DateTime.parse(updatedAt),
+        completedAt: completedAt,
+        updatedAt: updatedAt,
       );
 }

@@ -14,9 +14,9 @@ class UserPhaseHistoryEntity {
   @JsonKey(name: 'phase_points_earned')
   final int phasePointsEarned;
   @JsonKey(name: 'entered_at')
-  final String enteredAt;
+  final DateTime enteredAt;
   @JsonKey(name: 'completed_at')
-  final String? completedAt;
+  final DateTime? completedAt;
 
   UserPhaseHistoryEntity({
     required this.historyId,
@@ -27,15 +27,15 @@ class UserPhaseHistoryEntity {
     this.completedAt,
   });
 
-  factory UserPhaseHistoryEntity.fromJson(Map<String, dynamic> json) =>
-      _$UserPhaseHistoryEntityFromJson(json);
+  factory UserPhaseHistoryEntity.fromJson(Map<String, dynamic> json) => _$UserPhaseHistoryEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$UserPhaseHistoryEntityToJson(this);
 
   UserPhaseHistoryModel toModel() => UserPhaseHistoryModel(
         historyId: historyId,
         userId: userId,
         phaseId: phaseId,
         phasePointsEarned: phasePointsEarned,
-        enteredAt: DateTime.parse(enteredAt),
-        completedAt: completedAt != null ? DateTime.parse(completedAt!) : null,
+        enteredAt: enteredAt,
+        completedAt: completedAt,
       );
 }

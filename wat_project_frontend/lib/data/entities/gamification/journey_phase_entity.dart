@@ -13,9 +13,9 @@ class JourneyPhaseEntity {
   final String title;
   final String? description;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   JourneyPhaseEntity({
     required this.phaseId,
@@ -26,15 +26,15 @@ class JourneyPhaseEntity {
     required this.updatedAt,
   });
 
-  factory JourneyPhaseEntity.fromJson(Map<String, dynamic> json) =>
-      _$JourneyPhaseEntityFromJson(json);
+  factory JourneyPhaseEntity.fromJson(Map<String, dynamic> json) => _$JourneyPhaseEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$JourneyPhaseEntityToJson(this);
 
   JourneyPhaseModel toModel() => JourneyPhaseModel(
         phaseId: phaseId,
         phaseNumber: phaseNumber,
         title: title,
         description: description,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 }

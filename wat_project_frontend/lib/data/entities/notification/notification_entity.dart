@@ -14,7 +14,7 @@ class NotificationEntity {
   @JsonKey(name: 'is_read')
   final bool isRead;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
 
   NotificationEntity({
     required this.notificationId,
@@ -25,15 +25,16 @@ class NotificationEntity {
     required this.createdAt,
   });
 
-  factory NotificationEntity.fromJson(Map<String, dynamic> json) =>
-      _$NotificationEntityFromJson(json);
+  factory NotificationEntity.fromJson(Map<String, dynamic> json) => _$NotificationEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$NotificationEntityToJson(this);
+  
 
   NotificationModel toModel() => NotificationModel(
-        notificationId: notificationId,
-        userId: userId,
-        title: title,
-        body: body,
-        isRead: isRead,
-        createdAt: DateTime.parse(createdAt),
-      );
+    notificationId: notificationId,
+    userId: userId,
+    title: title,
+    body: body,
+    isRead: isRead,
+    createdAt: createdAt,
+  );
 }

@@ -13,13 +13,13 @@ class UserMissionEntity {
   final String missionId;
   final UserMissionStatus status;
   @JsonKey(name: 'calculated_due_date')
-  final String? calculatedDueDate;
+  final DateTime? calculatedDueDate;
   @JsonKey(name: 'proof_url')
   final String? proofUrl;
   @JsonKey(name: 'proof_submitted_at')
-  final String? proofSubmittedAt;
+  final DateTime? proofSubmittedAt;
   @JsonKey(name: 'verified_at')
-  final String? verifiedAt;
+  final DateTime? verifiedAt;
   @JsonKey(name: 'verified_by')
   final String? verifiedBy;
   @JsonKey(name: 'base_points_earned')
@@ -33,11 +33,11 @@ class UserMissionEntity {
   @JsonKey(name: 'total_points_earned')
   final int totalPointsEarned;
   @JsonKey(name: 'rewarded_at')
-  final String? rewardedAt;
+  final DateTime? rewardedAt;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   UserMissionEntity({
     required this.userMissionId,
@@ -59,28 +59,27 @@ class UserMissionEntity {
     required this.updatedAt,
   });
 
-  factory UserMissionEntity.fromJson(Map<String, dynamic> json) =>
-      _$UserMissionEntityFromJson(json);
+  factory UserMissionEntity.fromJson(Map<String, dynamic> json) => _$UserMissionEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$UserMissionEntityToJson(this);
 
   UserMissionModel toModel() => UserMissionModel(
         userMissionId: userMissionId,
         userId: userId,
         missionId: missionId,
         status: status,
-        calculatedDueDate:
-            calculatedDueDate != null ? DateTime.parse(calculatedDueDate!) : null,
+        calculatedDueDate: calculatedDueDate,
         proofUrl: proofUrl,
         proofSubmittedAt:
-            proofSubmittedAt != null ? DateTime.parse(proofSubmittedAt!) : null,
-        verifiedAt: verifiedAt != null ? DateTime.parse(verifiedAt!) : null,
+            proofSubmittedAt,
+        verifiedAt: verifiedAt,
         verifiedBy: verifiedBy,
         basePointsEarned: basePointsEarned,
         speedBonusPoints: speedBonusPoints,
         streakBonusPoints: streakBonusPoints,
         firstCompleterBonusPoints: firstCompleterBonusPoints,
         totalPointsEarned: totalPointsEarned,
-        rewardedAt: rewardedAt != null ? DateTime.parse(rewardedAt!) : null,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
+        rewardedAt: rewardedAt,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 }

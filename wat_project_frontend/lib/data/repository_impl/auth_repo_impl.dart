@@ -1,4 +1,6 @@
 import 'package:injectable/injectable.dart';
+import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
+import 'package:wat_project_frontend/data/entities/auth/login_entity.dart';
 import 'package:wat_project_frontend/domain/models/auth_model.dart';
 import 'package:wat_project_frontend/domain/repositories/auth_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/auth_api_client.dart';
@@ -17,21 +19,21 @@ class AuthRepoImpl implements AuthRepository {
   AuthRepoImpl(this._api);
 
   @override
-  Future<AuthModel> register(
-      String email, String password, String firstName, String lastName) async {
+  Future<LoginEntity> register(
+    String email, String password, String firstName, String lastName) async {
     final response = await _api.register(RegisterRequest(
       email: email,
       password: password,
       firstName: firstName,
       lastName: lastName,
     ));
-    return response.auth.toModel();
+    return response;
   }
 
   @override
-  Future<AuthModel> login(String email, String password) async {
-    final response = await _api.login(LoginRequest(email: email, password: password));
-    return response.auth.toModel();
+  Future<LoginEntity> login(String email, String password) async {
+      final response = await _api.login(LoginRequest(email: email, password: password));
+      return response;
   }
 
   @override
@@ -40,9 +42,9 @@ class AuthRepoImpl implements AuthRepository {
   }
 
   @override
-  Future<AuthModel> refresh(String refreshToken) async {
+  Future<AuthEntity> refresh(String refreshToken) async {
     final response = await _api.refresh(AuthRefreshRequest(refreshToken: refreshToken));
-    return response.toModel();
+    return response;
   }
 
   @override

@@ -12,22 +12,22 @@ class CreditScoreEntity {
   @JsonKey(name: 'current_score')
   final int currentScore;
   @JsonKey(name: 'last_updated')
-  final String? lastUpdated;
+  final DateTime lastUpdated;
 
   CreditScoreEntity({
     required this.creditId,
     required this.userId,
     required this.currentScore,
-    this.lastUpdated,
+    required this.lastUpdated,
   });
 
-  factory CreditScoreEntity.fromJson(Map<String, dynamic> json) =>
-      _$CreditScoreEntityFromJson(json);
+  factory CreditScoreEntity.fromJson(Map<String, dynamic> json) => _$CreditScoreEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$CreditScoreEntityToJson(this);
 
   CreditScoreModel toModel() => CreditScoreModel(
-        creditId: creditId,
-        userId: userId,
-        currentScore: currentScore,
-        lastUpdated: lastUpdated != null ? DateTime.parse(lastUpdated!) : DateTime.now(),
-      );
+    creditId: creditId,
+    userId: userId,
+    currentScore: currentScore,
+    lastUpdated: lastUpdated,
+  );
 }

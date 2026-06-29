@@ -5,7 +5,7 @@ import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.
 import 'package:wat_project_frontend/data/entities/expense/expense_transaction_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
 import 'package:wat_project_frontend/data/entities/expense/expense_detail_response.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 
 part 'expense_api_client.g.dart';
 
@@ -14,7 +14,7 @@ abstract class ExpenseApiService {
   factory ExpenseApiService(Dio dio, {String baseUrl}) = _ExpenseApiService;
 
   @GET('expenses')
-  Future<ListResponse<ExpenseTransactionEntity>> listExpenses();
+  Future<PaginationResponse<ExpenseTransactionEntity>> listExpenses();
 
   @POST('expenses')
   Future<void> createExpense(@Body() CreateExpenseRequest request);
@@ -26,10 +26,10 @@ abstract class ExpenseApiService {
   Future<void> deleteExpense(@Path('id') String id);
 
   @GET('expense-splits')
-  Future<ListResponse<ExpenseSplitEntity>> listPendingExpenses();
+  Future<PaginationResponse<ExpenseSplitEntity>> listPendingExpenses();
 
   @GET('expense-splits')
-  Future<ListResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(@Query('ids') String ids);
+  Future<PaginationResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(@Query('ids') String ids);
 
   @PATCH('expenses/{id}/splits/{splitId}')
   @MultiPart()

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/auth/auth_entity.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/auth/login_entity.dart';
+import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
+import 'package:wat_project_frontend/data/entities/auth/login_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/auth_refresh_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/login_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/register_request.dart';

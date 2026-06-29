@@ -22,9 +22,9 @@ class ExpenseSplitEntity {
   @JsonKey(name: 'approval_status')
   final ApprovalStatus approvalStatus;
   @JsonKey(name: 'settled_at')
-  final String? settledAt;
+  final DateTime? settledAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   ExpenseSplitEntity({
     required this.splitId,
@@ -39,8 +39,8 @@ class ExpenseSplitEntity {
     required this.updatedAt,
   });
 
-  factory ExpenseSplitEntity.fromJson(Map<String, dynamic> json) =>
-      _$ExpenseSplitEntityFromJson(json);
+  factory ExpenseSplitEntity.fromJson(Map<String, dynamic> json) => _$ExpenseSplitEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$ExpenseSplitEntityToJson(this);
 
   ExpenseSplitModel toModel() => ExpenseSplitModel(
         splitId: splitId,
@@ -51,7 +51,7 @@ class ExpenseSplitEntity {
         paymentMethod: paymentMethod,
         payslipUrl: payslipUrl,
         approvalStatus: approvalStatus,
-        settledAt: settledAt != null ? DateTime.parse(settledAt!) : null,
-        updatedAt: DateTime.parse(updatedAt),
+        settledAt: settledAt,
+        updatedAt: updatedAt,
       );
 }

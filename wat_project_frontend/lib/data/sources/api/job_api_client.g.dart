@@ -20,7 +20,7 @@ class _JobApiService implements JobApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ListResponse<JobPostingEntity>> listJobs(
+  Future<PaginationResponse<JobPostingEntity>> listJobs(
     Map<String, dynamic> filters,
   ) async {
     final _extra = <String, dynamic>{};
@@ -28,7 +28,7 @@ class _JobApiService implements JobApiService {
     queryParameters.addAll(filters);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<JobPostingEntity>>(
+    final _options = _setStreamType<PaginationResponse<JobPostingEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -39,9 +39,9 @@ class _JobApiService implements JobApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<JobPostingEntity> _value;
+    late PaginationResponse<JobPostingEntity> _value;
     try {
-      _value = ListResponse<JobPostingEntity>.fromJson(
+      _value = PaginationResponse<JobPostingEntity>.fromJson(
         _result.data!,
         (json) => JobPostingEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -53,12 +53,12 @@ class _JobApiService implements JobApiService {
   }
 
   @override
-  Future<ListResponse<JobPostingEntity>> getJobsByIds(String ids) async {
+  Future<PaginationResponse<JobPostingEntity>> getJobsByIds(String ids) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'ids': ids};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<JobPostingEntity>>(
+    final _options = _setStreamType<PaginationResponse<JobPostingEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -69,9 +69,9 @@ class _JobApiService implements JobApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<JobPostingEntity> _value;
+    late PaginationResponse<JobPostingEntity> _value;
     try {
-      _value = ListResponse<JobPostingEntity>.fromJson(
+      _value = PaginationResponse<JobPostingEntity>.fromJson(
         _result.data!,
         (json) => JobPostingEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -83,12 +83,12 @@ class _JobApiService implements JobApiService {
   }
 
   @override
-  Future<InvalidType> getJobDetail(String id) async {
+  Future<JobDetailResponse> getJobDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InvalidType>(
+    final _options = _setStreamType<JobDetailResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -99,9 +99,9 @@ class _JobApiService implements JobApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvalidType _value;
+    late JobDetailResponse _value;
     try {
-      _value = InvalidType.fromJson(_result.data!);
+      _value = JobDetailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -130,12 +130,12 @@ class _JobApiService implements JobApiService {
   }
 
   @override
-  Future<ListResponse<UserCartEntity>> listCart() async {
+  Future<PaginationResponse<UserCartEntity>> listCart() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<UserCartEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserCartEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -146,9 +146,9 @@ class _JobApiService implements JobApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<UserCartEntity> _value;
+    late PaginationResponse<UserCartEntity> _value;
     try {
-      _value = ListResponse<UserCartEntity>.fromJson(
+      _value = PaginationResponse<UserCartEntity>.fromJson(
         _result.data!,
         (json) => UserCartEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -202,12 +202,14 @@ class _JobApiService implements JobApiService {
   }
 
   @override
-  Future<ListResponse<JobReviewEntity>> getJobReviews(String jobId) async {
+  Future<PaginationResponse<JobReviewEntity>> getJobReviews(
+    String jobId,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<JobReviewEntity>>(
+    final _options = _setStreamType<PaginationResponse<JobReviewEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -218,9 +220,9 @@ class _JobApiService implements JobApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<JobReviewEntity> _value;
+    late PaginationResponse<JobReviewEntity> _value;
     try {
-      _value = ListResponse<JobReviewEntity>.fromJson(
+      _value = PaginationResponse<JobReviewEntity>.fromJson(
         _result.data!,
         (json) => JobReviewEntity.fromJson(json as Map<String, dynamic>),
       );

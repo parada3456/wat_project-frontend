@@ -47,12 +47,13 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<ListResponse<UserMissionEntity>> listPendingVerifications() async {
+  Future<PaginationResponse<UserMissionEntity>>
+  listPendingVerifications() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<UserMissionEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserMissionEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -63,9 +64,9 @@ class _AdminApiService implements AdminApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<UserMissionEntity> _value;
+    late PaginationResponse<UserMissionEntity> _value;
     try {
-      _value = ListResponse<UserMissionEntity>.fromJson(
+      _value = PaginationResponse<UserMissionEntity>.fromJson(
         _result.data!,
         (json) => UserMissionEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -77,7 +78,7 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<InvalidType> verifyMission(
+  Future<VerifyMissionResponse> verifyMission(
     String id,
     VerifyMissionRequest request,
   ) async {
@@ -86,7 +87,7 @@ class _AdminApiService implements AdminApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<InvalidType>(
+    final _options = _setStreamType<VerifyMissionResponse>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -97,9 +98,9 @@ class _AdminApiService implements AdminApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvalidType _value;
+    late VerifyMissionResponse _value;
     try {
-      _value = InvalidType.fromJson(_result.data!);
+      _value = VerifyMissionResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -108,12 +109,12 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<InvalidType> listUsers(String search) async {
+  Future<List<UserAccountEntity>> listUsers(String search) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'q': search};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InvalidType>(
+    final _options = _setStreamType<List<UserAccountEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -123,10 +124,15 @@ class _AdminApiService implements AdminApiService {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvalidType _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<UserAccountEntity> _value;
     try {
-      _value = InvalidType.fromJson(_result.data!);
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                UserAccountEntity.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -135,12 +141,12 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<UserEntity> getUserDetail(String id) async {
+  Future<UserAccountEntity> getUserDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<UserEntity>(
+    final _options = _setStreamType<UserAccountEntity>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -151,9 +157,9 @@ class _AdminApiService implements AdminApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserEntity _value;
+    late UserAccountEntity _value;
     try {
-      _value = UserEntity.fromJson(_result.data!);
+      _value = UserAccountEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

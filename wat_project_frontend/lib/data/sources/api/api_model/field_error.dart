@@ -1,3 +1,9 @@
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'field_error.g.dart';
+
+@JsonSerializable()
 class FieldError {
   final String field;
   final String reason;
@@ -7,17 +13,6 @@ class FieldError {
     required this.reason,
   });
 
-  factory FieldError.fromJson(Map<String, dynamic> json) {
-    return FieldError(
-      field: json['field'] as String? ?? '',
-      reason: json['reason'] as String? ?? '',
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'field': field,
-      'reason': reason,
-    };
-  }
+  factory FieldError.fromJson(Map<String, dynamic> json) => _$FieldErrorFromJson(json);
+  Map<String, dynamic> toJson() => _$FieldErrorToJson(this);
 }

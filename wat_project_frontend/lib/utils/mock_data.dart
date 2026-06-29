@@ -33,10 +33,10 @@ import 'package:wat_project_frontend/domain/models/user_task_model.dart';
 
 // Entities
 import 'package:wat_project_frontend/data/entities/admin/admin_stats_entity.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/auth/auth_entity.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/auth/login_entity.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/profile/profile_entity.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/profile/user_entity.dart';
+import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
+import 'package:wat_project_frontend/data/entities/auth/login_entity.dart';
+import 'package:wat_project_frontend/data/entities/user/profile_entity.dart';
+import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
 import 'package:wat_project_frontend/data/entities/expense/credit_score_entity.dart';
 import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.dart';
 import 'package:wat_project_frontend/data/entities/expense/expense_transaction_entity.dart';
@@ -50,12 +50,12 @@ import 'package:wat_project_frontend/data/entities/job_review/job/job_housing_en
 import 'package:wat_project_frontend/data/entities/job_review/job/job_overall_rating_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_posting_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/user_cart_entity.dart';
-import 'package:wat_project_frontend/data/entities/job_review/job/user_job_entity.dart';
+import 'package:wat_project_frontend/data/entities/job_review/job/assigned_job_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/task_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/user_mission_entity.dart';
-import 'package:wat_project_frontend/data/entities/mission/user_phase_history_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_phase_history_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/user_task_entity.dart';
 import 'package:wat_project_frontend/data/entities/notification/notification_entity.dart';
 
@@ -84,7 +84,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/job_review/creat
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/patch_job_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/update_cart_status_request.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_detail_response.dart';
 import 'package:wat_project_frontend/data/entities/mission/pending_verifications_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/toggle_task_request.dart';
@@ -95,8 +95,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/user/update_loca
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_password_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_profile_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_settings_request.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/profile/user_profile_response.dart';
-import 'package:wat_project_frontend/data/entities/auth_profile/profile/users_list_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_info.dart';
 
 /// Centralized repository of all mock data in WAT Project.
 /// Contains pre-configured mock objects for Domain Models, Entities, and API DTO Requests/Responses.
@@ -142,6 +141,7 @@ abstract class MockData {
     token: "mock-access-token-jwt-value",
     refreshToken: "mock-refresh-token-jwt-value",
     expiresAt: defaultDate.add(const Duration(minutes: 15)),
+    tokenType: "Bearer",
   );
 
   static final BadgeModel badgeModel = BadgeModel(
@@ -357,7 +357,7 @@ abstract class MockData {
     userId: userId,
     jobId: jobId,
     status: CartStatus.saved,
-    addedAt: defaultDate.subtract(const Duration(days: 5)),
+    createdAt: defaultDate.subtract(const Duration(days: 5)),
     updatedAt: defaultDate,
   );
 
@@ -414,7 +414,7 @@ abstract class MockData {
     completedAt: defaultDate,
   );
 
-  static final UserProfile userProfile = UserProfile(
+  static final UserProfileModel userProfile = UserProfileModel(
     user: userModel,
     profile: profileModel,
     creditScore: creditScoreModel,
@@ -462,12 +462,13 @@ abstract class MockData {
   static final AuthEntity authEntity = AuthEntity(
     token: "mock-access-token-jwt-value",
     refreshToken: "mock-refresh-token-jwt-value",
-    expiresAt: defaultDateStr,
+    expiresAt: defaultDate,
+    tokenType: "Bearer",
   );
 
   static final LoginEntity loginEntity = LoginEntity(
     auth: authEntity,
-    userId: userId,
+    user: userEntity,
   );
 
   static final ProfileEntity profileEntity = ProfileEntity(
@@ -478,12 +479,12 @@ abstract class MockData {
     avatarUrl: "https://example.com/assets/avatars/john_doe.jpg",
     radarVisibility: RadarVisibility.showFriends,
     currentCoordinates: "44.4279,-110.5884",
-    locationUpdatedAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    locationUpdatedAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
-  static final UserEntity userEntity = UserEntity(
-    id: userId,
+  static final UserAccountEntity userEntity = UserAccountEntity(
+    userId: userId,
     email: email,
     firstName: "John",
     lastName: "Doe",
@@ -491,17 +492,24 @@ abstract class MockData {
     totalLifetimePoints: 250,
     currentPhasePoints: 150,
     missionStreak: 3,
-    arrivalDate: defaultDateStr,
-    jobStartDate: defaultDateStr,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    arrivalDate: defaultDate,
+    jobStartDate: defaultDate,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
+    profileId: "profile-1",
+    phoneNumber: "+15550199",
+    bio: "Adventurous student from Bangkok exploring Yellowstone this summer!",
+    avatarUrl: "https://example.com/assets/avatars/john_doe.jpg",
+    radarVisibility: RadarVisibility.showFriends,
+    currentCoordinates: "44.4279,-110.5884",
+    locationUpdatedAt: defaultDate,
   );
 
   static final CreditScoreEntity creditScoreEntity = CreditScoreEntity(
     creditId: "credit-score-1",
     userId: userId,
     currentScore: 95,
-    lastUpdated: defaultDateStr,
+    lastUpdated: defaultDate,
   );
 
   static final ExpenseSplitEntity expenseSplitEntity = ExpenseSplitEntity(
@@ -514,7 +522,7 @@ abstract class MockData {
     payslipUrl: "https://example.com/files/payslips/tx-707-split.png",
     approvalStatus: ApprovalStatus.pendingApproval,
     settledAt: null,
-    updatedAt: defaultDateStr,
+    updatedAt: defaultDate,
   );
 
   static final ExpenseTransactionEntity expenseTransactionEntity = ExpenseTransactionEntity(
@@ -524,10 +532,10 @@ abstract class MockData {
     totalAmount: 76.50,
     currency: "USD",
     memo: "Divided equally among three roommates",
-    transactionDate: defaultDateStr,
-    dueDate: defaultDateStr,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    transactionDate: defaultDate,
+    dueDate: defaultDate,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final FriendshipEntity friendshipEntity = FriendshipEntity(
@@ -535,8 +543,8 @@ abstract class MockData {
     userId1: userId,
     userId2: friendId,
     status: FriendshipStatus.accepted,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final BadgeEntity badgeEntity = BadgeEntity(
@@ -545,7 +553,7 @@ abstract class MockData {
     description: "Earned by completing the onboarding phase.",
     triggerType: BadgeTriggerType.manual,
     iconUrl: "https://example.com/assets/badges/first-steps.png",
-    createdAt: defaultDateStr,
+    createdAt: defaultDate,
   );
 
   static final JourneyPhaseEntity journeyPhaseEntity = JourneyPhaseEntity(
@@ -553,8 +561,8 @@ abstract class MockData {
     phaseNumber: 1,
     title: "Phase 1: Pre-Departure Prep",
     description: "Complete paperwork, purchase tickets, and upload visa information.",
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final PointLedgerEntity pointLedgerEntity = PointLedgerEntity(
@@ -566,7 +574,7 @@ abstract class MockData {
     lifetimeBalanceAfter: 250,
     phaseBalanceAfter: 150,
     note: "Earned for completing DS-2019 Verification",
-    createdAt: defaultDateStr,
+    createdAt: defaultDate,
   );
 
   static final PointsAdjustmentResultEntity pointsAdjustmentResultEntity = PointsAdjustmentResultEntity(
@@ -581,7 +589,7 @@ abstract class MockData {
     userId: userId,
     badgeId: badgeId,
     sourceId: "source-badge-grant",
-    earnedAt: defaultDateStr,
+    earnedAt: defaultDate,
   );
 
   static final JobHousingEntity jobHousingEntity = JobHousingEntity(
@@ -591,10 +599,10 @@ abstract class MockData {
     weeklyRate: 120.0,
     deposit: 300.0,
     transportation: "Bikes provided, public bus stop 5 minutes walking distance.",
-    rangeMinStartDate: defaultDateStr,
-    rangeMaxStartDate: defaultDateStr,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    rangeMinStartDate: defaultDate,
+    rangeMaxStartDate: defaultDate,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final JobOverallRatingEntity jobOverallRatingEntity = JobOverallRatingEntity(
@@ -610,7 +618,7 @@ abstract class MockData {
     secondJobFeasibilityRate: 3.5,
     overtimeAvailabilityRate: 4.4,
     reviewCount: 15,
-    updatedAt: defaultDateStr,
+    updatedAt: defaultDate,
   );
 
   static final JobPostingEntity jobPostingEntity = JobPostingEntity(
@@ -628,9 +636,9 @@ abstract class MockData {
     availableSlots: 5,
     description: "Great opportunity to work in a world-famous National Park! Duties include assisting with food prep, cash handling, and customer service.",
     sourceUrl: "https://example.com/jobs/yellowstone-food-service",
-    scrapeAt: defaultDateStr,
-    postedAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    scrapeAt: defaultDate,
+    postedAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final UserCartEntity userCartEntity = UserCartEntity(
@@ -638,17 +646,17 @@ abstract class MockData {
     userId: userId,
     jobId: jobId,
     status: CartStatus.saved,
-    addedAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
-  static final UserJobEntity userJobEntity = UserJobEntity(
+  static final AssignedJobEntity userJobEntity = AssignedJobEntity(
     userId: userId,
     jobId: jobId,
-    assignedAt: defaultDateStr,
+    assignedAt: defaultDate,
     isMain: true,
-    startDate: defaultDateStr,
-    endDate: defaultDateStr,
+    startDate: defaultDate,
+    endDate: defaultDate,
   );
 
   static final JobReviewEntity jobReviewEntity = JobReviewEntity(
@@ -666,8 +674,8 @@ abstract class MockData {
     scoreHousing: 4.0,
     scoreSecondJobFeasibility: 3.0,
     scoreOvertimeAvailability: 4.5,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final MissionEntity missionEntity = MissionEntity(
@@ -683,8 +691,8 @@ abstract class MockData {
     fixedDueDate: null,
     relativeTriggerEvent: "OnboardingComplete",
     relativeDaysOffset: 7,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final TaskEntity taskEntity = TaskEntity(
@@ -692,8 +700,8 @@ abstract class MockData {
     missionId: missionId,
     title: "Scan DS-2019",
     description: "Ensure the scan is clear, matches your passport details, and is in PDF format.",
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final UserMissionEntity userMissionEntity = UserMissionEntity(
@@ -701,19 +709,19 @@ abstract class MockData {
     userId: userId,
     missionId: missionId,
     status: UserMissionStatus.completed,
-    calculatedDueDate: defaultDateStr,
+    calculatedDueDate: defaultDate,
     proofUrl: "https://example.com/proofs/user-12345/ds2019.pdf",
-    proofSubmittedAt: defaultDateStr,
-    verifiedAt: defaultDateStr,
+    proofSubmittedAt: defaultDate,
+    verifiedAt: defaultDate,
     verifiedBy: "admin-system",
     basePointsEarned: 100,
     speedBonusPoints: 20,
     streakBonusPoints: 10,
     firstCompleterBonusPoints: 0,
     totalPointsEarned: 130,
-    rewardedAt: defaultDateStr,
-    createdAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    rewardedAt: defaultDate,
+    createdAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final UserPhaseHistoryEntity userPhaseHistoryEntity = UserPhaseHistoryEntity(
@@ -721,8 +729,8 @@ abstract class MockData {
     userId: userId,
     phaseId: phaseId,
     phasePointsEarned: 150,
-    enteredAt: defaultDateStr,
-    completedAt: defaultDateStr,
+    enteredAt: defaultDate,
+    completedAt: defaultDate,
   );
 
   static final UserTaskEntity userTaskEntity = UserTaskEntity(
@@ -731,8 +739,8 @@ abstract class MockData {
     taskId: taskId,
     userMissionId: userMissionId,
     isCompleted: true,
-    completedAt: defaultDateStr,
-    updatedAt: defaultDateStr,
+    completedAt: defaultDate,
+    updatedAt: defaultDate,
   );
 
   static final NotificationEntity notificationEntity = NotificationEntity(
@@ -741,7 +749,7 @@ abstract class MockData {
     title: "Mission Completed!",
     body: "Your DS-2019 form has been verified. You've earned 100 points!",
     isRead: false,
-    createdAt: defaultDateStr,
+    createdAt: defaultDate,
   );
 
   // ==============================================================================================================================
@@ -905,7 +913,7 @@ abstract class MockData {
     totalPages: 5,
   );
 
-  static final ListResponse<JobPostingEntity> jobPostingListResponse = ListResponse<JobPostingEntity>(
+  static final PaginationResponse<JobPostingEntity> jobPostingListResponse = PaginationResponse<JobPostingEntity>(
     data: [jobPostingEntity],
     pagination: paginationInfo,
   );
@@ -962,14 +970,4 @@ abstract class MockData {
     pushNotifications: true,
   );
 
-  static final UserProfileResponse userProfileResponse = UserProfileResponse(
-    user: userEntity,
-    profile: profileEntity,
-    creditScore: creditScoreEntity,
-    userJobs: [userJobEntity.userId],
-  );
-
-  static final UsersListResponse usersListResponse = UsersListResponse(
-    data: [userEntity],
-  );
 }

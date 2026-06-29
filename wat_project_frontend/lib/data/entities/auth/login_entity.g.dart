@@ -8,8 +8,8 @@ part of 'login_entity.dart';
 
 LoginEntity _$LoginEntityFromJson(Map<String, dynamic> json) => LoginEntity(
   auth: AuthEntity.fromJson(json['auth'] as Map<String, dynamic>),
-  userId: json['user_id'] as String,
+  user: UserAccountEntity.fromJson(json['user'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$LoginEntityToJson(LoginEntity instance) =>
-    <String, dynamic>{'auth': instance.auth, 'user_id': instance.userId};
+    <String, dynamic>{'auth': instance.auth, 'user': instance.user};

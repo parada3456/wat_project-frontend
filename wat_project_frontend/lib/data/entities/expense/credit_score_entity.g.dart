@@ -11,7 +11,7 @@ CreditScoreEntity _$CreditScoreEntityFromJson(Map<String, dynamic> json) =>
       creditId: json['credit_id'] as String,
       userId: json['user_id'] as String,
       currentScore: (json['current_score'] as num).toInt(),
-      lastUpdated: json['last_updated'] as String?,
+      lastUpdated: DateTime.parse(json['last_updated'] as String),
     );
 
 Map<String, dynamic> _$CreditScoreEntityToJson(CreditScoreEntity instance) =>
@@ -19,5 +19,5 @@ Map<String, dynamic> _$CreditScoreEntityToJson(CreditScoreEntity instance) =>
       'credit_id': instance.creditId,
       'user_id': instance.userId,
       'current_score': instance.currentScore,
-      'last_updated': instance.lastUpdated,
+      'last_updated': instance.lastUpdated.toIso8601String(),
     };

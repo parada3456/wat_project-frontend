@@ -76,8 +76,8 @@ import 'package:wat_project_frontend/domain/usecases/delete_notification_usecase
 
 @module
 abstract class BlocModule {
-  @injectable
-  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
+  // @injectable
+  // HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
 
   @injectable
   LoginBloc loginBloc(

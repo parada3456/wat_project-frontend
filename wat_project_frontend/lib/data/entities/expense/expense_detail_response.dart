@@ -14,10 +14,6 @@ class ExpenseDetailResponse {
     required this.splits,
   });
 
-  factory ExpenseDetailResponse.fromJson(Map<String, dynamic> json) {
-    return ExpenseDetailResponse(
-      transaction: ExpenseTransactionEntity.fromJson(json['transaction'] as Map<String, dynamic>),
-      splits: (json['splits'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-    );
-  }
+  factory ExpenseDetailResponse.fromJson(Map<String, dynamic> json) => _$ExpenseDetailResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ExpenseDetailResponseToJson(this);
 }

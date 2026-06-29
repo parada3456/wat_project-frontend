@@ -32,11 +32,11 @@ class JobPostingEntity {
   @JsonKey(name: 'source_url')
   final String? sourceUrl;
   @JsonKey(name: 'scrape_at')
-  final String? scrapeAt;
+  final DateTime? scrapeAt;
   @JsonKey(name: 'posted_at')
-  final String? postedAt;
+  final DateTime? postedAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   JobPostingEntity({
     required this.jobId,
@@ -58,9 +58,7 @@ class JobPostingEntity {
     required this.updatedAt,
   });
 
-  factory JobPostingEntity.fromJson(Map<String, dynamic> json) =>
-      _$JobPostingEntityFromJson(json);
-
+  factory JobPostingEntity.fromJson(Map<String, dynamic> json) => _$JobPostingEntityFromJson(json);
   Map<String, dynamic> toJson() => _$JobPostingEntityToJson(this);
 
   JobPostingModel toModel() => JobPostingModel(
@@ -78,8 +76,8 @@ class JobPostingEntity {
         availableSlots: availableSlots,
         description: description,
         sourceUrl: sourceUrl,
-        scrapeAt: scrapeAt != null ? DateTime.parse(scrapeAt!) : null,
-        postedAt: postedAt != null ? DateTime.parse(postedAt!) : null,
-        updatedAt: DateTime.parse(updatedAt),
+        scrapeAt: scrapeAt,
+        postedAt: postedAt,
+        updatedAt: updatedAt,
       );
 }

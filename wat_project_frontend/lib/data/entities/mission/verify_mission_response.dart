@@ -19,6 +19,6 @@ class VerifyMissionResponse {
     this.verifiedBy,
   });
 
-  factory VerifyMissionResponse.fromJson(Map<String, dynamic> json) =>
-      _$VerifyMissionResponseFromJson(json);
+  factory VerifyMissionResponse.fromJson(Map<String, dynamic> json) => _$VerifyMissionResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$VerifyMissionResponseToJson(this);
 }

@@ -12,7 +12,7 @@ UserBadgeEntity _$UserBadgeEntityFromJson(Map<String, dynamic> json) =>
       userId: json['user_id'] as String,
       badgeId: json['badge_id'] as String,
       sourceId: json['source_id'] as String?,
-      earnedAt: json['earned_at'] as String,
+      earnedAt: DateTime.parse(json['earned_at'] as String),
     );
 
 Map<String, dynamic> _$UserBadgeEntityToJson(UserBadgeEntity instance) =>
@@ -21,5 +21,5 @@ Map<String, dynamic> _$UserBadgeEntityToJson(UserBadgeEntity instance) =>
       'user_id': instance.userId,
       'badge_id': instance.badgeId,
       'source_id': instance.sourceId,
-      'earned_at': instance.earnedAt,
+      'earned_at': instance.earnedAt.toIso8601String(),
     };

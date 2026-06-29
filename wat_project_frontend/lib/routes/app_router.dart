@@ -39,7 +39,7 @@ class AppRouter {
   AppRouter(this._authManager);
 
   late final router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/login',
     refreshListenable: _authManager.sessionNotifier,
     // redirect: (context, state) {
     //   final isLoggedIn = _authManager.currentSession != null;
@@ -56,10 +56,10 @@ class AppRouter {
     //   return null;
     // },
     routes: [
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
-      ),
+      // GoRoute(
+      //   path: '/home',
+      //   builder: (context, state) => const HomePage(),
+      // ),
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
@@ -68,10 +68,10 @@ class AppRouter {
       //   path: '/register',
       //   builder: (context, state) => const RegisterPage(),
       // ),
-      GoRoute(
-        path: '/register',
-        builder: (context, state) => const RegisterPage2(),
-      ),
+      // GoRoute(
+      //   path: '/register',
+      //   builder: (context, state) => const RegisterPage2(),
+      // ),
       ShellRoute(
         builder: (context, state, child) {
           return MainShellPage(child: child);
@@ -79,7 +79,7 @@ class AppRouter {
         routes: [
           GoRoute(
             path: '/home',
-            builder: (context, state) => const HomePage(),
+            builder: (context, state) => const TempTestScreen(),
           ),
           GoRoute(
             path: '/expenses',

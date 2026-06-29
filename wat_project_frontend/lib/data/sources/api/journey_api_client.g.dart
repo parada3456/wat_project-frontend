@@ -20,12 +20,12 @@ class _JourneyApiService implements JourneyApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ListResponse<JourneyPhaseEntity>> listPhases() async {
+  Future<PaginationResponse<JourneyPhaseEntity>> listPhases() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<JourneyPhaseEntity>>(
+    final _options = _setStreamType<PaginationResponse<JourneyPhaseEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,9 +36,9 @@ class _JourneyApiService implements JourneyApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<JourneyPhaseEntity> _value;
+    late PaginationResponse<JourneyPhaseEntity> _value;
     try {
-      _value = ListResponse<JourneyPhaseEntity>.fromJson(
+      _value = PaginationResponse<JourneyPhaseEntity>.fromJson(
         _result.data!,
         (json) => JourneyPhaseEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -77,12 +77,12 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
-  Future<ListResponse<UserPhaseHistoryEntity>> getHistory() async {
+  Future<PaginationResponse<UserPhaseHistoryEntity>> getHistory() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<UserPhaseHistoryEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserPhaseHistoryEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -93,9 +93,9 @@ class _JourneyApiService implements JourneyApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<UserPhaseHistoryEntity> _value;
+    late PaginationResponse<UserPhaseHistoryEntity> _value;
     try {
-      _value = ListResponse<UserPhaseHistoryEntity>.fromJson(
+      _value = PaginationResponse<UserPhaseHistoryEntity>.fromJson(
         _result.data!,
         (json) => UserPhaseHistoryEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -145,12 +145,12 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
-  Future<ListResponse<UserBadgeEntity>> listBadges() async {
+  Future<PaginationResponse<UserBadgeEntity>> listBadges() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<UserBadgeEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserBadgeEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -161,9 +161,9 @@ class _JourneyApiService implements JourneyApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<UserBadgeEntity> _value;
+    late PaginationResponse<UserBadgeEntity> _value;
     try {
-      _value = ListResponse<UserBadgeEntity>.fromJson(
+      _value = PaginationResponse<UserBadgeEntity>.fromJson(
         _result.data!,
         (json) => UserBadgeEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -175,12 +175,12 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
-  Future<ListResponse<PointLedgerEntity>> getCreditHistory() async {
+  Future<PaginationResponse<PointLedgerEntity>> getCreditHistory() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<PointLedgerEntity>>(
+    final _options = _setStreamType<PaginationResponse<PointLedgerEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -191,9 +191,9 @@ class _JourneyApiService implements JourneyApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<PointLedgerEntity> _value;
+    late PaginationResponse<PointLedgerEntity> _value;
     try {
-      _value = ListResponse<PointLedgerEntity>.fromJson(
+      _value = PaginationResponse<PointLedgerEntity>.fromJson(
         _result.data!,
         (json) => PointLedgerEntity.fromJson(json as Map<String, dynamic>),
       );

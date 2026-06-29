@@ -18,4 +18,5 @@ class JobDetailResponse {
   });
 
   factory JobDetailResponse.fromJson(Map<String, dynamic> json) => _$JobDetailResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$JobDetailResponseToJson(this);
 }

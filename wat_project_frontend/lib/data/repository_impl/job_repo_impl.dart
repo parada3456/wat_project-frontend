@@ -114,9 +114,9 @@ class JobRepoImpl implements JobRepository {
       availableSlots: model.availableSlots,
       description: model.description,
       sourceUrl: model.sourceUrl,
-      scrapeAt: model.scrapeAt?.toIso8601String(),
-      postedAt: model.postedAt?.toIso8601String(),
-      updatedAt: model.updatedAt.toIso8601String(),
+      scrapeAt: model.scrapeAt,
+      postedAt: model.postedAt,
+      updatedAt: model.updatedAt,
     );
   }
 }

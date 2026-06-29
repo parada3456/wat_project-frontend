@@ -13,8 +13,10 @@ UserPhaseHistoryEntity _$UserPhaseHistoryEntityFromJson(
   userId: json['user_id'] as String,
   phaseId: json['phase_id'] as String,
   phasePointsEarned: (json['phase_points_earned'] as num).toInt(),
-  enteredAt: json['entered_at'] as String,
-  completedAt: json['completed_at'] as String?,
+  enteredAt: DateTime.parse(json['entered_at'] as String),
+  completedAt: json['completed_at'] == null
+      ? null
+      : DateTime.parse(json['completed_at'] as String),
 );
 
 Map<String, dynamic> _$UserPhaseHistoryEntityToJson(
@@ -24,6 +26,6 @@ Map<String, dynamic> _$UserPhaseHistoryEntityToJson(
   'user_id': instance.userId,
   'phase_id': instance.phaseId,
   'phase_points_earned': instance.phasePointsEarned,
-  'entered_at': instance.enteredAt,
-  'completed_at': instance.completedAt,
+  'entered_at': instance.enteredAt.toIso8601String(),
+  'completed_at': instance.completedAt?.toIso8601String(),
 };

@@ -17,8 +17,10 @@ ExpenseSplitEntity _$ExpenseSplitEntityFromJson(
   paymentMethod: json['payment_method'] as String?,
   payslipUrl: json['payslip_url'] as String?,
   approvalStatus: $enumDecode(_$ApprovalStatusEnumMap, json['approval_status']),
-  settledAt: json['settled_at'] as String?,
-  updatedAt: json['updated_at'] as String,
+  settledAt: json['settled_at'] == null
+      ? null
+      : DateTime.parse(json['settled_at'] as String),
+  updatedAt: DateTime.parse(json['updated_at'] as String),
 );
 
 Map<String, dynamic> _$ExpenseSplitEntityToJson(ExpenseSplitEntity instance) =>
@@ -31,8 +33,8 @@ Map<String, dynamic> _$ExpenseSplitEntityToJson(ExpenseSplitEntity instance) =>
       'payment_method': instance.paymentMethod,
       'payslip_url': instance.payslipUrl,
       'approval_status': _$ApprovalStatusEnumMap[instance.approvalStatus]!,
-      'settled_at': instance.settledAt,
-      'updated_at': instance.updatedAt,
+      'settled_at': instance.settledAt?.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };
 
 const _$PaymentStatusEnumMap = {

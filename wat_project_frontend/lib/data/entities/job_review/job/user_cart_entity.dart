@@ -13,28 +13,28 @@ class UserCartEntity {
   final String jobId;
   final CartStatus status;
   @JsonKey(name: 'added_at')
-  final String addedAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   UserCartEntity({
     required this.cartId,
     required this.userId,
     required this.jobId,
     required this.status,
-    required this.addedAt,
+    required this.createdAt,
     required this.updatedAt,
   });
 
-  factory UserCartEntity.fromJson(Map<String, dynamic> json) =>
-      _$UserCartEntityFromJson(json);
+  factory UserCartEntity.fromJson(Map<String, dynamic> json) => _$UserCartEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$UserCartEntityToJson(this);
 
   UserCartModel toModel() => UserCartModel(
         cartId: cartId,
         userId: userId,
         jobId: jobId,
         status: status,
-        addedAt: DateTime.parse(addedAt),
-        updatedAt: DateTime.parse(updatedAt),
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 }

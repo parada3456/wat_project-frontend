@@ -15,13 +15,13 @@ class ExpenseTransactionEntity {
   final String currency;
   final String? memo;
   @JsonKey(name: 'transaction_date')
-  final String transactionDate;
+  final DateTime transactionDate;
   @JsonKey(name: 'due_date')
-  final String? dueDate;
+  final DateTime? dueDate;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   ExpenseTransactionEntity({
     required this.transactionId,
@@ -36,8 +36,8 @@ class ExpenseTransactionEntity {
     required this.updatedAt,
   });
 
-  factory ExpenseTransactionEntity.fromJson(Map<String, dynamic> json) =>
-      _$ExpenseTransactionEntityFromJson(json);
+  factory ExpenseTransactionEntity.fromJson(Map<String, dynamic> json) =>_$ExpenseTransactionEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$ExpenseTransactionEntityToJson(this);
 
   ExpenseTransactionModel toModel() => ExpenseTransactionModel(
         transactionId: transactionId,
@@ -46,9 +46,9 @@ class ExpenseTransactionEntity {
         totalAmount: totalAmount,
         currency: currency,
         memo: memo,
-        transactionDate: DateTime.parse(transactionDate),
-        dueDate: dueDate != null ? DateTime.parse(dueDate!) : null,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
+        transactionDate: transactionDate,
+        dueDate: dueDate,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 }

@@ -20,11 +20,13 @@ MissionEntity _$MissionEntityFromJson(Map<String, dynamic> json) =>
         json['verification_type'],
       ),
       dueDateType: json['due_date_type'] as String?,
-      fixedDueDate: json['fixed_due_date'] as String?,
+      fixedDueDate: json['fixed_due_date'] == null
+          ? null
+          : DateTime.parse(json['fixed_due_date'] as String),
       relativeTriggerEvent: json['relative_trigger_event'] as String?,
       relativeDaysOffset: (json['relative_days_offset'] as num?)?.toInt(),
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$MissionEntityToJson(
@@ -39,11 +41,11 @@ Map<String, dynamic> _$MissionEntityToJson(
   'is_mandatory': instance.isMandatory,
   'verification_type': _$VerificationTypeEnumMap[instance.verificationType]!,
   'due_date_type': instance.dueDateType,
-  'fixed_due_date': instance.fixedDueDate,
+  'fixed_due_date': instance.fixedDueDate?.toIso8601String(),
   'relative_trigger_event': instance.relativeTriggerEvent,
   'relative_days_offset': instance.relativeDaysOffset,
-  'created_at': instance.createdAt,
-  'updated_at': instance.updatedAt,
+  'created_at': instance.createdAt.toIso8601String(),
+  'updated_at': instance.updatedAt.toIso8601String(),
 };
 
 const _$VerificationTypeEnumMap = {

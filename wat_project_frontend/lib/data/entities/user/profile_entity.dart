@@ -9,6 +9,10 @@ class ProfileEntity {
   final String profileId;
   @JsonKey(name: 'user_id')
   final String userId;
+  @JsonKey(name: 'first_name')
+  final String? firstName;
+  @JsonKey(name: 'last_name')
+  final String? lastName;
   @JsonKey(name: 'phone_number')
   final String? phoneNumber;
   final String? bio;
@@ -19,34 +23,37 @@ class ProfileEntity {
   @JsonKey(name: 'current_coordinates')
   final String? currentCoordinates;
   @JsonKey(name: 'location_updated_at')
-  final String? locationUpdatedAt;
+  final DateTime locationUpdatedAt;
   @JsonKey(name: 'updated_at')
-  final String? updatedAt;
+  final DateTime updatedAt;
 
   ProfileEntity({
     required this.profileId,
     required this.userId,
+    this.firstName, 
+    this.lastName,
     this.phoneNumber,
     this.bio,
     this.avatarUrl,
     required this.radarVisibility,
     this.currentCoordinates,
-    this.locationUpdatedAt,
-    this.updatedAt,
+    required this.locationUpdatedAt,
+    required this.updatedAt, 
   });
 
   factory ProfileEntity.fromJson(Map<String, dynamic> json) => _$ProfileEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$ProfileEntityToJson(this);
+  
 
   ProfileModel toModel() => ProfileModel(
-        profileId: profileId,
-        userId: userId,
-        phoneNumber: phoneNumber,
-        bio: bio,
-        avatarUrl: avatarUrl,
-        radarVisibility: radarVisibility,
-        currentCoordinates: currentCoordinates,
-        locationUpdatedAt:
-            locationUpdatedAt != null ? DateTime.parse(locationUpdatedAt!) : null,
-        updatedAt: updatedAt != null ? DateTime.parse(updatedAt!) : DateTime.now(),
-      );
+    profileId: profileId,
+    userId: userId,
+    phoneNumber: phoneNumber,
+    bio: bio,
+    avatarUrl: avatarUrl,
+    radarVisibility: radarVisibility,
+    currentCoordinates: currentCoordinates,
+    locationUpdatedAt: locationUpdatedAt,
+    updatedAt: updatedAt,
+  );
 }

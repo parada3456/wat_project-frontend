@@ -22,17 +22,19 @@ class GetHomeDataUseCase {
 
   Future<Either<Failure, HomeData>> call() async {
     try {
-      final user = await _userRepository.getMe();
+      final userProfileEntity = await _userRepository.getMe();
+      final userProfileModel = userProfileEntity.toModel();
+      final userModel = userProfileModel.user;
       final phases = await _journeyRepository.listPhases();
       final userMissions = await _missionRepository.listMissions();
 
       // Find current phase matching user's currentPhaseId
       final currentPhase = phases.firstWhere(
-        (p) => p.phaseId == user.currentPhaseId,
+        (p) => p.phaseId == userModel.currentPhaseId,
         orElse: () => phases.isNotEmpty 
             ? phases.first 
             : JourneyPhaseModel(
-                phaseId: user.currentPhaseId ?? 'phase-1',
+                phaseId: userModel.currentPhaseId ?? 'phase-1',
                 phaseNumber: 1,
                 title: 'Preparation & Booking',
                 description: 'Complete your initial preparations, flights and visa documentations.',
@@ -67,7 +69,7 @@ class GetHomeDataUseCase {
           .toList();
 
       return Right(HomeData(
-        user: user,
+        user: userModel,
         currentPhase: currentPhase,
         allPhases: phases,
         phaseMissions: phaseMissions,

@@ -36,7 +36,6 @@ import 'package:wat_project_frontend/data/repository_impl/user_repo_impl.dart'
     as _i399;
 import 'package:wat_project_frontend/data/sources/api/admin_api_client.dart'
     as _i389;
-import 'package:wat_project_frontend/data/sources/api/api_client.dart' as _i904;
 import 'package:wat_project_frontend/data/sources/api/auth_api_client.dart'
     as _i599;
 import 'package:wat_project_frontend/data/sources/api/expense_api_client.dart'
@@ -204,8 +203,6 @@ import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/prof
     as _i384;
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart'
     as _i384;
-import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart'
-    as _i906;
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart'
     as _i533;
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart'
@@ -254,9 +251,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i349.AuthSessionManager>(),
       ),
       instanceName: 'mainDio',
-    );
-    gh.lazySingleton<_i904.ApiService>(
-      () => apiModule.mainApi(gh<_i361.Dio>(instanceName: 'mainDio')),
     );
     gh.lazySingleton<_i165.UserApiService>(
       () => apiModule.userApi(gh<_i361.Dio>(instanceName: 'mainDio')),
@@ -337,10 +331,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i451.JobRepoImpl(gh<_i388.JobApiService>()),
     );
     gh.factory<_i399.UserRepoImpl>(
-      () => _i399.UserRepoImpl(
-        gh<_i904.ApiService>(),
-        gh<_i165.UserApiService>(),
-      ),
+      () => _i399.UserRepoImpl(gh<_i165.UserApiService>()),
     );
     gh.factory<_i590.NotificationRepoImpl>(
       () => _i590.NotificationRepoImpl(gh<_i465.NotificationApiService>()),
@@ -590,9 +581,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i745.UpdateLocationUseCase>(),
         gh<_i257.DeleteAccountUseCase>(),
       ),
-    );
-    gh.factory<_i906.HomeBloc>(
-      () => blocModule.homeBloc(gh<_i921.GetHomeDataUseCase>()),
     );
     gh.factory<_i459.SocialRadarBloc>(
       () => blocModule.socialRadarBloc(

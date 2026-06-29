@@ -21,15 +21,15 @@ class MissionEntity {
   @JsonKey(name: 'due_date_type')
   final String? dueDateType;
   @JsonKey(name: 'fixed_due_date')
-  final String? fixedDueDate;
+  final DateTime? fixedDueDate;
   @JsonKey(name: 'relative_trigger_event')
   final String? relativeTriggerEvent;
   @JsonKey(name: 'relative_days_offset')
   final int? relativeDaysOffset;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   MissionEntity({
     required this.missionId,
@@ -49,6 +49,7 @@ class MissionEntity {
   });
 
   factory MissionEntity.fromJson(Map<String, dynamic> json) => _$MissionEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$MissionEntityToJson(this);
 
   MissionModel toModel() => MissionModel(
         missionId: missionId,
@@ -60,10 +61,10 @@ class MissionEntity {
         isMandatory: isMandatory,
         verificationType: verificationType,
         dueDateType: dueDateType,
-        fixedDueDate: fixedDueDate != null ? DateTime.parse(fixedDueDate!) : null,
+        fixedDueDate: fixedDueDate,
         relativeTriggerEvent: relativeTriggerEvent,
         relativeDaysOffset: relativeDaysOffset,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 }

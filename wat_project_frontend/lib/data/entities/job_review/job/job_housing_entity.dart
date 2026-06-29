@@ -15,13 +15,13 @@ class JobHousingEntity {
   final double deposit;
   final String? transportation;
   @JsonKey(name: 'range_min_start_date')
-  final String? rangeMinStartDate;
+  final DateTime? rangeMinStartDate;
   @JsonKey(name: 'range_max_start_date')
-  final String? rangeMaxStartDate;
+  final DateTime? rangeMaxStartDate;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   JobHousingEntity({
     required this.housingId,
@@ -37,6 +37,7 @@ class JobHousingEntity {
   });
 
   factory JobHousingEntity.fromJson(Map<String, dynamic> json) => _$JobHousingEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$JobHousingEntityToJson(this);
 
   JobHousingModel toModel() => JobHousingModel(
         housingId: housingId,
@@ -45,11 +46,9 @@ class JobHousingEntity {
         weeklyRate: weeklyRate,
         deposit: deposit,
         transportation: transportation,
-        rangeMinStartDate:
-            rangeMinStartDate != null ? DateTime.parse(rangeMinStartDate!) : null,
-        rangeMaxStartDate:
-            rangeMaxStartDate != null ? DateTime.parse(rangeMaxStartDate!) : null,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
+        rangeMinStartDate: rangeMinStartDate,
+        rangeMaxStartDate: rangeMaxStartDate,
+        createdAt: createdAt,
+        updatedAt: updatedAt
       );
 }

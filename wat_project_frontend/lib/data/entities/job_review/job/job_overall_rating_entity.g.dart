@@ -23,7 +23,7 @@ JobOverallRatingEntity _$JobOverallRatingEntityFromJson(
   overtimeAvailabilityRate: (json['overtime_availability_rate'] as num)
       .toDouble(),
   reviewCount: (json['review_count'] as num).toInt(),
-  updatedAt: json['updated_at'] as String,
+  updatedAt: DateTime.parse(json['updated_at'] as String),
 );
 
 Map<String, dynamic> _$JobOverallRatingEntityToJson(
@@ -41,5 +41,5 @@ Map<String, dynamic> _$JobOverallRatingEntityToJson(
   'second_job_feasibility_rate': instance.secondJobFeasibilityRate,
   'overtime_availability_rate': instance.overtimeAvailabilityRate,
   'review_count': instance.reviewCount,
-  'updated_at': instance.updatedAt,
+  'updated_at': instance.updatedAt.toIso8601String(),
 };

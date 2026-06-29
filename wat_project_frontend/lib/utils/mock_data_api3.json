@@ -300,9 +300,26 @@
   },
 
   "// GET /api/v1/jobs (Response)": {
-    "job_posting_list_response": {
-      "data": [
-        "job-303"
+    "job_posting_list_response": [
+        {
+          "job_id": "job-303",
+          "agency_name": "InterExchange",
+          "employer_title": "Yellowstone National Park Lodge",
+          "position": "Food Service Associate",
+          "position_type": "Hospitality",
+          "location_city": "Yellowstone",
+          "location_state": "WY",
+          "group_location": "National Parks",
+          "us_sponsor": true,
+          "salary_range_min": 14.5,
+          "salary_range_max": 16.0,
+          "available_slots": 5,
+          "description": "Great opportunity to work in a world-famous National Park! Duties include assisting with food prep, cash handling, and customer service.",
+          "source_url": "https://example.com/jobs/yellowstone-food-service",
+          "scrape_at": "2026-06-25T09:30:00Z",
+          "posted_at": "2026-06-25T09:30:00Z",
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
       ],
       "pagination": {
         "page": 1,
@@ -310,7 +327,6 @@
         "total_items": 45,
         "total_pages": 5
       }
-    }
   },
 
   "// GET /api/v1/user-missions/:id": {
@@ -368,9 +384,7 @@
 
   "// GET /api/v1/missions/verify/pending (Admin)": {
     "pending_verifications_response": {
-      "data": [
-        "user-mission-333"
-      ]
+
     }
   },
 
@@ -636,10 +650,13 @@
           "mission_id": "mission-101",
           "status": "Completed",
           "calculated_due_date": "2026-06-25T09:30:00Z",
-          "proof_url": "https://example.com/proofs/user-12345/ds2019.pdf",
-          "proof_submitted_at": "2026-06-25T09:30:00Z",
-          "verified_at": "2026-06-25T09:30:00Z",
-          "verified_by": "admin_id",
+          "proof": {
+            "proof_id": "proof-123",
+            "proof_url": "https://example.com/proofs/user-12345/ds2019.pdf",
+            "proof_submitted_at": "2026-06-25T09:30:00Z",
+            "verified_at": "2026-06-25T09:30:00Z",
+            "verified_by": "admin_id"
+          },
           "base_points_earned": 100,
           "speed_bonus_points": 20,
           "streak_bonus_points": 10,

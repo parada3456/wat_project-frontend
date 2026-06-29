@@ -7,14 +7,16 @@ part of 'auth_entity.dart';
 // **************************************************************************
 
 AuthEntity _$AuthEntityFromJson(Map<String, dynamic> json) => AuthEntity(
-  token: json['access_token'] as String,
-  refreshToken: json['refresh_token'] as String,
-  expiresAt: json['expires_at'] as String,
+  token: json['AccessToken'] as String,
+  refreshToken: json['RefreshToken'] as String,
+  tokenType: json['TokenType'] as String,
+  expiresAt: DateTime.parse(json['ExpiresAt'] as String),
 );
 
 Map<String, dynamic> _$AuthEntityToJson(AuthEntity instance) =>
     <String, dynamic>{
-      'access_token': instance.token,
-      'refresh_token': instance.refreshToken,
-      'expires_at': instance.expiresAt,
+      'AccessToken': instance.token,
+      'RefreshToken': instance.refreshToken,
+      'TokenType': instance.tokenType,
+      'ExpiresAt': instance.expiresAt.toIso8601String(),
     };

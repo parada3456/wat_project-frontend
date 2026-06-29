@@ -20,12 +20,12 @@ class _MissionApiService implements MissionApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ListResponse<UserMissionEntity>> listMissions() async {
+  Future<PaginationResponse<UserMissionEntity>> listMissions() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<UserMissionEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserMissionEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,9 +36,9 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<UserMissionEntity> _value;
+    late PaginationResponse<UserMissionEntity> _value;
     try {
-      _value = ListResponse<UserMissionEntity>.fromJson(
+      _value = PaginationResponse<UserMissionEntity>.fromJson(
         _result.data!,
         (json) => UserMissionEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -50,12 +50,12 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<InvalidType> getMissionDetail(String id) async {
+  Future<MissionDetailResponse> getMissionDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<InvalidType>(
+    final _options = _setStreamType<MissionDetailResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -66,9 +66,9 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late InvalidType _value;
+    late MissionDetailResponse _value;
     try {
-      _value = InvalidType.fromJson(_result.data!);
+      _value = MissionDetailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -77,12 +77,12 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<ListResponse<TaskEntity>> getTasksByIds(String ids) async {
+  Future<PaginationResponse<TaskEntity>> getTasksByIds(String ids) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'ids': ids};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<TaskEntity>>(
+    final _options = _setStreamType<PaginationResponse<TaskEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -93,9 +93,9 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<TaskEntity> _value;
+    late PaginationResponse<TaskEntity> _value;
     try {
-      _value = ListResponse<TaskEntity>.fromJson(
+      _value = PaginationResponse<TaskEntity>.fromJson(
         _result.data!,
         (json) => TaskEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -107,12 +107,14 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<ListResponse<UserTaskEntity>> getUserTasksByIds(String ids) async {
+  Future<PaginationResponse<UserTaskEntity>> getUserTasksByIds(
+    String ids,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'ids': ids};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<UserTaskEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserTaskEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -123,9 +125,9 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<UserTaskEntity> _value;
+    late PaginationResponse<UserTaskEntity> _value;
     try {
-      _value = ListResponse<UserTaskEntity>.fromJson(
+      _value = PaginationResponse<UserTaskEntity>.fromJson(
         _result.data!,
         (json) => UserTaskEntity.fromJson(json as Map<String, dynamic>),
       );

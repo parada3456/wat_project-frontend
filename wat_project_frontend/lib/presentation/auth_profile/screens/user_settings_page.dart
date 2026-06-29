@@ -7,8 +7,6 @@ import 'package:wat_project_frontend/domain/models/profile_model.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/settings_toggle_tile.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_event.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_state.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_event.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_state.dart';
@@ -131,26 +129,26 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                     }
                   },
                 ),
-                BlocListener<LoginBloc, LoginState>(
-                  listener: (context, state) {
-                    if (state is LoginFailure) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.errorMessage),
-                          backgroundColor: AppColors.error,
-                        ),
-                      );
-                    } else if (state is LoginInitial) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Successfully logged out.'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      context.go('/login');
-                    }
-                  },
-                ),
+                // BlocListener<LoginBloc, LoginState>(
+                //   listener: (context, state) {
+                //     if (state is LoginFailure) {
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         SnackBar(
+                //           content: Text(state.errorMessage),
+                //           backgroundColor: AppColors.error,
+                //         ),
+                //       );
+                //     } else if (state is LoginInitial) {
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         const SnackBar(
+                //           content: Text('Successfully logged out.'),
+                //           backgroundColor: Colors.green,
+                //         ),
+                //       );
+                //       context.go('/login');
+                //     }
+                //   },
+                // ),
               ],
               child: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, profileState) {

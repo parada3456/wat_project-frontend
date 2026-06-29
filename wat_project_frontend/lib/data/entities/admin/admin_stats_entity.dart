@@ -22,6 +22,7 @@ class AdminStatsEntity {
   });
 
   factory AdminStatsEntity.fromJson(Map<String, dynamic> json) => _$AdminStatsEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$AdminStatsEntityToJson(this);
 
   AdminStatsModel toModel() => AdminStatsModel(
         totalUsers: totalUsers,

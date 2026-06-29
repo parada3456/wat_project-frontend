@@ -3,10 +3,10 @@ import 'package:retrofit/retrofit.dart';
 import 'package:wat_project_frontend/data/entities/gamification/journey_phase_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
-import 'package:wat_project_frontend/data/entities/mission/user_phase_history_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_phase_history_entity.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/gamification/phase_transition_result.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 
 part 'journey_api_client.g.dart';
 
@@ -15,13 +15,13 @@ abstract class JourneyApiService {
   factory JourneyApiService(Dio dio, {String baseUrl}) = _JourneyApiService;
 
   @GET('journey/phases')
-  Future<ListResponse<JourneyPhaseEntity>> listPhases();
+  Future<PaginationResponse<JourneyPhaseEntity>> listPhases();
 
   @POST('journey/phase-transitions')
   Future<PhaseTransitionResult> advancePhase();
 
   @GET('journey/history')
-  Future<ListResponse<UserPhaseHistoryEntity>> getHistory();
+  Future<PaginationResponse<UserPhaseHistoryEntity>> getHistory();
 
   @GET('leaderboard')
   Future<List<LeaderboardEntry>> getLeaderboard(
@@ -30,8 +30,8 @@ abstract class JourneyApiService {
   );
 
   @GET('user/badges')
-  Future<ListResponse<UserBadgeEntity>> listBadges();
+  Future<PaginationResponse<UserBadgeEntity>> listBadges();
 
   @GET('user/credit-score/history')
-  Future<ListResponse<PointLedgerEntity>> getCreditHistory();
+  Future<PaginationResponse<PointLedgerEntity>> getCreditHistory();
 }

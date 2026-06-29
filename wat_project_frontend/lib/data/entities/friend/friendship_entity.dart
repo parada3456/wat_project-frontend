@@ -13,9 +13,9 @@ class FriendshipEntity {
   final String userId2;
   final FriendshipStatus status;
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   FriendshipEntity({
     required this.friendshipId,
@@ -26,15 +26,15 @@ class FriendshipEntity {
     required this.updatedAt,
   });
 
-  factory FriendshipEntity.fromJson(Map<String, dynamic> json) =>
-      _$FriendshipEntityFromJson(json);
+  factory FriendshipEntity.fromJson(Map<String, dynamic> json) => _$FriendshipEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$FriendshipEntityToJson(this);
 
   FriendshipModel toModel() => FriendshipModel(
-        friendshipId: friendshipId,
-        userId1: userId1,
-        userId2: userId2,
-        status: status,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
-      );
+    friendshipId: friendshipId,
+    userId1: userId1,
+    userId2: userId2,
+    status: status,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

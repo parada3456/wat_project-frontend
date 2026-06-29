@@ -1,24 +1,24 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wat_project_frontend/domain/models/user_job_model.dart';
 
-part 'user_job_entity.g.dart';
+part 'assigned_job_entity.g.dart';
 
 @JsonSerializable()
-class UserJobEntity {
+class AssignedJobEntity {
   @JsonKey(name: 'user_id')
   final String userId;
   @JsonKey(name: 'job_id')
   final String jobId;
   @JsonKey(name: 'assigned_at')
-  final String assignedAt;
+  final DateTime assignedAt;
   @JsonKey(name: 'is_main')
   final bool isMain;
   @JsonKey(name: 'start_date')
-  final String? startDate;
+  final DateTime? startDate;
   @JsonKey(name: 'end_date')
-  final String? endDate;
+  final DateTime? endDate;
 
-  UserJobEntity({
+  AssignedJobEntity({
     required this.userId,
     required this.jobId,
     required this.assignedAt,
@@ -27,16 +27,15 @@ class UserJobEntity {
     this.endDate,
   });
 
-  factory UserJobEntity.fromJson(Map<String, dynamic> json) => _$UserJobEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserJobEntityToJson(this);
+  factory AssignedJobEntity.fromJson(Map<String, dynamic> json) => _$AssignedJobEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$AssignedJobEntityToJson(this);
 
   UserJobModel toModel() => UserJobModel(
         userId: userId,
         jobId: jobId,
-        assignedAt: DateTime.parse(assignedAt),
+        assignedAt: assignedAt,
         isMain: isMain,
-        startDate: startDate != null ? DateTime.parse(startDate!) : null,
-        endDate: endDate != null ? DateTime.parse(endDate!) : null,
+        startDate: startDate,
+        endDate: endDate,
       );
 }

@@ -11,8 +11,8 @@ TaskEntity _$TaskEntityFromJson(Map<String, dynamic> json) => TaskEntity(
   missionId: json['mission_id'] as String,
   title: json['title'] as String,
   description: json['description'] as String?,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String,
+  createdAt: DateTime.parse(json['created_at'] as String),
+  updatedAt: DateTime.parse(json['updated_at'] as String),
 );
 
 Map<String, dynamic> _$TaskEntityToJson(TaskEntity instance) =>
@@ -21,6 +21,6 @@ Map<String, dynamic> _$TaskEntityToJson(TaskEntity instance) =>
       'mission_id': instance.missionId,
       'title': instance.title,
       'description': instance.description,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

@@ -15,7 +15,7 @@ class ProfileLoading extends ProfileState {
 }
 
 class ProfileSuccess extends ProfileState {
-  final UserProfile profile;
+  final UserProfileModel profile;
   final List<Badge> badges;
   final List<CreditRecord> creditHistory;
 

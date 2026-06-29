@@ -40,12 +40,12 @@ class _FriendApiService implements FriendApiService {
   }
 
   @override
-  Future<ListResponse<FriendshipEntity>> listPendingRequests() async {
+  Future<PaginationResponse<FriendshipEntity>> listPendingRequests() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<FriendshipEntity>>(
+    final _options = _setStreamType<PaginationResponse<FriendshipEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -56,9 +56,9 @@ class _FriendApiService implements FriendApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<FriendshipEntity> _value;
+    late PaginationResponse<FriendshipEntity> _value;
     try {
-      _value = ListResponse<FriendshipEntity>.fromJson(
+      _value = PaginationResponse<FriendshipEntity>.fromJson(
         _result.data!,
         (json) => FriendshipEntity.fromJson(json as Map<String, dynamic>),
       );
@@ -90,12 +90,12 @@ class _FriendApiService implements FriendApiService {
   }
 
   @override
-  Future<ListResponse<FriendshipEntity>> listFriends() async {
+  Future<PaginationResponse<FriendshipEntity>> listFriends() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListResponse<FriendshipEntity>>(
+    final _options = _setStreamType<PaginationResponse<FriendshipEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -106,9 +106,9 @@ class _FriendApiService implements FriendApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListResponse<FriendshipEntity> _value;
+    late PaginationResponse<FriendshipEntity> _value;
     try {
-      _value = ListResponse<FriendshipEntity>.fromJson(
+      _value = PaginationResponse<FriendshipEntity>.fromJson(
         _result.data!,
         (json) => FriendshipEntity.fromJson(json as Map<String, dynamic>),
       );
