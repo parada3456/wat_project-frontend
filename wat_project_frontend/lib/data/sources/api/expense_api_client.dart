@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:wat_project_frontend/data/entities/expense_transaction_entity.dart';import 'package:wat_project_frontend/data/entities/expense_split_entity.dart';import 'package:wat_project_frontend/data/sources/api/api_model/create_expense_request.dart';import 'package:wat_project_frontend/data/sources/api/api_model/expense_detail_response.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_transaction_entity.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_detail_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
 
 part 'expense_api_client.g.dart';
@@ -24,6 +27,9 @@ abstract class ExpenseApiService {
 
   @GET('expense-splits')
   Future<ListResponse<ExpenseSplitEntity>> listPendingExpenses();
+
+  @GET('expense-splits')
+  Future<ListResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(@Query('ids') String ids);
 
   @PATCH('expenses/{id}/splits/{splitId}')
   @MultiPart()

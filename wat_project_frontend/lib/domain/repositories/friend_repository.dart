@@ -1,4 +1,5 @@
-import 'package:wat_project_frontend/domain/models/friendship_model.dart';import 'package:wat_project_frontend/data/sources/api/api_model/radar_entry.dart';
+import 'package:wat_project_frontend/domain/models/friendship_model.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/friend_radar/radar_entry.dart';
 
 abstract class FriendRepository {
   Future<void> sendRequest(String targetUserId);

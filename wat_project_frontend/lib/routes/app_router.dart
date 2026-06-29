@@ -57,6 +57,10 @@ class AppRouter {
     // },
     routes: [
       GoRoute(
+        path: '/home',
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
@@ -65,7 +69,7 @@ class AppRouter {
       //   builder: (context, state) => const RegisterPage(),
       // ),
       GoRoute(
-        path: '/register2',
+        path: '/register',
         builder: (context, state) => const RegisterPage2(),
       ),
       ShellRoute(

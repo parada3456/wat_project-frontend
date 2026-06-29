@@ -2,7 +2,9 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/domain/models/friendship_model.dart';
 import 'package:wat_project_frontend/domain/repositories/friend_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/friend_api_client.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/radar_entry.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/friend_radar/radar_entry.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/friend/send_friend_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/friend/respond_friend_request.dart';
 
 
 @injectable
@@ -13,7 +15,7 @@ class FriendRepoImpl implements FriendRepository {
 
   @override
   Future<void> sendRequest(String targetUserId) async {
-    return _api.sendRequest({'target_user_id': targetUserId});
+    return _api.sendRequest(SendFriendRequest(targetUserId: targetUserId));
   }
 
   @override
@@ -24,10 +26,13 @@ class FriendRepoImpl implements FriendRepository {
 
   @override
   Future<void> respondToRequest(String friendshipId, bool accept) async {
-    return _api.respondToRequest(friendshipId, {
-      'accept': accept,
-      'status': accept ? 'Accepted' : 'Rejected',
-    });
+    return _api.respondToRequest(
+      friendshipId,
+      RespondFriendRequest(
+        accept: accept,
+        status: accept ? 'Accepted' : 'Rejected',
+      ),
+    );
   }
 
   @override

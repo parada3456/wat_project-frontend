@@ -4,9 +4,6 @@ import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/auth_repository.dart';
 import 'package:wat_project_frontend/domain/models/auth_tokens.dart';
 
-import 'package:dio/dio.dart';
-import 'package:wat_project_frontend/core/error/exceptions.dart';
-
 @injectable
 class LoginUseCase {
   final AuthRepository _repository;

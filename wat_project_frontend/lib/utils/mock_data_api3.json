@@ -1,0 +1,902 @@
+{
+  "// POST /api/v1/auth/points/adjust": {
+    "adjust_points_request": {
+      "points_delta": 50,
+      "reason": "Bonus points for early submission"
+    }
+  },
+
+  "// POST /api/v1/missions/verify": {
+    "verify_mission_request": {
+      "approved": true,
+      "rejection_reason": null
+    }
+  },
+
+  "// Global Schema: Validation Field Error": {
+    "field_error": {
+      "field": "email",
+      "reason": "Enter a valid email address."
+    }
+  },
+
+  "// Global Schema: Standard Error Schema": {
+    "api_error": {
+      "code": "validation_failed",
+      "message": "One or more validation constraints failed.",
+      "details": [
+        {
+          "field": "email",
+          "reason": "Enter a valid email address."
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/auth/refresh": {
+    "auth_refresh_request": {
+      "refresh_token": "mock-refresh-token-jwt-value"
+    }
+  },
+
+  "// POST /api/v1/auth/forgot-password": {
+    "forgot_password_request": {
+      "email": "john.doe@example.com"
+    }
+  },
+
+  "// POST /api/v1/auth/login": {
+    "login_request": {
+      "email": "john.doe@example.com",
+      "password": "StrongSecurePassword123!"
+    }
+  },
+
+  "// POST /api/v1/auth/logout": {
+    "logout_request": {
+      "refresh_token": "mock-refresh-token-jwt-value"
+    }
+  },
+
+  "// POST /api/v1/auth/register": {
+    "register_request": {
+      "email": "john.doe@example.com",
+      "password": "StrongSecurePassword123!",
+      "first_name": "John",
+      "last_name": "Doe"
+    }
+  },
+
+  "// POST /api/v1/auth/reset-password": {
+    "reset_password_request": {
+      "token": "mock-password-reset-token",
+      "new_password": "NewStrongSecurePassword789!"
+    }
+  },
+
+  "// Sub-schema: Expense Split Object used in Creation": {
+    "expense_split_request": {
+      "user_id": "friend-67890",
+      "owe_amount": 25.5
+    }
+  },
+
+  "// POST /api/v1/expenses": {
+    "create_expense_request": {
+      "title": "Weekly Grocery Split",
+      "total_amount": 76.5,
+      "currency": "USD",
+      "memo": "Divided equally among three roommates",
+      "due_date": "2026-07-02T12:00:00Z",
+      "splits": [
+        {
+          "user_id": "user-12345",
+          "owe_amount": 25.5
+        },
+        {
+          "user_id": "friend-67890",
+          "owe_amount": 25.5
+        },
+        {
+          "user_id": "user-9999",
+          "owe_amount": 25.5
+        }
+      ]
+    }
+  },
+
+  "// GET /api/v1/expenses/:id": {
+    "expense_detail_response": {
+      "transaction": {
+        "transaction_id": "tx-707",
+        "paid_by_user_id": "friend-67890",
+        "title": "Weekly Grocery Split",
+        "total_amount": 76.5,
+        "currency": "USD",
+        "memo": "Divided equally among three roommates",
+        "transaction_date": "2026-06-25T09:30:00Z",
+        "due_date": "2026-06-25T09:30:00Z",
+        "created_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "splits": [
+        {
+            "split_id": "split-606",
+            "transaction_id": "tx-707",
+            "user_id": "user-12345",
+            "owe_amount": 25.5,
+            "payment_status": "pending",
+            "payment_method": "Venmo",
+            "payslip_url": "https://example.com/files/payslips/tx-707-split.png",
+            "approval_status": "Pending_Approval",
+            "settled_at": null,
+            "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// PUT /api/v1/friendships/:id": {
+    "respond_friend_request": {
+      "accept": true,
+      "status": "accepted"
+    }
+  },
+
+  "// POST /api/v1/friendships": {
+    "send_friend_request": {
+      "target_user_id": "friend-67890"
+    }
+  },
+
+  "// GET /api/v1/radar (Inside Data Array)": {
+    "radar_entry": {
+      "user_id": "friend-67890",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "avatar_url": "https://example.com/assets/avatars/jane_doe.jpg",
+      "latitude": 44.4281,
+      "longitude": -110.5888,
+      "distance": 120.5
+    }
+  },
+
+  "// GET /api/v1/leaderboard (Inside Data Array)": {
+    "leaderboard_entry": {
+      "rank": 1,
+      "user_id": "user-12345",
+      "name": "John Doe",
+      "points": 250,
+      "streak": 3,
+      "badges": [
+        {
+            "badge_id": "badge-streak-10d",
+            "title": "เจ้ายุทธจักรไร้พ่าย",
+            "description": "ทำภารกิจต่อเนื่องกันครบ 10 วัน",
+            "trigger_type": "Streak",
+            "icon_url": "https://cdn.example.com/assets/badges/streak-10.png",
+            "created_at": "2026-01-01T00:00:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user/phase/transition": {
+    "phase_transition_result": {
+      "transitioned": true,
+      "previous_phase_id": "phase-1",
+      "new_phase_id": "phase-2",
+      "points_rewarded": 50,
+      "completed_at": "2026-06-25T09:30:00Z"
+    }
+  },
+
+  "// POST /api/v1/jobs/cart": {
+    "add_to_cart_request": {
+      "job_id": "job-303"
+    }
+  },
+
+  "// POST /api/v1/user/jobs": {
+    "assign_job_request": {
+      "job_id": "job-303",
+      "is_main": true,
+      "start_date": "2026-06-25T09:30:00Z",
+      "end_date": "2026-06-25T09:30:00Z"
+    }
+  },
+
+  "// POST /api/v1/jobs/reviews Alternative Context": {
+    "create_review_alternative_request": {
+      "job_id": "job-303",
+      "rating_stars": 4.5,
+      "review_text": "Great manager, good hours."
+    }
+  },
+
+  "// POST /api/v1/jobs/reviews": {
+    "create_review_request": {
+      "job_id": "job-303",
+      "rating_stars": 4.5,
+      "review_text": "Great manager, good hours."
+    }
+  },
+
+  "// GET /api/v1/jobs/:id": {
+    "job_detail_response": {
+      "job": {
+        "job_id": "job-303",
+        "agency_name": "InterExchange",
+        "employer_title": "Yellowstone National Park Lodge",
+        "position": "Food Service Associate",
+        "position_type": "Hospitality",
+        "location_city": "Yellowstone",
+        "location_state": "WY",
+        "location_rank": "A",
+        "us_sponsor": true,
+        "salary_range_min": 14.5,
+        "salary_range_max": 16.0,
+        "available_slots": 5,
+        "description": "Great opportunity to work in a world-famous National Park! Duties include assisting with food prep, cash handling, and customer service.",
+        "range_min_start_date": "2026-06-25T09:30:00Z",
+        "range_max_start_date": "2026-06-25T09:30:00Z",
+        "range_min_end_date": "2026-06-25T09:30:00Z",
+        "range_max_end_date": "2026-06-25T09:30:00Z",
+        "source_url": "https://example.com/jobs/yellowstone-food-service",
+        "scrape_at": "2026-06-25T09:30:00Z",
+        "posted_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "housing": {
+        "housing_id": "house-404",
+        "job_id": "job-303",
+        "description": "Cozy student dorms with single rooms and shared kitchen facilities.",
+        "weekly_rate": 120.0,
+        "deposit": 300.0,
+        "transportation": "Bikes provided, public bus stop 5 minutes walking distance.",
+        "created_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "rating": {
+        "rating_summary_id": "rating-505",
+        "job_id": "job-303",
+        "overall_rate": 4.5,
+        "agency_rate": 4.2,
+        "average_hours": 34.5,
+        "job_rate": 4.6,
+        "coworkers_rate": 4.8,
+        "town_rate": 4.3,
+        "housing_rate": 4.0,
+        "second_job_feasibility_rate": 3.5,
+        "overtime_availability_rate": 4.4,
+        "review_count": 15,
+        "updated_at": "2026-06-25T09:30:00Z"
+      }
+    }
+  },
+
+  "// PATCH /api/v1/jobs/:id (Admin only)": {
+    "patch_job_request": {
+      "job_id": "job-303",
+      "position": "Lead Food Service Associate",
+      "salary_range_min": 15.5,
+      "available_slots": 4
+    }
+  },
+
+  "// PATCH /api/v1/jobs/cart/:id": {
+    "update_cart_status_request": {
+      "status": "saved"
+    }
+  },
+
+  "// Global Schema: Pagination Envelope Metadata": {
+    "pagination_info": {
+      "page": 1,
+      "page_size": 10,
+      "total_items": 45,
+      "total_pages": 5
+    }
+  },
+
+  "// GET /api/v1/jobs (Response)": {
+    "job_posting_list_response": {
+      "data": [
+        "job-303"
+      ],
+      "pagination": {
+        "page": 1,
+        "page_size": 10,
+        "total_items": 45,
+        "total_pages": 5
+      }
+    }
+  },
+
+  "// GET /api/v1/user-missions/:id": {
+    "mission_detail_response": {
+      "mission": {
+        "mission_id": "mission-101",
+        "phase_id": "phase-1",
+        "title": "Upload DS-2019 Document",
+        "description": "Provide a scanned copy of your official DS-2019 form issued by your sponsor.",
+        "location": "Online / Mobile App",
+        "base_points": 100,
+        "is_mandatory": true,
+        "verification_type": "upload",
+        "due_date_type": "relative",
+        "fixed_due_date": null,
+        "relative_trigger_event": "arrival_date",
+        "relative_days_offset": 7,
+        "created_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "user_mission": {
+        "user_mission_id": "user-mission-333",
+        "user_id": "user-12345",
+        "mission_id": "mission-101",
+        "status": "Completed",
+        "calculated_due_date": "2026-06-25T09:30:00Z",
+        "total_points_earned": 130,
+        "rewarded_at": "2026-06-25T09:30:00Z",
+        "created_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "tasks": [
+        {
+            "task_id": "task-202",
+            "mission_id": "mission-101",
+            "title": "Scan DS-2019",
+            "description": "Ensure the scan is clear, matches your passport details, and is in PDF format.",
+            "created_at": "2026-06-25T09:30:00Z",
+            "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ],
+      "user_tasks": [
+        {
+            "user_task_id": "user-task-444",
+            "user_id": "user-12345",
+            "task_id": "task-202",
+            "user_mission_id": "user-mission-333",
+            "is_completed": true,
+            "completed_at": "2026-06-25T09:30:00Z",
+            "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// GET /api/v1/missions/verify/pending (Admin)": {
+    "pending_verifications_response": {
+      "data": [
+        "user-mission-333"
+      ]
+    }
+  },
+
+  "// PATCH /api/v1/user-tasks/:id": {
+    "toggle_task_request": {
+      "completed": true,
+      "is_completed": true
+    }
+  },
+
+  "// POST /api/v1/missions/verify (Response)": {
+    "verify_mission_response": {
+      "user_mission_id": "user-mission-333",
+      "status": "verified",
+      "verified_at": "2026-06-25T09:30:00Z",
+      "verified_by": "admin-system"
+    }
+  },
+
+  "// POST /api/v1/media/upload": {
+    "upload_media_response": {
+      "url": "https://s3.amazonaws.com/wat-proofs/visa_scan.jpg",
+      "key": "proofs/visa_scan.jpg"
+    }
+  },
+
+  "// DELETE /api/v1/user/me": {
+    "delete_account_request": {
+      "current_password": "StrongSecurePassword123!"
+    }
+  },
+
+  "// PATCH /api/v1/user/me/location": {
+    "update_location_request": {
+      "latitude": 44.4279,
+      "longitude": -110.5884
+    }
+  },
+
+  "// PATCH /api/v1/user/me/password": {
+    "update_password_request": {
+      "current_password": "StrongSecurePassword123!",
+      "new_password": "SuperNewStrongSecurePassword999!"
+    }
+  },
+
+  "// PATCH /api/v1/user/me/profile": {
+    "update_profile_request": {
+      "first_name": "Johnathan",
+      "bio": "An upgraded student bio."
+    }
+  },
+
+  "// PATCH /api/v1/user/me/settings": {
+    "update_settings_request": {
+      "radar_visibility": "hidden",
+      "push_notifications": true
+    }
+  },
+
+  "// GET /api/v1/user/me": {
+    "user_profile_response": {
+      "user": {
+        "user_id": "user-12345",
+        "email": "john.doe@example.com",
+        "current_phase_id": "phase-1",
+        "total_lifetime_points": 250,
+        "current_phase_points": 150,
+        "mission_streak": 3,
+        "arrival_date": "2026-06-25T09:30:00Z",
+        "job_start_date": "2026-06-25T09:30:00Z",
+        "created_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "profile": {
+        "profile_id": "profile-1",
+        "user_id": "user-12345",
+        "first_name": "John",
+        "last_name": "Doe",
+        "phone_number": "+15550199",
+        "bio": "Adventurous student from Bangkok exploring Yellowstone this summer!",
+        "avatar_url": "https://example.com/assets/avatars/john_doe.jpg",
+        "radar_visibility": "hidden",
+        "current_coordinates": "44.4279,-110.5884",
+        "location_updated_at": "2026-06-25T09:30:00Z",
+        "updated_at": "2026-06-25T09:30:00Z"
+      },
+      "credit_score": {
+        "credit_id": "credit-score-1",
+        "user_id": "user-12345",
+        "current_score": 95,
+        "last_updated": "2026-06-25T09:30:00Z"
+      },
+      "user_jobs": [
+        {
+            "user_id": "user-12345",
+            "job_id": "job-303",
+            "assigned_at": "2026-06-25T09:30:00Z",
+            "is_main": true,
+            "start_date": "2026-06-25T09:30:00Z",
+            "end_date": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// GET /api/v1/users (Response)": {
+    "users_list_response": {
+      "data": [
+        {
+          "user": {
+            "user_id": "user-12345",
+            "email": "john.doe@example.com",
+            "current_phase_id": "phase-1",
+            "total_lifetime_points": 250,
+            "current_phase_points": 150,
+            "mission_streak": 3,
+            "arrival_date": "2026-06-25T09:30:00Z",
+            "job_start_date": "2026-06-25T09:30:00Z",
+            "created_at": "2026-06-25T09:30:00Z",
+            "updated_at": "2026-06-25T09:30:00Z"
+          },
+          "profile": {
+            "profile_id": "profile-1",
+            "user_id": "user-12345",
+            "first_name": "John",
+            "last_name": "Doe",
+            "phone_number": "+15550199",
+            "bio": "Adventurous student from Bangkok exploring Yellowstone this summer!",
+            "avatar_url": "https://example.com/assets/avatars/john_doe.jpg",
+            "radar_visibility": "friends",
+            "current_coordinates": "44.4279,-110.5884",
+            "location_updated_at": "2026-06-25T09:30:00Z",
+            "updated_at": "2026-06-25T09:30:00Z"
+          },
+          "credit_score": {
+            "credit_id": "credit-score-1",
+            "user_id": "user-12345",
+            "current_score": 95,
+            "last_updated": "2026-06-25T09:30:00Z"
+          },
+          "user_jobs": [
+            {
+              "user_id": "user-12345",
+              "job_id": "job-303",
+              "assigned_at": "2026-06-25T09:30:00Z",
+              "is_main": true,
+              "start_date": "2026-06-25T09:30:00Z",
+              "end_date": "2026-06-25T09:30:00Z"
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  "// Sub-schema: Single Instance of Point Ledger Table Record": {
+    "point_ledger": {
+      "ledger_id": "ldg-2026-0001",
+      "user_id": "user-12345",
+      "source_type": "Speed_Bonus",
+      "source_id": "user-mission-333",
+      "delta": 20,
+      "lifetime_balance_after": 1250,
+      "phase_balance_after": 320,
+      "note": "โบนัสทำภารกิจเร็วพิเศษสำหรับภารกิจประจำเป็นสัปดาห์",
+      "created_at": "2026-06-25T09:30:00Z"
+    }
+  },
+
+  "// Sub-schema: Single Instance of Badges Table Record": {
+    "badges": {
+      "badge_id": "badge-streak-10d",
+      "title": "เจ้ายุทธจักรไร้พ่าย",
+      "description": "ทำภารกิจต่อเนื่องกันครบ 10 วัน",
+      "trigger_type": "Streak",
+      "icon_url": "https://cdn.example.com/assets/badges/streak-10.png",
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  },
+
+  "// Sub-schema: Single Instance of User Badges Table Record": {
+    "user_badges": {
+      "user_badge_id": "ub-777888",
+      "user_id": "user-12345",
+      "badge_id": "badge-streak-10d",
+      "source_id": "user-mission-333",
+      "earned_at": "2026-06-25T09:30:00Z"
+    }
+  },
+
+  "// Sub-schema: Instance of Proof / Verification tracking": {
+    "proof": {
+      "proof_id": "proof-123",
+      "proof_url": "https://example.com/proofs/user-12345/ds2019.pdf",
+      "proof_submitted_at": "2026-06-25T09:30:00Z",
+      "verified_at": "2026-06-25T09:30:00Z",
+      "verified_by": "admin_id"
+    }
+  },
+
+  "------------------------------------------------------------------": "ADDED BATCH ENVELOPE RESPONSES (POST /batch)",
+
+  "// POST /api/v1/journey-phases/batch": {
+    "batch_journey_phases_response": {
+      "data": [
+        {
+          "phase_id": "phase-1",
+          "phase_number": 1,
+          "title": "Pre-Departure Compliance",
+          "description": "Required document collections before flying.",
+          "created_at": "2026-01-01T00:00:00Z",
+          "updated_at": "2026-01-01T00:00:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user-phase-history/batch": {
+    "batch_user_phase_history_response": {
+      "data": [
+        {
+          "history_id": "hist-001",
+          "user_id": "user-12345",
+          "phase_id": "phase-1",
+          "phase_points_earned": 120,
+          "entered_at": "2026-05-01T08:00:00Z",
+          "completed_at": "2026-06-24T18:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/missions/batch": {
+    "batch_missions_response": {
+      "data": [
+        {
+          "mission_id": "mission-101",
+          "phase_id": "phase-1",
+          "title": "Upload DS-2019 Document",
+          "description": "Provide a scanned copy of your official DS-2019 form issued by your sponsor.",
+          "location": "Online / Mobile App",
+          "base_points": 100,
+          "is_mandatory": true,
+          "verification_type": "upload",
+          "due_date_type": "relative",
+          "fixed_due_date": null,
+          "relative_trigger_event": "arrival_date",
+          "relative_days_offset": 7,
+          "created_at": "2026-06-25T09:30:00Z",
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user-missions/batch": {
+    "batch_user_missions_response": {
+      "data": [
+        {
+          "user_mission_id": "user-mission-333",
+          "user_id": "user-12345",
+          "mission_id": "mission-101",
+          "status": "Completed",
+          "calculated_due_date": "2026-06-25T09:30:00Z",
+          "proof_url": "https://example.com/proofs/user-12345/ds2019.pdf",
+          "proof_submitted_at": "2026-06-25T09:30:00Z",
+          "verified_at": "2026-06-25T09:30:00Z",
+          "verified_by": "admin_id",
+          "base_points_earned": 100,
+          "speed_bonus_points": 20,
+          "streak_bonus_points": 10,
+          "first_completer_bonus_points": 0,
+          "total_points_earned": 130,
+          "rewarded_at": "2026-06-25T09:30:00Z",
+          "created_at": "2026-06-25T09:30:00Z",
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/tasks/batch": {
+    "batch_tasks_response": {
+      "data": [
+        {
+          "task_id": "task-202",
+          "mission_id": "mission-101",
+          "title": "Scan Front Page",
+          "description": "Ensure signature is visible.",
+          "created_at": "2026-01-01T00:00:00Z",
+          "updated_at": "2026-01-01T00:00:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user-tasks/batch": {
+    "batch_user_tasks_response": {
+      "data": [
+        {
+          "user_task_id": "user-task-444",
+          "user_id": "user-12345",
+          "task_id": "task-202",
+          "user_mission_id": "user-mission-333",
+          "is_completed": true,
+          "completed_at": "2026-06-25T09:30:00Z",
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/friend-requests/batch": {
+    "batch_friend_requests_response": {
+      "data": [
+        {
+          "friendship_id": "friendship-901",
+          "user_id_1": "user-12345",
+          "user_id_2": "friend-67890",
+          "status": "pending",
+          "created_at": "2026-06-25T14:20:00Z",
+          "updated_at": "2026-06-25T14:20:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/friends/batch": {
+    "batch_friends_response": {
+      "data": [
+        {
+          "friendship_id": "friendship-702",
+          "user_id_1": "user-12345",
+          "user_id_2": "friend-8888",
+          "status": "accepted",
+          "created_at": "2026-05-20T10:00:00Z",
+          "updated_at": "2026-05-20T10:00:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/expense-splits/batch": {
+    "batch_expense_splits_response": {
+      "data": [
+        {
+          "split_id": "split-606",
+          "transaction_id": "tx-707",
+          "user_id": "user-12345",
+          "owe_amount": 25.5,
+          "payment_status": "pending",
+          "payment_method": null,
+          "payslip_url": null,
+          "approval_status": "pending_approval",
+          "settled_at": null,
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/badges/batch": {
+    "batch_badges_response": {
+      "data": [
+        {
+          "badge_id": "badge-streak-10d",
+          "title": "เจ้ายุทธจักรไร้พ่าย",
+          "description": "ทำภารกิจต่อเนื่องกันครบ 10 วัน",
+          "trigger_type": "Streak",
+          "icon_url": "https://cdn.example.com/assets/badges/streak-10.png",
+          "created_at": "2026-01-01T00:00:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user/badges/batch": {
+    "batch_user_badges_response": {
+      "data": [
+        {
+          "user_badge_id": "ub-777888",
+          "user_id": "user-12345",
+          "badge_id": "badge-streak-10d",
+          "source_id": "user-mission-333",
+          "earned_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user/points/ledger/batch": {
+    "batch_user_points_ledger_response": {
+      "data": [
+        {
+          "ledger_id": "ldg-2026-0001",
+          "user_id": "user-12345",
+          "source_type": "Speed_Bonus",
+          "source_id": "user-mission-333",
+          "delta": 20,
+          "lifetime_balance_after": 1250,
+          "phase_balance_after": 320,
+          "note": "โบนัสทำภารกิจเร็วพิเศษสำหรับภารกิจประจำเป็นสัปดาห์",
+          "created_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user/credit-score/history/batch": {
+    "batch_user_credit_score_history_response": {
+      "data": [
+        {
+          "ledger_id": "ldg-2026-099",
+          "user_id": "user-12345",
+          "source_type": "expense_penalty",
+          "source_id": "split-606",
+          "delta": -5,
+          "lifetime_balance_after": 1100,
+          "phase_balance_after": 200,
+          "note": "จ่ายเงินแชร์ค่าห้องช้ากว่ากำหนดค้างชำระ",
+          "created_at": "2026-06-25T15:00:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/notifications/batch": {
+    "batch_notifications_response": {
+      "data": [
+        {
+          "noti_id": "noti-111",
+          "user_id": "user-12345",
+          "title": "Mission Approved!",
+          "body": "Your DS-2019 validation proof has been successfully verified.",
+          "is_read": false,
+          "created_at": "2026-06-25T13:01:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/jobs/batch": {
+    "batch_jobs_response": {
+      "data": [
+        {
+          "job_id": "job-303",
+          "agency_name": "InterExchange",
+          "employer_title": "Yellowstone National Park Lodge",
+          "position": "Food Service Associate",
+          "position_type": "Hospitality",
+          "location_city": "Yellowstone",
+          "location_state": "WY",
+          "location_rank": "A",
+          "us_sponsor": true,
+          "salary_range_min": 14.5,
+          "salary_range_max": 16.0,
+          "available_slots": 5,
+          "description": "Great opportunity to work in a world-famous National Park! Duties include assisting with food prep, cash handling, and customer service.",
+          "range_min_start_date": "2026-06-25T09:30:00Z",
+          "range_max_start_date": "2026-06-25T09:30:00Z",
+          "range_min_end_date": "2026-06-25T09:30:00Z",
+          "range_max_end_date": "2026-06-25T09:30:00Z",
+          "source_url": "https://example.com/jobs/yellowstone-food-service",
+          "scrape_at": "2026-06-25T09:30:00Z",
+          "posted_at": "2026-06-25T09:30:00Z",
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/jobs/housings/batch": {
+    "batch_job_housings_response": {
+      "data": [
+        {
+          "housing_id": "house-404",
+          "job_id": "job-303",
+          "description": "Cozy student dorms with single rooms and shared kitchen facilities.",
+          "weekly_rate": 120.0,
+          "deposit": 300.0,
+          "transportation": "Bikes provided, public bus stop 5 minutes walking distance.",
+          "created_at": "2026-06-25T09:30:00Z",
+          "updated_at": "2026-06-25T09:30:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/jobs/reviews/batch": {
+    "batch_job_reviews_response": {
+      "data": [
+        {
+          "review_id": "rev-55",
+          "job_id": "job-303",
+          "user_id": "user-9999",
+          "rating_stars": 4.5,
+          "review_text": "Great manager, good hours.",
+          "tips_for_next_generation": "Bring warm blankets.",
+          "average_hours": 38.0,
+          "score_agency": 4.0,
+          "score_job": 4.5,
+          "score_coworkers": 5.0,
+          "score_town": 4.0,
+          "score_housing": 4.0,
+          "score_second_job_feasibility": 3.0,
+          "score_overtime_availability": 4.5,
+          "created_at": "2026-06-20T11:15:00Z",
+          "updated_at": "2026-06-20T11:15:00Z"
+        }
+      ]
+    }
+  },
+
+  "// POST /api/v1/user-carts/batch": {
+    "batch_user_carts_response": {
+      "data": [
+        {
+          "cart_id": "cart-001",
+          "user_id": "user-12345",
+          "job_id": "job-303",
+          "status": "saved",
+          "added_at": "2026-06-25T09:00:00Z",
+          "updated_at": "2026-06-25T09:00:00Z"
+        }
+      ]
+    }
+  }
+}

@@ -71,12 +71,12 @@ class _ExpenseApiService implements ExpenseApiService {
   }
 
   @override
-  Future<ExpenseDetailResponse> getExpenseDetail(String id) async {
+  Future<InvalidType> getExpenseDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ExpenseDetailResponse>(
+    final _options = _setStreamType<InvalidType>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -87,9 +87,9 @@ class _ExpenseApiService implements ExpenseApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ExpenseDetailResponse _value;
+    late InvalidType _value;
     try {
-      _value = ExpenseDetailResponse.fromJson(_result.data!);
+      _value = InvalidType.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -120,6 +120,38 @@ class _ExpenseApiService implements ExpenseApiService {
   Future<ListResponse<ExpenseSplitEntity>> listPendingExpenses() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ListResponse<ExpenseSplitEntity>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'expense-splits',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ListResponse<ExpenseSplitEntity> _value;
+    try {
+      _value = ListResponse<ExpenseSplitEntity>.fromJson(
+        _result.data!,
+        (json) => ExpenseSplitEntity.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ListResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(
+    String ids,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'ids': ids};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<ListResponse<ExpenseSplitEntity>>(

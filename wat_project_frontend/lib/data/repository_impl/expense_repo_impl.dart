@@ -4,9 +4,11 @@ import 'package:wat_project_frontend/domain/models/expense_transaction_model.dar
 import 'package:wat_project_frontend/domain/models/expense_split_model.dart';
 import 'package:wat_project_frontend/domain/repositories/expense_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/expense_api_client.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/create_expense_request.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/expense_detail_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_detail_response.dart';
 
+
+import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.dart';
 
 @injectable
 class ExpenseRepoImpl implements ExpenseRepository {
@@ -39,6 +41,13 @@ class ExpenseRepoImpl implements ExpenseRepository {
   Future<List<ExpenseSplitModel>> listPendingExpenses() async {
     final response = await _api.listPendingExpenses();
     return response.data.map((e) => e.toModel()).toList();
+  }
+
+  @override
+  Future<List<ExpenseSplitEntity>> getExpenseSplitsByIds(List<String> ids) async {
+    if (ids.isEmpty) return [];
+    final response = await _api.getExpenseSplitsByIds(ids.join(','));
+    return response.data;
   }
 
   @override

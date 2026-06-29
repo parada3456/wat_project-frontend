@@ -111,6 +111,12 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(height: AppDimension.space50),
                     const LoginHeader(),
                     const SizedBox(height: AppDimension.space50),
+                    IconButton(
+                      icon: const Icon(Icons.home, color: AppColors.textPrimary),
+                      onPressed: () {
+                        context.push('/home');
+                      },
+                    ),
                     WatInputField(
                       label: 'Email',
                       hint: 'username@email.com',

@@ -5,6 +5,8 @@ import 'package:wat_project_frontend/domain/models/points_adjustment_result_mode
 import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
 import 'package:wat_project_frontend/domain/models/user_model.dart';
 import 'package:wat_project_frontend/domain/repositories/admin_repository.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/admin/verify_mission_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/admin/adjust_points_request.dart';
 
 @injectable
 class AdminRepoImpl implements AdminRepository {
@@ -26,10 +28,10 @@ class AdminRepoImpl implements AdminRepository {
 
   @override
   Future<UserMissionModel> verifyMission(String id, bool approved, String? rejectionReason) async {
-    final response = await _adminApi.verifyMission(id, {
-      'approved': approved,
-      'rejectionReason': rejectionReason,
-    });
+    final response = await _adminApi.verifyMission(
+      id,
+      VerifyMissionRequest(approved: approved, rejectionReason: rejectionReason),
+    );
     UserMissionStatus status;
     switch (response.status) {
       case 'Completed':
@@ -73,10 +75,10 @@ class AdminRepoImpl implements AdminRepository {
 
   @override
   Future<PointsAdjustmentResultModel> adjustPoints(String id, int pointsDelta, String reason) async {
-    final response = await _adminApi.adjustPoints(id, {
-      'pointsDelta': pointsDelta,
-      'reason': reason,
-    });
+    final response = await _adminApi.adjustPoints(
+      id,
+      AdjustPointsRequest(pointsDelta: pointsDelta, reason: reason),
+    );
     return response.toModel();
   }
 }

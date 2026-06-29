@@ -137,7 +137,7 @@ class HomeView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
                     child: MissionCard(
                       title: dm.mission.title,
-                      deadline: _formatDeadline(dm.userMission.calculatedDueDate != null ? DateTime.tryParse(dm.userMission.calculatedDueDate!) : null) ?? 'Soon',
+                      deadline: _formatDeadline(dm.userMission.calculatedDueDate) ?? 'Soon',
                       bonusPoints: dm.mission.basePoints,
                       isMandatory: dm.mission.isMandatory,
                       progress: progress,

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/core/l10n/app_localizations.dart';
-import 'package:wat_project_frontend/di/inject.dart';import 'package:wat_project_frontend/domain/providers/locale_provider.dart';import 'package:wat_project_frontend/domain/providers/theme_provider.dart';import 'package:wat_project_frontend/domain/services/auth_manager.dart';import 'package:wat_project_frontend/core/theme/app_theme.dart';
+import 'package:wat_project_frontend/di/inject.dart';
+import 'package:wat_project_frontend/domain/providers/locale_provider.dart';
+import 'package:wat_project_frontend/domain/providers/theme_provider.dart';
+import 'package:wat_project_frontend/domain/services/auth_manager.dart';
+import 'package:wat_project_frontend/core/theme/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();

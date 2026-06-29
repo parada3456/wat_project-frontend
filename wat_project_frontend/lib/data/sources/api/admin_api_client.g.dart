@@ -77,16 +77,16 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<VerifyMissionResponse> verifyMission(
+  Future<InvalidType> verifyMission(
     String id,
-    Map<String, dynamic> body,
+    VerifyMissionRequest request,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
-    final _options = _setStreamType<VerifyMissionResponse>(
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<InvalidType>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -97,9 +97,9 @@ class _AdminApiService implements AdminApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late VerifyMissionResponse _value;
+    late InvalidType _value;
     try {
-      _value = VerifyMissionResponse.fromJson(_result.data!);
+      _value = InvalidType.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -108,12 +108,12 @@ class _AdminApiService implements AdminApiService {
   }
 
   @override
-  Future<UsersListResponse> listUsers(String search) async {
+  Future<InvalidType> listUsers(String search) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'q': search};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<UsersListResponse>(
+    final _options = _setStreamType<InvalidType>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -124,9 +124,9 @@ class _AdminApiService implements AdminApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UsersListResponse _value;
+    late InvalidType _value;
     try {
-      _value = UsersListResponse.fromJson(_result.data!);
+      _value = InvalidType.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -164,13 +164,13 @@ class _AdminApiService implements AdminApiService {
   @override
   Future<PointsAdjustmentResultEntity> adjustPoints(
     String id,
-    Map<String, dynamic> body,
+    AdjustPointsRequest request,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<PointsAdjustmentResultEntity>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(

@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/models/home_data.dart';
 import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/mission_detail_response.dart';
+import 'package:wat_project_frontend/domain/models/mission_detail_model.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart';
 import 'package:wat_project_frontend/domain/repositories/mission_repository.dart';
@@ -45,7 +45,16 @@ class GetHomeDataUseCase {
       final detailsList = await Future.wait(
         userMissions.map((um) async {
           try {
-            return await _missionRepository.getMissionDetail(um.missionId);
+            final detail = await _missionRepository.getMissionDetail(um.missionId);
+            final tasks = await _missionRepository.getTasksByIds(detail.tasks);
+            final userTasks = await _missionRepository.getUserTasksByIds(detail.userTasks);
+
+            return MissionDetailModel(
+              mission: detail.mission.toModel(),
+              userMission: detail.userMission.toModel(),
+              tasks: tasks.map((e) => e.toModel()).toList(),
+              userTasks: userTasks.map((e) => e.toModel()).toList(),
+            );
           } catch (_) {
             return null;
           }
@@ -53,8 +62,8 @@ class GetHomeDataUseCase {
       );
 
       final phaseMissions = detailsList
-          .where((d) => d != null && d.mission.phaseId == currentPhase.phaseId)
-          .cast<MissionDetailResponse>()
+          .where((d) => d != null && d!.mission.phaseId == currentPhase.phaseId)
+          .cast<MissionDetailModel>()
           .toList();
 
       return Right(HomeData(

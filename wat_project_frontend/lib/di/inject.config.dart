@@ -26,6 +26,8 @@ import 'package:wat_project_frontend/data/repository_impl/job_repo_impl.dart'
     as _i451;
 import 'package:wat_project_frontend/data/repository_impl/journey_repo_impl.dart'
     as _i864;
+import 'package:wat_project_frontend/data/repository_impl/media_repo_impl.dart'
+    as _i825;
 import 'package:wat_project_frontend/data/repository_impl/mission_repo_impl.dart'
     as _i1043;
 import 'package:wat_project_frontend/data/repository_impl/notification_repo_impl.dart'
@@ -45,6 +47,8 @@ import 'package:wat_project_frontend/data/sources/api/job_api_client.dart'
     as _i388;
 import 'package:wat_project_frontend/data/sources/api/journey_api_client.dart'
     as _i491;
+import 'package:wat_project_frontend/data/sources/api/media_api_client.dart'
+    as _i1013;
 import 'package:wat_project_frontend/data/sources/api/mission_api_client.dart'
     as _i21;
 import 'package:wat_project_frontend/data/sources/api/notification_api_client.dart'
@@ -74,6 +78,8 @@ import 'package:wat_project_frontend/domain/repositories/job_repository.dart'
     as _i39;
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart'
     as _i381;
+import 'package:wat_project_frontend/domain/repositories/media_repository.dart'
+    as _i907;
 import 'package:wat_project_frontend/domain/repositories/mission_repository.dart'
     as _i448;
 import 'package:wat_project_frontend/domain/repositories/notification_repository.dart'
@@ -82,10 +88,24 @@ import 'package:wat_project_frontend/domain/repositories/user_repository.dart'
     as _i455;
 import 'package:wat_project_frontend/domain/services/auth_manager.dart'
     as _i349;
+import 'package:wat_project_frontend/domain/usecases/add_job_to_cart_usecase.dart'
+    as _i1040;
 import 'package:wat_project_frontend/domain/usecases/adjust_points_usecase.dart'
     as _i639;
+import 'package:wat_project_frontend/domain/usecases/advance_phase_usecase.dart'
+    as _i1015;
+import 'package:wat_project_frontend/domain/usecases/approve_expense_split_payment_usecase.dart'
+    as _i135;
+import 'package:wat_project_frontend/domain/usecases/create_expense_usecase.dart'
+    as _i323;
+import 'package:wat_project_frontend/domain/usecases/create_job_review_usecase.dart'
+    as _i250;
 import 'package:wat_project_frontend/domain/usecases/delete_account_usecase.dart'
     as _i257;
+import 'package:wat_project_frontend/domain/usecases/delete_expense_usecase.dart'
+    as _i308;
+import 'package:wat_project_frontend/domain/usecases/delete_notification_usecase.dart'
+    as _i301;
 import 'package:wat_project_frontend/domain/usecases/forgot_password_usecase.dart'
     as _i997;
 import 'package:wat_project_frontend/domain/usecases/get_admin_stats_usecase.dart'
@@ -98,28 +118,78 @@ import 'package:wat_project_frontend/domain/usecases/get_badges_usecase.dart'
     as _i914;
 import 'package:wat_project_frontend/domain/usecases/get_credit_score_history_usecase.dart'
     as _i822;
+import 'package:wat_project_frontend/domain/usecases/get_expense_detail_usecase.dart'
+    as _i739;
 import 'package:wat_project_frontend/domain/usecases/get_home_data_usecase.dart'
     as _i921;
+import 'package:wat_project_frontend/domain/usecases/get_job_detail_usecase.dart'
+    as _i636;
+import 'package:wat_project_frontend/domain/usecases/get_journey_history_usecase.dart'
+    as _i672;
+import 'package:wat_project_frontend/domain/usecases/get_leaderboard_usecase.dart'
+    as _i260;
 import 'package:wat_project_frontend/domain/usecases/get_login_usecase.dart'
     as _i937;
+import 'package:wat_project_frontend/domain/usecases/get_mission_detail_usecase.dart'
+    as _i213;
 import 'package:wat_project_frontend/domain/usecases/get_posts_usecase.dart'
     as _i374;
 import 'package:wat_project_frontend/domain/usecases/get_profile_usecase.dart'
     as _i835;
+import 'package:wat_project_frontend/domain/usecases/get_radar_users_usecase.dart'
+    as _i853;
 import 'package:wat_project_frontend/domain/usecases/get_user_usecase.dart'
     as _i283;
+import 'package:wat_project_frontend/domain/usecases/list_applications_usecase.dart'
+    as _i59;
+import 'package:wat_project_frontend/domain/usecases/list_available_missions_usecase.dart'
+    as _i749;
+import 'package:wat_project_frontend/domain/usecases/list_cart_items_usecase.dart'
+    as _i1027;
+import 'package:wat_project_frontend/domain/usecases/list_expenses_usecase.dart'
+    as _i886;
+import 'package:wat_project_frontend/domain/usecases/list_friends_usecase.dart'
+    as _i145;
+import 'package:wat_project_frontend/domain/usecases/list_jobs_usecase.dart'
+    as _i776;
+import 'package:wat_project_frontend/domain/usecases/list_journey_phases_usecase.dart'
+    as _i882;
+import 'package:wat_project_frontend/domain/usecases/list_notifications_usecase.dart'
+    as _i347;
+import 'package:wat_project_frontend/domain/usecases/list_pending_requests_usecase.dart'
+    as _i25;
+import 'package:wat_project_frontend/domain/usecases/list_pending_splits_usecase.dart'
+    as _i349;
 import 'package:wat_project_frontend/domain/usecases/list_pending_verifications_usecase.dart'
     as _i578;
 import 'package:wat_project_frontend/domain/usecases/login_usecase.dart'
     as _i717;
 import 'package:wat_project_frontend/domain/usecases/logout_usecase.dart'
     as _i581;
+import 'package:wat_project_frontend/domain/usecases/mark_all_notifications_read_usecase.dart'
+    as _i158;
+import 'package:wat_project_frontend/domain/usecases/mark_notification_read_usecase.dart'
+    as _i160;
+import 'package:wat_project_frontend/domain/usecases/pay_expense_split_usecase.dart'
+    as _i424;
 import 'package:wat_project_frontend/domain/usecases/refresh_token_usecase.dart'
     as _i743;
 import 'package:wat_project_frontend/domain/usecases/register_usecase.dart'
     as _i179;
+import 'package:wat_project_frontend/domain/usecases/remove_friend_usecase.dart'
+    as _i873;
+import 'package:wat_project_frontend/domain/usecases/remove_job_from_cart_usecase.dart'
+    as _i28;
 import 'package:wat_project_frontend/domain/usecases/reset_password_usecase.dart'
     as _i212;
+import 'package:wat_project_frontend/domain/usecases/respond_to_friend_request_usecase.dart'
+    as _i699;
+import 'package:wat_project_frontend/domain/usecases/send_friend_request_usecase.dart'
+    as _i92;
+import 'package:wat_project_frontend/domain/usecases/submit_mission_proof_usecase.dart'
+    as _i150;
+import 'package:wat_project_frontend/domain/usecases/toggle_task_usecase.dart'
+    as _i192;
 import 'package:wat_project_frontend/domain/usecases/update_location_usecase.dart'
     as _i745;
 import 'package:wat_project_frontend/domain/usecases/update_profile_usecase.dart'
@@ -132,8 +202,20 @@ import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_
     as _i1031;
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart'
     as _i384;
+import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart'
+    as _i384;
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart'
     as _i906;
+import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart'
+    as _i533;
+import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart'
+    as _i1054;
+import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart'
+    as _i928;
+import 'package:wat_project_frontend/presentation/notifications/bloc/notifications_bloc.dart'
+    as _i392;
+import 'package:wat_project_frontend/presentation/social_radar/bloc/social_radar_bloc.dart'
+    as _i459;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -200,6 +282,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i389.AdminApiService>(
       () => apiModule.adminApi(gh<_i361.Dio>(instanceName: 'mainDio')),
     );
+    gh.lazySingleton<_i1013.MediaApiService>(
+      () => apiModule.mediaApi(gh<_i361.Dio>(instanceName: 'mainDio')),
+    );
     gh.factory<_i337.FriendRepoImpl>(
       () => _i337.FriendRepoImpl(gh<_i913.FriendApiService>()),
     );
@@ -214,6 +299,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i416.AuthRepository>(
       () => repositoryModule.authRepository(gh<_i643.AuthRepoImpl>()),
+    );
+    gh.factory<_i825.MediaRepoImpl>(
+      () => _i825.MediaRepoImpl(gh<_i1013.MediaApiService>()),
     );
     gh.factory<_i377.ExpenseRepoImpl>(
       () => _i377.ExpenseRepoImpl(gh<_i701.ExpenseApiService>()),
@@ -238,6 +326,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i212.ResetPasswordUseCase>(
       () => _i212.ResetPasswordUseCase(gh<_i416.AuthRepository>()),
+    );
+    gh.factory<_i907.MediaRepository>(
+      () => repositoryModule.mediaRepository(gh<_i825.MediaRepoImpl>()),
     );
     gh.singleton<_i583.GoRouter>(
       () => routerModule.router(gh<_i349.AuthSessionManager>()),
@@ -271,8 +362,78 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1013.FriendRepository>(
       () => repositoryModule.friendRepository(gh<_i337.FriendRepoImpl>()),
     );
+    gh.factory<_i301.DeleteNotificationUseCase>(
+      () => _i301.DeleteNotificationUseCase(gh<_i187.NotificationRepository>()),
+    );
+    gh.factory<_i347.ListNotificationsUseCase>(
+      () => _i347.ListNotificationsUseCase(gh<_i187.NotificationRepository>()),
+    );
+    gh.factory<_i158.MarkAllNotificationsReadUseCase>(
+      () => _i158.MarkAllNotificationsReadUseCase(
+        gh<_i187.NotificationRepository>(),
+      ),
+    );
+    gh.factory<_i160.MarkNotificationReadUseCase>(
+      () =>
+          _i160.MarkNotificationReadUseCase(gh<_i187.NotificationRepository>()),
+    );
+    gh.factory<_i135.ApproveExpenseSplitPaymentUseCase>(
+      () => _i135.ApproveExpenseSplitPaymentUseCase(
+        gh<_i1052.ExpenseRepository>(),
+      ),
+    );
+    gh.factory<_i323.CreateExpenseUseCase>(
+      () => _i323.CreateExpenseUseCase(gh<_i1052.ExpenseRepository>()),
+    );
+    gh.factory<_i308.DeleteExpenseUseCase>(
+      () => _i308.DeleteExpenseUseCase(gh<_i1052.ExpenseRepository>()),
+    );
+    gh.factory<_i739.GetExpenseDetailUseCase>(
+      () => _i739.GetExpenseDetailUseCase(gh<_i1052.ExpenseRepository>()),
+    );
+    gh.factory<_i886.ListExpensesUseCase>(
+      () => _i886.ListExpensesUseCase(gh<_i1052.ExpenseRepository>()),
+    );
+    gh.factory<_i349.ListPendingSplitsUseCase>(
+      () => _i349.ListPendingSplitsUseCase(gh<_i1052.ExpenseRepository>()),
+    );
+    gh.factory<_i424.PayExpenseSplitUseCase>(
+      () => _i424.PayExpenseSplitUseCase(gh<_i1052.ExpenseRepository>()),
+    );
+    gh.factory<_i1015.AdvancePhaseUseCase>(
+      () => _i1015.AdvancePhaseUseCase(gh<_i381.JourneyRepository>()),
+    );
+    gh.factory<_i672.GetJourneyHistoryUseCase>(
+      () => _i672.GetJourneyHistoryUseCase(gh<_i381.JourneyRepository>()),
+    );
+    gh.factory<_i260.GetLeaderboardUseCase>(
+      () => _i260.GetLeaderboardUseCase(gh<_i381.JourneyRepository>()),
+    );
+    gh.factory<_i882.ListJourneyPhasesUseCase>(
+      () => _i882.ListJourneyPhasesUseCase(gh<_i381.JourneyRepository>()),
+    );
+    gh.factory<_i213.GetMissionDetailUseCase>(
+      () => _i213.GetMissionDetailUseCase(gh<_i448.MissionRepository>()),
+    );
+    gh.factory<_i749.ListAvailableMissionsUseCase>(
+      () => _i749.ListAvailableMissionsUseCase(gh<_i448.MissionRepository>()),
+    );
+    gh.factory<_i150.SubmitMissionProofUseCase>(
+      () => _i150.SubmitMissionProofUseCase(gh<_i448.MissionRepository>()),
+    );
+    gh.factory<_i192.ToggleTaskUseCase>(
+      () => _i192.ToggleTaskUseCase(gh<_i448.MissionRepository>()),
+    );
     gh.factory<_i244.AdminRepository>(
       () => repositoryModule.adminRepository(gh<_i789.AdminRepoImpl>()),
+    );
+    gh.factory<_i392.NotificationsBloc>(
+      () => blocModule.notificationsBloc(
+        gh<_i347.ListNotificationsUseCase>(),
+        gh<_i160.MarkNotificationReadUseCase>(),
+        gh<_i158.MarkAllNotificationsReadUseCase>(),
+        gh<_i301.DeleteNotificationUseCase>(),
+      ),
     );
     gh.factory<_i639.AdjustPointsUseCase>(
       () => _i639.AdjustPointsUseCase(gh<_i244.AdminRepository>()),
@@ -292,8 +453,27 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i516.VerifyAdminMissionUseCase>(
       () => _i516.VerifyAdminMissionUseCase(gh<_i244.AdminRepository>()),
     );
+    gh.factory<_i384.ExpenseSharingBloc>(
+      () => blocModule.expenseSharingBloc(
+        gh<_i886.ListExpensesUseCase>(),
+        gh<_i323.CreateExpenseUseCase>(),
+        gh<_i739.GetExpenseDetailUseCase>(),
+        gh<_i308.DeleteExpenseUseCase>(),
+        gh<_i349.ListPendingSplitsUseCase>(),
+        gh<_i424.PayExpenseSplitUseCase>(),
+        gh<_i135.ApproveExpenseSplitPaymentUseCase>(),
+      ),
+    );
     gh.factory<_i455.UserRepository>(
       () => repositoryModule.userRepository(gh<_i399.UserRepoImpl>()),
+    );
+    gh.factory<_i928.MissionTaskBloc>(
+      () => blocModule.missionTaskBloc(
+        gh<_i749.ListAvailableMissionsUseCase>(),
+        gh<_i213.GetMissionDetailUseCase>(),
+        gh<_i150.SubmitMissionProofUseCase>(),
+        gh<_i192.ToggleTaskUseCase>(),
+      ),
     );
     gh.factory<_i280.AdminDashboardBloc>(
       () => blocModule.adminDashboardBloc(
@@ -303,6 +483,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i81.GetAdminUsersUseCase>(),
         gh<_i495.GetAdminUserDetailUseCase>(),
         gh<_i639.AdjustPointsUseCase>(),
+      ),
+    );
+    gh.factory<_i1054.JourneyGamificationBloc>(
+      () => blocModule.journeyGamificationBloc(
+        gh<_i882.ListJourneyPhasesUseCase>(),
+        gh<_i1015.AdvancePhaseUseCase>(),
+        gh<_i672.GetJourneyHistoryUseCase>(),
+        gh<_i260.GetLeaderboardUseCase>(),
       ),
     );
     gh.factory<_i39.JobRepository>(
@@ -341,6 +529,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i283.GetUserUseCase>(
       () => _i283.GetUserUseCase(gh<_i455.UserRepository>()),
     );
+    gh.factory<_i59.ListApplicationsUseCase>(
+      () => _i59.ListApplicationsUseCase(gh<_i455.UserRepository>()),
+    );
     gh.factory<_i745.UpdateLocationUseCase>(
       () => _i745.UpdateLocationUseCase(gh<_i455.UserRepository>()),
     );
@@ -354,6 +545,42 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i349.AuthSessionManager>(),
       ),
     );
+    gh.factory<_i1040.AddJobToCartUseCase>(
+      () => _i1040.AddJobToCartUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i250.CreateJobReviewUseCase>(
+      () => _i250.CreateJobReviewUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i636.GetJobDetailUseCase>(
+      () => _i636.GetJobDetailUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i1027.ListCartItemsUseCase>(
+      () => _i1027.ListCartItemsUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i776.ListJobsUseCase>(
+      () => _i776.ListJobsUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i28.RemoveJobFromCartUseCase>(
+      () => _i28.RemoveJobFromCartUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i853.GetRadarUsersUseCase>(
+      () => _i853.GetRadarUsersUseCase(gh<_i1013.FriendRepository>()),
+    );
+    gh.factory<_i145.ListFriendsUseCase>(
+      () => _i145.ListFriendsUseCase(gh<_i1013.FriendRepository>()),
+    );
+    gh.factory<_i25.ListPendingRequestsUseCase>(
+      () => _i25.ListPendingRequestsUseCase(gh<_i1013.FriendRepository>()),
+    );
+    gh.factory<_i873.RemoveFriendUseCase>(
+      () => _i873.RemoveFriendUseCase(gh<_i1013.FriendRepository>()),
+    );
+    gh.factory<_i699.RespondToFriendRequestUseCase>(
+      () => _i699.RespondToFriendRequestUseCase(gh<_i1013.FriendRepository>()),
+    );
+    gh.factory<_i92.SendFriendRequestUseCase>(
+      () => _i92.SendFriendRequestUseCase(gh<_i1013.FriendRepository>()),
+    );
     gh.factory<_i384.ProfileBloc>(
       () => blocModule.profileBloc(
         gh<_i835.GetProfileUseCase>(),
@@ -366,6 +593,27 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i906.HomeBloc>(
       () => blocModule.homeBloc(gh<_i921.GetHomeDataUseCase>()),
+    );
+    gh.factory<_i459.SocialRadarBloc>(
+      () => blocModule.socialRadarBloc(
+        gh<_i92.SendFriendRequestUseCase>(),
+        gh<_i25.ListPendingRequestsUseCase>(),
+        gh<_i699.RespondToFriendRequestUseCase>(),
+        gh<_i145.ListFriendsUseCase>(),
+        gh<_i873.RemoveFriendUseCase>(),
+        gh<_i853.GetRadarUsersUseCase>(),
+      ),
+    );
+    gh.factory<_i533.JobMarketBloc>(
+      () => blocModule.jobMarketBloc(
+        gh<_i776.ListJobsUseCase>(),
+        gh<_i636.GetJobDetailUseCase>(),
+        gh<_i1040.AddJobToCartUseCase>(),
+        gh<_i1027.ListCartItemsUseCase>(),
+        gh<_i28.RemoveJobFromCartUseCase>(),
+        gh<_i250.CreateJobReviewUseCase>(),
+        gh<_i59.ListApplicationsUseCase>(),
+      ),
     );
     return this;
   }

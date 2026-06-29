@@ -1,6 +1,11 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum VerificationType {
+  @JsonValue('none')
   none,
+  @JsonValue('upload')
   upload,
+  @JsonValue('admin')
   admin,
 }
 

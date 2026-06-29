@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_event.dart';
@@ -71,6 +72,14 @@ class _RegisterPage2State extends State<RegisterPage2> {
               fontWeight: FontWeight.w700,
             ),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.home, color: AppColors.textPrimary),
+              onPressed: () {
+                context.push('/home');
+              },
+            ),
+          ],
         ),
         body: SafeArea(
           child: BlocConsumer<LoginBloc, LoginState>(

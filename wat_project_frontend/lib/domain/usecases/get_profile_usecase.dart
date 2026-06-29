@@ -4,6 +4,8 @@ import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/user_profile.dart';
 
+import 'package:wat_project_frontend/domain/models/user_job_model.dart';
+
 @injectable
 class GetProfileUseCase {
   final UserRepository _repository;
@@ -17,6 +19,12 @@ class GetProfileUseCase {
         user: response.user.toModel(),
         profile: response.profile.toModel(),
         creditScore: response.creditScore.toModel(),
+        userJobs: response.userJobs?.map((jobId) => UserJobModel(
+          userId: response.user.id,
+          jobId: jobId,
+          assignedAt: DateTime.now(),
+          isMain: true,
+        )).toList() ?? [],
       ));
     } catch (e) {
       return Left(mapExceptionToFailure(e));

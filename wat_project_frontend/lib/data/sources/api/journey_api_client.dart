@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:wat_project_frontend/data/entities/journey_phase_entity.dart';import 'package:wat_project_frontend/data/entities/user_phase_history_entity.dart';import 'package:wat_project_frontend/data/entities/user_badge_entity.dart';import 'package:wat_project_frontend/data/entities/point_ledger_entity.dart';import 'package:wat_project_frontend/data/sources/api/api_model/leaderboard_entry.dart';
+import 'package:wat_project_frontend/data/entities/gamification/journey_phase_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
+import 'package:wat_project_frontend/data/entities/mission/user_phase_history_entity.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/gamification/phase_transition_result.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/list_response.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/phase_transition_result.dart';
 
 part 'journey_api_client.g.dart';
 

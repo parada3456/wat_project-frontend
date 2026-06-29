@@ -20,12 +20,12 @@ class _FriendApiService implements FriendApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<void> sendRequest(Map<String, dynamic> body) async {
+  Future<void> sendRequest(SendFriendRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
@@ -70,12 +70,12 @@ class _FriendApiService implements FriendApiService {
   }
 
   @override
-  Future<void> respondToRequest(String id, Map<String, dynamic> body) async {
+  Future<void> respondToRequest(String id, RespondFriendRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(

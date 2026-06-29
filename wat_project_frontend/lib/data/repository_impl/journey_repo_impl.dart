@@ -5,7 +5,7 @@ import 'package:wat_project_frontend/domain/models/user_badge_model.dart';
 import 'package:wat_project_frontend/domain/models/point_ledger_model.dart';
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/journey_api_client.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/leaderboard_entry.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 
 @injectable
 class JourneyRepoImpl implements JourneyRepository {

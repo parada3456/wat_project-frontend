@@ -1,8 +1,15 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum UserMissionStatus {
+  @JsonValue('not_started')
   notStarted,
+  @JsonValue('in_progress')
   inProgress,
+  @JsonValue('pending_verification')
   pendingVerification,
+  @JsonValue('completed')
   completed,
+  @JsonValue('overdue')
   overdue,
 }
 
