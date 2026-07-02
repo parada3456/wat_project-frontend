@@ -206,7 +206,7 @@ class _MissionApiService implements MissionApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'missions',
+            'admin/missions',
             queryParameters: queryParameters,
             data: _data,
           )

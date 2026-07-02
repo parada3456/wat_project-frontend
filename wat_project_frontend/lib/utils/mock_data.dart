@@ -349,8 +349,7 @@ abstract class MockData {
     userId: userId,
     badgeId: badgeId,
     sourceId: "source-badge-grant",
-    earnedAt: defaultDate.subtract(const Duration(days: 2)),
-    badge: badgeModel,
+    earnedAt: defaultDate.subtract(const Duration(days: 2)), badge: BadgeModel(badgeId: "badgeId", title: "title", triggerType: BadgeTriggerType.streak, createdAt: DateTime.now()),
   );
 
   static final UserCartModel userCartModel = UserCartModel(
