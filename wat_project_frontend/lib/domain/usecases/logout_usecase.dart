@@ -10,12 +10,12 @@ class LogoutUseCase {
 
   LogoutUseCase(this._repository);
 
-  Future<Either<Failure, bool>> call() async {
+  Future<Either<Failure, bool>> call(String refreshToken) async {
     try {
-      await _repository.logout();
+      await _repository.logout(refreshToken);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

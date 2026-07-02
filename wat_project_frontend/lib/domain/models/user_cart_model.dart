@@ -19,7 +19,7 @@ class UserCartModel {
   final String userId;
   final String jobId;
   final CartStatus status;
-  final DateTime addedAt;
+  final DateTime createdAt;
   final DateTime updatedAt;
 
   const UserCartModel({
@@ -27,7 +27,7 @@ class UserCartModel {
     required this.userId,
     required this.jobId,
     this.status = CartStatus.saved,
-    required this.addedAt,
+    required this.createdAt,
     required this.updatedAt,
   });
 
@@ -45,7 +45,7 @@ class UserCartModel {
           userId == other.userId &&
           jobId == other.jobId &&
           status == other.status &&
-          addedAt == other.addedAt &&
+          createdAt == other.createdAt &&
           updatedAt == other.updatedAt;
 
   @override
@@ -54,7 +54,7 @@ class UserCartModel {
         userId,
         jobId,
         status,
-        addedAt,
+        createdAt,
         updatedAt,
       );
 }

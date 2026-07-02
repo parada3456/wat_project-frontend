@@ -15,7 +15,7 @@ class UpdateLocationUseCase {
       await _repository.updateLocation(latitude, longitude);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

@@ -39,7 +39,7 @@ dependencies:
   flutter_bloc: 9.1.1
   get_it: ^9.2.1
   injectable: ^2.5.0
-  dio: ^5.4.0
+  dio: ^5.9.2
   retrofit: ^4.1.0
   json_annotation: ^4.9.0
   flutter_secure_storage: ^10.3.1
@@ -49,6 +49,7 @@ dependencies:
   freezed_annotation: ^3.1.0
   http: ^1.6.0
   dartz: ^0.10.1
+  equatable: ^2.0.8
 
 dev_dependencies:
   flutter_test:

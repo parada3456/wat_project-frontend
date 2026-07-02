@@ -1,17 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
 
 part 'auth_model.g.dart';
 
 @JsonSerializable()
-class AuthModel {
-  final String token;
-  final String refreshToken;
-  final DateTime expiresAt;
+class AuthModel extends AuthEntity{
 
-  const AuthModel({
-    required this.token,
-    required this.refreshToken,
-    required this.expiresAt,
+  AuthModel({
+    required super.token,
+    required super.refreshToken,
+    required super.expiresAt, 
+    required super.tokenType,
   });
 
   bool get isExpired => DateTime.now().isAfter(expiresAt);

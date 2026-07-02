@@ -1,10 +1,14 @@
-import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';import 'package:wat_project_frontend/domain/models/user_phase_history_model.dart';import 'package:wat_project_frontend/domain/models/user_badge_model.dart';import 'package:wat_project_frontend/domain/models/point_ledger_model.dart';import 'package:wat_project_frontend/data/sources/api/api_model/leaderboard_entry.dart';
+import 'package:wat_project_frontend/data/entities/gamification/journey_phase_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_phase_history_entity.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 
 abstract class JourneyRepository {
-  Future<List<JourneyPhaseModel>> listPhases();
+  Future<List<JourneyPhaseEntity>> listPhases();
   Future<bool> advancePhase();
-  Future<List<UserPhaseHistoryModel>> getHistory();
+  Future<List<UserPhaseHistoryEntity>> getHistory();
   Future<List<LeaderboardEntry>> getLeaderboard(String? scope, String? jobId);
-  Future<List<UserBadgeModel>> listBadges();
-  Future<List<PointLedgerModel>> getCreditHistory();
+  Future<List<UserBadgeEntity>> listBadges();
+  Future<List<PointLedgerEntity>> getCreditHistory();
 }

@@ -8,6 +8,7 @@ class GetUserUseCase {
   GetUserUseCase(this._repository);
 
   Future<UserModel> call() async {
-    return _repository.getMe();
+    final userProfileEntity = await _repository.getMe();
+    return userProfileEntity.userAccount.toModel();
   }
 }

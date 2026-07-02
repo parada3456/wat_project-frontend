@@ -13,9 +13,10 @@ class RegisterUseCase {
   Future<Either<Failure, AuthTokens>> call(String email, String password, String firstName, String lastName) async {
     try {
       final result = await _repository.register(email, password, firstName, lastName);
-      return Right(result);
+      final loginModel = result.toModel();
+      return Right(loginModel.auth);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

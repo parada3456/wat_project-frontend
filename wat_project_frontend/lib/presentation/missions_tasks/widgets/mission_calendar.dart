@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:wat_project_frontend/domain/models/mission_detail_model.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class MissionCalendar extends StatelessWidget {
-  const MissionCalendar({super.key});
+  final List<MissionDetailModel> missions;
+
+  const MissionCalendar({
+    super.key,
+    required this.missions,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder for a proper calendar implementation (e.g., table_calendar)
     return Container(
       padding: const EdgeInsets.all(AppDimension.space16),
       decoration: BoxDecoration(
@@ -47,7 +53,6 @@ class MissionCalendar extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppDimension.space16),
-          // Simple Grid Placeholder
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -59,7 +64,12 @@ class MissionCalendar extends StatelessWidget {
             itemCount: 30,
             itemBuilder: (context, index) {
               final day = index + 1;
-              final isDeadline = day == 20 || day == 25;
+              final isDeadline = missions.any((m) =>
+                  m.userMission.calculatedDueDate != null &&
+                  m.userMission.calculatedDueDate!.day == day &&
+                  m.userMission.calculatedDueDate!.month == 6 &&
+                  m.userMission.calculatedDueDate!.year == 2026);
+
               return Container(
                 decoration: BoxDecoration(
                   color: isDeadline ? AppColors.primary.withOpacity(0.1) : Colors.transparent,

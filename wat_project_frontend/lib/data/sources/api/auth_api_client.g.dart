@@ -30,7 +30,7 @@ class _AuthApiService implements AuthApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/register',
+            'auth/register',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -58,7 +58,7 @@ class _AuthApiService implements AuthApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/login',
+            'auth/login',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -76,16 +76,17 @@ class _AuthApiService implements AuthApiService {
   }
 
   @override
-  Future<void> logout() async {
+  Future<void> logout(LogoutRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/logout',
+            'auth/logout',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -105,7 +106,7 @@ class _AuthApiService implements AuthApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/refresh',
+            'auth/refresh',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -123,17 +124,17 @@ class _AuthApiService implements AuthApiService {
   }
 
   @override
-  Future<void> forgotPassword(Map<String, dynamic> body) async {
+  Future<void> forgotPassword(ForgotPasswordRequest request) async {
     final _extra = <String, dynamic>{'needLogin': false};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/forgot-password',
+            'auth/forgot-password',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -143,17 +144,17 @@ class _AuthApiService implements AuthApiService {
   }
 
   @override
-  Future<void> resetPassword(Map<String, dynamic> body) async {
+  Future<void> resetPassword(ResetPasswordRequest request) async {
     final _extra = <String, dynamic>{'needLogin': false};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/reset-password',
+            'auth/reset-password',
             queryParameters: queryParameters,
             data: _data,
           )

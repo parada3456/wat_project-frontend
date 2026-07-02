@@ -20,30 +20,28 @@ class _NotificationApiService implements NotificationApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<NotificationEntity>> listNotifications() async {
+  Future<PaginationResponse<NotificationEntity>> listNotifications() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<NotificationEntity>>(
+    final _options = _setStreamType<PaginationResponse<NotificationEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/notifications',
+            'notifications',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<NotificationEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<NotificationEntity> _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                NotificationEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = PaginationResponse<NotificationEntity>.fromJson(
+        _result.data!,
+        (json) => NotificationEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -61,7 +59,7 @@ class _NotificationApiService implements NotificationApiService {
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/notifications/${id}/read',
+            'notifications/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -80,7 +78,7 @@ class _NotificationApiService implements NotificationApiService {
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/notifications/read-all',
+            'notifications',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -99,7 +97,7 @@ class _NotificationApiService implements NotificationApiService {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/notifications/${id}',
+            'notifications/${id}',
             queryParameters: queryParameters,
             data: _data,
           )

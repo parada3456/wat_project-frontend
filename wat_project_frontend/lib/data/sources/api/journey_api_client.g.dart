@@ -20,57 +20,28 @@ class _JourneyApiService implements JourneyApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<JourneyPhaseEntity>> listPhases() async {
+  Future<PaginationResponse<JourneyPhaseEntity>> listPhases() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<JourneyPhaseEntity>>(
+    final _options = _setStreamType<PaginationResponse<JourneyPhaseEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/journey/phases',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<JourneyPhaseEntity> _value;
-    try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                JourneyPhaseEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<Map<String, bool>> advancePhase() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Map<String, bool>>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/journey/phase/transition',
+            'journey/phases',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Map<String, bool> _value;
+    late PaginationResponse<JourneyPhaseEntity> _value;
     try {
-      _value = _result.data!.cast<String, bool>();
+      _value = PaginationResponse<JourneyPhaseEntity>.fromJson(
+        _result.data!,
+        (json) => JourneyPhaseEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -79,30 +50,55 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
-  Future<List<UserPhaseHistoryEntity>> getHistory() async {
+  Future<PhaseTransitionResult> advancePhase() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<UserPhaseHistoryEntity>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _options = _setStreamType<PhaseTransitionResult>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/journey/history',
+            'journey/phase-transitions',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<UserPhaseHistoryEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PhaseTransitionResult _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                UserPhaseHistoryEntity.fromJson(i as Map<String, dynamic>),
+      _value = PhaseTransitionResult.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<PaginationResponse<UserPhaseHistoryEntity>> getHistory() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<PaginationResponse<UserPhaseHistoryEntity>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'journey/history',
+            queryParameters: queryParameters,
+            data: _data,
           )
-          .toList();
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<UserPhaseHistoryEntity> _value;
+    try {
+      _value = PaginationResponse<UserPhaseHistoryEntity>.fromJson(
+        _result.data!,
+        (json) => UserPhaseHistoryEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -127,7 +123,7 @@ class _JourneyApiService implements JourneyApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/leaderboard',
+            'leaderboard',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -149,29 +145,28 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
-  Future<List<UserBadgeEntity>> listBadges() async {
+  Future<PaginationResponse<UserBadgeEntity>> listBadges() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<UserBadgeEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserBadgeEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/user/badges',
+            'user/badges',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<UserBadgeEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<UserBadgeEntity> _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) => UserBadgeEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = PaginationResponse<UserBadgeEntity>.fromJson(
+        _result.data!,
+        (json) => UserBadgeEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -180,30 +175,28 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
-  Future<List<PointLedgerEntity>> getCreditHistory() async {
+  Future<PaginationResponse<PointLedgerEntity>> getCreditHistory() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<PointLedgerEntity>>(
+    final _options = _setStreamType<PaginationResponse<PointLedgerEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/user/credit-score/history',
+            'user/credit-score/history',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<PointLedgerEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<PointLedgerEntity> _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                PointLedgerEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = PaginationResponse<PointLedgerEntity>.fromJson(
+        _result.data!,
+        (json) => PointLedgerEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

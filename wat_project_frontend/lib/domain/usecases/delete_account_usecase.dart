@@ -15,7 +15,7 @@ class DeleteAccountUseCase {
       await _repository.deleteAccount(currentPassword);
       return const Right(true);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

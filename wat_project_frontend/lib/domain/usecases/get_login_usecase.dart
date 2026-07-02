@@ -1,7 +1,10 @@
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/auth_model.dart';import 'package:wat_project_frontend/domain/repositories/auth_repository.dart';
+import 'package:wat_project_frontend/data/entities/auth/login_entity.dart';
+import 'package:wat_project_frontend/domain/models/login_model.dart';
+import 'package:wat_project_frontend/domain/repositories/auth_repository.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
+
 @injectable
 class GetLoginUseCase {
   final AuthRepository _authRepository;
@@ -14,21 +17,19 @@ class GetLoginUseCase {
     this._authManager,
   );
 
-  Future<AuthModel> call(String email, String password) async {
+  Future<LoginModel> call(String email, String password) async {
     // 1. Login
-    final auth = await _authRepository.login(email, password);
+    final login = await _authRepository.login(email, password);
     
     // 2. Temporarily save session so we can fetch user profile
-    await _authManager.saveSession(auth, null);
-    
+    final authModel = login.auth.toModel();
     try {
-      // 3. Get user profile
-      final user = await _userRepository.getMe();
-      
+      await _authManager.saveSession(authModel, null);
+    
       // 4. Save full session with user ID
-      await _authManager.saveSession(auth, user.id);
+      await _authManager.saveSession(authModel, login.user.userId);
       
-      return auth;
+      return login.toModel();
     } catch (e) {
       // If fetching profile fails, we might want to clear the session or handle it
       await _authManager.clearSession();

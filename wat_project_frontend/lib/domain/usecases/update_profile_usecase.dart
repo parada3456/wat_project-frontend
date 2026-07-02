@@ -3,10 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/user_profile.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
-import 'package:wat_project_frontend/domain/models/credit_score_model.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/update_profile_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/user/update_profile_request.dart';
+
+import 'package:wat_project_frontend/domain/models/user_job_model.dart';
 
 @injectable
 class UpdateProfileUseCase {
@@ -14,7 +13,7 @@ class UpdateProfileUseCase {
 
   UpdateProfileUseCase(this._repository);
 
-  Future<Either<Failure, UserProfile>> call(String firstName, String lastName, String bio, String avatarUrl) async {
+  Future<Either<Failure, UserProfileModel>> call(String? firstName, String? lastName, String? bio, String? avatarUrl) async {
     try {
       await _repository.updateProfile(UpdateProfileRequest(
         firstName: firstName,
@@ -23,13 +22,14 @@ class UpdateProfileUseCase {
         avatarUrl: avatarUrl,
       ));
       final response = await _repository.getProfile();
-      return Right(UserProfile(
-        user: response.user.toModel(),
-        profile: response.profile.toModel(),
+      return Right(UserProfileModel(
+        user: response.userAccount.toModel(),
+        profile: response.userAccount.toProfileModel(),
         creditScore: response.creditScore.toModel(),
+        userJobs: response.userJobs?.map((e) => e.toModel()).toList() ?? [],
       ));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

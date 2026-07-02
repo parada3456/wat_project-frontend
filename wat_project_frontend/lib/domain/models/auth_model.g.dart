@@ -7,13 +7,15 @@ part of 'auth_model.dart';
 // **************************************************************************
 
 AuthModel _$AuthModelFromJson(Map<String, dynamic> json) => AuthModel(
-  token: json['token'] as String,
-  refreshToken: json['refreshToken'] as String,
-  expiresAt: DateTime.parse(json['expiresAt'] as String),
+  token: json['AccessToken'] as String,
+  refreshToken: json['RefreshToken'] as String,
+  expiresAt: DateTime.parse(json['ExpiresAt'] as String),
+  tokenType: json['token_type'] as String,
 );
 
 Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
-  'token': instance.token,
-  'refreshToken': instance.refreshToken,
-  'expiresAt': instance.expiresAt.toIso8601String(),
+  'AccessToken': instance.token,
+  'RefreshToken': instance.refreshToken,
+  'token_type': instance.tokenType,
+  'ExpiresAt': instance.expiresAt.toIso8601String(),
 };

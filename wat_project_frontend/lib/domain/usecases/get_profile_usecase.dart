@@ -3,9 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/user_profile.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
-import 'package:wat_project_frontend/domain/models/credit_score_model.dart';
 
 @injectable
 class GetProfileUseCase {
@@ -13,16 +10,19 @@ class GetProfileUseCase {
 
   GetProfileUseCase(this._repository);
 
-  Future<Either<Failure, UserProfile>> call() async {
+  Future<Either<Failure, UserProfileModel>> call() async {
     try {
-      final response = await _repository.getProfile();
-      return Right(UserProfile(
-        user: response.user.toModel(),
-        profile: response.profile.toModel(),
-        creditScore: response.creditScore.toModel(),
+      print("start usecase get profile");
+      final userProfileEntity = await _repository.getProfile();
+      return Right(UserProfileModel(
+        user: userProfileEntity.userAccount.toModel(),
+        profile: userProfileEntity.userAccount.toProfileModel(),
+        creditScore: userProfileEntity.creditScore.toModel(),
+        userJobs: userProfileEntity.userJobs.map((e) => e.toModel()).toList(),
       ));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      print("usecase get profile error");
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

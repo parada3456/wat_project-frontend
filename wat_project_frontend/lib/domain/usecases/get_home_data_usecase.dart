@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/models/home_data.dart';
 import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/mission_detail_response.dart';
+import 'package:wat_project_frontend/domain/models/mission_detail_model.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart';
 import 'package:wat_project_frontend/domain/repositories/mission_repository.dart';
@@ -22,17 +22,24 @@ class GetHomeDataUseCase {
 
   Future<Either<Failure, HomeData>> call() async {
     try {
-      final user = await _userRepository.getMe();
-      final phases = await _journeyRepository.listPhases();
+      print("start homedata fetch");
+      final userProfileEntity = await _userRepository.getMe();
+      final userProfileModel = userProfileEntity.toModel();
+      final userModel = userProfileModel.user;
+      print("start phases fetch");
+      final phases = (await _journeyRepository.listPhases())
+          .map((p) => p.toModel())
+          .toList();
+      print("start list mission fetch");
       final userMissions = await _missionRepository.listMissions();
-
+      print("finish list mission fetch");
       // Find current phase matching user's currentPhaseId
       final currentPhase = phases.firstWhere(
-        (p) => p.phaseId == user.currentPhaseId,
+        (p) => p.phaseId == userModel.currentPhaseId,
         orElse: () => phases.isNotEmpty 
             ? phases.first 
             : JourneyPhaseModel(
-                phaseId: user.currentPhaseId ?? 'phase-1',
+                phaseId: userModel.currentPhaseId ?? 'phase-1',
                 phaseNumber: 1,
                 title: 'Preparation & Booking',
                 description: 'Complete your initial preparations, flights and visa documentations.',
@@ -45,27 +52,37 @@ class GetHomeDataUseCase {
       final detailsList = await Future.wait(
         userMissions.map((um) async {
           try {
-            return await _missionRepository.getMissionDetail(um.missionId);
+            final detail = await _missionRepository.getMissionDetail(um.userMissionId);
+            final tasks = await _missionRepository.getTasksByIds(detail.tasks);
+            final userTasks = await _missionRepository.getUserTasksByIds(detail.userTasks);
+
+            return MissionDetailModel(
+              mission: detail.mission.toModel(),
+              userMission: detail.userMission.toModel(),
+              tasks: tasks.map((e) => e.toModel()).toList(),
+              userTasks: userTasks.map((e) => e.toModel()).toList(),
+            );
           } catch (_) {
             return null;
           }
         }),
       );
+      print("finish task fetch");
 
       final phaseMissions = detailsList
-          .where((d) => d != null && d.mission.phaseId == currentPhase.phaseId)
-          .cast<MissionDetailResponse>()
+          .whereType<MissionDetailModel>()
+          .where((d) => d.mission.phaseId == currentPhase.phaseId)
           .toList();
 
       return Right(HomeData(
-        user: user,
+        user: userModel,
         currentPhase: currentPhase,
         allPhases: phases,
         phaseMissions: phaseMissions,
         isMock: false,
       ));
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

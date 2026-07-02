@@ -20,17 +20,17 @@ class _FriendApiService implements FriendApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<void> sendRequest(Map<String, dynamic> body) async {
+  Future<void> sendRequest(SendFriendRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/friends/request',
+            'friend-requests',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -40,29 +40,28 @@ class _FriendApiService implements FriendApiService {
   }
 
   @override
-  Future<List<FriendshipEntity>> listPendingRequests() async {
+  Future<PaginationResponse<FriendshipEntity>> listPendingRequests() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<FriendshipEntity>>(
+    final _options = _setStreamType<PaginationResponse<FriendshipEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/friends/requests/pending',
+            'friend-requests',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<FriendshipEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<FriendshipEntity> _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) => FriendshipEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = PaginationResponse<FriendshipEntity>.fromJson(
+        _result.data!,
+        (json) => FriendshipEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -71,17 +70,17 @@ class _FriendApiService implements FriendApiService {
   }
 
   @override
-  Future<void> respondToRequest(Map<String, dynamic> body) async {
+  Future<void> respondToRequest(String id, RespondFriendRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(request.toJson());
     final _options = _setStreamType<void>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/friends/respond',
+            'friend-requests/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -91,29 +90,28 @@ class _FriendApiService implements FriendApiService {
   }
 
   @override
-  Future<List<FriendshipEntity>> listFriends() async {
+  Future<PaginationResponse<FriendshipEntity>> listFriends() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<FriendshipEntity>>(
+    final _options = _setStreamType<PaginationResponse<FriendshipEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/friends',
+            'friends',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<FriendshipEntity> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<FriendshipEntity> _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) => FriendshipEntity.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = PaginationResponse<FriendshipEntity>.fromJson(
+        _result.data!,
+        (json) => FriendshipEntity.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -131,7 +129,7 @@ class _FriendApiService implements FriendApiService {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/friends/${id}',
+            'friends/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -150,7 +148,7 @@ class _FriendApiService implements FriendApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/radar',
+            'radar',
             queryParameters: queryParameters,
             data: _data,
           )

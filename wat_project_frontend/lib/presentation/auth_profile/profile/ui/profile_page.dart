@@ -5,8 +5,7 @@ import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/credit_score_badge.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_event.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_state.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -70,32 +69,47 @@ class ProfilePage extends StatelessWidget {
             body: SafeArea(
               child: BlocConsumer<ProfileBloc, ProfileState>(
                 listener: (context, state) {
-                  if (state is ProfileFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.errorMessage),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  } else if (state is DeleteAccountSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Account successfully deleted.'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    context.go('/login');
-                  }
+                  state.status.whenOrNull(
+                    loadFailed: (message, _) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message ?? 'An error occurred'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    },
+                    loadSuccess: (message) {
+                      if (message == 'DELETE_ACCOUNT_SUCCESS') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Account successfully deleted.'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        context.go('/login');
+                      }
+                    },
+                  );
                 },
                 builder: (context, state) {
-                  if (state is ProfileLoading) {
+                  if (state.profile == null && state.status is UILoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (state is ProfileSuccess) {
-                    final user = state.profile.user;
-                    final profile = state.profile.profile;
-                    final creditScore = state.profile.creditScore;
+                  if (state.profile == null) {
+                    return Center(
+                      child: Text(
+                        state.status.maybeWhen(
+                          loadFailed: (message, _) => message ?? 'An error occurred',
+                          orElse: () => 'No profile data loaded',
+                        ),
+                      ),
+                    );
+                  }
+
+                  final user = state.profile!.user;
+                  final profile = state.profile!.profile;
+                  final creditScore = state.profile!.creditScore;
 
                     return SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
@@ -286,21 +300,6 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
                     );
-                  }
-
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Failed to load profile.'),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () => profileBloc.add(const GetProfileEvent()),
-                          child: const Text('Retry'),
-                        ),
-                      ],
-                    ),
-                  );
                 },
               ),
             ),

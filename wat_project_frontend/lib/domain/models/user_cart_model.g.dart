@@ -14,7 +14,7 @@ UserCartModel _$UserCartModelFromJson(Map<String, dynamic> json) =>
       status:
           $enumDecodeNullable(_$CartStatusEnumMap, json['status']) ??
           CartStatus.saved,
-      addedAt: DateTime.parse(json['addedAt'] as String),
+      createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
@@ -24,7 +24,7 @@ Map<String, dynamic> _$UserCartModelToJson(UserCartModel instance) =>
       'userId': instance.userId,
       'jobId': instance.jobId,
       'status': _$CartStatusEnumMap[instance.status]!,
-      'addedAt': instance.addedAt.toIso8601String(),
+      'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };
 

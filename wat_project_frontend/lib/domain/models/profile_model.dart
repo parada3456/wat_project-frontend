@@ -1,7 +1,12 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum RadarVisibility {
-  showAnonymous,
-  showFriends,
-  hidden,
+  @JsonValue('show_anonymous')                                                                                                
+  showAnonymous,                                                                                                              
+  @JsonValue('show_friends')                                                                                                  
+  showFriends,                                                                                                                
+  @JsonValue('hidden')                                                                                                        
+  hidden,                                                                                                                     
 }
 
 class ProfileModel {

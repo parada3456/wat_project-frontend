@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/badge.dart';
+import 'package:wat_project_frontend/data/entities/gamification/badge_entity.dart';
 
 @injectable
 class GetBadgesUseCase {
@@ -12,10 +13,12 @@ class GetBadgesUseCase {
 
   Future<Either<Failure, List<Badge>>> call() async {
     try {
-      final result = await _repository.getBadges();
-      return Right(result);
+      print("start usecase get badge");
+      final badgeEntities = await _repository.getBadges();
+      return Right(badgeEntities.map((e) => e.toModel()).toList());
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      print("error usecase get badge");
+      return Left(mapExceptionToFailure(e));
     }
   }
 }

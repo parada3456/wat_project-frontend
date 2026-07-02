@@ -1,36 +1,20 @@
-abstract class ProfileEvent {
-  const ProfileEvent();
-}
+part of 'profile_bloc.dart';
 
-class GetProfileEvent extends ProfileEvent {
-  const GetProfileEvent();
-}
+@freezed
+class ProfileEvent with _$ProfileEvent {
+  const factory ProfileEvent.getProfile() = GetProfileEvent;
 
-class UpdateProfileSubmittedEvent extends ProfileEvent {
-  final String firstName;
-  final String lastName;
-  final String bio;
-  final String avatarUrl;
+  const factory ProfileEvent.updateProfile({
+    required String firstName,
+    required String lastName,
+    required String bio,
+    required String avatarUrl,
+  }) = UpdateProfileSubmittedEvent;
 
-  const UpdateProfileSubmittedEvent({
-    required this.firstName,
-    required this.lastName,
-    required this.bio,
-    required this.avatarUrl,
-  });
-}
+  const factory ProfileEvent.updateLocation({
+    required double latitude,
+    required double longitude,
+  }) = UpdateLocationSubmittedEvent;
 
-class UpdateLocationSubmittedEvent extends ProfileEvent {
-  final double latitude;
-  final double longitude;
-
-  const UpdateLocationSubmittedEvent({
-    required this.latitude,
-    required this.longitude,
-  });
-}
-
-class DeleteAccountSubmittedEvent extends ProfileEvent {
-  final String password;
-  const DeleteAccountSubmittedEvent(this.password);
+  const factory ProfileEvent.deleteAccount(String password) = DeleteAccountSubmittedEvent;
 }

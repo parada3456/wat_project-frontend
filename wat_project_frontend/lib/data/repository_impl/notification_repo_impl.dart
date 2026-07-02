@@ -1,8 +1,7 @@
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/notification_model.dart';
+import 'package:wat_project_frontend/data/entities/notification/notification_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/notification_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/notification_api_client.dart';
-
 
 @injectable
 class NotificationRepoImpl implements NotificationRepository {
@@ -11,9 +10,9 @@ class NotificationRepoImpl implements NotificationRepository {
   NotificationRepoImpl(this._api);
 
   @override
-  Future<List<NotificationModel>> listNotifications() async {
+  Future<List<NotificationEntity>> listNotifications() async {
     final response = await _api.listNotifications();
-    return response.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override

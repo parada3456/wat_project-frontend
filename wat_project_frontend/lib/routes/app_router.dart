@@ -1,9 +1,8 @@
 
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/edit_profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/profile_page.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/ui/register_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/screens/user_settings_page.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/create_expense_page.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/expense_details_page.dart';
@@ -22,6 +21,7 @@ import 'package:wat_project_frontend/presentation/missions_tasks/screens/mission
 import 'package:wat_project_frontend/presentation/missions_tasks/screens/mission_detail_page.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/screens/missions_dashboard_page.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/screens/missions_search_page.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/screens/create_mission_page.dart';
 import 'package:wat_project_frontend/presentation/notifications/screens/notification_center_page.dart';
 import 'package:wat_project_frontend/presentation/social_radar/screens/friend_requests_page.dart';
 import 'package:wat_project_frontend/presentation/social_radar/screens/friends_list_page.dart';
@@ -29,6 +29,7 @@ import 'package:wat_project_frontend/presentation/social_radar/screens/radar_map
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/presentation/navigation/screens/main_shell_page.dart';
 import 'package:wat_project_frontend/presentation/home/screens/home_page.dart';
+import 'package:wat_project_frontend/presentation/admin_dashboard/screens/admin_dashboard_page.dart';
 
 class AppRouter {
   final AuthSessionManager _authManager;
@@ -36,7 +37,7 @@ class AppRouter {
   AppRouter(this._authManager);
 
   late final router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/login',
     refreshListenable: _authManager.sessionNotifier,
     // redirect: (context, state) {
     //   final isLoggedIn = _authManager.currentSession != null;
@@ -53,14 +54,22 @@ class AppRouter {
     //   return null;
     // },
     routes: [
+      // GoRoute(
+      //   path: '/home',
+      //   builder: (context, state) => const HomePage(),
+      // ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => const LoginPage(),
       ),
-      GoRoute(
-        path: '/register',
-        builder: (context, state) => const RegisterPage(),
-      ),
+      // GoRoute(
+      //   path: '/register',
+      //   builder: (context, state) => const RegisterPage(),
+      // ),
+      // GoRoute(
+      //   path: '/register',
+      //   builder: (context, state) => const RegisterPage2(),
+      // ),
       ShellRoute(
         builder: (context, state, child) {
           return MainShellPage(child: child);
@@ -102,7 +111,10 @@ class AppRouter {
       ),
       GoRoute(
         path: '/missions/detail',
-        builder: (context, state) => const MissionDetailPage(),
+        builder: (context, state) {
+          final missionId = state.extra as String? ?? '';
+          return MissionDetailPage(missionId: missionId);
+        },
       ),
       GoRoute(
         path: '/missions/calendar',
@@ -111,6 +123,10 @@ class AppRouter {
       GoRoute(
         path: '/missions/search',
         builder: (context, state) => const MissionsSearchPage(),
+      ),
+      GoRoute(
+        path: '/missions/create',
+        builder: (context, state) => const CreateMissionPage(),
       ),
       GoRoute(
         path: '/journey',
@@ -155,6 +171,27 @@ class AppRouter {
       GoRoute(
         path: '/notifications',
         builder: (context, state) => const NotificationCenterPage(),
+      ),
+      GoRoute(
+        path: '/admin',
+        builder: (context, state) => const AdminDashboardPage(),
+        // redirect: (context, state) {
+        //   final session = _authManager.currentSession;
+        //   if (session == null) return '/login';
+        //   final parts = session.token.split('.');
+        //   if (parts.length >= 2) {
+        //     try {
+        //       final payload = parts[1];
+        //       final normalized = base64.normalize(payload);
+        //       final decoded = utf8.decode(base64Decode(normalized));
+        //       final Map<String, dynamic> claims = jsonDecode(decoded) as Map<String, dynamic>;
+        //       if (claims['is_admin'] == true) {
+        //         return null;
+        //       }
+        //     } catch (_) {}
+        //   }
+        //   return '/home';
+        // },
       ),
       GoRoute(
         path: '/jobs/details',

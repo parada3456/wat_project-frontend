@@ -1,0 +1,348 @@
+{
+  "GET /api/v1/journey/phases": {
+    "request": {
+      "query": {}
+    },
+    "response": {
+      "phases": [
+        {
+          "phase_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+          "phase_number": 1,
+          "title": "Pre-Departure Preparation",
+          "description": "Complete all mandatory preparatory tasks, visa documents review, and housing options evaluation before departure.",
+          "created_at": "2026-06-01T00:00:00.000Z",
+          "updated_at": "2026-06-01T00:00:00.000Z"
+        },
+        {
+          "phase_id": "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e",
+          "phase_number": 2,
+          "title": "In-Country Compliance",
+          "description": "Check in with your sponsor, upload SEVIS status, verify housing address, and track initial job check-in.",
+          "created_at": "2026-06-01T00:00:00.000Z",
+          "updated_at": "2026-06-01T00:00:00.000Z"
+        },
+        {
+          "phase_id": "c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f",
+          "phase_number": 3,
+          "title": "Post-Travel & Reflection",
+          "description": "Complete sponsor exit surveys, submit tax back forms, and share your experiences with the next generation.",
+          "created_at": "2026-06-01T00:00:00.000Z",
+          "updated_at": "2026-06-01T00:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "POST /api/v1/journey/phase-transitions": {
+    "request": {
+      "body": {
+        "target_phase_id": "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e"
+      }
+    },
+    "response": {
+      "success": true,
+      "message": "Successfully transitioned to Phase 2: In-Country Compliance.",
+      "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+      "transitioned_from_phase_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      "transitioned_to_phase_id": "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e",
+      "points_awarded": 500,
+      "current_total_points": 1500,
+      "transitioned_at": "2026-06-26T10:13:34.000Z"
+    }
+  },
+  "GET /api/v1/journey/history": {
+    "request": {
+      "query": {
+        "page": "1",
+        "limit": "10"
+      }
+    },
+    "response": {
+      "data": [
+        {
+          "history_id": "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "phase_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+          "phase_number": 1,
+          "title": "Pre-Departure Preparation",
+          "phase_points_earned": 350,
+          "entered_at": "2026-06-01T08:30:00.000Z",
+          "completed_at": "2026-06-25T17:45:00.000Z"
+        },
+        {
+          "history_id": "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b1c",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "phase_id": "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e",
+          "phase_number": 2,
+          "title": "In-Country Compliance",
+          "phase_points_earned": 0,
+          "entered_at": "2026-06-25T17:45:01.000Z",
+          "completed_at": null
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total_items": 2,
+        "total_pages": 1,
+        "has_more": false
+      }
+    }
+  },
+  "GET /api/v1/leaderboard": {
+    "request": {
+      "query": {
+        "page": "1",
+        "limit": "20"
+      }
+    },
+    "response": {
+      "data": [
+        {
+          "user_id": "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+          "first_name": "Alice",
+          "last_name": "Smith",
+          "avatar_url": "https://example.com/avatars/alice.jpg",
+          "total_lifetime_points": 2450,
+          "rank": 1
+        },
+        {
+          "user_id": "8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e",
+          "first_name": "Bob",
+          "last_name": "Johnson",
+          "avatar_url": "https://example.com/avatars/bob.jpg",
+          "total_lifetime_points": 2100,
+          "rank": 2
+        },
+        {
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "first_name": "John",
+          "last_name": "Doe",
+          "avatar_url": "https://example.com/avatars/john.jpg",
+          "total_lifetime_points": 1500,
+          "rank": 3
+        },
+        {
+          "user_id": "9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
+          "first_name": "Jane",
+          "last_name": "K. (Anonymous)",
+          "avatar_url": null,
+          "total_lifetime_points": 1200,
+          "rank": 4
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total_items": 4,
+        "total_pages": 1,
+        "has_more": false
+      }
+    }
+  },
+  "GET /api/v1/users/me/badges": {
+    "request": {
+      "query": {}
+    },
+    "response": {
+      "badges": [
+        {
+          "user_badge_id": "0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a",
+          "badge_id": "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b",
+          "title": "Early Bird Prep",
+          "description": "Completed all Pre-Departure preparation tasks 7 days before target date.",
+          "trigger_type": "speed",
+          "icon_url": "https://example.com/assets/badges/early_bird.png",
+          "source_id": "a0b1c2d3-e4f5-6a7b-8c9d-0e1f2a3b4c5d",
+          "earned_at": "2026-06-10T12:00:00.000Z"
+        },
+        {
+          "user_badge_id": "1e2f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b",
+          "badge_id": "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b1c",
+          "title": "Phase 1 Conquered",
+          "description": "Successfully completed all compliance requirements for Phase 1.",
+          "trigger_type": "phase_complete",
+          "icon_url": "https://example.com/assets/badges/phase1_complete.png",
+          "source_id": "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b",
+          "earned_at": "2026-06-25T17:45:00.000Z"
+        }
+      ]
+    }
+  },
+  "GET /api/v1/users/me/points/ledger": {
+    "request": {
+      "query": {
+        "page": "1",
+        "limit": "15"
+      }
+    },
+    "response": {
+      "data": [
+        {
+          "ledger_id": "2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "source_type": "mission_base",
+          "source_id": "a0b1c2d3-e4f5-6a7b-8c9d-0e1f2a3b4c5d",
+          "delta": 100,
+          "lifetime_balance_after": 100,
+          "phase_balance_after": 100,
+          "note": "Completed compliance task: Upload DS-2019 Document",
+          "created_at": "2026-06-05T09:00:00.000Z"
+        },
+        {
+          "ledger_id": "3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "source_type": "speed_bonus",
+          "source_id": "a0b1c2d3-e4f5-6a7b-8c9d-0e1f2a3b4c5d",
+          "delta": 50,
+          "lifetime_balance_after": 150,
+          "phase_balance_after": 150,
+          "note": "Speed bonus for uploading DS-2019 before due date",
+          "created_at": "2026-06-05T09:00:00.000Z"
+        },
+        {
+          "ledger_id": "4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "source_type": "expense_penalty",
+          "source_id": "b0c1d2e3-f4a5-6b7c-8d9e-0f1a2b3c4d5e",
+          "delta": -50,
+          "lifetime_balance_after": 100,
+          "phase_balance_after": 100,
+          "note": "Penalty: Shared roommate expense split is overdue",
+          "created_at": "2026-06-15T00:01:00.000Z"
+        },
+        {
+          "ledger_id": "5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "source_type": "mission_base",
+          "source_id": "c0d1e2f3-a4b5-6c7d-8e9f-0a1b2c3d4e5f",
+          "delta": 200,
+          "lifetime_balance_after": 300,
+          "phase_balance_after": 300,
+          "note": "Completed compliance task: Pre-departure Quiz",
+          "created_at": "2026-06-20T14:30:00.000Z"
+        },
+        {
+          "ledger_id": "6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "source_type": "streak_bonus",
+          "source_id": "c0d1e2f3-a4b5-6c7d-8e9f-0a1b2c3d4e5f",
+          "delta": 50,
+          "lifetime_balance_after": 350,
+          "phase_balance_after": 350,
+          "note": "Streak bonus: 3 consecutive compliance tasks completed",
+          "created_at": "2026-06-20T14:30:00.000Z"
+        },
+        {
+          "ledger_id": "7d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "source_type": "admin_adjust",
+          "source_id": "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f5a",
+          "delta": 1150,
+          "lifetime_balance_after": 1500,
+          "phase_balance_after": 1500,
+          "note": "Admin phase transition reward & verification adjustment",
+          "created_at": "2026-06-25T17:45:00.000Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 15,
+        "total_items": 6,
+        "total_pages": 1,
+        "has_more": false
+      }
+    }
+  },
+  "GET /api/v1/users/me/credit-score/history": {
+    "request": {
+      "query": {
+        "page": "1",
+        "limit": "10"
+      }
+    },
+    "response": {
+      "data": [
+        {
+          "history_id": "8e9f0a1b-2c3d-4e5f-6a7b-8c9d0e1f2a3b",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "score_before": 100,
+          "score_after": 90,
+          "change_amount": -10,
+          "reason": "Late Payment Penalty: Roommate split for Electric Bill was overdue by 5 days.",
+          "expense": {
+            "transaction_id": "b0c1d2e3-f4a5-6b7c-8d9e-0f1a2b3c4d5e",
+            "title": "Electric Bill",
+            "total_amount": 150.00,
+            "owe_amount": 50.00,
+            "due_date": "2026-06-10T23:59:59.000Z"
+          },
+          "created_at": "2026-06-15T00:01:00.000Z"
+        },
+        {
+          "history_id": "9f0a1b2c-3d4e-5f6a-7b8c-9d0e1f2a3b4c",
+          "user_id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+          "score_before": 90,
+          "score_after": 95,
+          "change_amount": 5,
+          "reason": "On-time Settlement: Roommate split for Internet Bill settled within 24 hours of receipt.",
+          "expense": {
+            "transaction_id": "c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f",
+            "title": "Internet Bill",
+            "total_amount": 90.00,
+            "owe_amount": 30.00,
+            "due_date": "2026-06-21T23:59:59.000Z"
+          },
+          "created_at": "2026-06-22T10:15:00.000Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total_items": 2,
+        "total_pages": 1,
+        "has_more": false
+      }
+    }
+  },
+  "GET /api/v1/badges": {
+    "request": {
+      "query": {}
+    },
+    "response": {
+      "badges": [
+        {
+          "badge_id": "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b",
+          "title": "Early Bird Prep",
+          "description": "Completed all Pre-Departure preparation tasks 7 days before target date.",
+          "trigger_type": "speed",
+          "icon_url": "https://example.com/assets/badges/early_bird.png",
+          "created_at": "2026-06-01T00:00:00.000Z"
+        },
+        {
+          "badge_id": "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b1c",
+          "title": "Phase 1 Conquered",
+          "description": "Successfully completed all compliance requirements for Phase 1.",
+          "trigger_type": "phase_complete",
+          "icon_url": "https://example.com/assets/badges/phase1_complete.png",
+          "created_at": "2026-06-01T00:00:00.000Z"
+        },
+        {
+          "badge_id": "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c2d",
+          "title": "Streak Master",
+          "description": "Completed 5 consecutive compliance missions without missing due dates.",
+          "trigger_type": "streak",
+          "icon_url": "https://example.com/assets/badges/streak_master.png",
+          "created_at": "2026-06-01T00:00:00.000Z"
+        },
+        {
+          "badge_id": "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d3e",
+          "title": "First Responder",
+          "description": "Be the first in your housing block to complete a mandatory milestone.",
+          "trigger_type": "first_completer",
+          "icon_url": "https://example.com/assets/badges/first_responder.png",
+          "created_at": "2026-06-01T00:00:00.000Z"
+        }
+      ]
+    }
+  }
+}

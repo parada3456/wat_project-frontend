@@ -7,10 +7,9 @@ import 'package:wat_project_frontend/domain/models/user_model.dart';
 import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
 import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart';
-import 'package:wat_project_frontend/presentation/home/bloc/home_event.dart';
-import 'package:wat_project_frontend/presentation/home/bloc/home_state.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -53,22 +52,22 @@ class HomeView extends StatelessWidget {
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          if (state is HomeInitial || state is HomeLoading) {
+          if (state.homeData == null && state.status is UILoading) {
             return const Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             );
           }
 
-          if (state is HomeFailure) {
-            final data = state.fallbackData;
-            if (data != null) {
-              return _buildDashboard(context, data, errorMessage: state.errorMessage);
+          if (state.status is UILoadFailed) {
+            final message = (state.status as UILoadFailed).message;
+            if (state.homeData != null) {
+              return _buildDashboard(context, state.homeData!, errorMessage: message);
             }
-            return _buildErrorState(context, state.errorMessage);
+            return _buildErrorState(context, message ?? 'Failed to load home data');
           }
 
-          if (state is HomeSuccess) {
-            return _buildDashboard(context, state.data);
+          if (state.homeData != null) {
+            return _buildDashboard(context, state.homeData!);
           }
 
           return const SizedBox.shrink();
@@ -133,11 +132,11 @@ class HomeView extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: InkWell(
-                    onTap: () => context.push('/missions/detail', extra: dm.mission.missionId),
+                    onTap: () => context.push('/missions/detail', extra: dm.userMission.userMissionId),
                     borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
                     child: MissionCard(
                       title: dm.mission.title,
-                      deadline: _formatDeadline(dm.userMission.calculatedDueDate != null ? DateTime.tryParse(dm.userMission.calculatedDueDate!) : null) ?? 'Soon',
+                      deadline: _formatDeadline(dm.userMission.calculatedDueDate) ?? 'Soon',
                       bonusPoints: dm.mission.basePoints,
                       isMandatory: dm.mission.isMandatory,
                       progress: progress,
@@ -204,14 +203,16 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildGreeting(UserModel user) {
-    final name = user.firstName ?? 'Traveler';
+    final name = (user.firstName != null && user.firstName!.trim().isNotEmpty)
+        ? user.firstName!.trim()
+        : 'Traveler';
     return Row(
       children: [
         CircleAvatar(
           radius: 26,
           backgroundColor: AppColors.primary.withOpacity(0.15),
           child: Text(
-            name.substring(0, 1).toUpperCase(),
+            name.isNotEmpty ? name[0].toUpperCase() : 'T',
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w800,

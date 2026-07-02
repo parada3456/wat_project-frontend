@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
@@ -11,15 +12,19 @@ class TempTestScreen extends StatefulWidget {
 }
 
 class _TempTestScreenState extends State<TempTestScreen> {
-  final TextEditingController _urlController = TextEditingController(
-    text: 'http://localhost:8080/health', // Default for Android
-  );
+  late final TextEditingController _urlController;
   String _status = 'Press button to test backend';
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    final defaultUrl = kIsWeb
+        ? 'http://localhost:3456/health'
+        : (defaultTargetPlatform == TargetPlatform.android
+            ? 'http://10.0.2.2:3456/health'
+            : 'http://localhost:3456/health');
+    _urlController = TextEditingController(text: defaultUrl);
   }
 
   Future<void> _testBackend() async {
@@ -45,9 +50,9 @@ class _TempTestScreenState extends State<TempTestScreen> {
     } catch (e) {
       setState(() {
         _status = 'Connection failed: $e\n\nTips:\n'
-            '- Android Emulator: http://10.0.2.2:8080/health\n'
-            '- iOS Simulator: http://localhost:8080/health\n'
-            '- Physical Device: http://<YOUR_IP>:8080/health';
+            '- Android Emulator: http://10.0.2.2:3456/health\n'
+            '- iOS Simulator: http://localhost:3456/health\n'
+            '- Physical Device: http://<YOUR_IP>:3456/health';
       });
     } finally {
       setState(() {
@@ -86,6 +91,7 @@ class _TempTestScreenState extends State<TempTestScreen> {
         const _RouteNavInfo(title: 'Profile', path: '/profile', icon: Icons.account_circle),
         const _RouteNavInfo(title: 'Edit Profile', path: '/profile/edit', icon: Icons.edit),
         const _RouteNavInfo(title: 'Settings', path: '/settings', icon: Icons.settings),
+        const _RouteNavInfo(title: 'Admin', path: '/admin', icon: Icons.admin_panel_settings),
       ],
       'Missions & Tasks': [
         const _RouteNavInfo(title: 'Missions Dashboard', path: '/missions', icon: Icons.dashboard),
@@ -208,7 +214,7 @@ class _TempTestScreenState extends State<TempTestScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Backend URL',
                         border: OutlineInputBorder(),
-                        hintText: 'http://localhost:8080/health',
+                        hintText: 'http://localhost:3456/health',
                       ),
                     ),
                     const SizedBox(height: 16),

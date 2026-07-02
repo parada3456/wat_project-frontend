@@ -1,0 +1,365 @@
+{
+  "adjust_points_request": {
+    "points_delta": 50,
+    "reason": "Bonus points for early submission"
+  },
+  "verify_mission_request": {
+    "approved": true,
+    "rejection_reason": null
+  },
+  "field_error": {
+    "field": "email",
+    "reason": "Enter a valid email address."
+  },
+  "api_error": {
+    "code": "validation_failed",
+    "message": "One or more validation constraints failed.",
+    "details": [
+      {
+        "field": "email",
+        "reason": "Enter a valid email address."
+      }
+    ]
+  },
+  "auth_refresh_request": {
+    "refresh_token": "mock-refresh-token-jwt-value"
+  },
+  "forgot_password_request": {
+    "email": "john.doe@example.com"
+  },
+  "login_request": {
+    "email": "john.doe@example.com",
+    "password": "StrongSecurePassword123!"
+  },
+  "logout_request": {
+    "refresh_token": "mock-refresh-token-jwt-value"
+  },
+  "register_request": {
+    "email": "john.doe@example.com",
+    "password": "StrongSecurePassword123!",
+    "first_name": "John",
+    "last_name": "Doe"
+  },
+  "reset_password_request": {
+    "token": "mock-password-reset-token",
+    "new_password": "NewStrongSecurePassword789!"
+  },
+  "expense_split_request": {
+    "user_id": "friend-67890",
+    "owe_amount": 25.5
+  },
+  "create_expense_request": {
+    "title": "Weekly Grocery Split",
+    "total_amount": 76.5,
+    "currency": "USD",
+    "memo": "Divided equally among three roommates",
+    "due_date": "2026-07-02T12:00:00Z",
+    "splits": [
+      {
+        "user_id": "user-12345",
+        "owe_amount": 25.5
+      },
+      {
+        "user_id": "friend-67890",
+        "owe_amount": 25.5
+      },
+      {
+        "user_id": "user-9999",
+        "owe_amount": 25.5
+      }
+    ]
+  },
+  "expense_detail_response": {
+    "transaction": {
+      "transaction_id": "tx-707",
+      "paid_by_user_id": "friend-67890",
+      "title": "Weekly Grocery Split",
+      "total_amount": 76.5,
+      "currency": "USD",
+      "memo": "Divided equally among three roommates",
+      "transaction_date": "2026-06-25T09:30:00Z",
+      "due_date": "2026-06-25T09:30:00Z",
+      "created_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "splits": [
+      "split-606"
+    ]
+  },
+  "respond_friend_request": {
+    "accept": true,
+    "status": "accepted"
+  },
+  "send_friend_request": {
+    "target_user_id": "friend-67890"
+  },
+  "radar_entry": {
+    "user_id": "friend-67890",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "avatar_url": "https://example.com/assets/avatars/jane_doe.jpg",
+    "latitude": 44.4281,
+    "longitude": -110.5888,
+    "distance": 120.5
+  },
+  "leaderboard_entry": {
+    "rank": 1,
+    "user_id": "user-12345",
+    "name": "John Doe",
+    "points": 250,
+    "streak": 3,
+    "badges": [
+      "First Steps",
+      "Quick Starter"
+    ]
+  },
+  "phase_transition_result": {
+    "transitioned": true,
+    "previous_phase_id": "phase-1",
+    "new_phase_id": "phase-2",
+    "points_rewarded": 50,
+    "completed_at": "2026-06-25T09:30:00Z"
+  },
+  "add_to_cart_request": {
+    "job_id": "job-303"
+  },
+  "assign_job_request": {
+    "job_id": "job-303",
+    "is_main": true,
+    "start_date": "2026-06-25T09:30:00Z",
+    "end_date": "2026-06-25T09:30:00Z"
+  },
+  "create_review_alternative_request": {
+    "job_id": "job-303",
+    "rating_stars": 4.5,
+    "review_text": "Great manager, good hours."
+  },
+  "create_review_request": {
+    "job_id": "job-303",
+    "rating_stars": 4.5,
+    "review_text": "Great manager, good hours."
+  },
+  "job_detail_response": {
+    "job": {
+      "job_id": "job-303",
+      "agency_name": "InterExchange",
+      "employer_title": "Yellowstone National Park Lodge",
+      "position": "Food Service Associate",
+      "position_type": "Hospitality",
+      "location_city": "Yellowstone",
+      "location_state": "WY",
+      "location_rank": "A",
+      "us_sponsor": true,
+      "salary_range_min": 14.5,
+      "salary_range_max": 16.0,
+      "available_slots": 5,
+      "description": "Great opportunity to work in a world-famous National Park! Duties include assisting with food prep, cash handling, and customer service.",
+      "range_min_start_date": "2026-06-25T09:30:00Z",
+      "range_max_start_date": "2026-06-25T09:30:00Z",
+      "range_min_end_date": "2026-06-25T09:30:00Z",
+      "range_max_end_date": "2026-06-25T09:30:00Z",
+      "source_url": "https://example.com/jobs/yellowstone-food-service",
+      "scrape_at": "2026-06-25T09:30:00Z",
+      "posted_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "housing": {
+      "housing_id": "house-404",
+      "job_id": "job-303",
+      "description": "Cozy student dorms with single rooms and shared kitchen facilities.",
+      "weekly_rate": 120.0,
+      "deposit": 300.0,
+      "transportation": "Bikes provided, public bus stop 5 minutes walking distance.",
+      "created_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "rating": {
+      "rating_summary_id": "rating-505",
+      "job_id": "job-303",
+      "overall_rate": 4.5,
+      "agency_rate": 4.2,
+      "avarage_hours": 34.5,
+      "job_rate": 4.6,
+      "coworkers_rate": 4.8,
+      "town_rate": 4.3,
+      "housing_rate": 4.0,
+      "second_job_feasibility_rate": 3.5,
+      "overtime_availability_rate": 4.4,
+      "review_count": 15,
+      "updated_at": "2026-06-25T09:30:00Z"
+    }
+  },
+  "patch_job_request": {
+    "job_id": "job-303",
+    "position": "Lead Food Service Associate",
+    "salary_range_min": 15.5,
+    "available_slots": 4
+  },
+  "update_cart_status_request": {
+    "status": "saved"
+  },
+  "pagination_info": {
+    "page": 1,
+    "page_size": 10,
+    "total_items": 45,
+    "total_pages": 5
+  },
+  "job_posting_list_response": {
+    "data": [
+      "job-303"
+    ],
+    "pagination": {
+      "page": 1,
+      "page_size": 10,
+      "total_items": 45,
+      "total_pages": 5
+    }
+  },
+  "mission_detail_response": {
+    "mission": {
+      "mission_id": "mission-101",
+      "phase_id": "phase-1",
+      "title": "Upload DS-2019 Document",
+      "description": "Provide a scanned copy of your official DS-2019 form issued by your sponsor.",
+      "location": "Online / Mobile App",
+      "base_points": 100,
+      "is_mandatory": true,
+      "verification_type": "upload",
+      "due_date_type": "relative",
+      "fixed_due_date": null,
+      "relative_trigger_event": "arrival_date",
+      "relative_days_offset": 7,
+      "created_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "user_mission": {
+      "user_mission_id": "user-mission-333",
+      "user_id": "user-12345",
+      "mission_id": "mission-101",
+      "status": "Completed",
+      "calculated_due_date": "2026-06-25T09:30:00Z",
+      "total_points_earned": 130,
+      "rewarded_at": "2026-06-25T09:30:00Z",
+      "created_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "tasks": [
+      "task-202"
+    ],
+    "user_tasks": [
+      "user-task-444"
+    ]
+  },
+  "pending_verifications_response": {
+    "data": [
+      "user-mission-333"
+    ]
+  },
+  "toggle_task_request": {
+    "completed": true,
+    "is_completed": true
+  },
+  "verify_mission_response": {
+    "user_mission_id": "user-mission-333",
+    "status": "verified",
+    "verified_at": "2026-06-25T09:30:00Z",
+    "verified_by": "admin-system"
+  },
+  "upload_media_response": {
+    "url": "https://s3.amazonaws.com/wat-proofs/visa_scan.jpg",
+    "key": "proofs/visa_scan.jpg"
+  },
+  "delete_account_request": {
+    "current_password": "StrongSecurePassword123!"
+  },
+  "update_location_request": {
+    "latitude": 44.4279,
+    "longitude": -110.5884
+  },
+  "update_password_request": {
+    "current_password": "StrongSecurePassword123!",
+    "new_password": "SuperNewStrongSecurePassword999!"
+  },
+  "update_profile_request": {
+    "first_name": "Johnathan",
+    "bio": "An upgraded student bio."
+  },
+  "update_settings_request": {
+    "radar_visibility": "hidden",
+    "push_notifications": true
+  },
+  "user_profile_response": {
+    "user": {
+      "id": "user-12345",
+      "email": "john.doe@example.com",
+      "current_phase_id": "phase-1",
+      "total_lifetime_points": 250,
+      "current_phase_points": 150,
+      "mission_streak": 3,
+      "arrival_date": "2026-06-25T09:30:00Z",
+      "job_start_date": "2026-06-25T09:30:00Z",
+      "created_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "profile": {
+      "profile_id": "profile-1",
+      "user_id": "user-12345",
+      "first_name": "John",
+      "last_name": "Doe",
+      "phone_number": "+15550199",
+      "bio": "Adventurous student from Bangkok exploring Yellowstone this summer!",
+      "avatar_url": "https://example.com/assets/avatars/john_doe.jpg",
+      "radar_visibility": "hidden",
+      "current_coordinates": "44.4279,-110.5884",
+      "location_updated_at": "2026-06-25T09:30:00Z",
+      "updated_at": "2026-06-25T09:30:00Z"
+    },
+    "credit_score": {
+      "credit_id": "credit-score-1",
+      "user_id": "user-12345",
+      "current_score": 95,
+      "last_updated": "2026-06-25T09:30:00Z"
+    },
+    "user_jobs": [
+      "job-303"
+    ]
+  },
+  "users_list_response": {
+    "data": [
+      "user-12345"
+    ]
+  },
+  "point_ledger": {
+    "ledger_id": "ldg-2026-0001",
+    "user_id": "user-12345",
+    "source_type": "Speed_Bonus",
+    "source_id": "user-mission-333",
+    "delta": 20,
+    "lifetime_balance_after": 1250,
+    "phase_balance_after": 320,
+    "note": "\u0e42\u0e1a\u0e19\u0e31\u0e2a\u0e17\u0e33\u0e20\u0e32\u0e23\u0e01\u0e34\u0e08\u0e40\u0e23\u0e47\u0e27\u0e1e\u0e34\u0e40\u0e28\u0e29\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e20\u0e32\u0e23\u0e01\u0e34\u0e08\u0e1b\u0e23\u0e30\u0e08\u0e33\u0e40\u0e1b\u0e47\u0e19\u0e2a\u0e31\u0e1b\u0e14\u0e32\u0e2b\u0e4c",
+    "created_at": "2026-06-25T09:30:00Z"
+  },
+  "badges": {
+    "badge_id": "badge-streak-10d",
+    "title": "\u0e40\u0e08\u0e49\u0e32\u0e22\u0e38\u0e17\u0e18\u0e08\u0e31\u0e01\u0e23\u0e44\u0e23\u0e49\u0e1e\u0e48\u0e32\u0e22",
+    "description": "\u0e17\u0e33\u0e20\u0e32\u0e23\u0e01\u0e34\u0e08\u0e15\u0e48\u0e2d\u0e40\u0e19\u0e37\u0e48\u0e2d\u0e07\u0e01\u0e31\u0e19\u0e04\u0e23\u0e1a 10 \u0e27\u0e31\u0e19",
+    "trigger_type": "Streak",
+    "icon_url": "https://cdn.example.com/assets/badges/streak-10.png",
+    "created_at": "2026-01-01T00:00:00Z"
+  },
+  "user_badges": {
+    "user_badge_id": "ub-777888",
+    "user_id": "user-12345",
+    "badge_id": "badge-streak-10d",
+    "source_id": "user-mission-333",
+    "earned_at": "2026-06-25T09:30:00Z"
+  },
+  "proof": {
+    "proof_id": "proof-123",
+    "proof_url": "https://example.com/proofs/user-12345/ds2019.pdf",
+    "proof_submitted_at": "2026-06-25T09:30:00Z",
+    "verified_at": "2026-06-25T09:30:00Z",
+    "verified_by": "admin_id"
+  }
+}

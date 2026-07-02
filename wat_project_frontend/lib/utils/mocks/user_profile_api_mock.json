@@ -1,0 +1,125 @@
+{
+  "GET /api/v1/users/me": {
+    "request": null,
+    "response": {
+      "user_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "email": "student@watproject.org",
+      "current_phase_id": "2b1a8d05-4f76-47b2-bd73-dc8436cd9dc5",
+      "total_lifetime_points": 350,
+      "current_phase_points": 120,
+      "mission_streak": 3,
+      "arrival_date": "2026-06-01T12:00:00.000Z",
+      "job_start_date": "2026-06-15T08:00:00.000Z",
+      "fcm_token": "fcm_token_example_123456",
+      "first_name": "John",
+      "last_name": "Doe",
+      "phone_number": "+1234567890",
+      "bio": "Excited for my Work and Travel program!",
+      "avatar_url": "https://example.com/avatar.jpg",
+      "radar_visibility": "show_friends",
+      "push_notifications_enabled": true,
+      "credit_score": {
+        "credit_id": "73e8e2b8-9366-419b-a010-09bc298516dc",
+        "current_score": 95,
+        "last_updated": "2026-06-25T10:13:33.000Z"
+      },
+      "created_at": "2026-05-01T09:00:00.000Z",
+      "updated_at": "2026-06-25T10:13:33.000Z"
+    }
+  },
+  "PATCH /api/v1/users/me": {
+    "request": {
+      "first_name": "Johnny",
+      "last_name": "Doe",
+      "phone_number": "+1987654321",
+      "bio": "Living and working in Maine this summer."
+    },
+    "response": {
+      "user_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "email": "student@watproject.org",
+      "current_phase_id": "2b1a8d05-4f76-47b2-bd73-dc8436cd9dc5",
+      "total_lifetime_points": 350,
+      "current_phase_points": 120,
+      "mission_streak": 3,
+      "arrival_date": "2026-06-01T12:00:00.000Z",
+      "job_start_date": "2026-06-15T08:00:00.000Z",
+      "first_name": "Johnny",
+      "last_name": "Doe",
+      "phone_number": "+1987654321",
+      "bio": "Living and working in Maine this summer.",
+      "avatar_url": "https://example.com/avatar.jpg",
+      "radar_visibility": "show_friends",
+      "push_notifications_enabled": true,
+      "updated_at": "2026-06-26T10:13:33.000Z"
+    }
+  },
+  "POST /api/v1/users/me/job": {
+    "request": {
+      "job_id": "8c25f18c-fb9d-472b-8a24-2c069b17849e",
+      "is_main": true,
+      "start_date": "2026-06-15T08:00:00.000Z",
+      "end_date": "2026-09-15T17:00:00.000Z"
+    },
+    "response": {
+      "user_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "job_id": "8c25f18c-fb9d-472b-8a24-2c069b17849e",
+      "is_main": true,
+      "start_date": "2026-06-15T08:00:00.000Z",
+      "end_date": "2026-09-15T17:00:00.000Z",
+      "assigned_at": "2026-06-26T10:13:33.000Z"
+    }
+  },
+  "GET /api/v1/users/{id}": {
+    "request": null,
+    "response": {
+      "user_id": "c16bf16a-e274-4b53-847e-8c819df9cfd6",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "bio": "Exploring national parks this summer!",
+      "avatar_url": "https://example.com/jane_avatar.jpg",
+      "current_phase_number": 2,
+      "total_lifetime_points": 420,
+      "friendship_status": "accepted"
+    }
+  },
+  "PATCH /api/v1/users/me/settings": {
+    "request": {
+      "radar_visibility": "show_friends",
+      "push_notifications_enabled": false
+    },
+    "response": {
+      "radar_visibility": "show_friends",
+      "push_notifications_enabled": false,
+      "updated_at": "2026-06-26T10:13:33.000Z"
+    }
+  },
+  "DELETE /api/v1/users/me": {
+    "request": null,
+    "response": {
+      "success": true,
+      "message": "User account soft-deleted successfully.",
+      "deleted_at": "2026-06-26T10:13:33.000Z"
+    }
+  },
+  "PATCH /api/v1/users/me/location": {
+    "request": {
+      "latitude": 44.3876,
+      "longitude": -68.2039
+    },
+    "response": {
+      "latitude": 44.3876,
+      "longitude": -68.2039,
+      "location_updated_at": "2026-06-26T10:13:33.000Z"
+    }
+  },
+  "PUT /api/v1/users/me/password": {
+    "request": {
+      "current_password": "OldPassword123!",
+      "new_password": "NewSecurePassword456!"
+    },
+    "response": {
+      "success": true,
+      "message": "Password changed successfully."
+    }
+  }
+}

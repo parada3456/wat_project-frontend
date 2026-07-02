@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
+import 'package:wat_project_frontend/data/entities/mission/task_entity.dart';
+import 'package:wat_project_frontend/data/entities/mission/user_task_entity.dart';
+import 'package:wat_project_frontend/data/entities/mission/user_mission_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/mission_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/mission_api_client.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/mission_detail_response.dart';
-
+import 'package:wat_project_frontend/data/entities/mission/mission_detail_response.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/mission/toggle_task_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
+import 'package:wat_project_frontend/domain/models/mission_model.dart';
 
 @injectable
 class MissionRepoImpl implements MissionRepository {
@@ -13,9 +17,9 @@ class MissionRepoImpl implements MissionRepository {
   MissionRepoImpl(this._api);
 
   @override
-  Future<List<UserMissionModel>> listMissions() async {
+  Future<List<UserMissionEntity>> listMissions() async {
     final response = await _api.listMissions();
-    return response.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -24,12 +28,36 @@ class MissionRepoImpl implements MissionRepository {
   }
 
   @override
+  Future<List<TaskEntity>> getTasksByIds(List<String> ids) async {
+    if (ids.isEmpty) return [];
+    final response = await _api.getTasksByIds(ids.join(','));
+    return response.data;
+  }
+
+  @override
+  Future<List<UserTaskEntity>> getUserTasksByIds(List<String> ids) async {
+    if (ids.isEmpty) return [];
+    final response = await _api.getUserTasksByIds(ids.join(','));
+    return response.data;
+  }
+
+  @override
   Future<void> submitProof(String id, File file) async {
     return _api.submitProof(id, file);
   }
 
   @override
-  Future<void> toggleTask(String id, bool completed) async {
-    return _api.toggleTask(id, {'completed': completed});
+  Future<void> toggleTask(String userMissionId, String taskId, bool completed) async {
+    return _api.toggleTask(
+      userMissionId,
+      taskId,
+      ToggleTaskRequest(completed: completed, isCompleted: completed),
+    );
+  }
+
+  @override
+  Future<MissionModel> createMission(CreateMissionRequest request) async {
+    final entity = await _api.createMission(request);
+    return entity.toModel();
   }
 }

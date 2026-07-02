@@ -13,6 +13,7 @@ UserBadgeModel _$UserBadgeModelFromJson(Map<String, dynamic> json) =>
       badgeId: json['badgeId'] as String,
       sourceId: json['sourceId'] as String?,
       earnedAt: DateTime.parse(json['earnedAt'] as String),
+      badge: BadgeModel.fromJson(json['badge'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserBadgeModelToJson(UserBadgeModel instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$UserBadgeModelToJson(UserBadgeModel instance) =>
       'badgeId': instance.badgeId,
       'sourceId': instance.sourceId,
       'earnedAt': instance.earnedAt.toIso8601String(),
+      'badge': instance.badge,
     };

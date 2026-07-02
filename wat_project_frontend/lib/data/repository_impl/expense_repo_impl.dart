@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/expense_transaction_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_split_model.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_transaction_entity.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/expense_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/expense_api_client.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/create_expense_request.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/expense_detail_response.dart';
-
+import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_detail_response.dart';
 
 @injectable
 class ExpenseRepoImpl implements ExpenseRepository {
@@ -15,9 +14,9 @@ class ExpenseRepoImpl implements ExpenseRepository {
   ExpenseRepoImpl(this._api);
 
   @override
-  Future<List<ExpenseTransactionModel>> listExpenses() async {
+  Future<List<ExpenseTransactionEntity>> listExpenses() async {
     final response = await _api.listExpenses();
-    return response.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -36,18 +35,25 @@ class ExpenseRepoImpl implements ExpenseRepository {
   }
 
   @override
-  Future<List<ExpenseSplitModel>> listPendingExpenses() async {
+  Future<List<ExpenseSplitEntity>> listPendingExpenses() async {
     final response = await _api.listPendingExpenses();
-    return response.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
-  Future<void> paySplit(String id, File file) async {
-    return _api.paySplit(id, file);
+  Future<List<ExpenseSplitEntity>> getExpenseSplitsByIds(List<String> ids) async {
+    if (ids.isEmpty) return [];
+    final response = await _api.getExpenseSplitsByIds(ids.join(','));
+    return response.data;
   }
 
   @override
-  Future<void> approveSplit(String id) async {
-    return _api.approveSplit(id);
+  Future<void> paySplit(String expenseId, String splitId, File file) async {
+    return _api.paySplit(expenseId, splitId, file);
+  }
+
+  @override
+  Future<void> approveSplit(String expenseId, String splitId) async {
+    return _api.approveSplit(expenseId, splitId);
   }
 }
