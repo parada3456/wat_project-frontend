@@ -13,7 +13,7 @@ class ListJourneyPhasesUseCase {
   Future<Either<Failure, List<JourneyPhaseModel>>> call() async {
     try {
       final result = await _repository.listPhases();
-      return Right(result);
+      return Right(result.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

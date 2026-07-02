@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wat_project_frontend/data/entities/gamification/badge_entity.dart';
 import 'package:wat_project_frontend/domain/models/user_badge_model.dart';
 
 part 'user_badge_entity.g.dart';
@@ -13,6 +14,8 @@ class UserBadgeEntity {
   final String badgeId;
   @JsonKey(name: 'source_id')
   final String? sourceId;
+  @JsonKey(name: 'badge')
+  final BadgeEntity badge;
   @JsonKey(name: 'earned_at')
   final DateTime earnedAt;
 
@@ -21,7 +24,8 @@ class UserBadgeEntity {
     required this.userId,
     required this.badgeId,
     this.sourceId,
-    required this.earnedAt,
+    required this.earnedAt, 
+    required this.badge,
   });
 
   factory UserBadgeEntity.fromJson(Map<String, dynamic> json) => _$UserBadgeEntityFromJson(json);
@@ -33,5 +37,6 @@ class UserBadgeEntity {
         badgeId: badgeId,
         sourceId: sourceId,
         earnedAt: earnedAt,
+        badge: badge.toModel()
       );
 }

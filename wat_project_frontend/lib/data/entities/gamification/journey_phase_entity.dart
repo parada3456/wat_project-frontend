@@ -5,16 +5,16 @@ part 'journey_phase_entity.g.dart';
 
 @JsonSerializable()
 class JourneyPhaseEntity {
-  @JsonKey(name: 'phase_id')
+  @JsonKey(name: 'PhaseId')
   final String phaseId;
-  @JsonKey(name: 'phase_number')
+  @JsonKey(name: 'PhaseNumber')
   final int phaseNumber;
-  @JsonKey(name: 'name')
+  @JsonKey(name: 'title')
   final String title;
   final String? description;
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: 'CreatedAt')
   final DateTime createdAt;
-  @JsonKey(name: 'updated_at')
+  @JsonKey(name: 'UpdatedAt')
   final DateTime updatedAt;
 
   JourneyPhaseEntity({

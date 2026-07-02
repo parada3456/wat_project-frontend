@@ -13,7 +13,7 @@ class ListPendingVerificationsUseCase {
   Future<Either<Failure, List<UserMissionModel>>> call() async {
     try {
       final result = await _repository.listPendingVerifications();
-      return Right(result);
+      return Right(result.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

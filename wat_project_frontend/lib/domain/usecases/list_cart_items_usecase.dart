@@ -13,7 +13,7 @@ class ListCartItemsUseCase {
   Future<Either<Failure, List<UserCartModel>>> call() async {
     try {
       final cartItems = await _repository.listCart();
-      return Right(cartItems);
+      return Right(cartItems.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

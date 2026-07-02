@@ -13,7 +13,7 @@ class ListFriendsUseCase {
   Future<Either<Failure, List<FriendshipModel>>> call() async {
     try {
       final result = await _repository.listFriends();
-      return Right(result);
+      return Right(result.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

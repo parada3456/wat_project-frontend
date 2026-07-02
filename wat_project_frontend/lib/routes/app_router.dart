@@ -3,9 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/edit_profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/profile_page.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/ui/register_page.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/login/ui/register_page_2.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/screens/user_settings_page.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/create_expense_page.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/expense_details_page.dart';
@@ -24,6 +21,7 @@ import 'package:wat_project_frontend/presentation/missions_tasks/screens/mission
 import 'package:wat_project_frontend/presentation/missions_tasks/screens/mission_detail_page.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/screens/missions_dashboard_page.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/screens/missions_search_page.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/screens/create_mission_page.dart';
 import 'package:wat_project_frontend/presentation/notifications/screens/notification_center_page.dart';
 import 'package:wat_project_frontend/presentation/social_radar/screens/friend_requests_page.dart';
 import 'package:wat_project_frontend/presentation/social_radar/screens/friends_list_page.dart';
@@ -79,7 +77,7 @@ class AppRouter {
         routes: [
           GoRoute(
             path: '/home',
-            builder: (context, state) => const TempTestScreen(),
+            builder: (context, state) => const HomePage(),
           ),
           GoRoute(
             path: '/expenses',
@@ -113,7 +111,10 @@ class AppRouter {
       ),
       GoRoute(
         path: '/missions/detail',
-        builder: (context, state) => const MissionDetailPage(),
+        builder: (context, state) {
+          final missionId = state.extra as String? ?? '';
+          return MissionDetailPage(missionId: missionId);
+        },
       ),
       GoRoute(
         path: '/missions/calendar',
@@ -122,6 +123,10 @@ class AppRouter {
       GoRoute(
         path: '/missions/search',
         builder: (context, state) => const MissionsSearchPage(),
+      ),
+      GoRoute(
+        path: '/missions/create',
+        builder: (context, state) => const CreateMissionPage(),
       ),
       GoRoute(
         path: '/journey',

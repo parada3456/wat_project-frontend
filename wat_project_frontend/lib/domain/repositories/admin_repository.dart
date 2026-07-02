@@ -1,13 +1,17 @@
+import 'package:wat_project_frontend/data/entities/admin/admin_stats_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/points_adjustment_result_entity.dart';
+import 'package:wat_project_frontend/data/entities/mission/user_mission_entity.dart';
+import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
 import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
 import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
 import 'package:wat_project_frontend/domain/models/user_model.dart';
 import 'package:wat_project_frontend/domain/models/points_adjustment_result_model.dart';
 
 abstract class AdminRepository {
-  Future<AdminStatsModel> getStats();
-  Future<List<UserMissionModel>> listPendingVerifications();
-  Future<UserMissionModel> verifyMission(String id, bool approved, String? rejectionReason);
+  Future<AdminStatsEntity> getStats();
+  Future<List<UserMissionEntity>> listPendingVerifications();
+  Future<UserMissionEntity> verifyMission(String id, bool approved, String? rejectionReason);
   // Future<List<UserModel>> listUsers(String search);
-  Future<UserModel> getUserDetail(String id);
-  Future<PointsAdjustmentResultModel> adjustPoints(String id, int pointsDelta, String reason);
+  Future<UserAccountEntity> getUserDetail(String id);
+  Future<PointsAdjustmentResultEntity> adjustPoints(String id, int pointsDelta, String reason);
 }

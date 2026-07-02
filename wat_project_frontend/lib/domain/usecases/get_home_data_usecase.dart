@@ -22,12 +22,17 @@ class GetHomeDataUseCase {
 
   Future<Either<Failure, HomeData>> call() async {
     try {
+      print("start homedata fetch");
       final userProfileEntity = await _userRepository.getMe();
       final userProfileModel = userProfileEntity.toModel();
       final userModel = userProfileModel.user;
-      final phases = await _journeyRepository.listPhases();
+      print("start phases fetch");
+      final phases = (await _journeyRepository.listPhases())
+          .map((p) => p.toModel())
+          .toList();
+      print("start list mission fetch");
       final userMissions = await _missionRepository.listMissions();
-
+      print("finish list mission fetch");
       // Find current phase matching user's currentPhaseId
       final currentPhase = phases.firstWhere(
         (p) => p.phaseId == userModel.currentPhaseId,
@@ -47,7 +52,7 @@ class GetHomeDataUseCase {
       final detailsList = await Future.wait(
         userMissions.map((um) async {
           try {
-            final detail = await _missionRepository.getMissionDetail(um.missionId);
+            final detail = await _missionRepository.getMissionDetail(um.userMissionId);
             final tasks = await _missionRepository.getTasksByIds(detail.tasks);
             final userTasks = await _missionRepository.getUserTasksByIds(detail.userTasks);
 
@@ -62,10 +67,11 @@ class GetHomeDataUseCase {
           }
         }),
       );
+      print("finish task fetch");
 
       final phaseMissions = detailsList
-          .where((d) => d != null && d!.mission.phaseId == currentPhase.phaseId)
-          .cast<MissionDetailModel>()
+          .whereType<MissionDetailModel>()
+          .where((d) => d.mission.phaseId == currentPhase.phaseId)
           .toList();
 
       return Right(HomeData(

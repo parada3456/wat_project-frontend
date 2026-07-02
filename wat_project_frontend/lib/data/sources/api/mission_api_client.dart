@@ -7,6 +7,8 @@ import 'package:wat_project_frontend/data/entities/mission/user_mission_entity.d
 import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_detail_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/toggle_task_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
+import 'package:wat_project_frontend/data/entities/mission/mission_entity.dart';
 part 'mission_api_client.g.dart';
 
 @RestApi()
@@ -38,4 +40,7 @@ abstract class MissionApiService {
     @Path('taskId') String taskId,
     @Body() ToggleTaskRequest request,
   );
+
+  @POST('admin/missions')
+  Future<MissionEntity> createMission(@Body() CreateMissionRequest request);
 }

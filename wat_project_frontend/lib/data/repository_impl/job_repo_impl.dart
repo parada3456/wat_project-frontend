@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_posting_entity.dart';
+import 'package:wat_project_frontend/data/entities/job_review/job/user_cart_entity.dart';
+import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
 import 'package:wat_project_frontend/domain/models/job_posting_model.dart';
-import 'package:wat_project_frontend/domain/models/user_cart_model.dart';
-import 'package:wat_project_frontend/domain/models/job_review_model.dart';
 import 'package:wat_project_frontend/domain/repositories/job_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/job_api_client.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
@@ -12,7 +12,6 @@ import 'package:wat_project_frontend/data/sources/api/api_model/job_review/updat
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/patch_job_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_alternative_request.dart';
 
-
 @injectable
 class JobRepoImpl implements JobRepository {
   final JobApiService _api;
@@ -20,9 +19,9 @@ class JobRepoImpl implements JobRepository {
   JobRepoImpl(this._api);
 
   @override
-  Future<List<JobPostingModel>> listJobs(Map<String, dynamic> filters) async {
+  Future<List<JobPostingEntity>> listJobs(Map<String, dynamic> filters) async {
     final response = await _api.listJobs(filters);
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -43,9 +42,9 @@ class JobRepoImpl implements JobRepository {
   }
 
   @override
-  Future<List<UserCartModel>> listCart() async {
+  Future<List<UserCartEntity>> listCart() async {
     final response = await _api.listCart();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -59,9 +58,9 @@ class JobRepoImpl implements JobRepository {
   }
 
   @override
-  Future<List<JobReviewModel>> listReviews(String? jobId) async {
+  Future<List<JobReviewEntity>> listReviews(String? jobId) async {
     final response = await _api.getJobReviews(jobId ?? '');
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -70,17 +69,15 @@ class JobRepoImpl implements JobRepository {
   }
 
   @override
-  Future<JobPostingModel> createJob(JobPostingModel job) async {
+  Future<JobPostingEntity> createJob(JobPostingModel job) async {
     final entity = _fromModel(job);
-    final response = await _api.createJob(entity);
-    return response.toModel();
+    return _api.createJob(entity);
   }
 
   @override
-  Future<JobPostingModel> updateJob(String id, JobPostingModel job) async {
+  Future<JobPostingEntity> updateJob(String id, JobPostingModel job) async {
     final entity = _fromModel(job);
-    final response = await _api.updateJob(id, entity);
-    return response.toModel();
+    return _api.updateJob(id, entity);
   }
 
   @override

@@ -9,7 +9,13 @@ class ErrorInterceptor extends Interceptor {
       try {
         final data = err.response!.data;
         if (data is Map<String, dynamic>) {
-          final apiError = ApiError.fromJson(data);
+          final Map<String, dynamic> errorJson;
+          if (data['error'] is Map<String, dynamic>) {
+            errorJson = data['error'] as Map<String, dynamic>;
+          } else {
+            errorJson = data;
+          }
+          final apiError = ApiError.fromJson(errorJson);
           final apiException = ApiException(
             apiError: apiError,
             statusCode: err.response?.statusCode,

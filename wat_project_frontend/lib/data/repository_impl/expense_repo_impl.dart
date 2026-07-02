@@ -1,14 +1,11 @@
 import 'dart:io';
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/expense_transaction_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_split_model.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_transaction_entity.dart';
+import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/expense_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/expense_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
 import 'package:wat_project_frontend/data/entities/expense/expense_detail_response.dart';
-
-
-import 'package:wat_project_frontend/data/entities/expense/expense_split_entity.dart';
 
 @injectable
 class ExpenseRepoImpl implements ExpenseRepository {
@@ -17,9 +14,9 @@ class ExpenseRepoImpl implements ExpenseRepository {
   ExpenseRepoImpl(this._api);
 
   @override
-  Future<List<ExpenseTransactionModel>> listExpenses() async {
+  Future<List<ExpenseTransactionEntity>> listExpenses() async {
     final response = await _api.listExpenses();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -38,9 +35,9 @@ class ExpenseRepoImpl implements ExpenseRepository {
   }
 
   @override
-  Future<List<ExpenseSplitModel>> listPendingExpenses() async {
+  Future<List<ExpenseSplitEntity>> listPendingExpenses() async {
     final response = await _api.listPendingExpenses();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override

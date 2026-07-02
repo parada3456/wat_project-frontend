@@ -46,10 +46,12 @@ import 'package:wat_project_frontend/domain/usecases/list_applications_usecase.d
 
 // Module 4 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart';
 import 'package:wat_project_frontend/domain/usecases/list_available_missions_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/get_mission_detail_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/submit_mission_proof_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/toggle_task_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/create_mission_usecase.dart';
 
 // Module 5 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart';
@@ -76,8 +78,8 @@ import 'package:wat_project_frontend/domain/usecases/delete_notification_usecase
 
 @module
 abstract class BlocModule {
-  // @injectable
-  // HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
+  @injectable
+  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
 
   @injectable
   LoginBloc loginBloc(
@@ -188,6 +190,12 @@ abstract class BlocModule {
         submitMissionProofUseCase,
         toggleTaskUseCase,
       );
+
+  @injectable
+  CreateMissionBloc createMissionBloc(
+    CreateMissionUseCase createMissionUseCase,
+  ) =>
+      CreateMissionBloc(createMissionUseCase);
 
   @injectable
   JourneyGamificationBloc journeyGamificationBloc(

@@ -9,7 +9,7 @@ class AuthEntity {
   final String token;
   @JsonKey(name: 'RefreshToken')
   final String refreshToken;
-  @JsonKey(name: 'TokenType')
+  @JsonKey(name: 'token_type')
   final String tokenType;
   @JsonKey(name: 'ExpiresAt')
   final DateTime expiresAt; 

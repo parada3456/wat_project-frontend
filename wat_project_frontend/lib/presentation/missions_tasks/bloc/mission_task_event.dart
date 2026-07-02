@@ -1,32 +1,19 @@
-import 'dart:io';
+part of 'mission_task_bloc.dart';
 
-abstract class MissionTaskEvent {
-  const MissionTaskEvent();
-}
+@freezed
+class MissionTaskEvent with _$MissionTaskEvent {
+  const factory MissionTaskEvent.listRequested() = MissionsTasksListRequested;
+  
+  const factory MissionTaskEvent.detailRequested(String missionId) = MissionTaskDetailRequested;
 
-class MissionsTasksListRequested extends MissionTaskEvent {
-  const MissionsTasksListRequested();
-}
+  const factory MissionTaskEvent.proofSubmitted({
+    required String missionId,
+    required File file,
+  }) = MissionTaskProofSubmitted;
 
-class MissionTaskDetailRequested extends MissionTaskEvent {
-  final String missionId;
-  const MissionTaskDetailRequested(this.missionId);
-}
-
-class MissionTaskProofSubmitted extends MissionTaskEvent {
-  final String missionId;
-  final File file;
-  const MissionTaskProofSubmitted(this.missionId, this.file);
-}
-
-class MissionTaskToggleRequested extends MissionTaskEvent {
-  final String userMissionId;
-  final String taskId;
-  final bool completed;
-
-  const MissionTaskToggleRequested({
-    required this.userMissionId,
-    required this.taskId,
-    required this.completed,
-  });
+  const factory MissionTaskEvent.toggleRequested({
+    required String userMissionId,
+    required String taskId,
+    required bool completed,
+  }) = MissionTaskToggleRequested;
 }

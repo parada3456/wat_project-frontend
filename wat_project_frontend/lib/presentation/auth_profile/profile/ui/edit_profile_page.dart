@@ -6,8 +6,7 @@ import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_event.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_state.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -57,39 +56,52 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         body: SafeArea(
           child: BlocConsumer<ProfileBloc, ProfileState>(
             listener: (context, state) {
-              if (state is ProfileFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-                setState(() {
-                  _wasSaving = false;
-                });
-              } else if (state is ProfileSuccess) {
-                if (!_initialized) {
-                  _firstNameController.text = state.profile.user.firstName ?? '';
-                  _lastNameController.text = state.profile.user.lastName ?? '';
-                  _bioController.text = state.profile.profile.bio ?? '';
-                  _avatarController.text = state.profile.profile.avatarUrl ?? '';
-                  setState(() {
-                    _initialized = true;
-                  });
-                }
-                if (_wasSaving) {
+              state.status.whenOrNull(
+                loadFailed: (message, _) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Profile successfully updated!'),
-                      backgroundColor: Colors.green,
+                    SnackBar(
+                      content: Text(message ?? 'An error occurred'),
+                      backgroundColor: Colors.red,
                     ),
                   );
-                  context.pop();
-                }
+                  setState(() {
+                    _wasSaving = false;
+                  });
+                },
+                loadSuccess: (message) {
+                  if (state.profile != null && !_initialized) {
+                    _firstNameController.text = state.profile!.user.firstName ?? '';
+                    _lastNameController.text = state.profile!.user.lastName ?? '';
+                    _bioController.text = state.profile!.profile.bio ?? '';
+                    _avatarController.text = state.profile!.profile.avatarUrl ?? '';
+                    setState(() {
+                      _initialized = true;
+                    });
+                  }
+                  if (_wasSaving) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message ?? 'Profile successfully updated!'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    context.pop();
+                  }
+                },
+              );
+
+              if (state.profile != null && !_initialized) {
+                _firstNameController.text = state.profile!.user.firstName ?? '';
+                _lastNameController.text = state.profile!.user.lastName ?? '';
+                _bioController.text = state.profile!.profile.bio ?? '';
+                _avatarController.text = state.profile!.profile.avatarUrl ?? '';
+                setState(() {
+                  _initialized = true;
+                });
               }
             },
             builder: (context, state) {
-              final isLoading = state is ProfileLoading;
+              final isLoading = state.status is UILoading;
 
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),

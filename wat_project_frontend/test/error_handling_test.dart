@@ -35,7 +35,7 @@ void main() {
         }
       };
 
-      final apiError = ApiError.fromJson(json);
+      final apiError = ApiError.fromJson(json['error'] as Map<String, dynamic>);
 
       expect(apiError.code, 'validation_error');
       expect(apiError.message, 'One or more fields failed validation.');

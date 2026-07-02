@@ -6,29 +6,50 @@ part 'user_account_entity.g.dart';
 
 @JsonSerializable()
 class UserAccountEntity {
+  // @JsonKey(name: 'user_id')
+  // final String userId;
+  // final String email;
+  // // @JsonKey(name: 'password_hash')
+  // // final String? passwordHash;
+  // @JsonKey(name: 'current_phase_id')
+  // final String? currentPhaseId;
+  // @JsonKey(name: 'total_lifetime_points')
+  // final int? totalLifetimePoints;
+  // @JsonKey(name: 'current_phase_points')
+  // final int? currentPhasePoints;
+  // @JsonKey(name: 'mission_streak')
+  // final int? missionStreak;
+  // @JsonKey(name: 'arrival_date')
+  // final DateTime? arrivalDate;
+  // @JsonKey(name: 'job_start_date')
+  // final DateTime? jobStartDate;
+  // @JsonKey(name: 'created_at')
+  // final DateTime createdAt;
+  // @JsonKey(name: 'updated_at')
+  // final DateTime updatedAt;
+
+  // // Profile fields merged
+  // @JsonKey(name: 'profile_id')
+  // final String? profileId;
+  // @JsonKey(name: 'first_name')
+  // final String? firstName;
+  // @JsonKey(name: 'last_name')
+  // final String? lastName;
+  // @JsonKey(name: 'phone_number')
+  // final String? phoneNumber;
+  // final String? bio;
+  // @JsonKey(name: 'avatar_url')
+  // final String? avatarUrl;
+  // @JsonKey(name: 'radar_visibility')
+  // final RadarVisibility? radarVisibility;
+  // @JsonKey(name: 'current_coordinates')
+  // final String? currentCoordinates;
+  // @JsonKey(name: 'location_updated_at')
+  // final DateTime? locationUpdatedAt;
+
   @JsonKey(name: 'user_id')
   final String userId;
   final String email;
-  // @JsonKey(name: 'password_hash')
-  // final String? passwordHash;
-  @JsonKey(name: 'current_phase_id')
-  final String? currentPhaseId;
-  @JsonKey(name: 'total_lifetime_points')
-  final int? totalLifetimePoints;
-  @JsonKey(name: 'current_phase_points')
-  final int? currentPhasePoints;
-  @JsonKey(name: 'mission_streak')
-  final int? missionStreak;
-  @JsonKey(name: 'arrival_date')
-  final DateTime? arrivalDate;
-  @JsonKey(name: 'job_start_date')
-  final DateTime? jobStartDate;
-  @JsonKey(name: 'created_at')
-  final DateTime createdAt;
-  @JsonKey(name: 'updated_at')
-  final DateTime updatedAt;
-
-  // Profile fields merged
   @JsonKey(name: 'profile_id')
   final String? profileId;
   @JsonKey(name: 'first_name')
@@ -46,6 +67,24 @@ class UserAccountEntity {
   final String? currentCoordinates;
   @JsonKey(name: 'location_updated_at')
   final DateTime? locationUpdatedAt;
+  
+  @JsonKey(name: 'current_phase_id')
+  final String? currentPhaseId;
+  @JsonKey(name: 'total_lifetime_points')
+  final int? totalLifetimePoints;
+  @JsonKey(name: 'current_phase_points')
+  final int? currentPhasePoints;
+  @JsonKey(name: 'mission_streak')
+  final int? missionStreak;
+  @JsonKey(name: 'arrival_date')
+  final DateTime? arrivalDate;
+  @JsonKey(name: 'job_start_date')
+  final DateTime? jobStartDate;
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+
 
   UserAccountEntity({
     required this.userId,

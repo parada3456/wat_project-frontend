@@ -99,6 +99,8 @@ import 'package:wat_project_frontend/domain/usecases/create_expense_usecase.dart
     as _i323;
 import 'package:wat_project_frontend/domain/usecases/create_job_review_usecase.dart'
     as _i250;
+import 'package:wat_project_frontend/domain/usecases/create_mission_usecase.dart'
+    as _i238;
 import 'package:wat_project_frontend/domain/usecases/delete_account_usecase.dart'
     as _i257;
 import 'package:wat_project_frontend/domain/usecases/delete_expense_usecase.dart'
@@ -203,10 +205,14 @@ import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/prof
     as _i384;
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart'
     as _i384;
+import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart'
+    as _i906;
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart'
     as _i533;
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart'
     as _i1054;
+import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart'
+    as _i282;
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart'
     as _i928;
 import 'package:wat_project_frontend/presentation/notifications/bloc/notifications_bloc.dart'
@@ -403,6 +409,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i882.ListJourneyPhasesUseCase>(
       () => _i882.ListJourneyPhasesUseCase(gh<_i381.JourneyRepository>()),
     );
+    gh.factory<_i238.CreateMissionUseCase>(
+      () => _i238.CreateMissionUseCase(gh<_i448.MissionRepository>()),
+    );
     gh.factory<_i213.GetMissionDetailUseCase>(
       () => _i213.GetMissionDetailUseCase(gh<_i448.MissionRepository>()),
     );
@@ -486,6 +495,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i39.JobRepository>(
       () => repositoryModule.jobRepository(gh<_i451.JobRepoImpl>()),
+    );
+    gh.factory<_i282.CreateMissionBloc>(
+      () => blocModule.createMissionBloc(gh<_i238.CreateMissionUseCase>()),
     );
     gh.factory<_i1031.LoginBloc>(
       () => blocModule.loginBloc(
@@ -581,6 +593,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i745.UpdateLocationUseCase>(),
         gh<_i257.DeleteAccountUseCase>(),
       ),
+    );
+    gh.factory<_i906.HomeBloc>(
+      () => blocModule.homeBloc(gh<_i921.GetHomeDataUseCase>()),
     );
     gh.factory<_i459.SocialRadarBloc>(
       () => blocModule.socialRadarBloc(

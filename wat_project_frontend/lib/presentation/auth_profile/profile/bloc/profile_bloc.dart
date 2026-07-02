@@ -1,12 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/domain/usecases/get_profile_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/update_profile_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/get_badges_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/get_credit_score_history_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/update_location_usecase.dart';
 import 'package:wat_project_frontend/domain/usecases/delete_account_usecase.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_event.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_state.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/domain/models/user_profile.dart';
+import 'package:wat_project_frontend/domain/models/badge.dart';
+import 'package:wat_project_frontend/domain/models/credit_record.dart';
+
+part 'profile_event.dart';
+part 'profile_state.dart';
+part 'profile_bloc.freezed.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final GetProfileUseCase _getProfileUseCase;
@@ -23,7 +30,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     this._getCreditScoreHistoryUseCase,
     this._updateLocationUseCase,
     this._deleteAccountUseCase,
-  ) : super(const ProfileInitial()) {
+  ) : super(const ProfileState()) {
     on<GetProfileEvent>(_onGetProfile);
     on<UpdateProfileSubmittedEvent>(_onUpdateProfileSubmitted);
     on<UpdateLocationSubmittedEvent>(_onUpdateLocationSubmitted);
@@ -34,21 +41,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     GetProfileEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(const ProfileLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     
     final profileResult = await _getProfileUseCase();
     final badgesResult = await _getBadgesUseCase();
     final historyResult = await _getCreditScoreHistoryUseCase();
 
-    profileResult.fold(
-      (failure) => emit(ProfileFailure(failure.message)),
-      (profile) {
-        badgesResult.fold(
-          (failure) => emit(ProfileFailure(failure.message)),
-          (badges) {
-            historyResult.fold(
-              (failure) => emit(ProfileFailure(failure.message)),
-              (history) => emit(ProfileSuccess(
+    await profileResult.fold(
+      (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (profile) async {
+        await badgesResult.fold(
+          (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+          (badges) async {
+            await historyResult.fold(
+              (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+              (history) async => emit(state.copyWith(
+                status: const UIStatus.loadSuccess(),
                 profile: profile,
                 badges: badges,
                 creditHistory: history,
@@ -64,7 +72,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateProfileSubmittedEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(const ProfileLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
 
     final result = await _updateProfileUseCase(
       event.firstName,
@@ -74,17 +82,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
 
     await result.fold(
-      (failure) async => emit(ProfileFailure(failure.message)),
+      (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
       (profile) async {
         final badgesResult = await _getBadgesUseCase();
         final historyResult = await _getCreditScoreHistoryUseCase();
 
-        badgesResult.fold(
-          (failure) => emit(ProfileFailure(failure.message)),
-          (badges) {
-            historyResult.fold(
-              (failure) => emit(ProfileFailure(failure.message)),
-              (history) => emit(ProfileSuccess(
+        await badgesResult.fold(
+          (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+          (badges) async {
+            await historyResult.fold(
+              (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+              (history) async => emit(state.copyWith(
+                status: const UIStatus.loadSuccess(message: 'อัปเดตโปรไฟล์สำเร็จ'),
                 profile: profile,
                 badges: badges,
                 creditHistory: history,
@@ -100,25 +109,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateLocationSubmittedEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(const ProfileLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _updateLocationUseCase(event.latitude, event.longitude);
 
     await result.fold(
-      (failure) async => emit(ProfileFailure(failure.message)),
+      (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
       (_) async {
         final profileResult = await _getProfileUseCase();
         final badgesResult = await _getBadgesUseCase();
         final historyResult = await _getCreditScoreHistoryUseCase();
 
-        profileResult.fold(
-          (failure) => emit(ProfileFailure(failure.message)),
-          (profile) {
-            badgesResult.fold(
-              (failure) => emit(ProfileFailure(failure.message)),
-              (badges) {
-                historyResult.fold(
-                  (failure) => emit(ProfileFailure(failure.message)),
-                  (history) => emit(ProfileSuccess(
+        await profileResult.fold(
+          (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+          (profile) async {
+            await badgesResult.fold(
+              (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+              (badges) async {
+                await historyResult.fold(
+                  (failure) async => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+                  (history) async => emit(state.copyWith(
+                    status: const UIStatus.loadSuccess(message: 'อัปเดตตำแหน่งสำเร็จ'),
                     profile: profile,
                     badges: badges,
                     creditHistory: history,
@@ -136,11 +146,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     DeleteAccountSubmittedEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(const ProfileLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _deleteAccountUseCase(event.password);
     result.fold(
-      (failure) => emit(ProfileFailure(failure.message)),
-      (_) => emit(const DeleteAccountSuccess()),
+      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (_) => emit(state.copyWith(status: const UIStatus.loadSuccess(message: 'DELETE_ACCOUNT_SUCCESS'))),
     );
   }
 }

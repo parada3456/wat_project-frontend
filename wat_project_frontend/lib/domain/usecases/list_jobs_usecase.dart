@@ -13,7 +13,7 @@ class ListJobsUseCase {
   Future<Either<Failure, List<JobPostingModel>>> call(Map<String, dynamic> filters) async {
     try {
       final jobs = await _repository.listJobs(filters);
-      return Right(jobs);
+      return Right(jobs.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

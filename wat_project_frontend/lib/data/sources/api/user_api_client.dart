@@ -13,6 +13,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/user/update_prof
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_settings_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/delete_account_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_location_request.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
 
 part 'user_api_client.g.dart';
 
@@ -36,7 +37,7 @@ abstract class UserApiService {
   Future<ProfileEntity> getUserPublicProfile(@Path('id') String id);
 
   @GET('user/badges')
-  Future<PaginationResponse<BadgeEntity>> getBadges();
+  Future<PaginationResponse<UserBadgeEntity>> getBadges();
 
   @GET('user/points/ledger')
   Future<PaginationResponse<PointLedgerEntity>> getPointsLedger();

@@ -13,7 +13,7 @@ class ListExpensesUseCase {
   Future<Either<Failure, List<ExpenseTransactionModel>>> call() async {
     try {
       final result = await _repository.listExpenses();
-      return Right(result);
+      return Right(result.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

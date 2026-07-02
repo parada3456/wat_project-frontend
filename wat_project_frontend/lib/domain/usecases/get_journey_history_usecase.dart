@@ -13,7 +13,7 @@ class GetJourneyHistoryUseCase {
   Future<Either<Failure, List<UserPhaseHistoryModel>>> call() async {
     try {
       final result = await _repository.getHistory();
-      return Right(result);
+      return Right(result.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

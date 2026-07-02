@@ -13,7 +13,7 @@ class ListPendingRequestsUseCase {
   Future<Either<Failure, List<FriendshipModel>>> call() async {
     try {
       final result = await _repository.listPendingRequests();
-      return Right(result);
+      return Right(result.map((e) => e.toModel()).toList());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

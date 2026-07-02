@@ -12,8 +12,8 @@ class GetAdminStatsUseCase {
 
   Future<Either<Failure, AdminStatsModel>> call() async {
     try {
-      final result = await _repository.getStats();
-      return Right(result);
+      final adminStatsEntity = await _repository.getStats();
+      return Right(adminStatsEntity.toModel());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

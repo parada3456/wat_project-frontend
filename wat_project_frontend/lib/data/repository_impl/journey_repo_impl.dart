@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
-import 'package:wat_project_frontend/domain/models/user_phase_history_model.dart';
-import 'package:wat_project_frontend/domain/models/user_badge_model.dart';
-import 'package:wat_project_frontend/domain/models/point_ledger_model.dart';
+import 'package:wat_project_frontend/data/entities/gamification/journey_phase_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_phase_history_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/journey_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
@@ -14,9 +14,9 @@ class JourneyRepoImpl implements JourneyRepository {
   JourneyRepoImpl(this._api);
 
   @override
-  Future<List<JourneyPhaseModel>> listPhases() async {
+  Future<List<JourneyPhaseEntity>> listPhases() async {
     final response = await _api.listPhases();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -26,9 +26,9 @@ class JourneyRepoImpl implements JourneyRepository {
   }
 
   @override
-  Future<List<UserPhaseHistoryModel>> getHistory() async {
+  Future<List<UserPhaseHistoryEntity>> getHistory() async {
     final response = await _api.getHistory();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -37,14 +37,14 @@ class JourneyRepoImpl implements JourneyRepository {
   }
 
   @override
-  Future<List<UserBadgeModel>> listBadges() async {
+  Future<List<UserBadgeEntity>> listBadges() async {
     final response = await _api.listBadges();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
-  Future<List<PointLedgerModel>> getCreditHistory() async {
+  Future<List<PointLedgerEntity>> getCreditHistory() async {
     final response = await _api.getCreditHistory();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 }

@@ -443,7 +443,9 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                         leading: CircleAvatar(
                           backgroundColor: AppColors.primary.withOpacity(0.1),
                           child: Text(
-                            (user.firstName ?? 'U').substring(0, 1).toUpperCase(),
+                            (user.firstName != null && user.firstName!.trim().isNotEmpty)
+                                ? user.firstName!.trim()[0].toUpperCase()
+                                : 'U',
                             style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
                           ),
                         ),

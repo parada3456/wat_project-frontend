@@ -3,15 +3,15 @@ import 'package:json_annotation/json_annotation.dart';
 part 'badge_model.g.dart';
 
 enum BadgeTriggerType {
-  @JsonValue('Speed')
+  @JsonValue('speed')
   speed,
-  @JsonValue('Streak')
+  @JsonValue('streak')
   streak,
-  @JsonValue('First_Completer')
+  @JsonValue('first_completer')
   firstCompleter,
-  @JsonValue('Phase_Complete')
+  @JsonValue('phase_complete')
   phaseComplete,
-  @JsonValue('Manual')
+  @JsonValue('manual')
   manual,
 }
 

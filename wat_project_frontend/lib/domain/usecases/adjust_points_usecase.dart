@@ -12,8 +12,8 @@ class AdjustPointsUseCase {
 
   Future<Either<Failure, PointsAdjustmentResultModel>> call(String id, int pointsDelta, String reason) async {
     try {
-      final result = await _repository.adjustPoints(id, pointsDelta, reason);
-      return Right(result);
+      final pointsAdjustmentResultEntity = await _repository.adjustPoints(id, pointsDelta, reason);
+      return Right(pointsAdjustmentResultEntity.toModel());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

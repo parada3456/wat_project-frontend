@@ -12,8 +12,8 @@ class GetAdminUserDetailUseCase {
 
   Future<Either<Failure, UserModel>> call(String id) async {
     try {
-      final result = await _repository.getUserDetail(id);
-      return Right(result);
+      final userAccountEntity = await _repository.getUserDetail(id);
+      return Right(userAccountEntity.toModel());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

@@ -1,9 +1,6 @@
 part of 'home_bloc.dart';
 
-abstract class HomeEvent {
-  const HomeEvent();
-}
-
-class HomeFetched extends HomeEvent {
-  const HomeFetched();
+@freezed
+class HomeEvent with _$HomeEvent {
+  const factory HomeEvent.homeFetched() = HomeFetched;
 }

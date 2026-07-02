@@ -26,9 +26,9 @@ Map<String, dynamic> _$BadgeEntityToJson(BadgeEntity instance) =>
     };
 
 const _$BadgeTriggerTypeEnumMap = {
-  BadgeTriggerType.speed: 'Speed',
-  BadgeTriggerType.streak: 'Streak',
-  BadgeTriggerType.firstCompleter: 'First_Completer',
-  BadgeTriggerType.phaseComplete: 'Phase_Complete',
-  BadgeTriggerType.manual: 'Manual',
+  BadgeTriggerType.speed: 'speed',
+  BadgeTriggerType.streak: 'streak',
+  BadgeTriggerType.firstCompleter: 'first_completer',
+  BadgeTriggerType.phaseComplete: 'phase_complete',
+  BadgeTriggerType.manual: 'manual',
 };

@@ -8,8 +8,7 @@ import 'package:wat_project_frontend/presentation/auth_profile/widgets/settings_
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_event.dart';
-import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_state.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
 class UserSettingsPage extends StatefulWidget {
   const UserSettingsPage({super.key});
@@ -107,26 +106,32 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               listeners: [
                 BlocListener<ProfileBloc, ProfileState>(
                   listener: (context, state) {
-                    if (state is ProfileSuccess) {
+                    if (state.profile != null) {
                       setState(() {
-                        _radarVisibility = state.profile.profile.radarVisibility != RadarVisibility.hidden;
+                        _radarVisibility = state.profile!.profile.radarVisibility != RadarVisibility.hidden;
                       });
-                    } else if (state is ProfileFailure) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.errorMessage),
-                          backgroundColor: AppColors.error,
-                        ),
-                      );
-                    } else if (state is DeleteAccountSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Account successfully deleted.'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      context.go('/login');
                     }
+                    state.status.whenOrNull(
+                      loadFailed: (message, _) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message ?? 'An error occurred'),
+                            backgroundColor: AppColors.error,
+                          ),
+                        );
+                      },
+                      loadSuccess: (message) {
+                        if (message == 'DELETE_ACCOUNT_SUCCESS') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Account successfully deleted.'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          context.go('/login');
+                        }
+                      },
+                    );
                   },
                 ),
                 // BlocListener<LoginBloc, LoginState>(
@@ -152,7 +157,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               ],
               child: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, profileState) {
-                  final isLoading = profileState is ProfileLoading || _isUpdating;
+                  final isLoading = profileState.status is UILoading || _isUpdating;
                   return SafeArea(
                     child: Stack(
                       children: [

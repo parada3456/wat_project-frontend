@@ -12,14 +12,16 @@ class GetProfileUseCase {
 
   Future<Either<Failure, UserProfileModel>> call() async {
     try {
-      final response = await _repository.getProfile();
+      print("start usecase get profile");
+      final userProfileEntity = await _repository.getProfile();
       return Right(UserProfileModel(
-        user: response.userAccount.toModel(),
-        profile: response.userAccount.toProfileModel(),
-        creditScore: response.creditScore.toModel(),
-        userJobs: response.userJobs?.map((e) => e.toModel()).toList() ?? [],
+        user: userProfileEntity.userAccount.toModel(),
+        profile: userProfileEntity.userAccount.toProfileModel(),
+        creditScore: userProfileEntity.creditScore.toModel(),
+        userJobs: userProfileEntity.userJobs.map((e) => e.toModel()).toList(),
       ));
     } catch (e) {
+      print("usecase get profile error");
       return Left(mapExceptionToFailure(e));
     }
   }

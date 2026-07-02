@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 class WatButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isLoading;
 
   const WatButton({
     super.key,
     required this.label,
-    required this.onPressed,
+    this.onPressed,
     this.isLoading = false,
   });
 

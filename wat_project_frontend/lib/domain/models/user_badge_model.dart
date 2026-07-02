@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wat_project_frontend/domain/models/badge_model.dart';
 
 part 'user_badge_model.g.dart';
 
@@ -9,13 +10,15 @@ class UserBadgeModel {
   final String badgeId;
   final String? sourceId;
   final DateTime earnedAt;
+  final BadgeModel badge;
 
   const UserBadgeModel({
     required this.userBadgeId,
     required this.userId,
     required this.badgeId,
     this.sourceId,
-    required this.earnedAt,
+    required this.earnedAt, 
+    required this.badge,
   });
 
   factory UserBadgeModel.fromJson(Map<String, dynamic> json) =>

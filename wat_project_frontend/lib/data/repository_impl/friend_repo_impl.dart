@@ -1,11 +1,10 @@
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/models/friendship_model.dart';
+import 'package:wat_project_frontend/data/entities/friend/friendship_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/friend_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/friend_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend_radar/radar_entry.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend/send_friend_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend/respond_friend_request.dart';
-
 
 @injectable
 class FriendRepoImpl implements FriendRepository {
@@ -19,9 +18,9 @@ class FriendRepoImpl implements FriendRepository {
   }
 
   @override
-  Future<List<FriendshipModel>> listPendingRequests() async {
+  Future<List<FriendshipEntity>> listPendingRequests() async {
     final response = await _api.listPendingRequests();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
@@ -36,9 +35,9 @@ class FriendRepoImpl implements FriendRepository {
   }
 
   @override
-  Future<List<FriendshipModel>> listFriends() async {
+  Future<List<FriendshipEntity>> listFriends() async {
     final response = await _api.listFriends();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override

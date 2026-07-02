@@ -134,12 +134,12 @@ class _UserApiService implements UserApiService {
   }
 
   @override
-  Future<PaginationResponse<BadgeEntity>> getBadges() async {
+  Future<PaginationResponse<UserBadgeEntity>> getBadges() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginationResponse<BadgeEntity>>(
+    final _options = _setStreamType<PaginationResponse<UserBadgeEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -150,11 +150,11 @@ class _UserApiService implements UserApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginationResponse<BadgeEntity> _value;
+    late PaginationResponse<UserBadgeEntity> _value;
     try {
-      _value = PaginationResponse<BadgeEntity>.fromJson(
+      _value = PaginationResponse<UserBadgeEntity>.fromJson(
         _result.data!,
-        (json) => BadgeEntity.fromJson(json as Map<String, dynamic>),
+        (json) => UserBadgeEntity.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

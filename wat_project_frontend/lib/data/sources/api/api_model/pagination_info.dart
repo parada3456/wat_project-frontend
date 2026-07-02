@@ -20,6 +20,13 @@ class PaginationInfo {
     required this.totalPages,
   });
 
-  factory PaginationInfo.fromJson(Map<String, dynamic> json) => _$PaginationInfoFromJson(json);
+  factory PaginationInfo.fromJson(Map<String, dynamic> json) {
+    return PaginationInfo(
+      page: json['page'] as int? ?? 1,
+      pageSize: (json['page_size'] ?? json['pageSize'] ?? 10) as int,
+      totalItems: (json['total_items'] ?? json['totalItems'] ?? 0) as int,
+      totalPages: (json['total_pages'] ?? json['totalPages'] ?? 1) as int,
+    );
+  }
   Map<String, dynamic> toJson() => _$PaginationInfoToJson(this);
 }

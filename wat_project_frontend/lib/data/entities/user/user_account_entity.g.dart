@@ -42,14 +42,6 @@ Map<String, dynamic> _$UserAccountEntityToJson(UserAccountEntity instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
       'email': instance.email,
-      'current_phase_id': instance.currentPhaseId,
-      'total_lifetime_points': instance.totalLifetimePoints,
-      'current_phase_points': instance.currentPhasePoints,
-      'mission_streak': instance.missionStreak,
-      'arrival_date': instance.arrivalDate?.toIso8601String(),
-      'job_start_date': instance.jobStartDate?.toIso8601String(),
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt.toIso8601String(),
       'profile_id': instance.profileId,
       'first_name': instance.firstName,
       'last_name': instance.lastName,
@@ -59,6 +51,14 @@ Map<String, dynamic> _$UserAccountEntityToJson(UserAccountEntity instance) =>
       'radar_visibility': _$RadarVisibilityEnumMap[instance.radarVisibility],
       'current_coordinates': instance.currentCoordinates,
       'location_updated_at': instance.locationUpdatedAt?.toIso8601String(),
+      'current_phase_id': instance.currentPhaseId,
+      'total_lifetime_points': instance.totalLifetimePoints,
+      'current_phase_points': instance.currentPhasePoints,
+      'mission_streak': instance.missionStreak,
+      'arrival_date': instance.arrivalDate?.toIso8601String(),
+      'job_start_date': instance.jobStartDate?.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };
 
 const _$RadarVisibilityEnumMap = {

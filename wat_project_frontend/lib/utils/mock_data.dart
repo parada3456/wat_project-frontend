@@ -350,6 +350,7 @@ abstract class MockData {
     badgeId: badgeId,
     sourceId: "source-badge-grant",
     earnedAt: defaultDate.subtract(const Duration(days: 2)),
+    badge: badgeModel,
   );
 
   static final UserCartModel userCartModel = UserCartModel(
@@ -589,7 +590,7 @@ abstract class MockData {
     userId: userId,
     badgeId: badgeId,
     sourceId: "source-badge-grant",
-    earnedAt: defaultDate,
+    earnedAt: defaultDate, badge: BadgeEntity(badgeId: "badgeId", title: "title", triggerType: BadgeTriggerType.streak, createdAt: DateTime.now()),
   );
 
   static final JobHousingEntity jobHousingEntity = JobHousingEntity(

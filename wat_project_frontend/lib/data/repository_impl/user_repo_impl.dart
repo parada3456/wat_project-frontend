@@ -1,4 +1,7 @@
 import 'package:injectable/injectable.dart';
+import 'package:wat_project_frontend/data/entities/gamification/badge_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/profile_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_profile_entity.dart';
@@ -27,6 +30,7 @@ class UserRepoImpl implements UserRepository {
 
   @override
   Future<UserProfileEntity> getProfile() async {
+    print("call api get profile");
     return _userApi.getProfile();
   }
 
@@ -52,21 +56,21 @@ class UserRepoImpl implements UserRepository {
   }
 
   @override
-  Future<List<BadgeModel>> getBadges() async {
+  Future<List<BadgeEntity>> getBadges() async {
     final response = await _userApi.getBadges();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data.map((ub) => ub.badge).toList();
   }
 
   @override
-  Future<List<PointLedgerModel>> getPointsLedger() async {
+  Future<List<PointLedgerEntity>> getPointsLedger() async {
     final response = await _userApi.getPointsLedger();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
-  Future<List<PointLedgerModel>> getCreditScoreHistory() async {
+  Future<List<PointLedgerEntity>> getCreditScoreHistory() async {
     final response = await _userApi.getCreditScoreHistory();
-    return response.data.map((e) => e.toModel()).toList();
+    return response.data;
   }
 
   @override
