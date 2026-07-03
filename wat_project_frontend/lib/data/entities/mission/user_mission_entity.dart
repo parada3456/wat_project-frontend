@@ -5,38 +5,39 @@ part 'user_mission_entity.g.dart';
 
 @JsonSerializable()
 class UserMissionEntity {
-  @JsonKey(name: 'user_mission_id')
+  @JsonKey(name: 'UserMissionID')
   final String userMissionId;
-  @JsonKey(name: 'user_id')
+  @JsonKey(name: 'UserID')
   final String userId;
-  @JsonKey(name: 'mission_id')
+  @JsonKey(name: 'MissionID')
   final String missionId;
+  @JsonKey(name: 'Status')
   final UserMissionStatus status;
-  @JsonKey(name: 'calculated_due_date')
+  @JsonKey(name: 'CalculatedDueDate')
   final DateTime? calculatedDueDate;
-  @JsonKey(name: 'proof_url')
+  @JsonKey(name: 'ProofURL')
   final String? proofUrl;
-  @JsonKey(name: 'proof_submitted_at')
+  @JsonKey(name: 'ProofSubmittedAt')
   final DateTime? proofSubmittedAt;
-  @JsonKey(name: 'verified_at')
+  @JsonKey(name: 'VerifiedAt')
   final DateTime? verifiedAt;
-  @JsonKey(name: 'verified_by')
+  @JsonKey(name: 'VerifiedBy')
   final String? verifiedBy;
-  @JsonKey(name: 'base_points_earned')
+  @JsonKey(name: 'BasePointsEarned')
   final int basePointsEarned;
-  @JsonKey(name: 'speed_bonus_points')
+  @JsonKey(name: 'SpeedBonusPoints')
   final int speedBonusPoints;
-  @JsonKey(name: 'streak_bonus_points')
+  @JsonKey(name: 'StreakBonusPoints')
   final int streakBonusPoints;
-  @JsonKey(name: 'first_completer_bonus_points')
+  @JsonKey(name: 'FirstCompleterBonusPoints')
   final int firstCompleterBonusPoints;
-  @JsonKey(name: 'total_points_earned')
+  @JsonKey(name: 'TotalPointsEarned')
   final int totalPointsEarned;
-  @JsonKey(name: 'rewarded_at')
+  @JsonKey(name: 'RewardedAt')
   final DateTime? rewardedAt;
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: 'CreatedAt')
   final DateTime createdAt;
-  @JsonKey(name: 'updated_at')
+  @JsonKey(name: 'UpdatedAt')
   final DateTime updatedAt;
 
   UserMissionEntity({

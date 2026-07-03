@@ -5,30 +5,32 @@ part 'mission_entity.g.dart';
 
 @JsonSerializable()
 class MissionEntity {
-  @JsonKey(name: 'mission_id')
+  @JsonKey(name: 'MissionId')
   final String missionId;
-  @JsonKey(name: 'phase_id')
+  @JsonKey(name: 'PhaseId')
   final String phaseId;
+  @JsonKey(name: 'Title')
   final String title;
+  @JsonKey(name: 'Description')
   final String? description;
   final String? location;
-  @JsonKey(name: 'base_points')
+  @JsonKey(name: 'BasePoints')
   final int basePoints;
-  @JsonKey(name: 'is_mandatory')
+  @JsonKey(name: 'IsMandatory')
   final bool isMandatory;
-  @JsonKey(name: 'verification_type')
+  @JsonKey(name: 'VerificationType')
   final VerificationType verificationType;
-  @JsonKey(name: 'due_date_type')
+  @JsonKey(name: 'DueDateType')
   final String? dueDateType;
-  @JsonKey(name: 'fixed_due_date')
+  @JsonKey(name: 'FixedDueDate')
   final DateTime? fixedDueDate;
-  @JsonKey(name: 'relative_trigger_event')
+  @JsonKey(name: 'RelativeTriggerEvent')
   final String? relativeTriggerEvent;
-  @JsonKey(name: 'relative_days_offset')
+  @JsonKey(name: 'RelativeDaysOffset')
   final int? relativeDaysOffset;
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: 'CreatedAt')
   final DateTime createdAt;
-  @JsonKey(name: 'updated_at')
+  @JsonKey(name: 'UpdatedAt')
   final DateTime updatedAt;
 
   MissionEntity({
