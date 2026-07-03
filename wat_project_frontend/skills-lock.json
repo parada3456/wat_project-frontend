@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "wat-project-developer": {
+      "source": "./.agents/skills/wat-project",
+      "sourceType": "local",
+      "computedHash": "ae448f8c65f9730c4515ad47a54b9d36a5efd6928e235d97f8c0a876798b31a8"
+    }
+  }
+}
