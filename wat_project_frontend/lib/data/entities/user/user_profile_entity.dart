@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:wat_project_frontend/data/entities/expense/credit_score_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/assigned_job_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
-import 'package:wat_project_frontend/domain/models/user_job_model.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
-import 'package:wat_project_frontend/domain/models/user_profile.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 
 part 'user_profile_entity.g.dart';
 

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 
 part 'profile_entity.g.dart';
 

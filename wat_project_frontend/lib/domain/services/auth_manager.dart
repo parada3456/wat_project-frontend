@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wat_project_frontend/data/sources/api/auth_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/auth_refresh_request.dart';
-import 'package:wat_project_frontend/domain/models/auth_model.dart';
+import 'package:wat_project_frontend/domain/models/auth_models.dart';
 class AuthSessionManager {
   final FlutterSecureStorage _storage;
   final AuthApiService _api;

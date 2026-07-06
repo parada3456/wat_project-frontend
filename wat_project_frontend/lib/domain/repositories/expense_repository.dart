@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:wat_project_frontend/data/entities/expense/expense_transaction_entity.dart';
-import 'package:wat_project_frontend/domain/models/expense_transaction_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_split_model.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
 import 'package:wat_project_frontend/data/entities/expense/expense_detail_response.dart';
 

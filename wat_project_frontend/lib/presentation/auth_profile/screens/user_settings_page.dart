@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/settings_toggle_tile.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';

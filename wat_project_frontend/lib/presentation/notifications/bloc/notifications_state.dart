@@ -1,4 +1,4 @@
-import 'package:wat_project_frontend/domain/models/notification_model.dart';
+import 'package:wat_project_frontend/domain/models/notification_models.dart';
 
 abstract class NotificationsState {
   const NotificationsState();

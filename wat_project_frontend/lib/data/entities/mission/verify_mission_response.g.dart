@@ -9,17 +9,17 @@ part of 'verify_mission_response.dart';
 VerifyMissionResponse _$VerifyMissionResponseFromJson(
   Map<String, dynamic> json,
 ) => VerifyMissionResponse(
-  userMissionId: json['userMissionId'] as String,
+  userMissionId: json['user_mission_id'] as String,
   status: json['status'] as String,
-  verifiedAt: json['verifiedAt'] as String?,
-  verifiedBy: json['verifiedBy'] as String?,
+  verifiedAt: json['verified_at'] as String?,
+  verifiedBy: json['verified_by'] as String?,
 );
 
 Map<String, dynamic> _$VerifyMissionResponseToJson(
   VerifyMissionResponse instance,
 ) => <String, dynamic>{
-  'userMissionId': instance.userMissionId,
+  'user_mission_id': instance.userMissionId,
   'status': instance.status,
-  'verifiedAt': instance.verifiedAt,
-  'verifiedBy': instance.verifiedBy,
+  'verified_at': instance.verifiedAt,
+  'verified_by': instance.verifiedBy,
 };

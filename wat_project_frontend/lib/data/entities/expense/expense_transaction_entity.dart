@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/expense_transaction_model.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
 
 part 'expense_transaction_entity.g.dart';
 

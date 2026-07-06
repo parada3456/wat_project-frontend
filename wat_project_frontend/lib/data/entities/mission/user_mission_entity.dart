@@ -1,43 +1,43 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 part 'user_mission_entity.g.dart';
 
 @JsonSerializable()
 class UserMissionEntity {
-  @JsonKey(name: 'UserMissionID')
+  @JsonKey(name: 'user_mission_id')
   final String userMissionId;
-  @JsonKey(name: 'UserID')
+  @JsonKey(name: 'user_id')
   final String userId;
-  @JsonKey(name: 'MissionID')
+  @JsonKey(name: 'mission_id')
   final String missionId;
-  @JsonKey(name: 'Status')
+  @JsonKey(name: 'status')
   final UserMissionStatus status;
-  @JsonKey(name: 'CalculatedDueDate')
+  @JsonKey(name: 'calculated_due_date')
   final DateTime? calculatedDueDate;
-  @JsonKey(name: 'ProofURL')
+  @JsonKey(name: 'proof_url')
   final String? proofUrl;
-  @JsonKey(name: 'ProofSubmittedAt')
+  @JsonKey(name: 'proof_submitted_at')
   final DateTime? proofSubmittedAt;
-  @JsonKey(name: 'VerifiedAt')
+  @JsonKey(name: 'verified_at')
   final DateTime? verifiedAt;
-  @JsonKey(name: 'VerifiedBy')
+  @JsonKey(name: 'verified_by')
   final String? verifiedBy;
-  @JsonKey(name: 'BasePointsEarned')
+  @JsonKey(name: 'base_points_earned')
   final int basePointsEarned;
-  @JsonKey(name: 'SpeedBonusPoints')
+  @JsonKey(name: 'speed_bonus_points')
   final int speedBonusPoints;
-  @JsonKey(name: 'StreakBonusPoints')
+  @JsonKey(name: 'streak_bonus_points')
   final int streakBonusPoints;
-  @JsonKey(name: 'FirstCompleterBonusPoints')
+  @JsonKey(name: 'first_completer_bonus_points')
   final int firstCompleterBonusPoints;
-  @JsonKey(name: 'TotalPointsEarned')
+  @JsonKey(name: 'total_points_earned')
   final int totalPointsEarned;
-  @JsonKey(name: 'RewardedAt')
+  @JsonKey(name: 'rewarded_at')
   final DateTime? rewardedAt;
-  @JsonKey(name: 'CreatedAt')
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
-  @JsonKey(name: 'UpdatedAt')
+  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
   UserMissionEntity({

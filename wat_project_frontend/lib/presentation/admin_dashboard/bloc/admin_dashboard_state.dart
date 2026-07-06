@@ -1,7 +1,7 @@
-import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/points_adjustment_result_model.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
 
 abstract class AdminDashboardState {
   const AdminDashboardState();

@@ -1,36 +1,36 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/mission_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 part 'mission_entity.g.dart';
 
 @JsonSerializable()
 class MissionEntity {
-  @JsonKey(name: 'MissionId')
+  @JsonKey(name: 'mission_id')
   final String missionId;
-  @JsonKey(name: 'PhaseId')
+  @JsonKey(name: 'phase_id')
   final String phaseId;
-  @JsonKey(name: 'Title')
+  @JsonKey(name: 'title')
   final String title;
-  @JsonKey(name: 'Description')
+  @JsonKey(name: 'description')
   final String? description;
   final String? location;
-  @JsonKey(name: 'BasePoints')
+  @JsonKey(name: 'base_points')
   final int basePoints;
-  @JsonKey(name: 'IsMandatory')
+  @JsonKey(name: 'is_mandatory')
   final bool isMandatory;
-  @JsonKey(name: 'VerificationType')
+  @JsonKey(name: 'verification_type')
   final VerificationType verificationType;
-  @JsonKey(name: 'DueDateType')
+  @JsonKey(name: 'due_date_type')
   final String? dueDateType;
-  @JsonKey(name: 'FixedDueDate')
+  @JsonKey(name: 'fixed_due_date')
   final DateTime? fixedDueDate;
-  @JsonKey(name: 'RelativeTriggerEvent')
+  @JsonKey(name: 'relative_trigger_event')
   final String? relativeTriggerEvent;
-  @JsonKey(name: 'RelativeDaysOffset')
+  @JsonKey(name: 'relative_days_offset')
   final int? relativeDaysOffset;
-  @JsonKey(name: 'CreatedAt')
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
-  @JsonKey(name: 'UpdatedAt')
+  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
   MissionEntity({

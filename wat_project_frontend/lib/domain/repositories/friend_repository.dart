@@ -1,5 +1,5 @@
 import 'package:wat_project_frontend/data/entities/friend/friendship_entity.dart';
-import 'package:wat_project_frontend/domain/models/friendship_model.dart';
+import 'package:wat_project_frontend/domain/models/friend_models.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend_radar/radar_entry.dart';
 
 abstract class FriendRepository {

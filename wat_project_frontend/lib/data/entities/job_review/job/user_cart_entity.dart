@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/user_cart_model.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
 
 part 'user_cart_entity.g.dart';
 

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
-import 'package:wat_project_frontend/domain/models/login_model.dart';
+import 'package:wat_project_frontend/domain/models/auth_models.dart';
 part 'login_entity.g.dart';
 
 @JsonSerializable()

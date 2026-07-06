@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:wat_project_frontend/domain/usecases/get_profile_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/update_profile_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_badges_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_credit_score_history_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/update_location_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/delete_account_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/domain/models/user_profile.dart';
-import 'package:wat_project_frontend/domain/models/badge.dart';
-import 'package:wat_project_frontend/domain/models/credit_record.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';

@@ -1,34 +1,44 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:wat_project_frontend/domain/models/mission_detail_model.dart';
-import 'package:wat_project_frontend/domain/models/user_task_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/domain/usecases/list_available_missions_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_mission_detail_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/submit_mission_proof_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/toggle_task_usecase.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
 
 part 'mission_task_event.dart';
 part 'mission_task_state.dart';
 part 'mission_task_bloc.freezed.dart';
 
 class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
-  final ListAvailableMissionsUseCase _listAvailableMissionsUseCase;
+  final ListAllMissionsUseCase _listAllMissionsUseCase;
+  final ListUserMissionsUseCase _listAvailableMissionsUseCase;
+  final GetExploreMissionUseCase _getExploreMissionUseCase;
   final GetMissionDetailUseCase _getMissionDetailUseCase;
   final SubmitMissionProofUseCase _submitMissionProofUseCase;
   final ToggleTaskUseCase _toggleTaskUseCase;
+  final JoinMissionUseCase _joinMissionUseCase;
+  final GetProfileUseCase _getProfileUseCase;
 
   MissionTaskBloc(
     this._listAvailableMissionsUseCase,
     this._getMissionDetailUseCase,
     this._submitMissionProofUseCase,
     this._toggleTaskUseCase,
+    this._getExploreMissionUseCase,
+    this._joinMissionUseCase,
+    this._getProfileUseCase,
+    this._listAllMissionsUseCase,
   ) : super(const MissionTaskState()) {
     on<MissionsTasksListRequested>(_onMissionsTasksListRequested);
     on<MissionTaskDetailRequested>(_onMissionTaskDetailRequested);
     on<MissionTaskProofSubmitted>(_onMissionTaskProofSubmitted);
     on<MissionTaskToggleRequested>(_onMissionTaskToggleRequested);
+    on<ExploreMissionsRequested>(_onExploreMissionsRequested);
+    on<JoinMissionRequested>(_onJoinMissionRequested);
+    on<FilterMissionsRequested>(_onFilterMissionsRequested);
   }
 
   Future<void> _onMissionsTasksListRequested(
@@ -36,7 +46,18 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     Emitter<MissionTaskState> emit,
   ) async {
     emit(state.copyWith(status: const UIStatus.loading()));
+    final profileResult = await _getProfileUseCase();
+    String? currentPhaseId;
+    profileResult.fold(
+      (_) {},
+      (profile) => currentPhaseId = profile.user.currentPhaseId,
+    );
     final result = await _listAvailableMissionsUseCase();
+    final allMissionsResult = await _listAllMissionsUseCase();
+    
+    List<MissionModel> allMissions = [];
+    allMissionsResult.fold((_) {}, (m) => allMissions = m);
+
     result.fold(
       (failure) => emit(state.copyWith(
         status: UIStatus.loadFailed(message: failure.message),
@@ -44,6 +65,8 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
       (missions) => emit(state.copyWith(
         status: const UIStatus.loadSuccess(),
         missions: missions,
+        allMissions: allMissions,
+        currentPhaseId: currentPhaseId,
       )),
     );
   }
@@ -130,5 +153,81 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
         }
       },
     );
+  }
+
+  Future<void> _onExploreMissionsRequested(
+    ExploreMissionsRequested event,
+    Emitter<MissionTaskState> emit,
+  ) async {
+    emit(state.copyWith(status: const UIStatus.loading()));
+    final profileResult = await _getProfileUseCase();
+    String? currentPhaseId;
+    profileResult.fold(
+      (_) {},
+      (profile) => currentPhaseId = profile.user.currentPhaseId,
+    );
+    final result = await _getExploreMissionUseCase();
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: UIStatus.loadFailed(message: failure.message),
+      )),
+      (exploreMissions) => emit(state.copyWith(
+        status: const UIStatus.loadSuccess(),
+        exploreMissions: exploreMissions,
+        currentPhaseId: currentPhaseId,
+      )),
+    );
+  }
+
+  Future<void> _onJoinMissionRequested(
+    JoinMissionRequested event,
+    Emitter<MissionTaskState> emit,
+  ) async {
+    emit(state.copyWith(status: const UIStatus.loading()));
+    final result = await _joinMissionUseCase(event.missionId);
+    await result.fold(
+      (failure) async => emit(state.copyWith(
+        status: UIStatus.loadFailed(message: failure.message),
+      )),
+      (_) async {
+        emit(state.copyWith(
+          status: const UIStatus.loadSuccess(message: 'JOIN_SUCCESS'),
+        ));
+        
+        final profileResult = await _getProfileUseCase();
+        String? currentPhaseId;
+        profileResult.fold(
+          (_) {},
+          (profile) => currentPhaseId = profile.user.currentPhaseId,
+        );
+
+        final userMissionsResult = await _listAvailableMissionsUseCase();
+        final exploreMissionsResult = await _getExploreMissionUseCase();
+        final allMissionsResult = await _listAllMissionsUseCase();
+        
+        List<MissionDetailModel> missions = state.missions;
+        userMissionsResult.fold((_) {}, (m) => missions = m);
+
+        List<MissionModel> exploreMissions = state.exploreMissions;
+        exploreMissionsResult.fold((_) {}, (em) => exploreMissions = em);
+
+        List<MissionModel> allMissions = state.allMissions;
+        allMissionsResult.fold((_) {}, (m) => allMissions = m);
+
+        emit(state.copyWith(
+          missions: missions,
+          exploreMissions: exploreMissions,
+          allMissions: allMissions,
+          currentPhaseId: currentPhaseId,
+        ));
+      },
+    );
+  }
+
+  Future<void> _onFilterMissionsRequested(
+    FilterMissionsRequested event,
+    Emitter<MissionTaskState> emit,
+  ) async {
+    emit(state.copyWith(isFilterMandatory: event.showMandatory));
   }
 }

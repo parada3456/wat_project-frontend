@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
 import 'package:wat_project_frontend/data/entities/auth/login_entity.dart';
-import 'package:wat_project_frontend/domain/models/auth_model.dart';
+import 'package:wat_project_frontend/domain/models/auth_models.dart';
 import 'package:wat_project_frontend/domain/repositories/auth_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/auth_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/login_request.dart';

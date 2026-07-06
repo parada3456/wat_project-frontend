@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/task_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 part 'task_entity.g.dart';
 

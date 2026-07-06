@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/notification_model.dart';
+import 'package:wat_project_frontend/domain/models/notification_models.dart';
 
 part 'notification_entity.g.dart';
 

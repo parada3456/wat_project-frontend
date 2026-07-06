@@ -1,7 +1,7 @@
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
-import 'package:wat_project_frontend/domain/models/job_posting_model.dart';
-import 'package:wat_project_frontend/domain/models/user_cart_model.dart';
-import 'package:wat_project_frontend/domain/models/user_job_model.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
 
 abstract class JobMarketState {
   const JobMarketState();

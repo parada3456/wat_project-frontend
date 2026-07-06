@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wat_project_frontend/data/entities/gamification/badge_entity.dart';
-import 'package:wat_project_frontend/domain/models/user_badge_model.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
 
 part 'user_badge_entity.g.dart';
 

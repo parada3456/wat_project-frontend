@@ -1,6 +1,6 @@
 import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
 import 'package:wat_project_frontend/data/entities/auth/login_entity.dart';
-import 'package:wat_project_frontend/domain/models/auth_model.dart';
+import 'package:wat_project_frontend/domain/models/auth_models.dart';
 abstract class AuthRepository {
   Future<LoginEntity> register(String email, String password, String firstName, String lastName);
   Future<LoginEntity> login(String email, String password);

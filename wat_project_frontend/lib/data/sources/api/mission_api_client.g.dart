@@ -20,7 +20,37 @@ class _MissionApiService implements MissionApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PaginationResponse<UserMissionEntity>> listMissions() async {
+  Future<PaginationResponse<MissionEntity>> listMissions() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<PaginationResponse<MissionEntity>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'missions',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<MissionEntity> _value;
+    try {
+      _value = PaginationResponse<MissionEntity>.fromJson(
+        _result.data!,
+        (json) => MissionEntity.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<PaginationResponse<UserMissionEntity>> listUserMissions() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -41,6 +71,36 @@ class _MissionApiService implements MissionApiService {
       _value = PaginationResponse<UserMissionEntity>.fromJson(
         _result.data!,
         (json) => UserMissionEntity.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<PaginationResponse<MissionEntity>> listExploreMissions() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<PaginationResponse<MissionEntity>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'missions/explore',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<MissionEntity> _value;
+    try {
+      _value = PaginationResponse<MissionEntity>.fromJson(
+        _result.data!,
+        (json) => MissionEntity.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -131,6 +191,34 @@ class _MissionApiService implements MissionApiService {
         _result.data!,
         (json) => UserTaskEntity.fromJson(json as Map<String, dynamic>),
       );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<UserMissionEntity> joinMission(JoinMissionRequest request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<UserMissionEntity>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'user-missions',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UserMissionEntity _value;
+    try {
+      _value = UserMissionEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

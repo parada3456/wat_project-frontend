@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:injectable/injectable.dart';
+import 'package:wat_project_frontend/data/entities/mission/mission_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/task_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/user_task_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/user_mission_entity.dart';
@@ -8,7 +9,9 @@ import 'package:wat_project_frontend/data/sources/api/mission_api_client.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_detail_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/toggle_task_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
-import 'package:wat_project_frontend/domain/models/mission_model.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/mission/join_mission_request.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 @injectable
 class MissionRepoImpl implements MissionRepository {
@@ -17,8 +20,20 @@ class MissionRepoImpl implements MissionRepository {
   MissionRepoImpl(this._api);
 
   @override
-  Future<List<UserMissionEntity>> listMissions() async {
+  Future<List<MissionEntity>> listMissions() async {
     final response = await _api.listMissions();
+    return response.data;
+  }
+
+  @override
+  Future<List<UserMissionEntity>> listUserMissions() async {
+    final response = await _api.listUserMissions();
+    return response.data;
+  }
+
+  @override
+  Future<List<MissionEntity>> listExploreMissions() async {
+    final response = await _api.listExploreMissions();
     return response.data;
   }
 
@@ -58,6 +73,12 @@ class MissionRepoImpl implements MissionRepository {
   @override
   Future<MissionModel> createMission(CreateMissionRequest request) async {
     final entity = await _api.createMission(request);
+    return entity.toModel();
+  }
+
+  @override
+  Future<UserMissionModel> joinMission(String missionId) async {
+    final entity = await _api.joinMission(JoinMissionRequest(missionId: missionId));
     return entity.toModel();
   }
 }

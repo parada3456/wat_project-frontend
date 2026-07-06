@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wat_project_frontend/di/inject.dart';
-import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_bloc.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_event.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_state.dart';

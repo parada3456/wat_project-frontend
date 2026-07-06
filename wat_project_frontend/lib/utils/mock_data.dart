@@ -1,35 +1,34 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
-import 'package:wat_project_frontend/domain/models/auth_model.dart';
-import 'package:wat_project_frontend/domain/models/badge_model.dart';
-import 'package:wat_project_frontend/domain/models/credit_score_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_split_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_transaction_model.dart';
-import 'package:wat_project_frontend/domain/models/friendship_model.dart';
-import 'package:wat_project_frontend/domain/models/home_data.dart';
-import 'package:wat_project_frontend/domain/models/job_housing_model.dart';
-import 'package:wat_project_frontend/domain/models/job_overall_rating_model.dart';
-import 'package:wat_project_frontend/domain/models/job_posting_model.dart';
-import 'package:wat_project_frontend/domain/models/job_review_model.dart';
-import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
-import 'package:wat_project_frontend/domain/models/mission_model.dart';
-import 'package:wat_project_frontend/domain/models/notification_model.dart';
-import 'package:wat_project_frontend/domain/models/point_ledger_model.dart';
-import 'package:wat_project_frontend/domain/models/points_adjustment_result_model.dart';
-import 'package:wat_project_frontend/domain/models/post_model.dart';
-import 'package:wat_project_frontend/domain/models/profile_model.dart';
-import 'package:wat_project_frontend/domain/models/task_model.dart';
-import 'package:wat_project_frontend/domain/models/user_badge_model.dart';
-import 'package:wat_project_frontend/domain/models/user_cart_model.dart';
-import 'package:wat_project_frontend/domain/models/user_job_model.dart';
-import 'package:wat_project_frontend/domain/models/mission_detail_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_detail_model.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/user_phase_history_model.dart';
-import 'package:wat_project_frontend/domain/models/user_profile.dart';
-import 'package:wat_project_frontend/domain/models/user_task_model.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
+import 'package:wat_project_frontend/domain/models/auth_models.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/domain/models/friend_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/journey_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/notification_models.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/journey_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 // Entities
 import 'package:wat_project_frontend/data/entities/admin/admin_stats_entity.dart';
@@ -315,12 +314,6 @@ abstract class MockData {
     lifetimeBalanceAfter: 350,
     phaseBalanceAfter: 250,
     ledgerId: ledgerId,
-  );
-
-  static final PostModel postModel = PostModel(
-    id: "post-1",
-    title: "Welcome to WAT Project!",
-    content: "We are thrilled to help you navigate your Work and Travel journey. Stay updated on missions, split expenses, and find reviews easily.",
   );
 
   static final ProfileModel profileModel = ProfileModel(
@@ -921,8 +914,8 @@ abstract class MockData {
   static final MissionDetailResponse missionDetailResponse = MissionDetailResponse(
     mission: missionEntity,
     userMission: userMissionEntity,
-    tasks: [taskEntity.taskId],
-    userTasks: [userTaskEntity.taskId],
+    tasks: [taskEntity],
+    userTasks: [userTaskEntity],
   );
 
   static final PendingVerificationsResponse pendingVerificationsResponse = PendingVerificationsResponse(

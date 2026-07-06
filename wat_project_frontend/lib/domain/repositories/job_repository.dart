@@ -1,8 +1,8 @@
 import 'package:wat_project_frontend/data/entities/job_review/job/user_cart_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
-import 'package:wat_project_frontend/domain/models/job_posting_model.dart';
-import 'package:wat_project_frontend/domain/models/user_cart_model.dart';
-import 'package:wat_project_frontend/domain/models/job_review_model.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
 

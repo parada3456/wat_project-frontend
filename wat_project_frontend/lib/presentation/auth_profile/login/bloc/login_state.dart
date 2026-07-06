@@ -1,4 +1,4 @@
-// import 'package:wat_project_frontend/domain/models/auth_tokens.dart';
+// import 'package:wat_project_frontend/domain/models/auth_models.dart';
 // import 'package:wat_project_frontend/data/sources/api/api_model/api_error.dart';
 
 // abstract class LoginState {

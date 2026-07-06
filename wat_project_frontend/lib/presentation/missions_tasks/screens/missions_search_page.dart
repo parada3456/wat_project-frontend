@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/di/inject.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';

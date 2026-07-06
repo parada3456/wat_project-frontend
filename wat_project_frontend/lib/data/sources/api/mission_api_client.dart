@@ -8,6 +8,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/pagination_respo
 import 'package:wat_project_frontend/data/entities/mission/mission_detail_response.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/toggle_task_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/mission/join_mission_request.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_entity.dart';
 part 'mission_api_client.g.dart';
 
@@ -15,8 +16,14 @@ part 'mission_api_client.g.dart';
 abstract class MissionApiService {
   factory MissionApiService(Dio dio, {String baseUrl}) = _MissionApiService;
 
+  @GET('missions')
+  Future<PaginationResponse<MissionEntity>> listMissions();
+
   @GET('user-missions')
-  Future<PaginationResponse<UserMissionEntity>> listMissions();
+  Future<PaginationResponse<UserMissionEntity>> listUserMissions();
+
+  @GET('missions/explore')
+  Future<PaginationResponse<MissionEntity>> listExploreMissions();
 
   @GET('user-missions/{id}')
   Future<MissionDetailResponse> getMissionDetail(@Path('id') String id);
@@ -26,6 +33,9 @@ abstract class MissionApiService {
 
   @GET('user-tasks')
   Future<PaginationResponse<UserTaskEntity>> getUserTasksByIds(@Query('ids') String ids);
+
+  @POST('user-missions')
+  Future<UserMissionEntity> joinMission(@Body() JoinMissionRequest request);
 
   @POST('user-missions/{id}/proof')
   @MultiPart()
