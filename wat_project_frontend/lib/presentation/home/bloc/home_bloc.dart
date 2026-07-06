@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:wat_project_frontend/domain/models/home_data.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/domain/usecases/get_home_data_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

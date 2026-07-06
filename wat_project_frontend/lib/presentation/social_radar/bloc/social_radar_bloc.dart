@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/friend_radar/radar_entry.dart';
-import 'package:wat_project_frontend/domain/models/friendship_model.dart';
-import 'package:wat_project_frontend/domain/usecases/send_friend_request_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/list_pending_requests_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/respond_to_friend_request_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/list_friends_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/remove_friend_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_radar_users_usecase.dart';
+import 'package:wat_project_frontend/domain/models/friend_models.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
 import 'package:wat_project_frontend/presentation/social_radar/bloc/social_radar_event.dart';
 import 'package:wat_project_frontend/presentation/social_radar/bloc/social_radar_state.dart';
 

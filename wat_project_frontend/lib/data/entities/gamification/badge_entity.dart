@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/badge_model.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
 
 part 'badge_entity.g.dart';
 

@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/list_jobs_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_job_detail_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/add_job_to_cart_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/list_cart_items_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/remove_job_from_cart_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/create_job_review_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/list_applications_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_event.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_state.dart';
 

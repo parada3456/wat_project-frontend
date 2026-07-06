@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/list_journey_phases_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/advance_phase_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_journey_history_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_leaderboard_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_event.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_state.dart';
 

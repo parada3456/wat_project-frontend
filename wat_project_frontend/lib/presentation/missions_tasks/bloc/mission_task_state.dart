@@ -6,5 +6,9 @@ abstract class MissionTaskState with _$MissionTaskState {
     @Default(UIStatus.initial()) UIStatus status,
     @Default([]) List<MissionDetailModel> missions,
     MissionDetailModel? detail,
+    @Default([]) List<MissionModel> exploreMissions,
+    @Default([]) List<MissionModel> allMissions,
+    String? currentPhaseId,
+    bool? isFilterMandatory,
   }) = _MissionTaskState;
 }

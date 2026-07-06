@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/domain/models/mission_detail_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class MissionCalendar extends StatelessWidget {

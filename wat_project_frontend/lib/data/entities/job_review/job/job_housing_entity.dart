@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/job_housing_model.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
 
 part 'job_housing_entity.g.dart';
 

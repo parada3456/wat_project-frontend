@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_posting_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/user_cart_entity.dart';
 import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
-import 'package:wat_project_frontend/domain/models/job_posting_model.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/domain/repositories/job_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/job_api_client.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';

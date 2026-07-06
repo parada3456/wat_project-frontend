@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/list_notifications_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/mark_notification_read_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/mark_all_notifications_read_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/delete_notification_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
 import 'package:wat_project_frontend/presentation/notifications/bloc/notifications_event.dart';
 import 'package:wat_project_frontend/presentation/notifications/bloc/notifications_state.dart';
 

@@ -2,10 +2,10 @@ import 'package:wat_project_frontend/data/entities/admin/admin_stats_entity.dart
 import 'package:wat_project_frontend/data/entities/gamification/points_adjustment_result_entity.dart';
 import 'package:wat_project_frontend/data/entities/mission/user_mission_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
-import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
-import 'package:wat_project_frontend/domain/models/points_adjustment_result_model.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
 
 abstract class AdminRepository {
   Future<AdminStatsEntity> getStats();

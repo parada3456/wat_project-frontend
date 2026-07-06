@@ -5,7 +5,7 @@ import 'package:wat_project_frontend/data/entities/gamification/point_ledger_ent
 import 'package:wat_project_frontend/data/entities/user/profile_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_account_entity.dart';
 import 'package:wat_project_frontend/data/entities/user/user_profile_entity.dart';
-import 'package:wat_project_frontend/domain/models/user_model.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/data/sources/api/user_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_profile_request.dart';
@@ -15,8 +15,8 @@ import 'package:wat_project_frontend/data/sources/api/api_model/user/update_sett
 import 'package:wat_project_frontend/data/sources/api/api_model/user/delete_account_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_location_request.dart';
 
-import 'package:wat_project_frontend/domain/models/badge_model.dart';
-import 'package:wat_project_frontend/domain/models/point_ledger_model.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
 @injectable
 class UserRepoImpl implements UserRepository {
   final UserApiService _userApi;

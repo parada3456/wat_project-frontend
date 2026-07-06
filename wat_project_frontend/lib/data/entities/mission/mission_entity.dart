@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/mission_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 part 'mission_entity.g.dart';
 
@@ -9,7 +9,9 @@ class MissionEntity {
   final String missionId;
   @JsonKey(name: 'phase_id')
   final String phaseId;
+  @JsonKey(name: 'title')
   final String title;
+  @JsonKey(name: 'description')
   final String? description;
   final String? location;
   @JsonKey(name: 'base_points')

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/user_mission_model.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 part 'user_mission_entity.g.dart';
 
@@ -11,6 +11,7 @@ class UserMissionEntity {
   final String userId;
   @JsonKey(name: 'mission_id')
   final String missionId;
+  @JsonKey(name: 'status')
   final UserMissionStatus status;
   @JsonKey(name: 'calculated_due_date')
   final DateTime? calculatedDueDate;

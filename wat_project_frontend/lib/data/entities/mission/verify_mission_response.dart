@@ -4,12 +4,12 @@ part 'verify_mission_response.g.dart';
 
 @JsonSerializable()
 class VerifyMissionResponse {
-  @JsonKey(name: 'userMissionId')
+  @JsonKey(name: 'user_mission_id')
   final String userMissionId;
   final String status;
-  @JsonKey(name: 'verifiedAt')
+  @JsonKey(name: 'verified_at')
   final String? verifiedAt;
-  @JsonKey(name: 'verifiedBy')
+  @JsonKey(name: 'verified_by')
   final String? verifiedBy;
 
   VerifyMissionResponse({

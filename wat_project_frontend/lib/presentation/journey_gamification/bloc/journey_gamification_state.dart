@@ -1,5 +1,5 @@
-import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
-import 'package:wat_project_frontend/domain/models/user_phase_history_model.dart';
+import 'package:wat_project_frontend/domain/models/journey_models.dart';
+import 'package:wat_project_frontend/domain/models/journey_models.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 
 abstract class JourneyGamificationState {

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/friendship_model.dart';
+import 'package:wat_project_frontend/domain/models/friend_models.dart';
 
 part 'friendship_entity.g.dart';
 

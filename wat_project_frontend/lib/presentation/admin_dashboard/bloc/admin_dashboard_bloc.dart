@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/get_admin_stats_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/list_pending_verifications_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/verify_admin_mission_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_admin_users_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_admin_user_detail_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/adjust_points_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_event.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_state.dart';
 

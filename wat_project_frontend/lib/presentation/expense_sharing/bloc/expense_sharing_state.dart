@@ -1,6 +1,6 @@
-import 'package:wat_project_frontend/domain/models/expense_transaction_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_split_model.dart';
-import 'package:wat_project_frontend/domain/models/expense_detail_model.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
 
 abstract class ExpenseSharingState {
   const ExpenseSharingState();

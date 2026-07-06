@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/list_expenses_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/create_expense_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/get_expense_detail_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/delete_expense_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/list_pending_splits_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/pay_expense_split_usecase.dart';
-import 'package:wat_project_frontend/domain/usecases/approve_expense_split_payment_usecase.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
 

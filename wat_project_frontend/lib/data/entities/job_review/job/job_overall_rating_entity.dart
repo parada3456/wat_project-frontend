@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/job_overall_rating_model.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
 
 part 'job_overall_rating_entity.g.dart';
 

@@ -13,9 +13,11 @@ MissionDetailResponse _$MissionDetailResponseFromJson(
   userMission: UserMissionEntity.fromJson(
     json['user_mission'] as Map<String, dynamic>,
   ),
-  tasks: (json['tasks'] as List<dynamic>).map((e) => e as String).toList(),
+  tasks: (json['tasks'] as List<dynamic>)
+      .map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
+      .toList(),
   userTasks: (json['user_tasks'] as List<dynamic>)
-      .map((e) => e as String)
+      .map((e) => UserTaskEntity.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 

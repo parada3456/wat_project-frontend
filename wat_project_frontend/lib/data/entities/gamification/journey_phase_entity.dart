@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/journey_phase_model.dart';
+import 'package:wat_project_frontend/domain/models/journey_models.dart';
 
 part 'journey_phase_entity.g.dart';
 

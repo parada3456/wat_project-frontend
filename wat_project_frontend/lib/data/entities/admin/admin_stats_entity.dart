@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/admin_stats_model.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
 
 part 'admin_stats_entity.g.dart';
 

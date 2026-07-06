@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/points_adjustment_result_model.dart';
+import 'package:wat_project_frontend/domain/models/admin_models.dart';
 
 part 'points_adjustment_result_entity.g.dart';
 

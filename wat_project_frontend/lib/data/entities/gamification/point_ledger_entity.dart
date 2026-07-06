@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/point_ledger_model.dart';
+import 'package:wat_project_frontend/domain/models/gamification_models.dart';
 
 part 'point_ledger_entity.g.dart';
 

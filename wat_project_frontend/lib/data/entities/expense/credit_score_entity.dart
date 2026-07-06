@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wat_project_frontend/domain/models/credit_score_model.dart';
+import 'package:wat_project_frontend/domain/models/user_models.dart';
 
 part 'credit_score_entity.g.dart';
 

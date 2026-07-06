@@ -16,4 +16,10 @@ class MissionTaskEvent with _$MissionTaskEvent {
     required String taskId,
     required bool completed,
   }) = MissionTaskToggleRequested;
+
+  const factory MissionTaskEvent.exploreMissionsRequested() = ExploreMissionsRequested;
+
+  const factory MissionTaskEvent.joinMissionRequested(String missionId) = JoinMissionRequested;
+
+  const factory MissionTaskEvent.filterMissionsRequested(bool? showMandatory) = FilterMissionsRequested;
 }
