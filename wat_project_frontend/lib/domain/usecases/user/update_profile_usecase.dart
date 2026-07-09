@@ -5,8 +5,6 @@ import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/user/update_profile_request.dart';
 
-import 'package:wat_project_frontend/domain/models/job_models.dart';
-
 @injectable
 class UpdateProfileUseCase {
   final UserRepository _repository;
@@ -25,7 +23,7 @@ class UpdateProfileUseCase {
       return Right(UserProfileModel(
         user: response.userAccount.toModel(),
         profile: response.userAccount.toProfileModel(),
-        creditScore: response.creditScore.toModel(),
+        creditScore: response.creditScore?.toModel(),
         userJobs: response.userJobs?.map((e) => e.toModel()).toList() ?? [],
       ));
     } catch (e) {

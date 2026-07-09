@@ -4,8 +4,8 @@ part of 'mission_task_bloc.dart';
 abstract class MissionTaskState with _$MissionTaskState {
   const factory MissionTaskState({
     @Default(UIStatus.initial()) UIStatus status,
-    @Default([]) List<MissionDetailModel> missions,
-    MissionDetailModel? detail,
+    @Default([]) List<MissionModel> missions,
+    MissionModel? detail,
     @Default([]) List<MissionModel> exploreMissions,
     @Default([]) List<MissionModel> allMissions,
     String? currentPhaseId,

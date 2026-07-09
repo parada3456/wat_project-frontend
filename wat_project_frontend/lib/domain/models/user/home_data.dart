@@ -6,7 +6,7 @@ class HomeData {
   final UserModel user;
   final JourneyPhaseModel currentPhase;
   final List<JourneyPhaseModel> allPhases;
-  final List<MissionDetailModel> phaseMissions;
+  final List<MissionModel> phaseMissions;
   final bool isMock;
 
   const HomeData({

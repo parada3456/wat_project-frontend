@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
+import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
@@ -26,40 +27,45 @@ class GetHomeDataUseCase {
       final userProfileEntity = await _userRepository.getMe();
       final userProfileModel = userProfileEntity.toModel();
       final userModel = userProfileModel.user;
+
       print("start phases fetch");
       final phases = (await _journeyRepository.listPhases())
           .map((p) => p.toModel())
           .toList();
+
       print("start list user mission fetch");
-      final userMissions = await _missionRepository.listUserMissions();
+      // listMyMissions now returns PaginationResponse — we only need page 1
+      // for the home screen summary (a small set of active missions).
+      final myMissionsResponse = await _missionRepository.listMyMissions(
+        page: 1,
+        pageSize: 50, // fetch enough to cover all active missions on home
+      );
+      final userMissionEntities = myMissionsResponse.data;
       print("finish list user mission fetch");
+
       // Find current phase matching user's currentPhaseId
       final currentPhase = phases.firstWhere(
         (p) => p.phaseId == userModel.currentPhaseId,
-        orElse: () => phases.isNotEmpty 
-            ? phases.first 
+        orElse: () => phases.isNotEmpty
+            ? phases.first
             : JourneyPhaseModel(
                 phaseId: userModel.currentPhaseId ?? 'phase-1',
                 phaseNumber: 1,
                 title: 'Preparation & Booking',
-                description: 'Complete your initial preparations, flights and visa documentations.',
+                description:
+                    'Complete your initial preparations, flights and visa documentations.',
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
               ),
       );
 
-      // Concurrently fetch details of user's active missions to filter by phase
+      // Concurrently fetch details for each user mission
       final detailsList = await Future.wait(
-        userMissions.map((um) async {
+        userMissionEntities.map((um) async {
           try {
-            final detail = await _missionRepository.getMissionDetail(um.userMissionId);
-
-            return MissionDetailModel(
-              mission: detail.mission.toModel(),
-              userMission: detail.userMission.toModel(),
-              tasks: detail.tasks.map((e) => e.toModel()).toList(),
-              userTasks: detail.userTasks.map((e) => e.toModel()).toList(),
-            );
+            final missionEntity =
+                await _missionRepository.getMissionDetail(um.missionId);
+            return missionEntity.toModel();
           } catch (_) {
             return null;
           }
@@ -68,8 +74,8 @@ class GetHomeDataUseCase {
       print("finish task fetch");
 
       final phaseMissions = detailsList
-          .whereType<MissionDetailModel>()
-          .where((d) => d.mission.phaseId == currentPhase.phaseId)
+          .whereType<MissionModel>()
+          .where((d) => d.phaseId == currentPhase.phaseId)
           .toList();
 
       return Right(HomeData(
@@ -80,6 +86,7 @@ class GetHomeDataUseCase {
         isMock: false,
       ));
     } catch (e) {
+      print("error occured: $e");
       return Left(mapExceptionToFailure(e));
     }
   }

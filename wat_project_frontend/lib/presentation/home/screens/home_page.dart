@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
-import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
-import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart';
-import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card_list.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
@@ -16,8 +15,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeBloc>(
-      create: (context) => getIt<HomeBloc>()..add(const HomeFetched()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeBloc>(
+          create: (context) => getIt<HomeBloc>()..add(const HomeFetched()),
+        ),
+        BlocProvider<MissionTaskBloc>(
+          create: (context) => getIt<MissionTaskBloc>(),
+        ),
+      ],
       child: const HomeView(),
     );
   }
@@ -126,24 +132,15 @@ class HomeView extends StatelessWidget {
             if (data.phaseMissions.isEmpty)
               _buildEmptyMissionsState()
             else
-              ...data.phaseMissions.map((dm) {
-                final isCompleted = dm.userMission.status == UserMissionStatus.completed;
-                final progress = isCompleted ? 1.0 : 0.4;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: InkWell(
-                    onTap: () => context.push('/missions/detail', extra: dm.userMission.userMissionId),
-                    borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-                    child: MissionCard(
-                      title: dm.mission.title,
-                      deadline: _formatDeadline(dm.userMission.calculatedDueDate) ?? 'Soon',
-                      bonusPoints: dm.mission.basePoints,
-                      isMandatory: dm.mission.isMandatory,
-                      progress: progress,
-                    ),
-                  ),
-                );
-              }),
+              // SizedBox bounds the lazy list within the scrollable home page
+              SizedBox(
+                height: 420,
+                child: MissionCardList(
+                  feedType: MissionFeedType.my,
+                  pageSize: 5,
+                  padding: EdgeInsets.zero,
+                ),
+              ),
           ],
         ),
       ),
@@ -399,10 +396,5 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
-
-  String? _formatDeadline(DateTime? deadline) {
-    if (deadline == null) return null;
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return '${months[deadline.month - 1]} ${deadline.day}';
-  }
 }
+

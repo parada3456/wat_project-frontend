@@ -8,20 +8,20 @@ part of 'journey_phase_entity.dart';
 
 JourneyPhaseEntity _$JourneyPhaseEntityFromJson(Map<String, dynamic> json) =>
     JourneyPhaseEntity(
-      phaseId: json['PhaseId'] as String,
-      phaseNumber: (json['PhaseNumber'] as num).toInt(),
+      phaseId: json['phase_id'] as String,
+      phaseNumber: (json['phase_number'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String?,
-      createdAt: DateTime.parse(json['CreatedAt'] as String),
-      updatedAt: DateTime.parse(json['UpdatedAt'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$JourneyPhaseEntityToJson(JourneyPhaseEntity instance) =>
     <String, dynamic>{
-      'PhaseId': instance.phaseId,
-      'PhaseNumber': instance.phaseNumber,
+      'phase_id': instance.phaseId,
+      'phase_number': instance.phaseNumber,
       'title': instance.title,
       'description': instance.description,
-      'CreatedAt': instance.createdAt.toIso8601String(),
-      'UpdatedAt': instance.updatedAt.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

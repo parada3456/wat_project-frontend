@@ -60,9 +60,9 @@ class MissionCalendarView extends StatelessWidget {
 
             // Filter missions with deadlines in June 2026
             final deadlinesThisMonth = state.missions.where((m) =>
-                m.userMission.calculatedDueDate != null &&
-                m.userMission.calculatedDueDate!.month == 6 &&
-                m.userMission.calculatedDueDate!.year == 2026).toList();
+                m.userMission?.calculatedDueDate != null &&
+                m.userMission?.calculatedDueDate!.month == 6 &&
+                m.userMission?.calculatedDueDate!.year == 2026).toList();
 
             return RefreshIndicator(
               onRefresh: () async {
@@ -95,21 +95,21 @@ class MissionCalendarView extends StatelessWidget {
                     else
                       ...deadlinesThisMonth.map((dm) {
                         final totalTasks = dm.tasks.length;
-                        final completedTasks = dm.userTasks.where((t) => t.isCompleted).length;
+                        final completedTasks = dm.tasks.where((t) => t.isCompleted == true).length;
                         final progress = totalTasks > 0 ? completedTasks / totalTasks : 0.0;
                         
-                        final deadlineString = '${dm.userMission.calculatedDueDate!.day} ${_getMonthName(dm.userMission.calculatedDueDate!.month)}';
+                        final deadlineString = '${dm.userMission!.calculatedDueDate!.day} ${_getMonthName(dm.userMission!.calculatedDueDate!.month)}';
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: InkWell(
-                            onTap: () => context.push('/missions/detail', extra: dm.userMission.userMissionId),
+                            onTap: () => context.push('/missions/detail', extra: dm.missionId),
                             borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
                             child: MissionCard(
-                              title: dm.mission.title,
+                              title: dm.title,
                               deadline: deadlineString,
-                              bonusPoints: dm.mission.basePoints,
-                              isMandatory: dm.mission.isMandatory,
+                              bonusPoints: dm.basePoints,
+                              isMandatory: dm.isMandatory,
                               progress: progress,
                             ),
                           ),

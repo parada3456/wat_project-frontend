@@ -26,6 +26,7 @@ abstract class DioModule {
       ),
     );
     dio.interceptors.add(ErrorInterceptor());
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
     // Add logging interceptor if needed
     return dio;
   }

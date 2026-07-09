@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
-import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/task_checkbox_tile.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
@@ -21,13 +20,14 @@ class MissionDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<MissionTaskBloc>(
       create: (context) => getIt<MissionTaskBloc>()..add(MissionTaskDetailRequested(missionId)),
-      child: const MissionDetailView(),
+      child: MissionDetailView(missionId: missionId),
     );
   }
 }
 
 class MissionDetailView extends StatelessWidget {
-  const MissionDetailView({super.key});
+  final String missionId;
+  const MissionDetailView({super.key, required this.missionId});
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +66,7 @@ class MissionDetailView extends StatelessWidget {
                     backgroundColor: Colors.green,
                   ),
                 );
+                context.read<MissionTaskBloc>().add(MissionTaskDetailRequested(missionId));
               }
             },
           );
@@ -91,8 +92,7 @@ class MissionDetailView extends StatelessWidget {
           }
 
           final tasks = detail.tasks;
-          final userTasks = detail.userTasks;
-          final completedCount = userTasks.where((ut) => ut.isCompleted).length;
+          final completedCount = tasks.where((t) => t.isCompleted == true).length;
           final totalCount = tasks.length;
           final progress = totalCount > 0 ? completedCount / totalCount : 0.0;
 
@@ -102,7 +102,7 @@ class MissionDetailView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Phase Mission: ${detail.mission.title}',
+                  'Phase Mission: ${detail.title}',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -115,7 +115,7 @@ class MissionDetailView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        detail.mission.title,
+                        detail.title,
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w700,
@@ -146,9 +146,9 @@ class MissionDetailView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimension.space16),
-                if (detail.mission.description != null) ...[
+                if (detail.description != null) ...[
                   Text(
-                    detail.mission.description!,
+                    detail.description!,
                     style: const TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.4),
                   ),
                   const SizedBox(height: AppDimension.space32),
@@ -185,28 +185,16 @@ class MissionDetailView extends StatelessWidget {
                   child: Column(
                     children: tasks.map((task) {
                       final index = tasks.indexOf(task);
-                      final userTask = userTasks.firstWhere(
-                        (ut) => ut.taskId == task.taskId,
-                        orElse: () => UserTaskModel(
-                          userTaskId: '',
-                          userId: '',
-                          taskId: task.taskId,
-                          userMissionId: detail.userMission.userMissionId,
-                          isCompleted: false,
-                          updatedAt: DateTime.now(),
-                        ),
-                      );
-
                       return Column(
                         children: [
                           TaskCheckboxTile(
                             title: task.title,
                             subtitle: task.description,
-                            isChecked: userTask.isCompleted,
+                            isChecked: task.isCompleted ?? false,
                             onChanged: (val) {
                               context.read<MissionTaskBloc>().add(
                                 MissionTaskEvent.toggleRequested(
-                                  userMissionId: detail.userMission.userMissionId,
+                                  userMissionId: detail.userMission?.userMissionId ?? '',
                                   taskId: task.taskId,
                                   completed: val ?? false,
                                 ),
@@ -231,23 +219,23 @@ class MissionDetailView extends StatelessWidget {
           final detail = state.detail;
           if (detail == null) return const SizedBox.shrink();
 
-          final completedCount = detail.userTasks.where((ut) => ut.isCompleted).length;
+          final completedCount = detail.tasks.where((t) => t.isCompleted == true).length;
           final totalCount = detail.tasks.length;
           final allDone = totalCount > 0 && completedCount == totalCount;
+          final isCompleted = detail.userMission?.status == UserMissionStatus.completed;
 
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(AppDimension.space32),
               child: WatButton(
-                label: detail.userMission.status == UserMissionStatus.completed 
+                label: isCompleted
                     ? 'Completed' 
                     : 'Mark Mission as Done',
-                onPressed: allDone && detail.userMission.status != UserMissionStatus.completed
+                onPressed: allDone && !isCompleted
                     ? () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Mission completed successfully!'),
-                            backgroundColor: Colors.green,
+                        context.read<MissionTaskBloc>().add(
+                          MissionTaskEvent.proofSubmitted(
+                            missionId: detail.missionId,
                           ),
                         );
                       }

@@ -207,9 +207,24 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: AppDimension.space32),
-                          Center(
-                            child: CreditScoreBadge(score: creditScore.currentScore),
-                          ),
+                          if (creditScore != null)
+                            Center(
+                              child: CreditScoreBadge(score: creditScore.currentScore),
+                            )
+                          else
+                            const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(AppDimension.space16),
+                                child: Text(
+                                  'Credit score not established yet',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.textSecondary,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ),
+                            ),
                           const SizedBox(height: AppDimension.space32),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

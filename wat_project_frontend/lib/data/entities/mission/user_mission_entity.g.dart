@@ -23,15 +23,6 @@ UserMissionEntity _$UserMissionEntityFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['verified_at'] as String),
       verifiedBy: json['verified_by'] as String?,
-      basePointsEarned: (json['base_points_earned'] as num).toInt(),
-      speedBonusPoints: (json['speed_bonus_points'] as num).toInt(),
-      streakBonusPoints: (json['streak_bonus_points'] as num).toInt(),
-      firstCompleterBonusPoints: (json['first_completer_bonus_points'] as num)
-          .toInt(),
-      totalPointsEarned: (json['total_points_earned'] as num).toInt(),
-      rewardedAt: json['rewarded_at'] == null
-          ? null
-          : DateTime.parse(json['rewarded_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
@@ -47,12 +38,6 @@ Map<String, dynamic> _$UserMissionEntityToJson(UserMissionEntity instance) =>
       'proof_submitted_at': instance.proofSubmittedAt?.toIso8601String(),
       'verified_at': instance.verifiedAt?.toIso8601String(),
       'verified_by': instance.verifiedBy,
-      'base_points_earned': instance.basePointsEarned,
-      'speed_bonus_points': instance.speedBonusPoints,
-      'streak_bonus_points': instance.streakBonusPoints,
-      'first_completer_bonus_points': instance.firstCompleterBonusPoints,
-      'total_points_earned': instance.totalPointsEarned,
-      'rewarded_at': instance.rewardedAt?.toIso8601String(),
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
     };

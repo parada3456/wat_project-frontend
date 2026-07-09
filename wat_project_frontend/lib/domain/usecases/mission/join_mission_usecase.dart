@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
+import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/repositories/mission_repository.dart';
 
@@ -10,10 +11,10 @@ class JoinMissionUseCase {
 
   JoinMissionUseCase(this._repository);
 
-  Future<Either<Failure, UserMissionModel>> call(String missionId) async {
+  Future<Either<Failure, MissionModel>> call(String missionId) async {
     try {
       final userMission = await _repository.joinMission(missionId);
-      return Right(userMission);
+      return Right(userMission.toModel());
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

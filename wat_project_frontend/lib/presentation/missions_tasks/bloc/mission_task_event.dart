@@ -8,7 +8,7 @@ class MissionTaskEvent with _$MissionTaskEvent {
 
   const factory MissionTaskEvent.proofSubmitted({
     required String missionId,
-    required File file,
+    File? file,
   }) = MissionTaskProofSubmitted;
 
   const factory MissionTaskEvent.toggleRequested({

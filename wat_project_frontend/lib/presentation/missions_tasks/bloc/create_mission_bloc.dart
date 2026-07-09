@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/mission/create_mission_usecase.dart';
 
 part 'create_mission_event.dart';
 part 'create_mission_state.dart';

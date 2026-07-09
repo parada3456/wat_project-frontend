@@ -87,16 +87,16 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
             final query = _searchController.text.trim().toLowerCase();
             final filteredMissions = state.missions.where((dm) {
               final matchesQuery = query.isEmpty ||
-                  dm.mission.title.toLowerCase().contains(query) ||
-                  (dm.mission.description?.toLowerCase().contains(query) ?? false);
+                  dm.title.toLowerCase().contains(query) ||
+                  (dm.description?.toLowerCase().contains(query) ?? false);
 
               bool matchesFilter = true;
               if (_selectedFilter == 'Mandatory') {
-                matchesFilter = dm.mission.isMandatory;
+                matchesFilter = dm.isMandatory;
               } else if (_selectedFilter == 'Completed') {
-                matchesFilter = dm.userMission.status == UserMissionStatus.completed;
+                matchesFilter = dm.userMission?.status == UserMissionStatus.completed;
               } else if (_selectedFilter == 'Overdue') {
-                matchesFilter = dm.userMission.status == UserMissionStatus.overdue;
+                matchesFilter = dm.userMission?.status == UserMissionStatus.overdue;
               }
 
               return matchesQuery && matchesFilter;
@@ -171,21 +171,21 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                             itemBuilder: (context, index) {
                               final dm = filteredMissions[index];
                               final totalTasks = dm.tasks.length;
-                              final completedTasks = dm.userTasks.where((t) => t.isCompleted).length;
+                              final completedTasks = dm.tasks.where((t) => t.isCompleted == true).length;
                               final progress = totalTasks > 0 ? completedTasks / totalTasks : 0.0;
                               
-                              final deadlineString = dm.userMission.calculatedDueDate != null
-                                  ? '${dm.userMission.calculatedDueDate!.day} ${_getMonthName(dm.userMission.calculatedDueDate!.month)}'
+                              final deadlineString = dm.userMission?.calculatedDueDate != null
+                                  ? '${dm.userMission!.calculatedDueDate!.day} ${_getMonthName(dm.userMission!.calculatedDueDate!.month)}'
                                   : 'Soon';
 
                               return InkWell(
-                                onTap: () => context.push('/missions/detail', extra: dm.userMission.userMissionId),
+                                onTap: () => context.push('/missions/detail', extra: dm.missionId),
                                 borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
                                 child: MissionCard(
-                                  title: dm.mission.title,
+                                  title: dm.title,
                                   deadline: deadlineString,
-                                  bonusPoints: dm.mission.basePoints,
-                                  isMandatory: dm.mission.isMandatory,
+                                  bonusPoints: dm.basePoints,
+                                  isMandatory: dm.isMandatory,
                                   progress: progress,
                                 ),
                               );

@@ -20,9 +20,15 @@ class _MissionApiService implements MissionApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PaginationResponse<MissionEntity>> listMissions() async {
+  Future<PaginationResponse<MissionEntity>> listMissions({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PaginationResponse<MissionEntity>>(
@@ -50,12 +56,18 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<PaginationResponse<UserMissionEntity>> listUserMissions() async {
+  Future<PaginationResponse<MissionEntity>> listMyMissions({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginationResponse<UserMissionEntity>>(
+    final _options = _setStreamType<PaginationResponse<MissionEntity>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -66,11 +78,11 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginationResponse<UserMissionEntity> _value;
+    late PaginationResponse<MissionEntity> _value;
     try {
-      _value = PaginationResponse<UserMissionEntity>.fromJson(
+      _value = PaginationResponse<MissionEntity>.fromJson(
         _result.data!,
-        (json) => UserMissionEntity.fromJson(json as Map<String, dynamic>),
+        (json) => MissionEntity.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -80,9 +92,15 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<PaginationResponse<MissionEntity>> listExploreMissions() async {
+  Future<PaginationResponse<MissionEntity>> listExploreMissions({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PaginationResponse<MissionEntity>>(
@@ -110,12 +128,12 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<MissionDetailResponse> getMissionDetail(String id) async {
+  Future<MissionEntity> getMissionDetail(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<MissionDetailResponse>(
+    final _options = _setStreamType<MissionEntity>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -126,9 +144,9 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late MissionDetailResponse _value;
+    late MissionEntity _value;
     try {
-      _value = MissionDetailResponse.fromJson(_result.data!);
+      _value = MissionEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -199,13 +217,13 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<UserMissionEntity> joinMission(JoinMissionRequest request) async {
+  Future<MissionEntity> joinMission(JoinMissionRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _options = _setStreamType<UserMissionEntity>(
+    final _options = _setStreamType<MissionEntity>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -216,9 +234,9 @@ class _MissionApiService implements MissionApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserMissionEntity _value;
+    late MissionEntity _value;
     try {
-      _value = UserMissionEntity.fromJson(_result.data!);
+      _value = MissionEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -227,20 +245,23 @@ class _MissionApiService implements MissionApiService {
   }
 
   @override
-  Future<void> submitProof(String id, File file) async {
+  Future<void> submitProof(String id, File? file) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.files.add(
-      MapEntry(
-        'proof',
-        MultipartFile.fromFileSync(
-          file.path,
-          filename: file.path.split(Platform.pathSeparator).last,
+    if (file != null) {
+      _data.files.add(
+        MapEntry(
+          'proof',
+          MultipartFile.fromFileSync(
+            file.path,
+            filename: file.path.split(Platform.pathSeparator).last,
+          ),
         ),
-      ),
-    );
+      );
+    }
     final _options = _setStreamType<void>(
       Options(
             method: 'POST',

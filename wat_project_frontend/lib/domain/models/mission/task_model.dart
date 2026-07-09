@@ -1,18 +1,22 @@
 class TaskModel {
   final String taskId;
-  final String missionId;
+  // final String missionId;
   final String title;
   final String? description;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final bool? isCompleted;
+  final DateTime? completedAt;
+  // final DateTime createdAt;
+  // final DateTime updatedAt;
 
   const TaskModel({
     required this.taskId,
-    required this.missionId,
+    // required this.missionId,
     required this.title,
     this.description,
-    required this.createdAt,
-    required this.updatedAt,
+    this.isCompleted,
+    this.completedAt,
+    // required this.createdAt,
+    // required this.updatedAt,
   });
 
   @override
@@ -21,19 +25,23 @@ class TaskModel {
       other is TaskModel &&
           runtimeType == other.runtimeType &&
           taskId == other.taskId &&
-          missionId == other.missionId &&
+          // missionId == other.missionId &&
           title == other.title &&
           description == other.description &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
+          completedAt == other.completedAt &&
+          isCompleted == other.isCompleted;         
+          // createdAt == other.createdAt &&
+          // updatedAt == other.updatedAt;
 
   @override
   int get hashCode => Object.hash(
         taskId,
-        missionId,
+        // missionId,
         title,
         description,
-        createdAt,
-        updatedAt,
+        isCompleted,
+        completedAt,
+        // createdAt,
+        // updatedAt,
       );
 }

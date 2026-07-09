@@ -3,7 +3,7 @@ import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class MissionCalendar extends StatelessWidget {
-  final List<MissionDetailModel> missions;
+  final List<MissionModel> missions;
 
   const MissionCalendar({
     super.key,
@@ -65,10 +65,10 @@ class MissionCalendar extends StatelessWidget {
             itemBuilder: (context, index) {
               final day = index + 1;
               final isDeadline = missions.any((m) =>
-                  m.userMission.calculatedDueDate != null &&
-                  m.userMission.calculatedDueDate!.day == day &&
-                  m.userMission.calculatedDueDate!.month == 6 &&
-                  m.userMission.calculatedDueDate!.year == 2026);
+                  m.userMission?.calculatedDueDate != null &&
+                  m.userMission!.calculatedDueDate!.day == day &&
+                  m.userMission!.calculatedDueDate!.month == 6 &&
+                  m.userMission!.calculatedDueDate!.year == 2026);
 
               return Container(
                 decoration: BoxDecoration(

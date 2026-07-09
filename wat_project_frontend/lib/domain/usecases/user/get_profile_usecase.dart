@@ -17,8 +17,8 @@ class GetProfileUseCase {
       return Right(UserProfileModel(
         user: userProfileEntity.userAccount.toModel(),
         profile: userProfileEntity.userAccount.toProfileModel(),
-        creditScore: userProfileEntity.creditScore.toModel(),
-        userJobs: userProfileEntity.userJobs.map((e) => e.toModel()).toList(),
+        creditScore: userProfileEntity.creditScore?.toModel(),
+        userJobs: userProfileEntity.userJobs?.map((e) => e.toModel()).toList() ?? [],
       ));
     } catch (e) {
       print("usecase get profile error");

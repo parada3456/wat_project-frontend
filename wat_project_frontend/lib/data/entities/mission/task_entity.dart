@@ -7,33 +7,41 @@ part 'task_entity.g.dart';
 class TaskEntity {
   @JsonKey(name: 'task_id')
   final String taskId;
-  @JsonKey(name: 'mission_id')
-  final String missionId;
+  // @JsonKey(name: 'mission_id')
+  // final String missionId;
   final String title;
   final String? description;
-  @JsonKey(name: 'created_at')
-  final DateTime createdAt;
-  @JsonKey(name: 'updated_at')
-  final DateTime updatedAt;
+  @JsonKey(name: 'is_completed')
+  final bool? isCompleted;
+  @JsonKey(name: 'completed_at')
+  final DateTime? completedAt;
+  // @JsonKey(name: 'created_at')
+  // final DateTime createdAt;
+  // @JsonKey(name: 'updated_at')
+  // final DateTime updatedAt;
 
   TaskEntity({
     required this.taskId,
-    required this.missionId,
+    // required this.missionId,
     required this.title,
     this.description,
-    required this.createdAt,
-    required this.updatedAt,
+    this.isCompleted,
+    this.completedAt,
+    // required this.createdAt,
+    // required this.updatedAt,
   });
 
   factory TaskEntity.fromJson(Map<String, dynamic> json) => _$TaskEntityFromJson(json);
   Map<String, dynamic> toJson() => _$TaskEntityToJson(this);
 
-  TaskModel toModel() => TaskModel(
-        taskId: taskId,
-        missionId: missionId,
-        title: title,
-        description: description,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+  // TaskModel toModel() => TaskModel(
+  //       taskId: taskId,
+  //       // missionId: missionId,
+  //       title: title,
+  //       description: description,
+  //       isCompleted: isCompleted,
+  //       completedAt: completedAt,
+  //       // createdAt: createdAt,
+  //       // updatedAt: updatedAt,
+  //     );
 }

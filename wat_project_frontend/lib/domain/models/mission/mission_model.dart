@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
 enum VerificationType {
   @JsonValue('none')
@@ -18,10 +19,14 @@ class MissionModel {
   final int basePoints;
   final bool isMandatory;
   final VerificationType verificationType;
-  final String? dueDateType;
-  final DateTime? fixedDueDate;
-  final String? relativeTriggerEvent;
-  final int? relativeDaysOffset;
+  final UserMissionModel? userMission;
+  final List<TaskModel> tasks;
+  // final String? dueDateType;
+  // final DateTime? fixedDueDate;
+  // final String? relativeTriggerEvent;
+  // final int? relativeDaysOffset;
+  final bool isActive;
+  final bool isLocked;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -34,10 +39,14 @@ class MissionModel {
     this.basePoints = 0,
     this.isMandatory = false,
     this.verificationType = VerificationType.none,
-    this.dueDateType,
-    this.fixedDueDate,
-    this.relativeTriggerEvent,
-    this.relativeDaysOffset,
+    this.userMission,
+    required this.tasks,
+    // this.dueDateType,
+    // this.fixedDueDate,
+    // this.relativeTriggerEvent,
+    // this.relativeDaysOffset,
+    required this.isActive,
+    required this.isLocked,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -55,10 +64,10 @@ class MissionModel {
           basePoints == other.basePoints &&
           isMandatory == other.isMandatory &&
           verificationType == other.verificationType &&
-          dueDateType == other.dueDateType &&
-          fixedDueDate == other.fixedDueDate &&
-          relativeTriggerEvent == other.relativeTriggerEvent &&
-          relativeDaysOffset == other.relativeDaysOffset &&
+          // dueDateType == other.dueDateType &&
+          // fixedDueDate == other.fixedDueDate &&
+          // relativeTriggerEvent == other.relativeTriggerEvent &&
+          // relativeDaysOffset == other.relativeDaysOffset &&
           createdAt == other.createdAt &&
           updatedAt == other.updatedAt;
 
@@ -72,10 +81,14 @@ class MissionModel {
         basePoints,
         isMandatory,
         verificationType,
-        dueDateType,
-        fixedDueDate,
-        relativeTriggerEvent,
-        relativeDaysOffset,
+        userMission,
+        tasks,
+        // dueDateType,
+        // fixedDueDate,
+        // relativeTriggerEvent,
+        // relativeDaysOffset,
+        isActive,
+        isLocked,
         createdAt,
         updatedAt,
       );

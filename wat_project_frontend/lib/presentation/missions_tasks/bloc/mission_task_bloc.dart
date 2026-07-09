@@ -2,9 +2,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
-import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
 import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
 
@@ -14,7 +12,7 @@ part 'mission_task_bloc.freezed.dart';
 
 class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
   final ListAllMissionsUseCase _listAllMissionsUseCase;
-  final ListUserMissionsUseCase _listAvailableMissionsUseCase;
+  final ListMyMissionsUseCase _listMyMissionsUseCase;
   final GetExploreMissionUseCase _getExploreMissionUseCase;
   final GetMissionDetailUseCase _getMissionDetailUseCase;
   final SubmitMissionProofUseCase _submitMissionProofUseCase;
@@ -23,7 +21,7 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
   final GetProfileUseCase _getProfileUseCase;
 
   MissionTaskBloc(
-    this._listAvailableMissionsUseCase,
+    this._listMyMissionsUseCase,
     this._getMissionDetailUseCase,
     this._submitMissionProofUseCase,
     this._toggleTaskUseCase,
@@ -52,19 +50,19 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
       (_) {},
       (profile) => currentPhaseId = profile.user.currentPhaseId,
     );
-    final result = await _listAvailableMissionsUseCase();
+    final result = await _listMyMissionsUseCase();
     final allMissionsResult = await _listAllMissionsUseCase();
-    
+
     List<MissionModel> allMissions = [];
-    allMissionsResult.fold((_) {}, (m) => allMissions = m);
+    allMissionsResult.fold((_) {}, (p) => allMissions = p.missions);
 
     result.fold(
       (failure) => emit(state.copyWith(
         status: UIStatus.loadFailed(message: failure.message),
       )),
-      (missions) => emit(state.copyWith(
+      (paginated) => emit(state.copyWith(
         status: const UIStatus.loadSuccess(),
-        missions: missions,
+        missions: paginated.missions,
         allMissions: allMissions,
         currentPhaseId: currentPhaseId,
       )),
@@ -120,26 +118,34 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
       )),
       (_) {
         if (state.detail != null) {
-          final updatedUserTasks = state.detail!.userTasks.map((ut) {
-            if (ut.taskId == event.taskId) {
-              return UserTaskModel(
-                userTaskId: ut.userTaskId,
-                userId: ut.userId,
-                taskId: ut.taskId,
-                userMissionId: ut.userMissionId,
+          final updatedTasks = state.detail!.tasks.map((task) {
+            if (task.taskId == event.taskId) {
+              return TaskModel(
+                taskId: task.taskId,
+                title: task.title,
+                description: task.description,
                 isCompleted: event.completed,
                 completedAt: event.completed ? DateTime.now() : null,
-                updatedAt: DateTime.now(),
               );
             }
-            return ut;
+            return task;
           }).toList();
 
-          final updatedDetail = MissionDetailModel(
-            mission: state.detail!.mission,
+          final updatedDetail = MissionModel(
+            missionId: state.detail!.missionId,
+            phaseId: state.detail!.phaseId,
+            title: state.detail!.title,
+            description: state.detail!.description,
+            location: state.detail!.location,
+            basePoints: state.detail!.basePoints,
+            isMandatory: state.detail!.isMandatory,
+            verificationType: state.detail!.verificationType,
             userMission: state.detail!.userMission,
-            tasks: state.detail!.tasks,
-            userTasks: updatedUserTasks,
+            tasks: updatedTasks,
+            isActive: state.detail!.isActive,
+            isLocked: state.detail!.isLocked,
+            createdAt: state.detail!.createdAt,
+            updatedAt: state.detail!.updatedAt,
           );
 
           emit(state.copyWith(
@@ -171,9 +177,9 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
       (failure) => emit(state.copyWith(
         status: UIStatus.loadFailed(message: failure.message),
       )),
-      (exploreMissions) => emit(state.copyWith(
+      (paginated) => emit(state.copyWith(
         status: const UIStatus.loadSuccess(),
-        exploreMissions: exploreMissions,
+        exploreMissions: paginated.missions,
         currentPhaseId: currentPhaseId,
       )),
     );
@@ -201,18 +207,18 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
           (profile) => currentPhaseId = profile.user.currentPhaseId,
         );
 
-        final userMissionsResult = await _listAvailableMissionsUseCase();
+        final userMissionsResult = await _listMyMissionsUseCase();
         final exploreMissionsResult = await _getExploreMissionUseCase();
         final allMissionsResult = await _listAllMissionsUseCase();
-        
-        List<MissionDetailModel> missions = state.missions;
-        userMissionsResult.fold((_) {}, (m) => missions = m);
+
+        List<MissionModel> missions = state.missions;
+        userMissionsResult.fold((_) {}, (p) => missions = p.missions);
 
         List<MissionModel> exploreMissions = state.exploreMissions;
-        exploreMissionsResult.fold((_) {}, (em) => exploreMissions = em);
+        exploreMissionsResult.fold((_) {}, (p) => exploreMissions = p.missions);
 
         List<MissionModel> allMissions = state.allMissions;
-        allMissionsResult.fold((_) {}, (m) => allMissions = m);
+        allMissionsResult.fold((_) {}, (p) => allMissions = p.missions);
 
         emit(state.copyWith(
           missions: missions,

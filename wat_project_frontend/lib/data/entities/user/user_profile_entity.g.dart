@@ -11,11 +11,13 @@ UserProfileEntity _$UserProfileEntityFromJson(Map<String, dynamic> json) =>
       userAccount: UserAccountEntity.fromJson(
         json['user'] as Map<String, dynamic>,
       ),
-      creditScore: CreditScoreEntity.fromJson(
-        json['credit_score'] as Map<String, dynamic>,
-      ),
-      userJobs: (json['user_jobs'] as List<dynamic>)
-          .map((e) => AssignedJobEntity.fromJson(e as Map<String, dynamic>))
+      creditScore: json['credit_score'] == null
+          ? null
+          : CreditScoreEntity.fromJson(
+              json['credit_score'] as Map<String, dynamic>,
+            ),
+      userJobs: (json['user_jobs'] as List<dynamic>?)
+          ?.map((e) => AssignedJobEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

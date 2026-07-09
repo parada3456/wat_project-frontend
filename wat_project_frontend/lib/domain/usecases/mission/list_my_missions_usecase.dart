@@ -7,17 +7,17 @@ import 'package:wat_project_frontend/domain/repositories/mission_repository.dart
 import 'package:wat_project_frontend/domain/usecases/mission/list_all_missions_usecase.dart';
 
 @injectable
-class GetExploreMissionUseCase {
+class ListMyMissionsUseCase {
   final MissionRepository _repository;
 
-  GetExploreMissionUseCase(this._repository);
+  ListMyMissionsUseCase(this._repository);
 
   Future<Either<Failure, PaginatedMissions>> call({
     int page = 1,
     int pageSize = 20,
   }) async {
     try {
-      final response = await _repository.listExploreMissions(
+      final response = await _repository.listMyMissions(
         page: page,
         pageSize: pageSize,
       );

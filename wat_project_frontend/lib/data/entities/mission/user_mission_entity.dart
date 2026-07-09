@@ -23,18 +23,18 @@ class UserMissionEntity {
   final DateTime? verifiedAt;
   @JsonKey(name: 'verified_by')
   final String? verifiedBy;
-  @JsonKey(name: 'base_points_earned')
-  final int basePointsEarned;
-  @JsonKey(name: 'speed_bonus_points')
-  final int speedBonusPoints;
-  @JsonKey(name: 'streak_bonus_points')
-  final int streakBonusPoints;
-  @JsonKey(name: 'first_completer_bonus_points')
-  final int firstCompleterBonusPoints;
-  @JsonKey(name: 'total_points_earned')
-  final int totalPointsEarned;
-  @JsonKey(name: 'rewarded_at')
-  final DateTime? rewardedAt;
+  // @JsonKey(name: 'base_points_earned')
+  // final int basePointsEarned;
+  // @JsonKey(name: 'speed_bonus_points')
+  // final int speedBonusPoints;
+  // @JsonKey(name: 'streak_bonus_points')
+  // final int streakBonusPoints;
+  // @JsonKey(name: 'first_completer_bonus_points')
+  // final int firstCompleterBonusPoints;
+  // @JsonKey(name: 'total_points_earned')
+  // final int totalPointsEarned;
+  // @JsonKey(name: 'rewarded_at')
+  // final DateTime? rewardedAt;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @JsonKey(name: 'updated_at')
@@ -50,12 +50,12 @@ class UserMissionEntity {
     this.proofSubmittedAt,
     this.verifiedAt,
     this.verifiedBy,
-    required this.basePointsEarned,
-    required this.speedBonusPoints,
-    required this.streakBonusPoints,
-    required this.firstCompleterBonusPoints,
-    required this.totalPointsEarned,
-    this.rewardedAt,
+    // required this.basePointsEarned,
+    // required this.speedBonusPoints,
+    // required this.streakBonusPoints,
+    // required this.firstCompleterBonusPoints,
+    // required this.totalPointsEarned,
+    // this.rewardedAt,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -63,24 +63,28 @@ class UserMissionEntity {
   factory UserMissionEntity.fromJson(Map<String, dynamic> json) => _$UserMissionEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserMissionEntityToJson(this);
 
-  UserMissionModel toModel() => UserMissionModel(
-        userMissionId: userMissionId,
-        userId: userId,
-        missionId: missionId,
-        status: status,
-        calculatedDueDate: calculatedDueDate,
-        proofUrl: proofUrl,
-        proofSubmittedAt:
-            proofSubmittedAt,
-        verifiedAt: verifiedAt,
-        verifiedBy: verifiedBy,
-        basePointsEarned: basePointsEarned,
-        speedBonusPoints: speedBonusPoints,
-        streakBonusPoints: streakBonusPoints,
-        firstCompleterBonusPoints: firstCompleterBonusPoints,
-        totalPointsEarned: totalPointsEarned,
-        rewardedAt: rewardedAt,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+  // UserMissionModel toModel() => UserMissionModel(
+  //   userMissionId: userMissionId,
+  //   userId: userId,
+  //   missionId: missionId,
+  //   status: status,
+  //   calculatedDueDate: calculatedDueDate,
+  //   proofUrl: proofUrl,
+  //   proofSubmittedAt: proofSubmittedAt,
+  //   verifiedAt: verifiedAt,
+  //   verifiedBy: verifiedBy,
+  //   // basePointsEarned: basePointsEarned,
+  //   // speedBonusPoints: speedBonusPoints,
+  //   // streakBonusPoints: streakBonusPoints,
+  //   // firstCompleterBonusPoints: firstCompleterBonusPoints,
+  //   // totalPointsEarned: totalPointsEarned,
+  //   // rewardedAt: rewardedAt,
+  //   createdAt: createdAt,
+  //   updatedAt: updatedAt,
+  // );
+
+  // static UserMissionModel? toModelNullable(UserMissionEntity? entity ){
+  //   if (entity == null) return null;
+  //   return entity.toModel();
+  // }
 }

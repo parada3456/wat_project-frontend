@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
+import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/repositories/admin_repository.dart';
 
