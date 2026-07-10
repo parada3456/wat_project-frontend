@@ -3,39 +3,54 @@ import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class MissionCard extends StatelessWidget {
-  final String title;
-  final String deadline;
-  final int bonusPoints;
-  final String? location;
-  final bool isMandatory;
-  final double progress;
-  final bool isLocked;
-  final UserMissionStatus? status;
-  final int? completedTasks;
-  final int? totalTasks;
+  final MissionModel mission;
   final VoidCallback? onJoinTap;
 
-  const MissionCard({
-    super.key,
-    required this.title,
-    required this.deadline,
-    required this.bonusPoints,
-    this.location,
-    this.isMandatory = false,
-    this.progress = 0.0,
-    this.isLocked = false,
-    this.status,
-    this.completedTasks,
-    this.totalTasks,
-    this.onJoinTap,
-  });
+  const MissionCard({super.key, required this.mission, this.onJoinTap});
 
   @override
   Widget build(BuildContext context) {
-    // Resolve location
-    final resolvedLocation = location ?? (isMandatory ? 'Mandatory' : 'Optional');
+    final title = mission.title;
+    final bonusPoints = mission.basePoints;
+    final location = mission.location;
+    final isMandatory = mission.isMandatory;
+    final isLocked = mission.isLocked;
+    final status = mission.userMission?.status;
 
-    // Resolve status and task counts for backward compatibility
+    // Resolve deadline string
+    final due = mission.userMission?.calculatedDueDate;
+    final String deadline;
+    if (due == null) {
+      deadline = 'Soon';
+    } else {
+      final months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      deadline = '${due.day} ${months[due.month - 1]}';
+    }
+
+    // Resolve location
+    final resolvedLocation =
+        location ?? (isMandatory ? 'Mandatory' : 'Optional');
+
+    // Resolve status and task counts
+    final totalTasks = mission.tasks.length;
+    final completedTasks = mission.tasks
+        .where((t) => t.isCompleted == true)
+        .length;
+    final progress = totalTasks > 0 ? completedTasks / totalTasks : 0.0;
+
     UserMissionStatus resolvedStatus = status ?? UserMissionStatus.notStarted;
     if (status == null) {
       if (progress >= 1.0) {
@@ -45,8 +60,8 @@ class MissionCard extends StatelessWidget {
       }
     }
 
-    final resolvedTotalTasks = totalTasks ?? 4;
-    final resolvedCompletedTasks = completedTasks ?? (progress * resolvedTotalTasks).round();
+    final resolvedTotalTasks = totalTasks;
+    final resolvedCompletedTasks = completedTasks;
 
     // Determine status widget matching the wireframe design
     Widget statusWidget;
@@ -92,10 +107,7 @@ class MissionCard extends StatelessWidget {
         icon: const Icon(Icons.play_circle_outline, size: 14),
         label: const Text(
           'Start',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
         ),
       );
     } else if (resolvedStatus == UserMissionStatus.completed) {
@@ -109,7 +121,11 @@ class MissionCard extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.check_circle_outline, size: 14, color: Colors.green[700]),
+            Icon(
+              Icons.check_circle_outline,
+              size: 14,
+              color: Colors.green[700],
+            ),
             const SizedBox(width: 4),
             Text(
               'Complete',
@@ -122,7 +138,8 @@ class MissionCard extends StatelessWidget {
           ],
         ),
       );
-    } else if (resolvedStatus == UserMissionStatus.inProgress || resolvedStatus == UserMissionStatus.pendingVerification) {
+    } else if (resolvedStatus == UserMissionStatus.inProgress ||
+        resolvedStatus == UserMissionStatus.pendingVerification) {
       statusWidget = Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
@@ -137,7 +154,9 @@ class MissionCard extends StatelessWidget {
               width: 10,
               height: 10,
               child: CircularProgressIndicator(
-                value: resolvedTotalTasks > 0 ? resolvedCompletedTasks / resolvedTotalTasks : 0.0,
+                value: resolvedTotalTasks > 0
+                    ? resolvedCompletedTasks / resolvedTotalTasks
+                    : 0.0,
                 strokeWidth: 2,
                 color: Colors.blue[700],
                 backgroundColor: Colors.blue[100],
@@ -219,7 +238,10 @@ class MissionCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.amber[50],
                           borderRadius: BorderRadius.circular(8),
@@ -252,7 +274,11 @@ class MissionCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.location_on_outlined,
+                        size: 14,
+                        color: AppColors.textSecondary,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         resolvedLocation,

@@ -9,6 +9,7 @@ import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class UserSettingsPage extends StatefulWidget {
   const UserSettingsPage({super.key});
@@ -61,7 +62,10 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                   Navigator.pop(dialogContext);
                 }
               },
-              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+              child: const Text(
+                'Delete',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
@@ -74,11 +78,10 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProfileBloc>(
-          create: (context) => getIt<ProfileBloc>()..add(const GetProfileEvent()),
+          create: (context) =>
+              getIt<ProfileBloc>()..add(const GetProfileEvent()),
         ),
-        BlocProvider<LoginBloc>(
-          create: (context) => getIt<LoginBloc>(),
-        ),
+        BlocProvider<LoginBloc>(create: (context) => getIt<LoginBloc>()),
       ],
       child: Builder(
         builder: (context) {
@@ -91,7 +94,10 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               backgroundColor: AppColors.background,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: AppColors.textPrimary,
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
               title: const Text(
@@ -108,27 +114,44 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                   listener: (context, state) {
                     if (state.profile != null) {
                       setState(() {
-                        _radarVisibility = state.profile!.profile.radarVisibility != RadarVisibility.hidden;
+                        _radarVisibility =
+                            state.profile!.profile.radarVisibility !=
+                            RadarVisibility.hidden;
                       });
                     }
                     state.status.whenOrNull(
                       loadFailed: (message, _) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(message ?? 'An error occurred'),
-                            backgroundColor: AppColors.error,
-                          ),
+                        AppPopup.show<void>(
+                          context: context,
+                          title: 'Error',
+                          message: message ?? 'An error occurred',
+                          type: AppPopupType.error,
+                          buttons: [
+                            AppPopupButton(
+                              label: 'Dismiss',
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ],
                         );
                       },
                       loadSuccess: (message) {
                         if (message == 'DELETE_ACCOUNT_SUCCESS') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Account successfully deleted.'),
-                              backgroundColor: Colors.green,
-                            ),
+                          AppPopup.show<void>(
+                            context: context,
+                            title: 'Account Deleted',
+                            message: 'Account successfully deleted.',
+                            type: AppPopupType.success,
+                            buttons: [
+                              AppPopupButton(
+                                label: 'OK',
+                                isPrimary: true,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  context.go('/login');
+                                },
+                              ),
+                            ],
                           );
-                          context.go('/login');
                         }
                       },
                     );
@@ -157,12 +180,15 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               ],
               child: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, profileState) {
-                  final isLoading = profileState.status is UILoading || _isUpdating;
+                  final isLoading =
+                      profileState.status is UILoading || _isUpdating;
                   return SafeArea(
                     child: Stack(
                       children: [
                         SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimension.space32,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -178,25 +204,37 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                               const SizedBox(height: AppDimension.space16),
                               SettingsToggleTile(
                                 title: 'Radar Visibility',
-                                subtitle: 'Allow friends to see your location on the radar',
+                                subtitle:
+                                    'Allow friends to see your location on the radar',
                                 value: _radarVisibility,
                                 onChanged: (value) async {
                                   setState(() {
                                     _isUpdating = true;
                                   });
                                   try {
-                                    await getIt<UserRepository>().updateSettings({
-                                      'radar_visibility': value ? 'showFriends' : 'hidden',
-                                    });
+                                    await getIt<UserRepository>()
+                                        .updateSettings({
+                                          'radar_visibility': value
+                                              ? 'showFriends'
+                                              : 'hidden',
+                                        });
                                     if (!context.mounted) return;
                                     profileBloc.add(const GetProfileEvent());
                                   } catch (e) {
                                     if (!context.mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Failed to update visibility: $e'),
-                                        backgroundColor: AppColors.error,
-                                      ),
+                                    AppPopup.show<void>(
+                                      context: context,
+                                      title: 'Error',
+                                      message:
+                                          'Failed to update visibility: $e',
+                                      type: AppPopupType.error,
+                                      buttons: [
+                                        AppPopupButton(
+                                          label: 'Dismiss',
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                        ),
+                                      ],
                                     );
                                   } finally {
                                     if (mounted) {
@@ -219,7 +257,8 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                               const SizedBox(height: AppDimension.space16),
                               SettingsToggleTile(
                                 title: 'Push Notifications',
-                                subtitle: 'Receive updates about missions and expenses',
+                                subtitle:
+                                    'Receive updates about missions and expenses',
                                 value: _notificationsEnabled,
                                 onChanged: (value) async {
                                   setState(() {
@@ -227,16 +266,25 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                                     _notificationsEnabled = value;
                                   });
                                   try {
-                                    await getIt<UserRepository>().updateSettings({
-                                      'push_notifications': value,
-                                    });
+                                    await getIt<UserRepository>()
+                                        .updateSettings({
+                                          'push_notifications': value,
+                                        });
                                   } catch (e) {
                                     if (!context.mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Failed to update notification settings: $e'),
-                                        backgroundColor: AppColors.error,
-                                      ),
+                                    AppPopup.show<void>(
+                                      context: context,
+                                      title: 'Error',
+                                      message:
+                                          'Failed to update notification settings: $e',
+                                      type: AppPopupType.error,
+                                      buttons: [
+                                        AppPopupButton(
+                                          label: 'Dismiss',
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                        ),
+                                      ],
                                     );
                                   } finally {
                                     if (mounted) {
@@ -265,10 +313,16 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                                   },
                                   style: OutlinedButton.styleFrom(
                                     foregroundColor: AppColors.textPrimary,
-                                    side: const BorderSide(color: AppColors.surface),
-                                    padding: const EdgeInsets.symmetric(vertical: AppDimension.space16),
+                                    side: const BorderSide(
+                                      color: AppColors.surface,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: AppDimension.space16,
+                                    ),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                                      borderRadius: BorderRadius.circular(
+                                        AppDimension.radiusMedium,
+                                      ),
                                     ),
                                   ),
                                   child: const Text('Log Out'),
@@ -278,14 +332,21 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                               SizedBox(
                                 width: double.infinity,
                                 child: TextButton(
-                                  onPressed: () => _showDeleteAccountDialog(context, profileBloc),
+                                  onPressed: () => _showDeleteAccountDialog(
+                                    context,
+                                    profileBloc,
+                                  ),
                                   style: TextButton.styleFrom(
                                     foregroundColor: AppColors.error,
-                                    padding: const EdgeInsets.symmetric(vertical: AppDimension.space16),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: AppDimension.space16,
+                                    ),
                                   ),
                                   child: const Text(
                                     'Delete Account',
-                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),

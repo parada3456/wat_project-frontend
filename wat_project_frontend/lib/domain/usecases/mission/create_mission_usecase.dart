@@ -12,7 +12,9 @@ class CreateMissionUseCase {
 
   CreateMissionUseCase(this._repository);
 
-  Future<Either<Failure, MissionModel>> call(CreateMissionRequest request) async {
+  Future<Either<Failure, MissionModel>> call(
+    CreateMissionRequest request,
+  ) async {
     try {
       final mission = await _repository.createMission(request);
       return Right(mission.toModel());

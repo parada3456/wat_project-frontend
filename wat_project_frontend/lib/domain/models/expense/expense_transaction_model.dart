@@ -51,15 +51,15 @@ class ExpenseTransactionModel {
 
   @override
   int get hashCode => Object.hash(
-        transactionId,
-        paidByUserId,
-        title,
-        totalAmount,
-        currency,
-        memo,
-        transactionDate,
-        dueDate,
-        createdAt,
-        updatedAt,
-      );
+    transactionId,
+    paidByUserId,
+    title,
+    totalAmount,
+    currency,
+    memo,
+    transactionDate,
+    dueDate,
+    createdAt,
+    updatedAt,
+  );
 }

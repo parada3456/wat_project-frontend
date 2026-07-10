@@ -43,15 +43,15 @@ class ExpenseSplitEntity {
   Map<String, dynamic> toJson() => _$ExpenseSplitEntityToJson(this);
 
   ExpenseSplitModel toModel() => ExpenseSplitModel(
-        splitId: splitId,
-        transactionId: transactionId,
-        userId: userId,
-        oweAmount: oweAmount,
-        paymentStatus: paymentStatus,
-        paymentMethod: paymentMethod,
-        payslipUrl: payslipUrl,
-        approvalStatus: approvalStatus,
-        settledAt: settledAt,
-        updatedAt: updatedAt,
-      );
+    splitId: splitId,
+    transactionId: transactionId,
+    userId: userId,
+    oweAmount: oweAmount,
+    paymentStatus: paymentStatus,
+    paymentMethod: paymentMethod,
+    payslipUrl: payslipUrl,
+    approvalStatus: approvalStatus,
+    settledAt: settledAt,
+    updatedAt: updatedAt,
+  );
 }

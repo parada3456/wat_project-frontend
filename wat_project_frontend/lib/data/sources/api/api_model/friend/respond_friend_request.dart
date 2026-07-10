@@ -7,11 +7,9 @@ class RespondFriendRequest {
   final bool accept;
   final String status;
 
-  RespondFriendRequest({
-    required this.accept,
-    required this.status,
-  });
+  RespondFriendRequest({required this.accept, required this.status});
 
-  factory RespondFriendRequest.fromJson(Map<String, dynamic> json) => _$RespondFriendRequestFromJson(json);
+  factory RespondFriendRequest.fromJson(Map<String, dynamic> json) =>
+      _$RespondFriendRequestFromJson(json);
   Map<String, dynamic> toJson() => _$RespondFriendRequestToJson(this);
 }

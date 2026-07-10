@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class CreditHistoryRow extends StatelessWidget {
   final String title;
   final String date;
@@ -26,7 +27,9 @@ class CreditHistoryRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppDimension.space8),
             decoration: BoxDecoration(
-              color: isPositive ? Colors.green.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
+              color: isPositive
+                  ? Colors.green.withOpacity(0.1)
+                  : AppColors.error.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(

@@ -60,7 +60,8 @@ class UserMissionEntity {
     required this.updatedAt,
   });
 
-  factory UserMissionEntity.fromJson(Map<String, dynamic> json) => _$UserMissionEntityFromJson(json);
+  factory UserMissionEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserMissionEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserMissionEntityToJson(this);
 
   // UserMissionModel toModel() => UserMissionModel(

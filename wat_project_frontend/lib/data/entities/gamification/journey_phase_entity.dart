@@ -29,11 +29,11 @@ class JourneyPhaseEntity {
   Map<String, dynamic> toJson() => _$JourneyPhaseEntityToJson(this);
 
   JourneyPhaseModel toModel() => JourneyPhaseModel(
-        phaseId: phaseId,
-        phaseNumber: phaseNumber,
-        title: title,
-        description: description,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+    phaseId: phaseId,
+    phaseNumber: phaseNumber,
+    title: title,
+    description: description,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

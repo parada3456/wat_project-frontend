@@ -7,19 +7,19 @@ import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_ta
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/task_checkbox_tile.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 
 class MissionDetailPage extends StatelessWidget {
   final String missionId;
 
-  const MissionDetailPage({
-    super.key,
-    required this.missionId,
-  });
+  const MissionDetailPage({super.key, required this.missionId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MissionTaskBloc>(
-      create: (context) => getIt<MissionTaskBloc>()..add(MissionTaskDetailRequested(missionId)),
+      create: (context) =>
+          getIt<MissionTaskBloc>()..add(MissionTaskDetailRequested(missionId)),
       child: MissionDetailView(missionId: missionId),
     );
   }
@@ -51,29 +51,46 @@ class MissionDetailView extends StatelessWidget {
         listener: (context, state) {
           state.status.whenOrNull(
             loadFailed: (message, _) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message ?? 'An error occurred'),
-                  backgroundColor: Colors.red,
-                ),
+              AppPopup.show<void>(
+                context: context,
+                title: 'Error',
+                message: message ?? 'An error occurred',
+                type: AppPopupType.error,
+                buttons: [
+                  AppPopupButton(
+                    label: 'Dismiss',
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
               );
             },
             loadSuccess: (message) {
               if (message == 'PROOF_SUBMIT_SUCCESS') {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Proof submitted successfully!'),
-                    backgroundColor: Colors.green,
-                  ),
+                AppPopup.show<void>(
+                  context: context,
+                  title: 'Success',
+                  message: 'Proof submitted successfully!',
+                  type: AppPopupType.success,
+                  buttons: [
+                    AppPopupButton(
+                      label: 'OK',
+                      isPrimary: true,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        context.read<MissionTaskBloc>().add(
+                          MissionTaskDetailRequested(missionId),
+                        );
+                      },
+                    ),
+                  ],
                 );
-                context.read<MissionTaskBloc>().add(MissionTaskDetailRequested(missionId));
               }
             },
           );
         },
         builder: (context, state) {
           final detail = state.detail;
-          
+
           if (detail == null && state.status is UILoading) {
             return const Center(
               child: CircularProgressIndicator(color: AppColors.primary),
@@ -92,22 +109,69 @@ class MissionDetailView extends StatelessWidget {
           }
 
           final tasks = detail.tasks;
-          final completedCount = tasks.where((t) => t.isCompleted == true).length;
+          final completedCount = tasks
+              .where((t) => t.isCompleted == true)
+              .length;
           final totalCount = tasks.length;
           final progress = totalCount > 0 ? completedCount / totalCount : 0.0;
 
+          final currentUserId = getIt<AuthSessionManager>().userId;
+          final isCreator = detail.createdBy == currentUserId;
+
           return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32, vertical: AppDimension.space16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimension.space32,
+              vertical: AppDimension.space16,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Phase Mission: ${detail.title}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'Phase Mission: ${detail.title}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    if (isCreator) ...[
+                      const SizedBox(width: AppDimension.space8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppDimension.space8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.person_pin,
+                              color: AppColors.primary,
+                              size: 12,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              'Created by You',
+                              style: TextStyle(
+                                color: AppColors.primary,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: AppDimension.space8),
                 Row(
@@ -141,7 +205,9 @@ class MissionDetailView extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: progress,
                     backgroundColor: AppColors.surfaceAlt,
-                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      AppColors.primary,
+                    ),
                     minHeight: 8,
                   ),
                 ),
@@ -149,11 +215,15 @@ class MissionDetailView extends StatelessWidget {
                 if (detail.description != null) ...[
                   Text(
                     detail.description!,
-                    style: const TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.4),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
                   ),
                   const SizedBox(height: AppDimension.space32),
                 ],
-                
+
                 Row(
                   children: [
                     const Text(
@@ -175,11 +245,13 @@ class MissionDetailView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: AppDimension.space16),
-                
+
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.background,
-                    borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                    borderRadius: BorderRadius.circular(
+                      AppDimension.radiusMedium,
+                    ),
                     border: Border.all(color: AppColors.surfaceAlt),
                   ),
                   child: Column(
@@ -194,7 +266,8 @@ class MissionDetailView extends StatelessWidget {
                             onChanged: (val) {
                               context.read<MissionTaskBloc>().add(
                                 MissionTaskEvent.toggleRequested(
-                                  userMissionId: detail.userMission?.userMissionId ?? '',
+                                  userMissionId:
+                                      detail.userMission?.userMissionId ?? '',
                                   taskId: task.taskId,
                                   completed: val ?? false,
                                 ),
@@ -219,18 +292,19 @@ class MissionDetailView extends StatelessWidget {
           final detail = state.detail;
           if (detail == null) return const SizedBox.shrink();
 
-          final completedCount = detail.tasks.where((t) => t.isCompleted == true).length;
+          final completedCount = detail.tasks
+              .where((t) => t.isCompleted == true)
+              .length;
           final totalCount = detail.tasks.length;
           final allDone = totalCount > 0 && completedCount == totalCount;
-          final isCompleted = detail.userMission?.status == UserMissionStatus.completed;
+          final isCompleted =
+              detail.userMission?.status == UserMissionStatus.completed;
 
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(AppDimension.space32),
               child: WatButton(
-                label: isCompleted
-                    ? 'Completed' 
-                    : 'Mark Mission as Done',
+                label: isCompleted ? 'Completed' : 'Mark Mission as Done',
                 onPressed: allDone && !isCompleted
                     ? () {
                         context.read<MissionTaskBloc>().add(

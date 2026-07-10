@@ -54,18 +54,20 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     final allMissionsResult = await _listAllMissionsUseCase();
 
     List<MissionModel> allMissions = [];
-    allMissionsResult.fold((_) {}, (p) => allMissions = p.missions);
+    allMissionsResult.fold((_) {}, (p) => allMissions = p.data);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
-      (paginated) => emit(state.copyWith(
-        status: const UIStatus.loadSuccess(),
-        missions: paginated.missions,
-        allMissions: allMissions,
-        currentPhaseId: currentPhaseId,
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (paginated) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(),
+          missions: paginated.data,
+          allMissions: allMissions,
+          currentPhaseId: currentPhaseId,
+        ),
+      ),
     );
   }
 
@@ -76,13 +78,12 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _getMissionDetailUseCase(event.missionId);
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
-      (detail) => emit(state.copyWith(
-        status: const UIStatus.loadSuccess(),
-        detail: detail,
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (detail) => emit(
+        state.copyWith(status: const UIStatus.loadSuccess(), detail: detail),
+      ),
     );
   }
 
@@ -91,14 +92,19 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     Emitter<MissionTaskState> emit,
   ) async {
     emit(state.copyWith(status: const UIStatus.loading()));
-    final result = await _submitMissionProofUseCase(event.missionId, event.file);
+    final result = await _submitMissionProofUseCase(
+      event.missionId,
+      event.file,
+    );
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
-      (_) => emit(state.copyWith(
-        status: const UIStatus.loadSuccess(message: 'PROOF_SUBMIT_SUCCESS'),
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (_) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(message: 'PROOF_SUBMIT_SUCCESS'),
+        ),
+      ),
     );
   }
 
@@ -113,9 +119,9 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
       event.completed,
     );
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
       (_) {
         if (state.detail != null) {
           final updatedTasks = state.detail!.tasks.map((task) {
@@ -148,14 +154,18 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
             updatedAt: state.detail!.updatedAt,
           );
 
-          emit(state.copyWith(
-            status: const UIStatus.loadSuccess(message: 'TOGGLE_SUCCESS'),
-            detail: updatedDetail,
-          ));
+          emit(
+            state.copyWith(
+              status: const UIStatus.loadSuccess(message: 'TOGGLE_SUCCESS'),
+              detail: updatedDetail,
+            ),
+          );
         } else {
-          emit(state.copyWith(
-            status: const UIStatus.loadSuccess(message: 'TOGGLE_SUCCESS'),
-          ));
+          emit(
+            state.copyWith(
+              status: const UIStatus.loadSuccess(message: 'TOGGLE_SUCCESS'),
+            ),
+          );
         }
       },
     );
@@ -174,14 +184,16 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     );
     final result = await _getExploreMissionUseCase();
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
-      (paginated) => emit(state.copyWith(
-        status: const UIStatus.loadSuccess(),
-        exploreMissions: paginated.missions,
-        currentPhaseId: currentPhaseId,
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (paginated) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(),
+          exploreMissions: paginated.data,
+          currentPhaseId: currentPhaseId,
+        ),
+      ),
     );
   }
 
@@ -192,14 +204,16 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _joinMissionUseCase(event.missionId);
     await result.fold(
-      (failure) async => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
+      (failure) async => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
       (_) async {
-        emit(state.copyWith(
-          status: const UIStatus.loadSuccess(message: 'JOIN_SUCCESS'),
-        ));
-        
+        emit(
+          state.copyWith(
+            status: const UIStatus.loadSuccess(message: 'JOIN_SUCCESS'),
+          ),
+        );
+
         final profileResult = await _getProfileUseCase();
         String? currentPhaseId;
         profileResult.fold(
@@ -212,20 +226,22 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
         final allMissionsResult = await _listAllMissionsUseCase();
 
         List<MissionModel> missions = state.missions;
-        userMissionsResult.fold((_) {}, (p) => missions = p.missions);
+        userMissionsResult.fold((_) {}, (p) => missions = p.data);
 
         List<MissionModel> exploreMissions = state.exploreMissions;
-        exploreMissionsResult.fold((_) {}, (p) => exploreMissions = p.missions);
+        exploreMissionsResult.fold((_) {}, (p) => exploreMissions = p.data);
 
         List<MissionModel> allMissions = state.allMissions;
-        allMissionsResult.fold((_) {}, (p) => allMissions = p.missions);
+        allMissionsResult.fold((_) {}, (p) => allMissions = p.data);
 
-        emit(state.copyWith(
-          missions: missions,
-          exploreMissions: exploreMissions,
-          allMissions: allMissions,
-          currentPhaseId: currentPhaseId,
-        ));
+        emit(
+          state.copyWith(
+            missions: missions,
+            exploreMissions: exploreMissions,
+            allMissions: allMissions,
+            currentPhaseId: currentPhaseId,
+          ),
+        );
       },
     );
   }

@@ -36,19 +36,20 @@ class JobHousingEntity {
     required this.updatedAt,
   });
 
-  factory JobHousingEntity.fromJson(Map<String, dynamic> json) => _$JobHousingEntityFromJson(json);
+  factory JobHousingEntity.fromJson(Map<String, dynamic> json) =>
+      _$JobHousingEntityFromJson(json);
   Map<String, dynamic> toJson() => _$JobHousingEntityToJson(this);
 
   JobHousingModel toModel() => JobHousingModel(
-        housingId: housingId,
-        jobId: jobId,
-        description: description,
-        weeklyRate: weeklyRate,
-        deposit: deposit,
-        transportation: transportation,
-        rangeMinStartDate: rangeMinStartDate,
-        rangeMaxStartDate: rangeMaxStartDate,
-        createdAt: createdAt,
-        updatedAt: updatedAt
-      );
+    housingId: housingId,
+    jobId: jobId,
+    description: description,
+    weeklyRate: weeklyRate,
+    deposit: deposit,
+    transportation: transportation,
+    rangeMinStartDate: rangeMinStartDate,
+    rangeMaxStartDate: rangeMaxStartDate,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

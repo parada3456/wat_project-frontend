@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class PendingOweTile extends StatelessWidget {
   final String personName;
   final double amount;
@@ -19,7 +20,9 @@ class PendingOweTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppDimension.space16),
       decoration: BoxDecoration(
-        color: isOverdue ? AppColors.error.withOpacity(0.05) : AppColors.background,
+        color: isOverdue
+            ? AppColors.error.withOpacity(0.05)
+            : AppColors.background,
         borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
         border: Border.all(
           color: isOverdue ? AppColors.error : AppColors.surfaceAlt,
@@ -49,7 +52,9 @@ class PendingOweTile extends StatelessWidget {
                   'Due $dueDate',
                   style: TextStyle(
                     fontSize: 12,
-                    color: isOverdue ? AppColors.error : AppColors.textSecondary,
+                    color: isOverdue
+                        ? AppColors.error
+                        : AppColors.textSecondary,
                     fontWeight: isOverdue ? FontWeight.w700 : FontWeight.w400,
                   ),
                 ),

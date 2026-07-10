@@ -17,6 +17,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/user/update_loca
 
 import 'package:wat_project_frontend/domain/models/gamification_models.dart';
 import 'package:wat_project_frontend/domain/models/gamification_models.dart';
+
 @injectable
 class UserRepoImpl implements UserRepository {
   final UserApiService _userApi;
@@ -46,7 +47,9 @@ class UserRepoImpl implements UserRepository {
 
   @override
   Future<void> deleteAccount(String currentPassword) async {
-    return _userApi.deleteAccount(DeleteAccountRequest(currentPassword: currentPassword));
+    return _userApi.deleteAccount(
+      DeleteAccountRequest(currentPassword: currentPassword),
+    );
   }
 
   @override
@@ -75,10 +78,9 @@ class UserRepoImpl implements UserRepository {
 
   @override
   Future<void> updateLocation(double latitude, double longitude) async {
-    return _userApi.updateLocation(UpdateLocationRequest(
-      latitude: latitude,
-      longitude: longitude,
-    ));
+    return _userApi.updateLocation(
+      UpdateLocationRequest(latitude: latitude, longitude: longitude),
+    );
   }
 
   @override

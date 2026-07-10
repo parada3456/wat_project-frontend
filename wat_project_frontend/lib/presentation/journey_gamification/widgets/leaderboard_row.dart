@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class LeaderboardRow extends StatelessWidget {
   final int rank;
   final String name;
@@ -21,7 +22,9 @@ class LeaderboardRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppDimension.space16),
       decoration: BoxDecoration(
-        color: isCurrentUser ? AppColors.primary.withOpacity(0.1) : AppColors.background,
+        color: isCurrentUser
+            ? AppColors.primary.withOpacity(0.1)
+            : AppColors.background,
         borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
         border: isCurrentUser ? Border.all(color: AppColors.primary) : null,
       ),

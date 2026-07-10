@@ -48,22 +48,23 @@ class JobOverallRatingEntity {
     required this.updatedAt,
   });
 
-  factory JobOverallRatingEntity.fromJson(Map<String, dynamic> json) => _$JobOverallRatingEntityFromJson(json);
+  factory JobOverallRatingEntity.fromJson(Map<String, dynamic> json) =>
+      _$JobOverallRatingEntityFromJson(json);
   Map<String, dynamic> toJson() => _$JobOverallRatingEntityToJson(this);
 
   JobOverallRatingModel toModel() => JobOverallRatingModel(
-        ratingSummaryId: ratingSummaryId,
-        jobId: jobId,
-        overallRate: overallRate,
-        agencyRate: agencyRate,
-        jobRate: jobRate,
-        coworkersRate: coworkersRate,
-        townRate: townRate,
-        hoursRate: hoursRate,
-        housingRate: housingRate,
-        secondJobFeasibilityRate: secondJobFeasibilityRate,
-        overtimeAvailabilityRate: overtimeAvailabilityRate,
-        reviewCount: reviewCount,
-        updatedAt: updatedAt,
-      );
+    ratingSummaryId: ratingSummaryId,
+    jobId: jobId,
+    overallRate: overallRate,
+    agencyRate: agencyRate,
+    jobRate: jobRate,
+    coworkersRate: coworkersRate,
+    townRate: townRate,
+    hoursRate: hoursRate,
+    housingRate: housingRate,
+    secondJobFeasibilityRate: secondJobFeasibilityRate,
+    overtimeAvailabilityRate: overtimeAvailabilityRate,
+    reviewCount: reviewCount,
+    updatedAt: updatedAt,
+  );
 }

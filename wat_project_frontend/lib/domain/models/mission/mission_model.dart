@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 
@@ -10,7 +11,7 @@ enum VerificationType {
   admin,
 }
 
-class MissionModel {
+class MissionModel extends Equatable {
   final String missionId;
   final String phaseId;
   final String title;
@@ -21,6 +22,7 @@ class MissionModel {
   final VerificationType verificationType;
   final UserMissionModel? userMission;
   final List<TaskModel> tasks;
+  final String? createdBy;
   // final String? dueDateType;
   // final DateTime? fixedDueDate;
   // final String? relativeTriggerEvent;
@@ -41,6 +43,7 @@ class MissionModel {
     this.verificationType = VerificationType.none,
     this.userMission,
     required this.tasks,
+    this.createdBy,
     // this.dueDateType,
     // this.fixedDueDate,
     // this.relativeTriggerEvent,
@@ -52,44 +55,25 @@ class MissionModel {
   });
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MissionModel &&
-          runtimeType == other.runtimeType &&
-          missionId == other.missionId &&
-          phaseId == other.phaseId &&
-          title == other.title &&
-          description == other.description &&
-          location == other.location &&
-          basePoints == other.basePoints &&
-          isMandatory == other.isMandatory &&
-          verificationType == other.verificationType &&
-          // dueDateType == other.dueDateType &&
-          // fixedDueDate == other.fixedDueDate &&
-          // relativeTriggerEvent == other.relativeTriggerEvent &&
-          // relativeDaysOffset == other.relativeDaysOffset &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
-
-  @override
-  int get hashCode => Object.hash(
-        missionId,
-        phaseId,
-        title,
-        description,
-        location,
-        basePoints,
-        isMandatory,
-        verificationType,
-        userMission,
-        tasks,
-        // dueDateType,
-        // fixedDueDate,
-        // relativeTriggerEvent,
-        // relativeDaysOffset,
-        isActive,
-        isLocked,
-        createdAt,
-        updatedAt,
-      );
+  List<Object?> get props => [
+    missionId,
+    phaseId,
+    title,
+    description,
+    location,
+    basePoints,
+    isMandatory,
+    verificationType,
+    userMission,
+    tasks,
+    createdBy,
+    // dueDateType,
+    // fixedDueDate,
+    // relativeTriggerEvent,
+    // relativeDaysOffset,
+    isActive,
+    isLocked,
+    createdAt,
+    updatedAt,
+  ];
 }

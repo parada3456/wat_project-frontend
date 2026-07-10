@@ -24,19 +24,20 @@ class UserBadgeEntity {
     required this.userId,
     required this.badgeId,
     this.sourceId,
-    required this.earnedAt, 
+    required this.earnedAt,
     required this.badge,
   });
 
-  factory UserBadgeEntity.fromJson(Map<String, dynamic> json) => _$UserBadgeEntityFromJson(json);
+  factory UserBadgeEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserBadgeEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserBadgeEntityToJson(this);
 
   UserBadgeModel toModel() => UserBadgeModel(
-        userBadgeId: userBadgeId,
-        userId: userId,
-        badgeId: badgeId,
-        sourceId: sourceId,
-        earnedAt: earnedAt,
-        badge: badge.toModel()
-      );
+    userBadgeId: userBadgeId,
+    userId: userId,
+    badgeId: badgeId,
+    sourceId: sourceId,
+    earnedAt: earnedAt,
+    badge: badge.toModel(),
+  );
 }

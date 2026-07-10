@@ -8,11 +8,9 @@ class VerifyMissionRequest {
   @JsonKey(name: 'rejectionReason')
   final String? rejectionReason;
 
-  VerifyMissionRequest({
-    required this.approved,
-    this.rejectionReason,
-  });
+  VerifyMissionRequest({required this.approved, this.rejectionReason});
 
-  factory VerifyMissionRequest.fromJson(Map<String, dynamic> json) => _$VerifyMissionRequestFromJson(json);
+  factory VerifyMissionRequest.fromJson(Map<String, dynamic> json) =>
+      _$VerifyMissionRequestFromJson(json);
   Map<String, dynamic> toJson() => _$VerifyMissionRequestToJson(this);
 }

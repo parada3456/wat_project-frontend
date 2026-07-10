@@ -8,11 +8,9 @@ class AdjustPointsRequest {
   final int pointsDelta;
   final String reason;
 
-  AdjustPointsRequest({
-    required this.pointsDelta,
-    required this.reason,
-  });
+  AdjustPointsRequest({required this.pointsDelta, required this.reason});
 
-  factory AdjustPointsRequest.fromJson(Map<String, dynamic> json) => _$AdjustPointsRequestFromJson(json);
+  factory AdjustPointsRequest.fromJson(Map<String, dynamic> json) =>
+      _$AdjustPointsRequestFromJson(json);
   Map<String, dynamic> toJson() => _$AdjustPointsRequestToJson(this);
 }

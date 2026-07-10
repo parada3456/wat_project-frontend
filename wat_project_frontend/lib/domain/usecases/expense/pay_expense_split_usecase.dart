@@ -10,7 +10,11 @@ class PayExpenseSplitUseCase {
 
   PayExpenseSplitUseCase(this._repository);
 
-  Future<Either<Failure, bool>> call(String expenseId, String splitId, File file) async {
+  Future<Either<Failure, bool>> call(
+    String expenseId,
+    String splitId,
+    File file,
+  ) async {
     try {
       await _repository.paySplit(expenseId, splitId, file);
       return const Right(true);

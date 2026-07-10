@@ -28,7 +28,8 @@ class JobCartPage extends StatelessWidget {
         child: ListView.separated(
           padding: const EdgeInsets.all(AppDimension.space16),
           itemCount: 3,
-          separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space8),
+          separatorBuilder: (context, index) =>
+              const SizedBox(height: AppDimension.space8),
           itemBuilder: (context, index) {
             final titles = ['Lifeguard', 'Housekeeping', 'Server'];
             final companies = ['Disney World', 'Hilton', 'Bubba Gump'];

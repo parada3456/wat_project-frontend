@@ -40,15 +40,15 @@ class ExpenseTransactionEntity {
   Map<String, dynamic> toJson() => _$ExpenseTransactionEntityToJson(this);
 
   ExpenseTransactionModel toModel() => ExpenseTransactionModel(
-        transactionId: transactionId,
-        paidByUserId: paidByUserId,
-        title: title,
-        totalAmount: totalAmount,
-        currency: currency,
-        memo: memo,
-        transactionDate: transactionDate,
-        dueDate: dueDate,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+    transactionId: transactionId,
+    paidByUserId: paidByUserId,
+    title: title,
+    totalAmount: totalAmount,
+    currency: currency,
+    memo: memo,
+    transactionDate: transactionDate,
+    dueDate: dueDate,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

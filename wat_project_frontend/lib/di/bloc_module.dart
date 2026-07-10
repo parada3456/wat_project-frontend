@@ -16,7 +16,6 @@ import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_das
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 
-
 // Module 2 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
 
@@ -39,7 +38,8 @@ import 'package:wat_project_frontend/presentation/notifications/bloc/notificatio
 @module
 abstract class BlocModule {
   @injectable
-  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
+  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) =>
+      HomeBloc(getHomeDataUseCase);
 
   @injectable
   LoginBloc loginBloc(
@@ -50,16 +50,15 @@ abstract class BlocModule {
     LogoutUseCase logoutUseCase,
     AuthSessionManager authManager,
     UserRepository userRepository,
-  ) =>
-      LoginBloc(
-        loginUseCase,
-        registerUseCase,
-        forgotPasswordUseCase,
-        resetPasswordUseCase,
-        logoutUseCase,
-        authManager,
-        userRepository,
-      );
+  ) => LoginBloc(
+    loginUseCase,
+    registerUseCase,
+    forgotPasswordUseCase,
+    resetPasswordUseCase,
+    logoutUseCase,
+    authManager,
+    userRepository,
+  );
 
   @injectable
   ProfileBloc profileBloc(
@@ -69,15 +68,14 @@ abstract class BlocModule {
     GetCreditScoreHistoryUseCase getCreditScoreHistoryUseCase,
     UpdateLocationUseCase updateLocationUseCase,
     DeleteAccountUseCase deleteAccountUseCase,
-  ) =>
-      ProfileBloc(
-        getProfileUseCase,
-        updateProfileUseCase,
-        getBadgesUseCase,
-        getCreditScoreHistoryUseCase,
-        updateLocationUseCase,
-        deleteAccountUseCase,
-      );
+  ) => ProfileBloc(
+    getProfileUseCase,
+    updateProfileUseCase,
+    getBadgesUseCase,
+    getCreditScoreHistoryUseCase,
+    updateLocationUseCase,
+    deleteAccountUseCase,
+  );
 
   @injectable
   AdminDashboardBloc adminDashboardBloc(
@@ -87,15 +85,14 @@ abstract class BlocModule {
     GetAdminUsersUseCase getAdminUsersUseCase,
     GetAdminUserDetailUseCase getAdminUserDetailUseCase,
     AdjustPointsUseCase adjustPointsUseCase,
-  ) =>
-      AdminDashboardBloc(
-        getAdminStatsUseCase,
-        listPendingVerificationsUseCase,
-        verifyAdminMissionUseCase,
-        getAdminUsersUseCase,
-        getAdminUserDetailUseCase,
-        adjustPointsUseCase,
-      );
+  ) => AdminDashboardBloc(
+    getAdminStatsUseCase,
+    listPendingVerificationsUseCase,
+    verifyAdminMissionUseCase,
+    getAdminUsersUseCase,
+    getAdminUserDetailUseCase,
+    adjustPointsUseCase,
+  );
 
   @injectable
   ExpenseSharingBloc expenseSharingBloc(
@@ -106,16 +103,15 @@ abstract class BlocModule {
     ListPendingSplitsUseCase listPendingSplitsUseCase,
     PayExpenseSplitUseCase payExpenseSplitUseCase,
     ApproveExpenseSplitPaymentUseCase approveExpenseSplitPaymentUseCase,
-  ) =>
-      ExpenseSharingBloc(
-        listExpensesUseCase,
-        createExpenseUseCase,
-        getExpenseDetailUseCase,
-        deleteExpenseUseCase,
-        listPendingSplitsUseCase,
-        payExpenseSplitUseCase,
-        approveExpenseSplitPaymentUseCase,
-      );
+  ) => ExpenseSharingBloc(
+    listExpensesUseCase,
+    createExpenseUseCase,
+    getExpenseDetailUseCase,
+    deleteExpenseUseCase,
+    listPendingSplitsUseCase,
+    payExpenseSplitUseCase,
+    approveExpenseSplitPaymentUseCase,
+  );
 
   @injectable
   JobMarketBloc jobMarketBloc(
@@ -126,16 +122,15 @@ abstract class BlocModule {
     RemoveJobFromCartUseCase removeJobFromCartUseCase,
     CreateJobReviewUseCase createJobReviewUseCase,
     ListApplicationsUseCase listApplicationsUseCase,
-  ) =>
-      JobMarketBloc(
-        listJobsUseCase: listJobsUseCase,
-        getJobDetailUseCase: getJobDetailUseCase,
-        addJobToCartUseCase: addJobToCartUseCase,
-        listCartItemsUseCase: listCartItemsUseCase,
-        removeJobFromCartUseCase: removeJobFromCartUseCase,
-        createJobReviewUseCase: createJobReviewUseCase,
-        listApplicationsUseCase: listApplicationsUseCase,
-      );
+  ) => JobMarketBloc(
+    listJobsUseCase: listJobsUseCase,
+    getJobDetailUseCase: getJobDetailUseCase,
+    addJobToCartUseCase: addJobToCartUseCase,
+    listCartItemsUseCase: listCartItemsUseCase,
+    removeJobFromCartUseCase: removeJobFromCartUseCase,
+    createJobReviewUseCase: createJobReviewUseCase,
+    listApplicationsUseCase: listApplicationsUseCase,
+  );
 
   @injectable
   MissionTaskBloc missionTaskBloc(
@@ -147,23 +142,21 @@ abstract class BlocModule {
     JoinMissionUseCase joinMissionUseCase,
     GetProfileUseCase getProfileUseCase,
     ListAllMissionsUseCase listAllMissionsUseCase,
-  ) =>
-      MissionTaskBloc(
-        listMyMissionsUseCase,
-        getMissionDetailUseCase,
-        submitMissionProofUseCase,
-        toggleTaskUseCase,
-        getExploreMissionUseCase,
-        joinMissionUseCase,
-        getProfileUseCase,
-        listAllMissionsUseCase,
-      );
+  ) => MissionTaskBloc(
+    listMyMissionsUseCase,
+    getMissionDetailUseCase,
+    submitMissionProofUseCase,
+    toggleTaskUseCase,
+    getExploreMissionUseCase,
+    joinMissionUseCase,
+    getProfileUseCase,
+    listAllMissionsUseCase,
+  );
 
   @injectable
   CreateMissionBloc createMissionBloc(
     CreateMissionUseCase createMissionUseCase,
-  ) =>
-      CreateMissionBloc(createMissionUseCase);
+  ) => CreateMissionBloc(createMissionUseCase);
 
   @injectable
   JourneyGamificationBloc journeyGamificationBloc(
@@ -171,13 +164,12 @@ abstract class BlocModule {
     AdvancePhaseUseCase advancePhaseUseCase,
     GetJourneyHistoryUseCase getJourneyHistoryUseCase,
     GetLeaderboardUseCase getLeaderboardUseCase,
-  ) =>
-      JourneyGamificationBloc(
-        listJourneyPhasesUseCase,
-        advancePhaseUseCase,
-        getJourneyHistoryUseCase,
-        getLeaderboardUseCase,
-      );
+  ) => JourneyGamificationBloc(
+    listJourneyPhasesUseCase,
+    advancePhaseUseCase,
+    getJourneyHistoryUseCase,
+    getLeaderboardUseCase,
+  );
 
   @injectable
   SocialRadarBloc socialRadarBloc(
@@ -187,15 +179,14 @@ abstract class BlocModule {
     ListFriendsUseCase listFriendsUseCase,
     RemoveFriendUseCase removeFriendUseCase,
     GetRadarUsersUseCase getRadarUsersUseCase,
-  ) =>
-      SocialRadarBloc(
-        sendFriendRequestUseCase,
-        listPendingRequestsUseCase,
-        respondToFriendRequestUseCase,
-        listFriendsUseCase,
-        removeFriendUseCase,
-        getRadarUsersUseCase,
-      );
+  ) => SocialRadarBloc(
+    sendFriendRequestUseCase,
+    listPendingRequestsUseCase,
+    respondToFriendRequestUseCase,
+    listFriendsUseCase,
+    removeFriendUseCase,
+    getRadarUsersUseCase,
+  );
 
   @injectable
   NotificationsBloc notificationsBloc(
@@ -203,11 +194,10 @@ abstract class BlocModule {
     MarkNotificationReadUseCase markNotificationReadUseCase,
     MarkAllNotificationsReadUseCase markAllNotificationsReadUseCase,
     DeleteNotificationUseCase deleteNotificationUseCase,
-  ) =>
-      NotificationsBloc(
-        listNotificationsUseCase,
-        markNotificationReadUseCase,
-        markAllNotificationsReadUseCase,
-        deleteNotificationUseCase,
-      );
+  ) => NotificationsBloc(
+    listNotificationsUseCase,
+    markNotificationReadUseCase,
+    markAllNotificationsReadUseCase,
+    deleteNotificationUseCase,
+  );
 }

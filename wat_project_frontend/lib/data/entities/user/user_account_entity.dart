@@ -67,7 +67,7 @@ class UserAccountEntity {
   final String? currentCoordinates;
   @JsonKey(name: 'location_updated_at')
   final DateTime? locationUpdatedAt;
-  
+
   @JsonKey(name: 'current_phase_id')
   final String? currentPhaseId;
   @JsonKey(name: 'total_lifetime_points')
@@ -84,7 +84,6 @@ class UserAccountEntity {
   final DateTime createdAt;
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
-
 
   UserAccountEntity({
     required this.userId,
@@ -105,11 +104,12 @@ class UserAccountEntity {
     this.avatarUrl,
     this.radarVisibility,
     this.currentCoordinates,
-    this.locationUpdatedAt, 
+    this.locationUpdatedAt,
     // this.passwordHash,
   });
 
-  factory UserAccountEntity.fromJson(Map<String, dynamic> json) => _$UserAccountEntityFromJson(json);
+  factory UserAccountEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserAccountEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserAccountEntityToJson(this);
 
   UserModel toModel() => UserModel(

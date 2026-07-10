@@ -7,10 +7,7 @@ class UploadMediaResponse {
   final String url;
   final String key;
 
-  UploadMediaResponse({
-    required this.url,
-    required this.key,
-  });
+  UploadMediaResponse({required this.url, required this.key});
 
   factory UploadMediaResponse.fromJson(Map<String, dynamic> json) =>
       _$UploadMediaResponseFromJson(json);

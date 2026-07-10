@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:wat_project_frontend/core/extension/extension.dart';
-import 'package:wat_project_frontend/domain/errors/auth_exception.dart';import 'package:wat_project_frontend/domain/services/auth_manager.dart';
+import 'package:wat_project_frontend/domain/errors/auth_exception.dart';
+import 'package:wat_project_frontend/domain/services/auth_manager.dart';
+
 class AuthInterceptor extends Interceptor {
   final AuthSessionManager _authManager;
   final Dio _authDio; // Used for refresh calls to avoid interceptor loop
@@ -23,10 +25,7 @@ class AuthInterceptor extends Interceptor {
     if (session == null || session.isExpired) {
       await _authManager.clearSession();
       return handler.reject(
-        DioException(
-          requestOptions: options,
-          error: SessionExpiredException(),
-        ),
+        DioException(requestOptions: options, error: SessionExpiredException()),
       );
     }
 
@@ -65,13 +64,17 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     if (err.response?.statusCode == 401 && err.requestOptions.needLogin) {
       final session = _authManager.currentSession;
-      
+
       // If token was already updated by another concurrent request, retry immediately
       if (session != null &&
-          err.requestOptions.headers['Authorization'] != 'Bearer ${session.token}') {
+          err.requestOptions.headers['Authorization'] !=
+              'Bearer ${session.token}') {
         return _retry(err.requestOptions, handler, session.token);
       }
 

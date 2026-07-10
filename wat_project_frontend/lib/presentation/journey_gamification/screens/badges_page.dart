@@ -39,7 +39,7 @@ class BadgesPage extends StatelessWidget {
               'Workaholic',
               'Explorer',
               'Top Scorer',
-              'Program Completer'
+              'Program Completer',
             ];
             final icons = [
               Icons.wb_sunny_outlined,
@@ -49,7 +49,7 @@ class BadgesPage extends StatelessWidget {
               Icons.work_outline,
               Icons.explore_outlined,
               Icons.emoji_events_outlined,
-              Icons.workspace_premium_outlined
+              Icons.workspace_premium_outlined,
             ];
             return BadgeGridTile(
               title: titles[index],

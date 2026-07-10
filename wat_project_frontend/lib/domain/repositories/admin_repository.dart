@@ -10,8 +10,16 @@ import 'package:wat_project_frontend/domain/models/admin_models.dart';
 abstract class AdminRepository {
   Future<AdminStatsEntity> getStats();
   Future<List<UserMissionEntity>> listPendingVerifications();
-  Future<UserMissionEntity> verifyMission(String id, bool approved, String? rejectionReason);
+  Future<UserMissionEntity> verifyMission(
+    String id,
+    bool approved,
+    String? rejectionReason,
+  );
   // Future<List<UserModel>> listUsers(String search);
   Future<UserAccountEntity> getUserDetail(String id);
-  Future<PointsAdjustmentResultEntity> adjustPoints(String id, int pointsDelta, String reason);
+  Future<PointsAdjustmentResultEntity> adjustPoints(
+    String id,
+    int pointsDelta,
+    String reason,
+  );
 }

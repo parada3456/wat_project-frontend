@@ -29,7 +29,12 @@ class ErrorInterceptor extends Interceptor {
           return handler.reject(err.copyWith(error: e));
         }
         return handler.reject(
-            err.copyWith(error: const ServerException('Unexpected error format from server.')));
+          err.copyWith(
+            error: const ServerException(
+              'Unexpected error format from server.',
+            ),
+          ),
+        );
       }
     }
 
@@ -38,7 +43,12 @@ class ErrorInterceptor extends Interceptor {
         err.type == DioExceptionType.sendTimeout ||
         err.type == DioExceptionType.connectionError) {
       return handler.reject(
-          err.copyWith(error: const ServerException('No internet connection or server timeout.')));
+        err.copyWith(
+          error: const ServerException(
+            'No internet connection or server timeout.',
+          ),
+        ),
+      );
     }
 
     return handler.next(err);

@@ -24,7 +24,8 @@ class LeaderboardPage extends StatelessWidget {
         child: ListView.separated(
           padding: const EdgeInsets.all(AppDimension.space16),
           itemCount: 10,
-          separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space8),
+          separatorBuilder: (context, index) =>
+              const SizedBox(height: AppDimension.space8),
           itemBuilder: (context, index) {
             return LeaderboardRow(
               rank: index + 1,

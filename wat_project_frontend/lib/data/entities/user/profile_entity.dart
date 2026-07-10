@@ -30,7 +30,7 @@ class ProfileEntity {
   ProfileEntity({
     required this.profileId,
     required this.userId,
-    this.firstName, 
+    this.firstName,
     this.lastName,
     this.phoneNumber,
     this.bio,
@@ -38,12 +38,12 @@ class ProfileEntity {
     required this.radarVisibility,
     this.currentCoordinates,
     required this.locationUpdatedAt,
-    required this.updatedAt, 
+    required this.updatedAt,
   });
 
-  factory ProfileEntity.fromJson(Map<String, dynamic> json) => _$ProfileEntityFromJson(json);
+  factory ProfileEntity.fromJson(Map<String, dynamic> json) =>
+      _$ProfileEntityFromJson(json);
   Map<String, dynamic> toJson() => _$ProfileEntityToJson(this);
-  
 
   ProfileModel toModel() => ProfileModel(
     profileId: profileId,

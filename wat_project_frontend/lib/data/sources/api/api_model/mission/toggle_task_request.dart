@@ -13,6 +13,7 @@ class ToggleTaskRequest {
     // required this.isCompleted,
   });
 
-  factory ToggleTaskRequest.fromJson(Map<String, dynamic> json) => _$ToggleTaskRequestFromJson(json);
+  factory ToggleTaskRequest.fromJson(Map<String, dynamic> json) =>
+      _$ToggleTaskRequestFromJson(json);
   Map<String, dynamic> toJson() => _$ToggleTaskRequestToJson(this);
 }

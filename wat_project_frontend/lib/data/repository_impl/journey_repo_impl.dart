@@ -32,7 +32,10 @@ class JourneyRepoImpl implements JourneyRepository {
   }
 
   @override
-  Future<List<LeaderboardEntry>> getLeaderboard(String? scope, String? jobId) async {
+  Future<List<LeaderboardEntry>> getLeaderboard(
+    String? scope,
+    String? jobId,
+  ) async {
     return _api.getLeaderboard(scope, jobId);
   }
 

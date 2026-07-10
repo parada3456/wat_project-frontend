@@ -49,7 +49,10 @@ class CreditHistoryPage extends StatelessWidget {
                   ),
                   const SizedBox(height: AppDimension.space8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.green.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
@@ -70,14 +73,15 @@ class CreditHistoryPage extends StatelessWidget {
               child: ListView.separated(
                 padding: const EdgeInsets.all(AppDimension.space16),
                 itemCount: 5,
-                separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space8),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppDimension.space8),
                 itemBuilder: (context, index) {
                   final titles = [
                     'On-time Bill Payment',
                     'Mission Bonus',
                     'Late Bill Penalty',
                     'Friendship Bonus',
-                    'Phase Completion'
+                    'Phase Completion',
                   ];
                   final deltas = [50, 100, -200, 20, 500];
                   return CreditHistoryRow(

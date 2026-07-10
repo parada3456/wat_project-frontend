@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 enum UserMissionStatus {
@@ -13,7 +14,7 @@ enum UserMissionStatus {
   overdue,
 }
 
-class UserMissionModel {
+class UserMissionModel extends Equatable {
   final String userMissionId;
   final String userId;
   final String missionId;
@@ -53,46 +54,23 @@ class UserMissionModel {
   });
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserMissionModel &&
-          runtimeType == other.runtimeType &&
-          userMissionId == other.userMissionId &&
-          userId == other.userId &&
-          missionId == other.missionId &&
-          status == other.status &&
-          calculatedDueDate == other.calculatedDueDate &&
-          proofUrl == other.proofUrl &&
-          proofSubmittedAt == other.proofSubmittedAt &&
-          verifiedAt == other.verifiedAt &&
-          verifiedBy == other.verifiedBy &&
-          basePointsEarned == other.basePointsEarned &&
-          speedBonusPoints == other.speedBonusPoints &&
-          streakBonusPoints == other.streakBonusPoints &&
-          firstCompleterBonusPoints == other.firstCompleterBonusPoints &&
-          totalPointsEarned == other.totalPointsEarned &&
-          rewardedAt == other.rewardedAt &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
-
-  @override
-  int get hashCode => Object.hash(
-        userMissionId,
-        userId,
-        missionId,
-        status,
-        calculatedDueDate,
-        proofUrl,
-        proofSubmittedAt,
-        verifiedAt,
-        verifiedBy,
-        basePointsEarned,
-        speedBonusPoints,
-        streakBonusPoints,
-        firstCompleterBonusPoints,
-        totalPointsEarned,
-        rewardedAt,
-        createdAt,
-        updatedAt,
-      );
+  List<Object?> get props => [
+    userMissionId,
+    userId,
+    missionId,
+    status,
+    calculatedDueDate,
+    proofUrl,
+    proofSubmittedAt,
+    verifiedAt,
+    verifiedBy,
+    basePointsEarned,
+    speedBonusPoints,
+    streakBonusPoints,
+    firstCompleterBonusPoints,
+    totalPointsEarned,
+    rewardedAt,
+    createdAt,
+    updatedAt,
+  ];
 }

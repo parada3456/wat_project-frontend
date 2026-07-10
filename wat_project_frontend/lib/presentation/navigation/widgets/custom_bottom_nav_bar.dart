@@ -14,7 +14,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Premium theme-aware container
     return Container(
       decoration: BoxDecoration(
@@ -83,8 +83,8 @@ class CustomBottomNavBar extends StatelessWidget {
     final isSelected = currentIndex == index;
     final theme = Theme.of(context);
     final activeColor = AppColors.primary;
-    final inactiveColor = theme.brightness == Brightness.dark 
-        ? Colors.grey[500]! 
+    final inactiveColor = theme.brightness == Brightness.dark
+        ? Colors.grey[500]!
         : Colors.grey[400]!;
 
     return Semantics(
@@ -99,8 +99,8 @@ class CustomBottomNavBar extends StatelessWidget {
           curve: Curves.easeInOut,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected 
-                ? activeColor.withOpacity(0.08) 
+            color: isSelected
+                ? activeColor.withOpacity(0.08)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
           ),

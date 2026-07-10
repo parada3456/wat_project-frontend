@@ -9,19 +9,17 @@ class LoginEntity {
   final AuthEntity auth;
   final UserAccountEntity user;
 
-  LoginEntity({
-    required this.auth,
-    required this.user,
-  });
+  LoginEntity({required this.auth, required this.user});
 
-  factory LoginEntity.fromJson(Map<String, dynamic> json) => _$LoginEntityFromJson(json);
+  factory LoginEntity.fromJson(Map<String, dynamic> json) =>
+      _$LoginEntityFromJson(json);
   Map<String, dynamic> toJson() => _$LoginEntityToJson(this);
-  
+
   LoginModel toModel() {
     return LoginModel(
       auth: auth.toModel(),
       user: user.toModel(),
-      profile: user.toProfileModel()
+      profile: user.toProfileModel(),
     );
   }
 }

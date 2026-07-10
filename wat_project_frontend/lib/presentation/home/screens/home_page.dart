@@ -39,19 +39,28 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'WAT Project',
-          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+          style: TextStyle(
+            fontWeight: FontWeight.w800,
+            color: AppColors.textPrimary,
+          ),
         ),
         elevation: 0,
         backgroundColor: AppColors.background,
         centerTitle: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.bug_report_outlined, color: AppColors.primary),
+            icon: const Icon(
+              Icons.bug_report_outlined,
+              color: AppColors.primary,
+            ),
             tooltip: 'Debug Dashboard',
             onPressed: () => context.push('/home/debug'),
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
+            icon: const Icon(
+              Icons.notifications_outlined,
+              color: AppColors.textPrimary,
+            ),
             onPressed: () => context.push('/notifications'),
           ),
         ],
@@ -67,9 +76,16 @@ class HomeView extends StatelessWidget {
           if (state.status is UILoadFailed) {
             final message = (state.status as UILoadFailed).message;
             if (state.homeData != null) {
-              return _buildDashboard(context, state.homeData!, errorMessage: message);
+              return _buildDashboard(
+                context,
+                state.homeData!,
+                errorMessage: message,
+              );
             }
-            return _buildErrorState(context, message ?? 'Failed to load home data');
+            return _buildErrorState(
+              context,
+              message ?? 'Failed to load home data',
+            );
           }
 
           if (state.homeData != null) {
@@ -82,7 +98,11 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildDashboard(BuildContext context, HomeData data, {String? errorMessage}) {
+  Widget _buildDashboard(
+    BuildContext context,
+    HomeData data, {
+    String? errorMessage,
+  }) {
     final currentProgress = data.allPhases.indexOf(data.currentPhase) + 1;
     final totalPhases = data.allPhases.isNotEmpty ? data.allPhases.length : 3;
 
@@ -98,7 +118,10 @@ class HomeView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (data.isMock || errorMessage != null)
-              _buildDemoBanner(context, errorMessage ?? 'Showing cached demo data.'),
+              _buildDemoBanner(
+                context,
+                errorMessage ?? 'Showing cached demo data.',
+              ),
 
             _buildGreeting(data.user),
             const SizedBox(height: 20),
@@ -137,8 +160,9 @@ class HomeView extends StatelessWidget {
                 height: 420,
                 child: MissionCardList(
                   feedType: MissionFeedType.my,
-                  pageSize: 5,
+                  pageSize: 3,
                   padding: EdgeInsets.zero,
+                  missions: data.phaseMissions,
                 ),
               ),
           ],
@@ -175,10 +199,7 @@ class HomeView extends StatelessWidget {
                 ),
                 Text(
                   'Unable to reach server. Showing cached demo data.',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 11,
-                  ),
+                  style: TextStyle(color: Colors.grey[700], fontSize: 11),
                 ),
               ],
             ),
@@ -231,10 +252,7 @@ class HomeView extends StatelessWidget {
             ),
             const Text(
               'Welcome back to your WAT adventure.',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -242,7 +260,11 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildPhaseCard(JourneyPhaseModel phase, int currentProgress, int totalPhases) {
+  Widget _buildPhaseCard(
+    JourneyPhaseModel phase,
+    int currentProgress,
+    int totalPhases,
+  ) {
     final progressFraction = currentProgress / totalPhases;
 
     return Card(
@@ -262,10 +284,15 @@ class HomeView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                    borderRadius: BorderRadius.circular(
+                      AppDimension.radiusSmall,
+                    ),
                   ),
                   child: Text(
                     'Phase $currentProgress of $totalPhases',
@@ -276,7 +303,11 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Icon(Icons.flag_rounded, color: AppColors.primary, size: 20),
+                const Icon(
+                  Icons.flag_rounded,
+                  color: AppColors.primary,
+                  size: 20,
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -306,7 +337,9 @@ class HomeView extends StatelessWidget {
                 value: progressFraction,
                 minHeight: 8,
                 backgroundColor: AppColors.surfaceAlt,
-                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  AppColors.primary,
+                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -319,7 +352,11 @@ class HomeView extends StatelessWidget {
                 ),
                 Text(
                   '${(progressFraction * 100).toInt()}% Completed',
-                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ],
             ),
@@ -340,7 +377,11 @@ class HomeView extends StatelessWidget {
       ),
       child: const Column(
         children: [
-          Icon(Icons.assignment_turned_in_outlined, size: 48, color: Colors.grey),
+          Icon(
+            Icons.assignment_turned_in_outlined,
+            size: 48,
+            color: Colors.grey,
+          ),
           SizedBox(height: 12),
           Text(
             'All Done for This Phase!',
@@ -353,10 +394,7 @@ class HomeView extends StatelessWidget {
           SizedBox(height: 4),
           Text(
             'No active missions in this phase. Keep it up!',
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -397,4 +435,3 @@ class HomeView extends StatelessWidget {
     );
   }
 }
-

@@ -29,6 +29,7 @@ MissionEntity _$MissionEntityFromJson(Map<String, dynamic> json) =>
               ?.map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      createdBy: json['created_by'] as String?,
       isActive: json['is_active'] as bool,
       isLocked: json['is_locked'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String),
@@ -50,6 +51,7 @@ Map<String, dynamic> _$MissionEntityToJson(
   'is_locked': instance.isLocked,
   'user_mission': instance.userMission,
   'tasks': instance.tasks,
+  'created_by': instance.createdBy,
   'created_at': instance.createdAt.toIso8601String(),
   'updated_at': instance.updatedAt.toIso8601String(),
 };

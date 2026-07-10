@@ -20,14 +20,14 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     required RemoveJobFromCartUseCase removeJobFromCartUseCase,
     required CreateJobReviewUseCase createJobReviewUseCase,
     required ListApplicationsUseCase listApplicationsUseCase,
-  })  : _listJobsUseCase = listJobsUseCase,
-        _getJobDetailUseCase = getJobDetailUseCase,
-        _addJobToCartUseCase = addJobToCartUseCase,
-        _listCartItemsUseCase = listCartItemsUseCase,
-        _removeJobFromCartUseCase = removeJobFromCartUseCase,
-        _createJobReviewUseCase = createJobReviewUseCase,
-        _listApplicationsUseCase = listApplicationsUseCase,
-        super(const JobMarketInitial()) {
+  }) : _listJobsUseCase = listJobsUseCase,
+       _getJobDetailUseCase = getJobDetailUseCase,
+       _addJobToCartUseCase = addJobToCartUseCase,
+       _listCartItemsUseCase = listCartItemsUseCase,
+       _removeJobFromCartUseCase = removeJobFromCartUseCase,
+       _createJobReviewUseCase = createJobReviewUseCase,
+       _listApplicationsUseCase = listApplicationsUseCase,
+       super(const JobMarketInitial()) {
     on<ListJobsEvent>(_onListJobs);
     on<GetJobDetailEvent>(_onGetJobDetail);
     on<AddJobToCartEvent>(_onAddJobToCart);
@@ -37,7 +37,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     on<ListApplicationsEvent>(_onListApplications);
   }
 
-  Future<void> _onListJobs(ListJobsEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onListJobs(
+    ListJobsEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _listJobsUseCase(event.filters);
     result.fold(
@@ -46,7 +49,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     );
   }
 
-  Future<void> _onGetJobDetail(GetJobDetailEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onGetJobDetail(
+    GetJobDetailEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _getJobDetailUseCase(event.jobId);
     result.fold(
@@ -55,7 +61,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     );
   }
 
-  Future<void> _onAddJobToCart(AddJobToCartEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onAddJobToCart(
+    AddJobToCartEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _addJobToCartUseCase(event.jobId);
     result.fold(
@@ -64,7 +73,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     );
   }
 
-  Future<void> _onListCartItems(ListCartItemsEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onListCartItems(
+    ListCartItemsEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _listCartItemsUseCase();
     result.fold(
@@ -73,7 +85,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     );
   }
 
-  Future<void> _onRemoveJobFromCart(RemoveJobFromCartEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onRemoveJobFromCart(
+    RemoveJobFromCartEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _removeJobFromCartUseCase(event.cartItemId);
     result.fold(
@@ -82,7 +97,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     );
   }
 
-  Future<void> _onCreateJobReview(CreateJobReviewEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onCreateJobReview(
+    CreateJobReviewEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _createJobReviewUseCase(event.request);
     result.fold(
@@ -91,7 +109,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     );
   }
 
-  Future<void> _onListApplications(ListApplicationsEvent event, Emitter<JobMarketState> emit) async {
+  Future<void> _onListApplications(
+    ListApplicationsEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
     emit(const JobMarketLoading());
     final result = await _listApplicationsUseCase();
     result.fold(

@@ -1,4 +1,6 @@
-class TaskModel {
+import 'package:equatable/equatable.dart';
+
+class TaskModel extends Equatable {
   final String taskId;
   // final String missionId;
   final String title;
@@ -20,28 +22,11 @@ class TaskModel {
   });
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TaskModel &&
-          runtimeType == other.runtimeType &&
-          taskId == other.taskId &&
-          // missionId == other.missionId &&
-          title == other.title &&
-          description == other.description &&
-          completedAt == other.completedAt &&
-          isCompleted == other.isCompleted;         
-          // createdAt == other.createdAt &&
-          // updatedAt == other.updatedAt;
-
-  @override
-  int get hashCode => Object.hash(
-        taskId,
-        // missionId,
-        title,
-        description,
-        isCompleted,
-        completedAt,
-        // createdAt,
-        // updatedAt,
-      );
+  List<Object?> get props => [
+    taskId,
+    title,
+    description,
+    isCompleted,
+    completedAt,
+  ];
 }

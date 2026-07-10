@@ -29,11 +29,11 @@ class UserPhaseHistoryModel {
 
   @override
   int get hashCode => Object.hash(
-        historyId,
-        userId,
-        phaseId,
-        phasePointsEarned,
-        enteredAt,
-        completedAt,
-      );
+    historyId,
+    userId,
+    phaseId,
+    phasePointsEarned,
+    enteredAt,
+    completedAt,
+  );
 }

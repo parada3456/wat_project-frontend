@@ -11,9 +11,17 @@ class VerifyAdminMissionUseCase {
 
   VerifyAdminMissionUseCase(this._repository);
 
-  Future<Either<Failure, UserMissionModel>> call(String id, bool approved, String? rejectionReason) async {
+  Future<Either<Failure, UserMissionModel>> call(
+    String id,
+    bool approved,
+    String? rejectionReason,
+  ) async {
     try {
-      final result = await _repository.verifyMission(id, approved, rejectionReason);
+      final result = await _repository.verifyMission(
+        id,
+        approved,
+        rejectionReason,
+      );
       return Right(result.toModel());
     } catch (e) {
       return Left(mapExceptionToFailure(e));

@@ -13,5 +13,6 @@ class NetworkException extends ApiException {
 }
 
 class UnauthorizedException extends ApiException {
-  UnauthorizedException({String message = 'Unauthorized'}) : super(message, statusCode: 401);
+  UnauthorizedException({String message = 'Unauthorized'})
+    : super(message, statusCode: 401);
 }

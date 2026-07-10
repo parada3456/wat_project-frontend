@@ -10,19 +10,20 @@ import 'package:wat_project_frontend/domain/models/mission_models.dart';
 abstract class MissionRepository {
   /// All available missions (paginated).
   Future<PaginationResponse<MissionEntity>> listMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
   });
 
   /// Missions the current user has joined (paginated).
   Future<PaginationResponse<MissionEntity>> listMyMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
+    int? limit,
   });
 
   /// Explore / discovery feed (paginated).
   Future<PaginationResponse<MissionEntity>> listExploreMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
   });
 

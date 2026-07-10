@@ -18,19 +18,20 @@ abstract class MissionApiService {
 
   @GET('missions')
   Future<PaginationResponse<MissionEntity>> listMissions({
-    @Query('page') int page = 1,
+    @Query('page') int? page,
     @Query('pageSize') int pageSize = 20,
   });
 
   @GET('user-missions')
   Future<PaginationResponse<MissionEntity>> listMyMissions({
-    @Query('page') int page = 1,
+    @Query('page') int? page,
     @Query('pageSize') int pageSize = 20,
+    @Query('limit') int? limit,
   });
 
   @GET('missions/explore')
   Future<PaginationResponse<MissionEntity>> listExploreMissions({
-    @Query('page') int page = 1,
+    @Query('page') int? page,
     @Query('pageSize') int pageSize = 20,
   });
 
@@ -38,10 +39,14 @@ abstract class MissionApiService {
   Future<MissionEntity> getMissionDetail(@Path('id') String id);
 
   @GET('tasks')
-  Future<PaginationResponse<TaskEntity>> getTasksByIds(@Query('ids') String ids);
+  Future<PaginationResponse<TaskEntity>> getTasksByIds(
+    @Query('ids') String ids,
+  );
 
   @GET('user-tasks')
-  Future<PaginationResponse<UserTaskEntity>> getUserTasksByIds(@Query('ids') String ids);
+  Future<PaginationResponse<UserTaskEntity>> getUserTasksByIds(
+    @Query('ids') String ids,
+  );
 
   @POST('user-missions')
   Future<MissionEntity> joinMission(@Body() JoinMissionRequest request);

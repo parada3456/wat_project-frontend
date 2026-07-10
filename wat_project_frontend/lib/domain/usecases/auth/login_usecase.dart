@@ -11,7 +11,10 @@ class LoginUseCase {
 
   LoginUseCase(this._repository);
 
-  Future<Either<Failure, AuthTokens>> call(String email, String password) async {
+  Future<Either<Failure, AuthTokens>> call(
+    String email,
+    String password,
+  ) async {
     try {
       final loginEntity = await _repository.login(email, password);
       print("have login repo result");

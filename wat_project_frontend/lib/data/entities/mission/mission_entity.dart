@@ -38,6 +38,8 @@ class MissionEntity {
   final UserMissionEntity? userMission;
   @JsonKey(name: 'tasks', defaultValue: [])
   final List<TaskEntity> tasks;
+  @JsonKey(name: 'created_by')
+  final String? createdBy;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @JsonKey(name: 'updated_at')
@@ -58,13 +60,15 @@ class MissionEntity {
     // this.relativeDaysOffset,
     this.userMission,
     required this.tasks,
+    this.createdBy,
     required this.isActive,
     required this.isLocked,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  factory MissionEntity.fromJson(Map<String, dynamic> json) => _$MissionEntityFromJson(json);
+  factory MissionEntity.fromJson(Map<String, dynamic> json) =>
+      _$MissionEntityFromJson(json);
   Map<String, dynamic> toJson() => _$MissionEntityToJson(this);
 
   // MissionModel toModel() => MissionModel(

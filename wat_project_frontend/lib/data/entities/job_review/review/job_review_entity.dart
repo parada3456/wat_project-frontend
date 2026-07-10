@@ -57,7 +57,8 @@ class JobReviewEntity {
     required this.updatedAt,
   });
 
-  factory JobReviewEntity.fromJson(Map<String, dynamic> json) => _$JobReviewEntityFromJson(json);
+  factory JobReviewEntity.fromJson(Map<String, dynamic> json) =>
+      _$JobReviewEntityFromJson(json);
   Map<String, dynamic> toJson() => _$JobReviewEntityToJson(this);
 
   JobReviewModel toModel() => JobReviewModel(

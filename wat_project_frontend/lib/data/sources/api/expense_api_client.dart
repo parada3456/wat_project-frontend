@@ -29,7 +29,9 @@ abstract class ExpenseApiService {
   Future<PaginationResponse<ExpenseSplitEntity>> listPendingExpenses();
 
   @GET('expense-splits')
-  Future<PaginationResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(@Query('ids') String ids);
+  Future<PaginationResponse<ExpenseSplitEntity>> getExpenseSplitsByIds(
+    @Query('ids') String ids,
+  );
 
   @PATCH('expenses/{id}/splits/{splitId}')
   @MultiPart()

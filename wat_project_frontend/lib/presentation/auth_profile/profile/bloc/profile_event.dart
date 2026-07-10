@@ -16,5 +16,6 @@ class ProfileEvent with _$ProfileEvent {
     required double longitude,
   }) = UpdateLocationSubmittedEvent;
 
-  const factory ProfileEvent.deleteAccount(String password) = DeleteAccountSubmittedEvent;
+  const factory ProfileEvent.deleteAccount(String password) =
+      DeleteAccountSubmittedEvent;
 }

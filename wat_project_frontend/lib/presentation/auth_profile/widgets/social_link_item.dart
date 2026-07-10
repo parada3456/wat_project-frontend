@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class SocialLinkItem extends StatelessWidget {
   final IconData icon;
   final String username;
 
-  const SocialLinkItem({
-    super.key,
-    required this.icon,
-    required this.username,
-  });
+  const SocialLinkItem({super.key, required this.icon, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +30,7 @@ class SocialLinkItem extends StatelessWidget {
           const SizedBox(width: AppDimension.space16),
           Text(
             username,
-            style: const TextStyle(
-              fontSize: 15,
-              color: AppColors.textPrimary,
-            ),
+            style: const TextStyle(fontSize: 15, color: AppColors.textPrimary),
           ),
         ],
       ),

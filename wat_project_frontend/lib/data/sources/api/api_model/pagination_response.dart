@@ -10,6 +10,10 @@ class PaginationResponse<T> {
 
   PaginationResponse({required this.data, this.pagination});
 
-  factory PaginationResponse.fromJson(Map<String, dynamic> json, T Function(Object? json) fromJsonT) => _$PaginationResponseFromJson(json, fromJsonT);
-  Map<String, dynamic> toJson(Object? Function(T value) toJsonT) => _$PaginationResponseToJson(this, toJsonT);
+  factory PaginationResponse.fromJson(
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) => _$PaginationResponseFromJson(json, fromJsonT);
+  Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
+      _$PaginationResponseToJson(this, toJsonT);
 }

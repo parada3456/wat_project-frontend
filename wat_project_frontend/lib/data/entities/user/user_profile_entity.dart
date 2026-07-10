@@ -24,14 +24,14 @@ class UserProfileEntity {
     this.userJobs,
   });
 
-  factory UserProfileEntity.fromJson(Map<String, dynamic> json) => _$UserProfileEntityFromJson(json);
+  factory UserProfileEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserProfileEntityToJson(this);
 
   UserProfileModel toModel() => UserProfileModel(
     user: userAccount.toModel(),
     profile: userAccount.toProfileModel(),
     creditScore: creditScore?.toModel(),
-    userJobs: userJobs?.map((job) => job.toModel()).toList() ?? []
+    userJobs: userJobs?.map((job) => job.toModel()).toList() ?? [],
   );
-
 }

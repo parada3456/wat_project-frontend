@@ -4,12 +4,11 @@ import 'package:wat_project_frontend/data/entities/auth/auth_entity.dart';
 part 'auth_model.g.dart';
 
 @JsonSerializable()
-class AuthModel extends AuthEntity{
-
+class AuthModel extends AuthEntity {
   AuthModel({
     required super.token,
     required super.refreshToken,
-    required super.expiresAt, 
+    required super.expiresAt,
     required super.tokenType,
   });
 

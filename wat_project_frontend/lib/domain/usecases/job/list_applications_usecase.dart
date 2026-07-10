@@ -13,7 +13,8 @@ class ListApplicationsUseCase {
   Future<Either<Failure, List<UserJobModel>>> call() async {
     try {
       final userProfileEntity = await _repository.getProfile();
-      final userJobs = userProfileEntity.userJobs?.map((e) => e.toModel()).toList() ?? [];
+      final userJobs =
+          userProfileEntity.userJobs?.map((e) => e.toModel()).toList() ?? [];
       return Right(userJobs);
     } catch (e) {
       return Left(mapExceptionToFailure(e));

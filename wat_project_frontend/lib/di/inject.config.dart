@@ -183,6 +183,8 @@ import 'package:wat_project_frontend/domain/usecases/mission/get_mission_detail_
     as _i350;
 import 'package:wat_project_frontend/domain/usecases/mission/join_mission_usecase.dart'
     as _i985;
+import 'package:wat_project_frontend/domain/usecases/mission/list_3_my_mission_usecase.dart'
+    as _i625;
 import 'package:wat_project_frontend/domain/usecases/mission/list_all_missions_usecase.dart'
     as _i749;
 import 'package:wat_project_frontend/domain/usecases/mission/list_my_missions_usecase.dart'
@@ -443,6 +445,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i985.JoinMissionUseCase>(
       () => _i985.JoinMissionUseCase(gh<_i448.MissionRepository>()),
+    );
+    gh.factory<_i625.ListMyMissionsUseCase>(
+      () => _i625.ListMyMissionsUseCase(gh<_i448.MissionRepository>()),
     );
     gh.factory<_i749.ListAllMissionsUseCase>(
       () => _i749.ListAllMissionsUseCase(gh<_i448.MissionRepository>()),

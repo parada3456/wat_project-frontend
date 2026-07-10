@@ -35,12 +35,25 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
   String _selectedFilter = 'all'; // 'all', 'recommended', or 'personal'
 
   // Calendar states
-  DateTime _currentMonth = DateTime(2026, 5); // Default to May 2026 to match wireframe
+  DateTime _currentMonth = DateTime(
+    2026,
+    5,
+  ); // Default to May 2026 to match wireframe
   DateTime _selectedDate = DateTime(2026, 5, 16);
 
   final List<String> _months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
   final List<String> _weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
@@ -66,6 +79,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
       } else {
         _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
       }
+      _selectedDate = DateTime(_currentMonth.year, _currentMonth.month, 1);
     });
   }
 
@@ -76,6 +90,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
       } else {
         _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
       }
+      _selectedDate = DateTime(_currentMonth.year, _currentMonth.month, 1);
     });
   }
 
@@ -109,35 +124,24 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         child: BlocBuilder<MissionTaskBloc, MissionTaskState>(
           builder: (context, state) {
             final isLoading = state.status is UILoading;
-            
-            if (isLoading && state.missions.isEmpty && state.exploreMissions.isEmpty) {
+
+            if (isLoading &&
+                state.missions.isEmpty &&
+                state.exploreMissions.isEmpty) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColors.primary),
               );
             }
 
-            if (state.status is UILoadFailed && state.missions.isEmpty && state.exploreMissions.isEmpty) {
+            if (state.status is UILoadFailed &&
+                state.missions.isEmpty &&
+                state.exploreMissions.isEmpty) {
               final message = (state.status as UILoadFailed).message;
-              return Center(
-                child: Text(message ?? 'Failed to load missions'),
-              );
-            }
-
-            // Get source list based on active tab
-            final List<MissionModel> sourceList = _selectedTab == 'my_mission'
-                ? state.missions
-                : state.exploreMissions;
-
-            // Apply filter chips
-            List<MissionModel> filteredMissions = sourceList;
-            if (_selectedFilter == 'recommended') {
-              filteredMissions = sourceList.where((m) => m.isMandatory).toList();
-            } else if (_selectedFilter == 'personal') {
-              filteredMissions = sourceList.where((m) => !m.isMandatory).toList();
+              return Center(child: Text(message ?? 'Failed to load missions'));
             }
 
             return _selectedView == 'list'
-                ? _buildListView(filteredMissions, state)
+                ? _buildListView()
                 : _buildCalendarView(state.missions, state);
           },
         ),
@@ -147,7 +151,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               onPressed: () => context.push('/missions/create'),
               backgroundColor: AppColors.surface,
               elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
               icon: const Icon(Icons.add, color: AppColors.textPrimary),
               label: const Text(
                 'Add Mission',
@@ -161,7 +167,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
     );
   }
 
-  Widget _buildListView(List<MissionModel> missions, MissionTaskState state) {
+  Widget _buildListView() {
     final feedType = _selectedTab == 'my_mission'
         ? MissionFeedType.my
         : MissionFeedType.explore;
@@ -171,7 +177,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         // Header controls (tabs + filter + toggle)
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppDimension.space16, vertical: AppDimension.space16),
+            horizontal: AppDimension.space16,
+            vertical: AppDimension.space16,
+          ),
           child: Column(
             children: [
               _buildSegmentedTab(),
@@ -185,29 +193,51 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
           child: MissionCardList(
             key: ValueKey('$_selectedTab-$_selectedFilter'),
             feedType: feedType,
-            pageSize: 15,
+            pageSize: 10,
             padding: const EdgeInsets.symmetric(
-                horizontal: AppDimension.space16, vertical: 8),
+              horizontal: AppDimension.space16,
+              vertical: 8,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCalendarView(List<MissionModel> myMissions, MissionTaskState state) {
+  Widget _buildCalendarView(
+    List<MissionModel> myMissions,
+    MissionTaskState state,
+  ) {
+    // Only show missions with deadlines in the current month on the calendar grid
+    final currentMonthMissions = myMissions.where((m) {
+      final dueDate = m.userMission?.calculatedDueDate;
+      if (dueDate == null) return false;
+      return dueDate.year == _currentMonth.year &&
+          dueDate.month == _currentMonth.month;
+    }).toList();
+
+    // Show missions due on the selected day in the list underneath the calendar
+    final selectedDayMissions = myMissions.where((m) {
+      final dueDate = m.userMission?.calculatedDueDate;
+      if (dueDate == null) return false;
+      return _isSameDay(dueDate, _selectedDate);
+    }).toList();
+
     return Column(
       children: [
         // Header controls
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppDimension.space16, vertical: AppDimension.space16),
+            horizontal: AppDimension.space16,
+            vertical: AppDimension.space16,
+          ),
           child: Column(
             children: [
               _buildSegmentedTab(),
               const SizedBox(height: AppDimension.space16),
               _buildFilterAndToggleRow(),
               const SizedBox(height: 20),
-              _buildCalendarCard(myMissions),
+              _buildCalendarCard(currentMonthMissions),
               const SizedBox(height: 24),
               // Selected date header
               Row(
@@ -223,19 +253,27 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                   ),
                   TextButton.icon(
                     onPressed: () => context.push('/missions/create'),
-                    icon: const Icon(Icons.add, size: 18, color: AppColors.textPrimary),
+                    icon: const Icon(
+                      Icons.add,
+                      size: 18,
+                      color: AppColors.textPrimary,
+                    ),
                     label: const Text(
                       'New Mission',
                       style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     style: TextButton.styleFrom(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       backgroundColor: AppColors.surface,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
                   ),
                 ],
@@ -249,9 +287,13 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
           child: MissionCardList(
             key: ValueKey('calendar-my-${_selectedDate.toIso8601String()}'),
             feedType: MissionFeedType.my,
-            pageSize: 15,
+            pageSize: 10,
+            missions: selectedDayMissions,
+            emptyMessage: 'No missions today',
             padding: const EdgeInsets.symmetric(
-                horizontal: AppDimension.space16, vertical: 8),
+              horizontal: AppDimension.space16,
+              vertical: 8,
+            ),
           ),
         ),
       ],
@@ -277,7 +319,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: _selectedTab == 'my_mission' ? Colors.white : Colors.transparent,
+                  color: _selectedTab == 'my_mission'
+                      ? Colors.white
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: _selectedTab == 'my_mission'
                       ? [
@@ -285,7 +329,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                             color: Colors.black.withOpacity(0.05),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
-                          )
+                          ),
                         ]
                       : [],
                 ),
@@ -294,7 +338,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                   'My mission',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: _selectedTab == 'my_mission' ? Colors.black : Colors.grey[600],
+                    color: _selectedTab == 'my_mission'
+                        ? Colors.black
+                        : Colors.grey[600],
                   ),
                 ),
               ),
@@ -310,7 +356,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: _selectedTab == 'explore' ? Colors.white : Colors.transparent,
+                  color: _selectedTab == 'explore'
+                      ? Colors.white
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: _selectedTab == 'explore'
                       ? [
@@ -318,7 +366,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                             color: Colors.black.withOpacity(0.05),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
-                          )
+                          ),
                         ]
                       : [],
                 ),
@@ -327,7 +375,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                   'Explore',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: _selectedTab == 'explore' ? Colors.black : Colors.grey[600],
+                    color: _selectedTab == 'explore'
+                        ? Colors.black
+                        : Colors.grey[600],
                   ),
                 ),
               ),
@@ -345,15 +395,23 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         // Filter pills
         Row(
           children: [
-            _buildFilterPill('recommended', _selectedFilter == 'recommended', () {
-              setState(() {
-                _selectedFilter = _selectedFilter == 'recommended' ? 'all' : 'recommended';
-              });
-            }),
+            _buildFilterPill(
+              'recommended',
+              _selectedFilter == 'recommended',
+              () {
+                setState(() {
+                  _selectedFilter = _selectedFilter == 'recommended'
+                      ? 'all'
+                      : 'recommended';
+                });
+              },
+            ),
             const SizedBox(width: 8),
             _buildFilterPill('personal', _selectedFilter == 'personal', () {
               setState(() {
-                _selectedFilter = _selectedFilter == 'personal' ? 'all' : 'personal';
+                _selectedFilter = _selectedFilter == 'personal'
+                    ? 'all'
+                    : 'personal';
               });
             }),
           ],
@@ -378,13 +436,17 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: _selectedView == 'list' ? Colors.white : Colors.transparent,
+                    color: _selectedView == 'list'
+                        ? Colors.white
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Icon(
                     Icons.list_alt,
                     size: 20,
-                    color: _selectedView == 'list' ? Colors.black : Colors.grey[600],
+                    color: _selectedView == 'list'
+                        ? Colors.black
+                        : Colors.grey[600],
                   ),
                 ),
               ),
@@ -397,13 +459,17 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: _selectedView == 'calendar' ? Colors.white : Colors.transparent,
+                    color: _selectedView == 'calendar'
+                        ? Colors.white
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Icon(
                     Icons.calendar_month,
                     size: 20,
-                    color: _selectedView == 'calendar' ? Colors.black : Colors.grey[600],
+                    color: _selectedView == 'calendar'
+                        ? Colors.black
+                        : Colors.grey[600],
                   ),
                 ),
               ),
@@ -473,11 +539,17 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.chevron_left, color: AppColors.textPrimary),
+                    icon: const Icon(
+                      Icons.chevron_left,
+                      color: AppColors.textPrimary,
+                    ),
                     onPressed: _prevMonth,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_right, color: AppColors.textPrimary),
+                    icon: const Icon(
+                      Icons.chevron_right,
+                      color: AppColors.textPrimary,
+                    ),
                     onPressed: _nextMonth,
                   ),
                 ],
@@ -490,18 +562,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: _weekdays
-                .map((day) => Expanded(
-                      child: Center(
-                        child: Text(
-                          day,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textSecondary,
-                          ),
+                .map(
+                  (day) => Expanded(
+                    child: Center(
+                      child: Text(
+                        day,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textSecondary,
                         ),
                       ),
-                    ))
+                    ),
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: AppDimension.space12),
@@ -534,12 +608,17 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
     final isSelected = _isSameDay(date, _selectedDate);
 
     // Find missions due on this date
-    final dayMissions = missions.where((m) =>
-        m.userMission?.calculatedDueDate != null &&
-        _isSameDay(m.userMission!.calculatedDueDate, date)).toList();
+    final dayMissions = missions
+        .where(
+          (m) =>
+              m.userMission?.calculatedDueDate != null &&
+              _isSameDay(m.userMission!.calculatedDueDate, date),
+        )
+        .toList();
 
-    final hasOverdue = dayMissions.any((m) =>
-        m.userMission?.status == UserMissionStatus.overdue);
+    final hasOverdue = dayMissions.any(
+      (m) => m.userMission?.status == UserMissionStatus.overdue,
+    );
     final hasActive = dayMissions.isNotEmpty && !hasOverdue;
 
     Color? bgColor;
@@ -575,7 +654,9 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
           '$day',
           style: TextStyle(
             fontSize: 14,
-            fontWeight: (isSelected || dayMissions.isNotEmpty) ? FontWeight.bold : FontWeight.normal,
+            fontWeight: (isSelected || dayMissions.isNotEmpty)
+                ? FontWeight.bold
+                : FontWeight.normal,
             color: textColor,
           ),
         ),
@@ -584,7 +665,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
   }
 
   String _getMonthName(int month) {
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return months[month - 1];
   }
 }

@@ -37,7 +37,7 @@ class CreateMissionRequest {
     this.dueDateType,
     this.fixedDueDate,
     this.relativeTriggerEvent,
-    this.relativeDaysOffset, 
+    this.relativeDaysOffset,
     required this.taskList,
   });
 

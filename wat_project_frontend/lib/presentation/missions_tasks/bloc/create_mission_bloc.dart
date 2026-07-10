@@ -13,7 +13,7 @@ class CreateMissionBloc extends Bloc<CreateMissionEvent, CreateMissionState> {
   final CreateMissionUseCase _createMissionUseCase;
 
   CreateMissionBloc(this._createMissionUseCase)
-      : super(const CreateMissionState()) {
+    : super(const CreateMissionState()) {
     on<CreateMissionSubmitted>(_onCreateMissionSubmitted);
   }
 
@@ -24,13 +24,15 @@ class CreateMissionBloc extends Bloc<CreateMissionEvent, CreateMissionState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _createMissionUseCase(event.request);
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
-      (mission) => emit(state.copyWith(
-        status: const UIStatus.loadSuccess(message: 'MISSION_CREATED'),
-        createdMission: mission,
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (mission) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(message: 'MISSION_CREATED'),
+          createdMission: mission,
+        ),
+      ),
     );
   }
 }

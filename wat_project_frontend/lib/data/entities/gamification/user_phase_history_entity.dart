@@ -27,15 +27,16 @@ class UserPhaseHistoryEntity {
     this.completedAt,
   });
 
-  factory UserPhaseHistoryEntity.fromJson(Map<String, dynamic> json) => _$UserPhaseHistoryEntityFromJson(json);
+  factory UserPhaseHistoryEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserPhaseHistoryEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserPhaseHistoryEntityToJson(this);
 
   UserPhaseHistoryModel toModel() => UserPhaseHistoryModel(
-        historyId: historyId,
-        userId: userId,
-        phaseId: phaseId,
-        phasePointsEarned: phasePointsEarned,
-        enteredAt: enteredAt,
-        completedAt: completedAt,
-      );
+    historyId: historyId,
+    userId: userId,
+    phaseId: phaseId,
+    phasePointsEarned: phasePointsEarned,
+    enteredAt: enteredAt,
+    completedAt: completedAt,
+  );
 }

@@ -22,7 +22,10 @@ class FriendsListPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person_add_outlined, color: AppColors.textPrimary),
+            icon: const Icon(
+              Icons.person_add_outlined,
+              color: AppColors.textPrimary,
+            ),
             onPressed: () {
               // TODO: Navigate to Friend Requests
             },
@@ -45,7 +48,8 @@ class FriendsListPage extends StatelessWidget {
               child: ListView.separated(
                 padding: const EdgeInsets.all(AppDimension.space16),
                 itemCount: 5,
-                separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space8),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppDimension.space8),
                 itemBuilder: (context, index) {
                   return FriendCard(
                     name: 'Friend ${index + 1}',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class NotificationItemTile extends StatelessWidget {
   final String title;
   final String message;
@@ -25,7 +26,9 @@ class NotificationItemTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppDimension.space16),
         decoration: BoxDecoration(
-          color: isRead ? AppColors.background : AppColors.primary.withOpacity(0.05),
+          color: isRead
+              ? AppColors.background
+              : AppColors.primary.withOpacity(0.05),
           borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
         ),
         child: Row(
@@ -51,7 +54,9 @@ class NotificationItemTile extends StatelessWidget {
                         title,
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: isRead ? FontWeight.w600 : FontWeight.w700,
+                          fontWeight: isRead
+                              ? FontWeight.w600
+                              : FontWeight.w700,
                           color: AppColors.textPrimary,
                         ),
                       ),
@@ -69,7 +74,9 @@ class NotificationItemTile extends StatelessWidget {
                     message,
                     style: TextStyle(
                       fontSize: 13,
-                      color: isRead ? AppColors.textSecondary : AppColors.textPrimary,
+                      color: isRead
+                          ? AppColors.textSecondary
+                          : AppColors.textPrimary,
                     ),
                   ),
                 ],
@@ -77,7 +84,10 @@ class NotificationItemTile extends StatelessWidget {
             ),
             if (!isRead)
               Container(
-                margin: const EdgeInsets.only(left: AppDimension.space8, top: AppDimension.space4),
+                margin: const EdgeInsets.only(
+                  left: AppDimension.space8,
+                  top: AppDimension.space4,
+                ),
                 width: 8,
                 height: 8,
                 decoration: const BoxDecoration(

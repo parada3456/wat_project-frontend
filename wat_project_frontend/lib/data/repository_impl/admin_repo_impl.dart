@@ -27,12 +27,19 @@ class AdminRepoImpl implements AdminRepository {
   }
 
   @override
-  Future<UserMissionEntity> verifyMission(String id, bool approved, String? rejectionReason) async {
+  Future<UserMissionEntity> verifyMission(
+    String id,
+    bool approved,
+    String? rejectionReason,
+  ) async {
     final response = await _adminApi.verifyMission(
       id,
-      VerifyMissionRequest(approved: approved, rejectionReason: rejectionReason),
+      VerifyMissionRequest(
+        approved: approved,
+        rejectionReason: rejectionReason,
+      ),
     );
-    
+
     UserMissionStatus status;
     switch (response.status) {
       case 'Completed':
@@ -56,7 +63,9 @@ class AdminRepoImpl implements AdminRepository {
       userId: '',
       missionId: '',
       status: status,
-      verifiedAt: response.verifiedAt != null ? DateTime.parse(response.verifiedAt!) : null,
+      verifiedAt: response.verifiedAt != null
+          ? DateTime.parse(response.verifiedAt!)
+          : null,
       verifiedBy: response.verifiedBy,
       // basePointsEarned: 0,
       // speedBonusPoints: 0,
@@ -74,7 +83,11 @@ class AdminRepoImpl implements AdminRepository {
   }
 
   @override
-  Future<PointsAdjustmentResultEntity> adjustPoints(String id, int pointsDelta, String reason) async {
+  Future<PointsAdjustmentResultEntity> adjustPoints(
+    String id,
+    int pointsDelta,
+    String reason,
+  ) async {
     return _adminApi.adjustPoints(
       id,
       AdjustPointsRequest(pointsDelta: pointsDelta, reason: reason),

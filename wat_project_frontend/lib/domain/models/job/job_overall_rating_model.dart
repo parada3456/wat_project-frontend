@@ -60,18 +60,18 @@ class JobOverallRatingModel {
 
   @override
   int get hashCode => Object.hash(
-        ratingSummaryId,
-        jobId,
-        overallRate,
-        agencyRate,
-        jobRate,
-        coworkersRate,
-        townRate,
-        hoursRate,
-        housingRate,
-        secondJobFeasibilityRate,
-        overtimeAvailabilityRate,
-        reviewCount,
-        updatedAt,
-      );
+    ratingSummaryId,
+    jobId,
+    overallRate,
+    agencyRate,
+    jobRate,
+    coworkersRate,
+    townRate,
+    hoursRate,
+    housingRate,
+    secondJobFeasibilityRate,
+    overtimeAvailabilityRate,
+    reviewCount,
+    updatedAt,
+  );
 }

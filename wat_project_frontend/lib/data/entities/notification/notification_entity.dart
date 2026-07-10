@@ -25,9 +25,9 @@ class NotificationEntity {
     required this.createdAt,
   });
 
-  factory NotificationEntity.fromJson(Map<String, dynamic> json) => _$NotificationEntityFromJson(json);
+  factory NotificationEntity.fromJson(Map<String, dynamic> json) =>
+      _$NotificationEntityFromJson(json);
   Map<String, dynamic> toJson() => _$NotificationEntityToJson(this);
-  
 
   NotificationModel toModel() => NotificationModel(
     notificationId: notificationId,

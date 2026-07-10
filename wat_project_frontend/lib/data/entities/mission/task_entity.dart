@@ -31,7 +31,8 @@ class TaskEntity {
     // required this.updatedAt,
   });
 
-  factory TaskEntity.fromJson(Map<String, dynamic> json) => _$TaskEntityFromJson(json);
+  factory TaskEntity.fromJson(Map<String, dynamic> json) =>
+      _$TaskEntityFromJson(json);
   Map<String, dynamic> toJson() => _$TaskEntityToJson(this);
 
   // TaskModel toModel() => TaskModel(

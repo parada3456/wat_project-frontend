@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/review_stars_row.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class JobReviewCommentCard extends StatelessWidget {
   final String author;
   final String date;

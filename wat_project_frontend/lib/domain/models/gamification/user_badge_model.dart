@@ -17,7 +17,7 @@ class UserBadgeModel {
     required this.userId,
     required this.badgeId,
     this.sourceId,
-    required this.earnedAt, 
+    required this.earnedAt,
     required this.badge,
   });
 
@@ -38,11 +38,6 @@ class UserBadgeModel {
           earnedAt == other.earnedAt;
 
   @override
-  int get hashCode => Object.hash(
-        userBadgeId,
-        userId,
-        badgeId,
-        sourceId,
-        earnedAt,
-      );
+  int get hashCode =>
+      Object.hash(userBadgeId, userId, badgeId, sourceId, earnedAt);
 }

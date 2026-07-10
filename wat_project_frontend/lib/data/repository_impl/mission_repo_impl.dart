@@ -20,7 +20,7 @@ class MissionRepoImpl implements MissionRepository {
 
   @override
   Future<PaginationResponse<MissionEntity>> listMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
   }) async {
     try {
@@ -34,15 +34,16 @@ class MissionRepoImpl implements MissionRepository {
 
   @override
   Future<PaginationResponse<MissionEntity>> listMyMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
+    int? limit,
   }) async {
-    return _api.listMyMissions(page: page, pageSize: pageSize);
+    return _api.listMyMissions(page: page, pageSize: pageSize, limit: limit);
   }
 
   @override
   Future<PaginationResponse<MissionEntity>> listExploreMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
   }) async {
     return _api.listExploreMissions(page: page, pageSize: pageSize);
@@ -74,7 +75,10 @@ class MissionRepoImpl implements MissionRepository {
 
   @override
   Future<void> toggleTask(
-      String userMissionId, String taskId, bool completed) async {
+    String userMissionId,
+    String taskId,
+    bool completed,
+  ) async {
     return _api.toggleTask(
       userMissionId,
       taskId,

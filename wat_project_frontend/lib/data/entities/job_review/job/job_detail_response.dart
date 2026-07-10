@@ -11,12 +11,9 @@ class JobDetailResponse {
   final List<JobHousingEntity> housing;
   final JobOverallRatingEntity? rating;
 
-  JobDetailResponse({
-    required this.job,
-    required this.housing,
-    this.rating,
-  });
+  JobDetailResponse({required this.job, required this.housing, this.rating});
 
-  factory JobDetailResponse.fromJson(Map<String, dynamic> json) => _$JobDetailResponseFromJson(json);
+  factory JobDetailResponse.fromJson(Map<String, dynamic> json) =>
+      _$JobDetailResponseFromJson(json);
   Map<String, dynamic> toJson() => _$JobDetailResponseToJson(this);
 }

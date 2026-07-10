@@ -4,16 +4,10 @@ import 'package:wat_project_frontend/domain/models/auth_models.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
 
-
-class LoginModel{
+class LoginModel {
   final AuthModel auth;
   final UserModel user;
   final ProfileModel profile;
 
-  LoginModel({
-    required this.auth,
-    required this.user, 
-    required this.profile
-  });
-
+  LoginModel({required this.auth, required this.user, required this.profile});
 }

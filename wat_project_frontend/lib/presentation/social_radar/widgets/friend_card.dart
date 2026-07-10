@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class FriendCard extends StatelessWidget {
   final String name;
   final String? avatarUrl;

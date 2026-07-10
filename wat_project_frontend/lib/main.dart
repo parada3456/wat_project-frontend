@@ -7,11 +7,12 @@ import 'package:wat_project_frontend/domain/providers/locale_provider.dart';
 import 'package:wat_project_frontend/domain/providers/theme_provider.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/core/theme/app_theme.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   await getIt<AuthSessionManager>().initialize();
-  
+
   runApp(
     MultiProvider(
       providers: [

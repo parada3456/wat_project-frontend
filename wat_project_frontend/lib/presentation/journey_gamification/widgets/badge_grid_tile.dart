@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class BadgeGridTile extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -34,13 +35,17 @@ class BadgeGridTile extends StatelessWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: isEarned ? AppColors.primary.withOpacity(0.1) : AppColors.surfaceAlt,
+              color: isEarned
+                  ? AppColors.primary.withOpacity(0.1)
+                  : AppColors.surfaceAlt,
               shape: BoxShape.circle,
             ),
             child: Icon(
               icon,
               size: 30,
-              color: isEarned ? AppColors.primary : AppColors.textSecondary.withOpacity(0.5),
+              color: isEarned
+                  ? AppColors.primary
+                  : AppColors.textSecondary.withOpacity(0.5),
             ),
           ),
           const SizedBox(height: AppDimension.space12),

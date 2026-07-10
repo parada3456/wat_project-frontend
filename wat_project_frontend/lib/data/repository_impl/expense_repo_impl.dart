@@ -41,7 +41,9 @@ class ExpenseRepoImpl implements ExpenseRepository {
   }
 
   @override
-  Future<List<ExpenseSplitEntity>> getExpenseSplitsByIds(List<String> ids) async {
+  Future<List<ExpenseSplitEntity>> getExpenseSplitsByIds(
+    List<String> ids,
+  ) async {
     if (ids.isEmpty) return [];
     final response = await _api.getExpenseSplitsByIds(ids.join(','));
     return response.data;

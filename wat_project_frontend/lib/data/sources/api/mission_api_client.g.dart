@@ -21,7 +21,7 @@ class _MissionApiService implements MissionApiService {
 
   @override
   Future<PaginationResponse<MissionEntity>> listMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
   }) async {
     final _extra = <String, dynamic>{};
@@ -29,6 +29,7 @@ class _MissionApiService implements MissionApiService {
       r'page': page,
       r'pageSize': pageSize,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PaginationResponse<MissionEntity>>(
@@ -57,14 +58,17 @@ class _MissionApiService implements MissionApiService {
 
   @override
   Future<PaginationResponse<MissionEntity>> listMyMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
+    int? limit,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'pageSize': pageSize,
+      r'limit': limit,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PaginationResponse<MissionEntity>>(
@@ -93,7 +97,7 @@ class _MissionApiService implements MissionApiService {
 
   @override
   Future<PaginationResponse<MissionEntity>> listExploreMissions({
-    int page = 1,
+    int? page,
     int pageSize = 20,
   }) async {
     final _extra = <String, dynamic>{};
@@ -101,6 +105,7 @@ class _MissionApiService implements MissionApiService {
       r'page': page,
       r'pageSize': pageSize,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PaginationResponse<MissionEntity>>(

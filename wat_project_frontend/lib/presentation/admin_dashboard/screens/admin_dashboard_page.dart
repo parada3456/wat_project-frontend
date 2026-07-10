@@ -8,6 +8,7 @@ import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_das
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_event.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_state.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class AdminDashboardPage extends StatelessWidget {
   const AdminDashboardPage({super.key});
@@ -15,7 +16,8 @@ class AdminDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AdminDashboardBloc>(
-      create: (context) => getIt<AdminDashboardBloc>()..add(const AdminStatsRequested()),
+      create: (context) =>
+          getIt<AdminDashboardBloc>()..add(const AdminStatsRequested()),
       child: const AdminDashboardView(),
     );
   }
@@ -60,7 +62,10 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
       appBar: AppBar(
         title: const Text(
           'Admin Control Panel',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
         ),
         backgroundColor: AppColors.background,
         elevation: 0,
@@ -99,28 +104,56 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
       body: BlocListener<AdminDashboardBloc, AdminDashboardState>(
         listener: (context, state) {
           if (state is AdminDashboardFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.error,
-              ),
+            AppPopup.show<void>(
+              context: context,
+              title: 'Error',
+              message: state.message,
+              type: AppPopupType.error,
+              buttons: [
+                AppPopupButton(
+                  label: 'Dismiss',
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
             );
           } else if (state is AdminDashboardVerifySuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Mission verified successfully!'),
-                backgroundColor: Colors.green,
-              ),
+            AppPopup.show<void>(
+              context: context,
+              title: 'Success',
+              message: 'Mission verified successfully!',
+              type: AppPopupType.success,
+              buttons: [
+                AppPopupButton(
+                  label: 'OK',
+                  isPrimary: true,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.read<AdminDashboardBloc>().add(
+                      const AdminPendingVerificationsRequested(),
+                    );
+                  },
+                ),
+              ],
             );
-            context.read<AdminDashboardBloc>().add(const AdminPendingVerificationsRequested());
           } else if (state is AdminDashboardAdjustPointsSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Points adjusted! Ledger ID: ${state.result.ledgerId}'),
-                backgroundColor: Colors.green,
-              ),
+            AppPopup.show<void>(
+              context: context,
+              title: 'Success',
+              message: 'Points adjusted! Ledger ID: ${state.result.ledgerId}',
+              type: AppPopupType.success,
+              buttons: [
+                AppPopupButton(
+                  label: 'OK',
+                  isPrimary: true,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.read<AdminDashboardBloc>().add(
+                      AdminUsersSearchRequested(_searchController.text),
+                    );
+                  },
+                ),
+              ],
             );
-            context.read<AdminDashboardBloc>().add(AdminUsersSearchRequested(_searchController.text));
           }
         },
         child: BlocBuilder<AdminDashboardBloc, AdminDashboardState>(
@@ -221,7 +254,12 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -303,7 +341,10 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                         color: AppColors.primary.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.assignment, color: AppColors.primary),
+                      child: const Icon(
+                        Icons.assignment,
+                        color: AppColors.primary,
+                      ),
                     ),
                     const SizedBox(width: AppDimension.space12),
                     Expanded(
@@ -342,7 +383,9 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                     padding: const EdgeInsets.all(AppDimension.space12),
                     decoration: BoxDecoration(
                       color: AppColors.backgroundAlt,
-                      borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                      borderRadius: BorderRadius.circular(
+                        AppDimension.radiusSmall,
+                      ),
                     ),
                     child: Text(
                       item.proofUrl!,
@@ -363,7 +406,8 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                         foregroundColor: AppColors.error,
                         side: const BorderSide(color: AppColors.error),
                       ),
-                      onPressed: () => _showRejectionDialog(context, item.userMissionId),
+                      onPressed: () =>
+                          _showRejectionDialog(context, item.userMissionId),
                       child: const Text('Reject'),
                     ),
                     const SizedBox(width: AppDimension.space12),
@@ -374,11 +418,11 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                       ),
                       onPressed: () {
                         context.read<AdminDashboardBloc>().add(
-                              AdminVerifyMissionSubmitted(
-                                userMissionId: item.userMissionId,
-                                approved: true,
-                              ),
-                            );
+                          AdminVerifyMissionSubmitted(
+                            userMissionId: item.userMissionId,
+                            approved: true,
+                          ),
+                        );
                       },
                       child: const Text('Approve'),
                     ),
@@ -406,7 +450,9 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                 icon: const Icon(Icons.clear),
                 onPressed: () {
                   _searchController.clear();
-                  context.read<AdminDashboardBloc>().add(const AdminUsersSearchRequested(''));
+                  context.read<AdminDashboardBloc>().add(
+                    const AdminUsersSearchRequested(''),
+                  );
                 },
               ),
               filled: true,
@@ -417,43 +463,57 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
               ),
             ),
             onSubmitted: (val) {
-              context.read<AdminDashboardBloc>().add(AdminUsersSearchRequested(val));
+              context.read<AdminDashboardBloc>().add(
+                AdminUsersSearchRequested(val),
+              );
             },
           ),
         ),
         Expanded(
           child: list.isEmpty
-              ? const Center(
-                  child: Text('No users found.'),
-                )
+              ? const Center(child: Text('No users found.'))
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimension.space16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimension.space16,
+                  ),
                   itemCount: list.length,
                   itemBuilder: (context, index) {
                     final user = list[index];
                     return Card(
-                      margin: const EdgeInsets.only(bottom: AppDimension.space12),
+                      margin: const EdgeInsets.only(
+                        bottom: AppDimension.space12,
+                      ),
                       color: AppColors.background,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                        borderRadius: BorderRadius.circular(
+                          AppDimension.radiusMedium,
+                        ),
                         side: const BorderSide(color: AppColors.surface),
                       ),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundColor: AppColors.primary.withOpacity(0.1),
                           child: Text(
-                            (user.firstName != null && user.firstName!.trim().isNotEmpty)
+                            (user.firstName != null &&
+                                    user.firstName!.trim().isNotEmpty)
                                 ? user.firstName!.trim()[0].toUpperCase()
                                 : 'U',
-                            style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        title: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'),
+                        title: Text(
+                          '${user.firstName ?? ''} ${user.lastName ?? ''}',
+                        ),
                         subtitle: Text(user.email),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () {
-                          context.read<AdminDashboardBloc>().add(AdminUserDetailRequested(user.id));
+                          context.read<AdminDashboardBloc>().add(
+                            AdminUserDetailRequested(user.id),
+                          );
                         },
                       ),
                     );
@@ -475,7 +535,9 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
               IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  context.read<AdminDashboardBloc>().add(AdminUsersSearchRequested(_searchController.text));
+                  context.read<AdminDashboardBloc>().add(
+                    AdminUsersSearchRequested(_searchController.text),
+                  );
                 },
               ),
               const Text(
@@ -499,11 +561,23 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                 children: [
                   _buildDetailRow('User ID', user.id),
                   _buildDetailRow('Email', user.email),
-                  _buildDetailRow('First Name', user.firstName ?? 'Not provided'),
+                  _buildDetailRow(
+                    'First Name',
+                    user.firstName ?? 'Not provided',
+                  ),
                   _buildDetailRow('Last Name', user.lastName ?? 'Not provided'),
-                  _buildDetailRow('Current Phase ID', user.currentPhaseId ?? 'No active phase'),
-                  _buildDetailRow('Lifetime Points', '${user.totalLifetimePoints}'),
-                  _buildDetailRow('Current Phase Points', '${user.currentPhasePoints}'),
+                  _buildDetailRow(
+                    'Current Phase ID',
+                    user.currentPhaseId ?? 'No active phase',
+                  ),
+                  _buildDetailRow(
+                    'Lifetime Points',
+                    '${user.totalLifetimePoints}',
+                  ),
+                  _buildDetailRow(
+                    'Current Phase Points',
+                    '${user.currentPhasePoints}',
+                  ),
                   _buildDetailRow('Streak Count', '${user.missionStreak}'),
                 ],
               ),
@@ -518,7 +592,9 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                 foregroundColor: AppColors.onPrimary,
                 padding: const EdgeInsets.all(AppDimension.space16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                  borderRadius: BorderRadius.circular(
+                    AppDimension.radiusMedium,
+                  ),
                 ),
               ),
               onPressed: () => _showPointsAdjustmentDialog(context, user.id),
@@ -552,9 +628,7 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-              ),
+              style: const TextStyle(color: AppColors.textPrimary),
             ),
           ),
         ],
@@ -590,12 +664,12 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
             onPressed: () {
               final reason = reasonController.text.trim();
               context.read<AdminDashboardBloc>().add(
-                    AdminVerifyMissionSubmitted(
-                      userMissionId: userMissionId,
-                      approved: false,
-                      reason: reason.isEmpty ? null : reason,
-                    ),
-                  );
+                AdminVerifyMissionSubmitted(
+                  userMissionId: userMissionId,
+                  approved: false,
+                  reason: reason.isEmpty ? null : reason,
+                ),
+              );
               Navigator.pop(diagContext);
             },
           ),
@@ -620,14 +694,18 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
             children: [
               TextFormField(
                 controller: deltaController,
-                keyboardType: const TextInputType.numberWithOptions(signed: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
+                ),
                 decoration: const InputDecoration(
                   labelText: 'Points Delta (e.g. +50 or -20)',
                   border: OutlineInputBorder(),
                 ),
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'Delta points required';
-                  if (int.tryParse(val) == null) return 'Must be a valid integer';
+                  if (val == null || val.isEmpty)
+                    return 'Delta points required';
+                  if (int.tryParse(val) == null)
+                    return 'Must be a valid integer';
                   return null;
                 },
               ),
@@ -639,7 +717,8 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                   border: OutlineInputBorder(),
                 ),
                 validator: (val) {
-                  if (val == null || val.trim().isEmpty) return 'Reason is required';
+                  if (val == null || val.trim().isEmpty)
+                    return 'Reason is required';
                   return null;
                 },
               ),
@@ -662,12 +741,12 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
                 final delta = int.parse(deltaController.text);
                 final reason = reasonController.text.trim();
                 context.read<AdminDashboardBloc>().add(
-                      AdminAdjustPointsSubmitted(
-                        userId: userId,
-                        pointsDelta: delta,
-                        reason: reason,
-                      ),
-                    );
+                  AdminAdjustPointsSubmitted(
+                    userId: userId,
+                    pointsDelta: delta,
+                    reason: reason,
+                  ),
+                );
                 Navigator.pop(diagContext);
               }
             },

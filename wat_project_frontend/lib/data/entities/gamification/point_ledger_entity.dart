@@ -34,18 +34,18 @@ class PointLedgerEntity {
     required this.createdAt,
   });
 
-  factory PointLedgerEntity.fromJson(Map<String, dynamic> json) => _$PointLedgerEntityFromJson(json);
+  factory PointLedgerEntity.fromJson(Map<String, dynamic> json) =>  _$PointLedgerEntityFromJson(json);
   Map<String, dynamic> toJson() => _$PointLedgerEntityToJson(this);
 
   PointLedgerModel toModel() => PointLedgerModel(
-        ledgerId: ledgerId,
-        userId: userId,
-        sourceType: sourceType,
-        sourceId: sourceId,
-        delta: delta,
-        lifetimeBalanceAfter: lifetimeBalanceAfter,
-        phaseBalanceAfter: phaseBalanceAfter,
-        note: note,
-        createdAt: createdAt,
-      );
+    ledgerId: ledgerId,
+    userId: userId,
+    sourceType: sourceType,
+    sourceId: sourceId,
+    delta: delta,
+    lifetimeBalanceAfter: lifetimeBalanceAfter,
+    phaseBalanceAfter: phaseBalanceAfter,
+    note: note,
+    createdAt: createdAt,
+  );
 }

@@ -29,11 +29,11 @@ class JourneyPhaseModel {
 
   @override
   int get hashCode => Object.hash(
-        phaseId,
-        phaseNumber,
-        title,
-        description,
-        createdAt,
-        updatedAt,
-      );
+    phaseId,
+    phaseNumber,
+    title,
+    description,
+    createdAt,
+    updatedAt,
+  );
 }

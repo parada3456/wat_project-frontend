@@ -28,12 +28,6 @@ class UserJobModel {
           endDate == other.endDate;
 
   @override
-  int get hashCode => Object.hash(
-        userId,
-        jobId,
-        assignedAt,
-        isMain,
-        startDate,
-        endDate,
-      );
+  int get hashCode =>
+      Object.hash(userId, jobId, assignedAt, isMain, startDate, endDate);
 }

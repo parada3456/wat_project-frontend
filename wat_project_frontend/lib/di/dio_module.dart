@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:wat_project_frontend/domain/services/auth_interceptor.dart';import 'package:wat_project_frontend/domain/services/auth_manager.dart';
+import 'package:wat_project_frontend/domain/services/auth_interceptor.dart';
+import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/data/sources/api/interceptors/error_interceptor.dart';
 
 String get _baseUrl {

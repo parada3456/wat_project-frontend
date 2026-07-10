@@ -26,15 +26,16 @@ class UserCartEntity {
     required this.updatedAt,
   });
 
-  factory UserCartEntity.fromJson(Map<String, dynamic> json) => _$UserCartEntityFromJson(json);
+  factory UserCartEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserCartEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserCartEntityToJson(this);
 
   UserCartModel toModel() => UserCartModel(
-        cartId: cartId,
-        userId: userId,
-        jobId: jobId,
-        status: status,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+    cartId: cartId,
+    userId: userId,
+    jobId: jobId,
+    status: status,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 
-
 @injectable
 class DeleteAccountUseCase {
   final UserRepository _repository;

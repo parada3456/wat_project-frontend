@@ -5,10 +5,7 @@ import 'package:wat_project_frontend/utils/theme_constants.dart';
 class MissionCalendar extends StatelessWidget {
   final List<MissionModel> missions;
 
-  const MissionCalendar({
-    super.key,
-    required this.missions,
-  });
+  const MissionCalendar({super.key, required this.missions});
 
   @override
   Widget build(BuildContext context) {
@@ -64,25 +61,35 @@ class MissionCalendar extends StatelessWidget {
             itemCount: 30,
             itemBuilder: (context, index) {
               final day = index + 1;
-              final isDeadline = missions.any((m) =>
-                  m.userMission?.calculatedDueDate != null &&
-                  m.userMission!.calculatedDueDate!.day == day &&
-                  m.userMission!.calculatedDueDate!.month == 6 &&
-                  m.userMission!.calculatedDueDate!.year == 2026);
+              final isDeadline = missions.any(
+                (m) =>
+                    m.userMission?.calculatedDueDate != null &&
+                    m.userMission!.calculatedDueDate!.day == day &&
+                    m.userMission!.calculatedDueDate!.month == 6 &&
+                    m.userMission!.calculatedDueDate!.year == 2026,
+              );
 
               return Container(
                 decoration: BoxDecoration(
-                  color: isDeadline ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+                  color: isDeadline
+                      ? AppColors.primary.withOpacity(0.1)
+                      : Colors.transparent,
                   shape: BoxShape.circle,
-                  border: isDeadline ? Border.all(color: AppColors.primary) : null,
+                  border: isDeadline
+                      ? Border.all(color: AppColors.primary)
+                      : null,
                 ),
                 child: Center(
                   child: Text(
                     '$day',
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: isDeadline ? FontWeight.w700 : FontWeight.w400,
-                      color: isDeadline ? AppColors.primary : AppColors.textPrimary,
+                      fontWeight: isDeadline
+                          ? FontWeight.w700
+                          : FontWeight.w400,
+                      color: isDeadline
+                          ? AppColors.primary
+                          : AppColors.textPrimary,
                     ),
                   ),
                 ),

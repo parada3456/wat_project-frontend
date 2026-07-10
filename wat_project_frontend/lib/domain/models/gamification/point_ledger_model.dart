@@ -63,14 +63,14 @@ class PointLedgerModel {
 
   @override
   int get hashCode => Object.hash(
-        ledgerId,
-        userId,
-        sourceType,
-        sourceId,
-        delta,
-        lifetimeBalanceAfter,
-        phaseBalanceAfter,
-        note,
-        createdAt,
-      );
+    ledgerId,
+    userId,
+    sourceType,
+    sourceId,
+    delta,
+    lifetimeBalanceAfter,
+    phaseBalanceAfter,
+    note,
+    createdAt,
+  );
 }

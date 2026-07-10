@@ -34,13 +34,12 @@ class GetHomeDataUseCase {
           .toList();
 
       print("start list user mission fetch");
-      // listMyMissions now returns PaginationResponse — we only need page 1
-      // for the home screen summary (a small set of active missions).
       final myMissionsResponse = await _missionRepository.listMyMissions(
-        page: 1,
-        pageSize: 50, // fetch enough to cover all active missions on home
+        pageSize: 3,
+        limit: 3,
       );
       final userMissionEntities = myMissionsResponse.data;
+      final misionModels = userMissionEntities.map((e) => e.toModel()).toList();
       print("finish list user mission fetch");
 
       // Find current phase matching user's currentPhaseId
@@ -60,31 +59,33 @@ class GetHomeDataUseCase {
       );
 
       // Concurrently fetch details for each user mission
-      final detailsList = await Future.wait(
-        userMissionEntities.map((um) async {
-          try {
-            final missionEntity =
-                await _missionRepository.getMissionDetail(um.missionId);
-            return missionEntity.toModel();
-          } catch (_) {
-            return null;
-          }
-        }),
-      );
+      // final detailsList = await Future.wait(
+      //   userMissionEntities.map((um) async {
+      //     try {
+      //       final missionEntity =
+      //           await _missionRepository.getMissionDetail(um.missionId);
+      //       return missionEntity.toModel();
+      //     } catch (_) {
+      //       return null;
+      //     }
+      //   }),
+      // );
       print("finish task fetch");
 
-      final phaseMissions = detailsList
-          .whereType<MissionModel>()
-          .where((d) => d.phaseId == currentPhase.phaseId)
-          .toList();
+      // final phaseMissions = detailsList
+      //     .whereType<MissionModel>()
+      //     .where((d) => d.phaseId == currentPhase.phaseId)
+      //     .toList();
 
-      return Right(HomeData(
-        user: userModel,
-        currentPhase: currentPhase,
-        allPhases: phases,
-        phaseMissions: phaseMissions,
-        isMock: false,
-      ));
+      return Right(
+        HomeData(
+          user: userModel,
+          currentPhase: currentPhase,
+          allPhases: phases,
+          phaseMissions: misionModels,
+          isMock: false,
+        ),
+      );
     } catch (e) {
       print("error occured: $e");
       return Left(mapExceptionToFailure(e));
