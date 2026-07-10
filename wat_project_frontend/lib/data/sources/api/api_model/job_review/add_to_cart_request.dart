@@ -7,10 +7,9 @@ class AddToCartRequest {
   @JsonKey(name: 'job_id')
   final String jobId;
 
-  AddToCartRequest({
-    required this.jobId,
-  });
+  AddToCartRequest({required this.jobId});
 
-  factory AddToCartRequest.fromJson(Map<String, dynamic> json) => _$AddToCartRequestFromJson(json);
+  factory AddToCartRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddToCartRequestFromJson(json);
   Map<String, dynamic> toJson() => _$AddToCartRequestToJson(this);
 }

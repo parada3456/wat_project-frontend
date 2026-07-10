@@ -9,7 +9,8 @@ import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
 
-class ExpenseSharingBloc extends Bloc<ExpenseSharingEvent, ExpenseSharingState> {
+class ExpenseSharingBloc
+    extends Bloc<ExpenseSharingEvent, ExpenseSharingState> {
   final ListExpensesUseCase _listExpensesUseCase;
   final CreateExpenseUseCase _createExpenseUseCase;
   final GetExpenseDetailUseCase _getExpenseDetailUseCase;

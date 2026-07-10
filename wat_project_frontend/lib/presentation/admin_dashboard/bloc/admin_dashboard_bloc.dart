@@ -8,7 +8,8 @@ import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_event.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_state.dart';
 
-class AdminDashboardBloc extends Bloc<AdminDashboardEvent, AdminDashboardState> {
+class AdminDashboardBloc
+    extends Bloc<AdminDashboardEvent, AdminDashboardState> {
   final GetAdminStatsUseCase _getAdminStatsUseCase;
   final ListPendingVerificationsUseCase _listPendingVerificationsUseCase;
   final VerifyAdminMissionUseCase _verifyAdminMissionUseCase;
@@ -52,7 +53,8 @@ class AdminDashboardBloc extends Bloc<AdminDashboardEvent, AdminDashboardState> 
     final result = await _listPendingVerificationsUseCase();
     result.fold(
       (failure) => emit(AdminDashboardFailure(failure.message)),
-      (verifications) => emit(AdminDashboardPendingVerificationsSuccess(verifications)),
+      (verifications) =>
+          emit(AdminDashboardPendingVerificationsSuccess(verifications)),
     );
   }
 

@@ -49,11 +49,14 @@ void main() {
       }
       ''';
 
-      final Map<String, dynamic> jsonMap = jsonDecode(mockJsonString) as Map<String, dynamic>;
-      
+      final Map<String, dynamic> jsonMap =
+          jsonDecode(mockJsonString) as Map<String, dynamic>;
+
       try {
         final profile = UserProfileEntity.fromJson(jsonMap);
-        print('Successfully parsed! User Account ID: ${profile.userAccount.userId}');
+        print(
+          'Successfully parsed! User Account ID: ${profile.userAccount.userId}',
+        );
       } catch (e, stack) {
         print('Parsing failed: $e');
         print('Stack trace: $stack');
@@ -120,8 +123,9 @@ void main() {
       }
       ''';
 
-      final Map<String, dynamic> jsonMap = jsonDecode(mockJsonString) as Map<String, dynamic>;
-      
+      final Map<String, dynamic> jsonMap =
+          jsonDecode(mockJsonString) as Map<String, dynamic>;
+
       try {
         final paginatedBadges = PaginationResponse<UserBadgeEntity>.fromJson(
           jsonMap,
@@ -130,7 +134,9 @@ void main() {
         expect(paginatedBadges.data.length, equals(3));
         expect(paginatedBadges.data[0].userBadgeId, equals('ubg_ali_1'));
         expect(paginatedBadges.data[0].badge.title, equals('Early Bird'));
-        print('Successfully parsed UserBadges! Count: ${paginatedBadges.data.length}');
+        print(
+          'Successfully parsed UserBadges! Count: ${paginatedBadges.data.length}',
+        );
       } catch (e, stack) {
         print('Parsing UserBadges failed: $e');
         print('Stack trace: $stack');

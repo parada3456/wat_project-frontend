@@ -5,17 +5,14 @@ import 'package:wat_project_frontend/presentation/navigation/widgets/custom_bott
 class MainShellPage extends StatelessWidget {
   final Widget child;
 
-  const MainShellPage({
-    super.key,
-    required this.child,
-  });
+  const MainShellPage({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     // Determine the current index based on the active path
     final String location = GoRouterState.of(context).matchedLocation;
     int currentIndex = 0;
-    
+
     if (location.startsWith('/expenses')) {
       currentIndex = 1;
     } else if (location.startsWith('/jobs')) {
@@ -30,7 +27,7 @@ class MainShellPage extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: (index) {
           if (index == currentIndex) return; // Prevent redundant routing
-          
+
           switch (index) {
             case 0:
               context.go('/home');

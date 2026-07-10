@@ -51,15 +51,15 @@ class JobHousingModel {
 
   @override
   int get hashCode => Object.hash(
-        housingId,
-        jobId,
-        description,
-        weeklyRate,
-        deposit,
-        transportation,
-        rangeMinStartDate,
-        rangeMaxStartDate,
-        createdAt,
-        updatedAt,
-      );
+    housingId,
+    jobId,
+    description,
+    weeklyRate,
+    deposit,
+    transportation,
+    rangeMinStartDate,
+    rangeMaxStartDate,
+    createdAt,
+    updatedAt,
+  );
 }

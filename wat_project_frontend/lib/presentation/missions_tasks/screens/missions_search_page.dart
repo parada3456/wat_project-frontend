@@ -15,7 +15,8 @@ class MissionsSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MissionTaskBloc>(
-      create: (context) => getIt<MissionTaskBloc>()..add(const MissionsTasksListRequested()),
+      create: (context) =>
+          getIt<MissionTaskBloc>()..add(const MissionsTasksListRequested()),
       child: const MissionsSearchView(),
     );
   }
@@ -78,25 +79,26 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
 
             if (state.status is UILoadFailed) {
               final message = (state.status as UILoadFailed).message;
-              return Center(
-                child: Text(message ?? 'Failed to load missions'),
-              );
+              return Center(child: Text(message ?? 'Failed to load missions'));
             }
 
             // Filter missions locally based on search text and selected filter
             final query = _searchController.text.trim().toLowerCase();
             final filteredMissions = state.missions.where((dm) {
-              final matchesQuery = query.isEmpty ||
-                  dm.mission.title.toLowerCase().contains(query) ||
-                  (dm.mission.description?.toLowerCase().contains(query) ?? false);
+              final matchesQuery =
+                  query.isEmpty ||
+                  dm.title.toLowerCase().contains(query) ||
+                  (dm.description?.toLowerCase().contains(query) ?? false);
 
               bool matchesFilter = true;
               if (_selectedFilter == 'Mandatory') {
-                matchesFilter = dm.mission.isMandatory;
+                matchesFilter = dm.isMandatory;
               } else if (_selectedFilter == 'Completed') {
-                matchesFilter = dm.userMission.status == UserMissionStatus.completed;
+                matchesFilter =
+                    dm.userMission?.status == UserMissionStatus.completed;
               } else if (_selectedFilter == 'Overdue') {
-                matchesFilter = dm.userMission.status == UserMissionStatus.overdue;
+                matchesFilter =
+                    dm.userMission?.status == UserMissionStatus.overdue;
               }
 
               return matchesQuery && matchesFilter;
@@ -113,7 +115,10 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                         label: 'Search',
                         hint: 'Search missions...',
                         controller: _searchController,
-                        suffixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                        suffixIcon: const Icon(
+                          Icons.search,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                       const SizedBox(height: AppDimension.space16),
                       SizedBox(
@@ -121,7 +126,8 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: _filters.length,
-                          separatorBuilder: (context, index) => const SizedBox(width: AppDimension.space8),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: AppDimension.space8),
                           itemBuilder: (context, index) {
                             final filter = _filters[index];
                             final isSelected = _selectedFilter == filter;
@@ -132,17 +138,27 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space16),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppDimension.space16,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: isSelected ? AppColors.primary : AppColors.surfaceAlt,
-                                  borderRadius: BorderRadius.circular(AppDimension.radiusExtraLarge),
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.surfaceAlt,
+                                  borderRadius: BorderRadius.circular(
+                                    AppDimension.radiusExtraLarge,
+                                  ),
                                 ),
                                 child: Center(
                                   child: Text(
                                     filter,
                                     style: TextStyle(
-                                      color: isSelected ? AppColors.white : AppColors.textSecondary,
-                                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                                      color: isSelected
+                                          ? AppColors.white
+                                          : AppColors.textSecondary,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w700
+                                          : FontWeight.w400,
                                     ),
                                   ),
                                 ),
@@ -157,7 +173,9 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
-                      context.read<MissionTaskBloc>().add(const MissionsTasksListRequested());
+                      context.read<MissionTaskBloc>().add(
+                        const MissionsTasksListRequested(),
+                      );
                     },
                     child: filteredMissions.isEmpty
                         ? const Center(
@@ -167,27 +185,20 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                             physics: const AlwaysScrollableScrollPhysics(),
                             padding: const EdgeInsets.all(AppDimension.space16),
                             itemCount: filteredMissions.length,
-                            separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space16),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: AppDimension.space16),
                             itemBuilder: (context, index) {
                               final dm = filteredMissions[index];
-                              final totalTasks = dm.tasks.length;
-                              final completedTasks = dm.userTasks.where((t) => t.isCompleted).length;
-                              final progress = totalTasks > 0 ? completedTasks / totalTasks : 0.0;
-                              
-                              final deadlineString = dm.userMission.calculatedDueDate != null
-                                  ? '${dm.userMission.calculatedDueDate!.day} ${_getMonthName(dm.userMission.calculatedDueDate!.month)}'
-                                  : 'Soon';
 
                               return InkWell(
-                                onTap: () => context.push('/missions/detail', extra: dm.userMission.userMissionId),
-                                borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-                                child: MissionCard(
-                                  title: dm.mission.title,
-                                  deadline: deadlineString,
-                                  bonusPoints: dm.mission.basePoints,
-                                  isMandatory: dm.mission.isMandatory,
-                                  progress: progress,
+                                onTap: () => context.push(
+                                  '/missions/detail',
+                                  extra: dm.missionId,
                                 ),
+                                borderRadius: BorderRadius.circular(
+                                  AppDimension.radiusMedium,
+                                ),
+                                child: MissionCard(mission: dm),
                               );
                             },
                           ),
@@ -199,10 +210,5 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
         ),
       ),
     );
-  }
-
-  String _getMonthName(int month) {
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return months[month - 1];
   }
 }

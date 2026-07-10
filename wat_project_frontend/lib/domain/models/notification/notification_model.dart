@@ -38,12 +38,6 @@ class NotificationModel {
           createdAt == other.createdAt;
 
   @override
-  int get hashCode => Object.hash(
-        notificationId,
-        userId,
-        title,
-        body,
-        isRead,
-        createdAt,
-      );
+  int get hashCode =>
+      Object.hash(notificationId, userId, title, body, isRead, createdAt);
 }

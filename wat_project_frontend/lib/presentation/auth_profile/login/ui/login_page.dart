@@ -9,10 +9,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<LoginBloc>(),
-      child: LoginView(),
-    );
+    return BlocProvider(create: (_) => getIt<LoginBloc>(), child: LoginView());
   }
-
 }

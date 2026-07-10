@@ -1,4 +1,3 @@
-
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/edit_profile_page.dart';
@@ -58,10 +57,7 @@ class AppRouter {
       //   path: '/home',
       //   builder: (context, state) => const HomePage(),
       // ),
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginPage(),
-      ),
+      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       // GoRoute(
       //   path: '/register',
       //   builder: (context, state) => const RegisterPage(),
@@ -75,10 +71,7 @@ class AppRouter {
           return MainShellPage(child: child);
         },
         routes: [
-          GoRoute(
-            path: '/home',
-            builder: (context, state) => const HomePage(),
-          ),
+          GoRoute(path: '/home', builder: (context, state) => const HomePage()),
           GoRoute(
             path: '/expenses',
             builder: (context, state) => const ExpenseHistoryPage(),
@@ -136,10 +129,7 @@ class AppRouter {
         path: '/leaderboard',
         builder: (context, state) => const LeaderboardPage(),
       ),
-      GoRoute(
-        path: '/badges',
-        builder: (context, state) => const BadgesPage(),
-      ),
+      GoRoute(path: '/badges', builder: (context, state) => const BadgesPage()),
       GoRoute(
         path: '/credit-history',
         builder: (context, state) => const CreditHistoryPage(),

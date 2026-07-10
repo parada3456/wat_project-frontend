@@ -15,8 +15,10 @@ class LoginEvent with _$LoginEvent {
   const factory LoginEvent.forgotPasswordSubmitted(String email) =
       ForgotPasswordSubmittedEvent;
 
-  const factory LoginEvent.resetPasswordSubmitted(String token, String newPassword) =
-      ResetPasswordSubmittedEvent;
+  const factory LoginEvent.resetPasswordSubmitted(
+    String token,
+    String newPassword,
+  ) = ResetPasswordSubmittedEvent;
 
   const factory LoginEvent.logoutRequested() = LogoutRequestedEvent;
 }

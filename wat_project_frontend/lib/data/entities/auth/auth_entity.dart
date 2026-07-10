@@ -12,7 +12,7 @@ class AuthEntity {
   @JsonKey(name: 'token_type')
   final String tokenType;
   @JsonKey(name: 'ExpiresAt')
-  final DateTime expiresAt; 
+  final DateTime expiresAt;
 
   AuthEntity({
     required this.token,

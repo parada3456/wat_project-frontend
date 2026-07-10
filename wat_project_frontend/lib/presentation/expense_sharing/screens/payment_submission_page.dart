@@ -48,10 +48,7 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
               const SizedBox(height: AppDimension.space8),
               const Text(
                 'Please upload a screenshot of your bank transfer receipt.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                ),
+                style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
               ),
               const SizedBox(height: AppDimension.space32),
               GestureDetector(
@@ -63,13 +60,23 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
                   height: 200,
                   decoration: BoxDecoration(
                     color: AppColors.surfaceAlt,
-                    borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-                    border: Border.all(color: AppColors.surface, width: 2, style: BorderStyle.none), // Dash border would be better but requires custom painter
+                    borderRadius: BorderRadius.circular(
+                      AppDimension.radiusMedium,
+                    ),
+                    border: Border.all(
+                      color: AppColors.surface,
+                      width: 2,
+                      style: BorderStyle.none,
+                    ), // Dash border would be better but requires custom painter
                   ),
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.cloud_upload_outlined, size: 48, color: AppColors.primary),
+                      Icon(
+                        Icons.cloud_upload_outlined,
+                        size: 48,
+                        color: AppColors.primary,
+                      ),
                       SizedBox(height: AppDimension.space16),
                       Text(
                         'Tap to select image',
@@ -95,16 +102,28 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Paying to:', style: TextStyle(color: AppColors.textSecondary)),
-                  Text('Alex Smith', style: TextStyle(fontWeight: FontWeight.w600)),
+                  Text(
+                    'Paying to:',
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
+                  Text(
+                    'Alex Smith',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ],
               ),
               const SizedBox(height: AppDimension.space8),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Amount:', style: TextStyle(color: AppColors.textSecondary)),
-                  Text('\$28.40', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+                  Text(
+                    'Amount:',
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
+                  Text(
+                    '\$28.40',
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                  ),
                 ],
               ),
               const SizedBox(height: AppDimension.space50),

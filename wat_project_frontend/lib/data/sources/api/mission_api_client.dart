@@ -17,31 +17,45 @@ abstract class MissionApiService {
   factory MissionApiService(Dio dio, {String baseUrl}) = _MissionApiService;
 
   @GET('missions')
-  Future<PaginationResponse<MissionEntity>> listMissions();
+  Future<PaginationResponse<MissionEntity>> listMissions({
+    @Query('page') int? page,
+    @Query('pageSize') int pageSize = 20,
+  });
 
   @GET('user-missions')
-  Future<PaginationResponse<UserMissionEntity>> listUserMissions();
+  Future<PaginationResponse<MissionEntity>> listMyMissions({
+    @Query('page') int? page,
+    @Query('pageSize') int pageSize = 20,
+    @Query('limit') int? limit,
+  });
 
   @GET('missions/explore')
-  Future<PaginationResponse<MissionEntity>> listExploreMissions();
+  Future<PaginationResponse<MissionEntity>> listExploreMissions({
+    @Query('page') int? page,
+    @Query('pageSize') int pageSize = 20,
+  });
 
   @GET('user-missions/{id}')
-  Future<MissionDetailResponse> getMissionDetail(@Path('id') String id);
+  Future<MissionEntity> getMissionDetail(@Path('id') String id);
 
   @GET('tasks')
-  Future<PaginationResponse<TaskEntity>> getTasksByIds(@Query('ids') String ids);
+  Future<PaginationResponse<TaskEntity>> getTasksByIds(
+    @Query('ids') String ids,
+  );
 
   @GET('user-tasks')
-  Future<PaginationResponse<UserTaskEntity>> getUserTasksByIds(@Query('ids') String ids);
+  Future<PaginationResponse<UserTaskEntity>> getUserTasksByIds(
+    @Query('ids') String ids,
+  );
 
   @POST('user-missions')
-  Future<UserMissionEntity> joinMission(@Body() JoinMissionRequest request);
+  Future<MissionEntity> joinMission(@Body() JoinMissionRequest request);
 
   @POST('user-missions/{id}/proof')
   @MultiPart()
   Future<void> submitProof(
     @Path('id') String id,
-    @Part(name: 'proof') File file,
+    @Part(name: 'proof') File? file,
   );
 
   @PATCH('user-missions/{id}/tasks/{taskId}')

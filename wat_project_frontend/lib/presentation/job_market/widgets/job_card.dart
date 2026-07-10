@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class JobCard extends StatelessWidget {
   final String title;
   final String company;
@@ -89,7 +90,11 @@ class JobCard extends StatelessWidget {
           const SizedBox(height: AppDimension.space16),
           Row(
             children: [
-              const Icon(Icons.location_on_outlined, size: 16, color: AppColors.textSecondary),
+              const Icon(
+                Icons.location_on_outlined,
+                size: 16,
+                color: AppColors.textSecondary,
+              ),
               const SizedBox(width: 4),
               Text(
                 location,

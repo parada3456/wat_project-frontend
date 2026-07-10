@@ -39,12 +39,6 @@ class FriendshipModel {
           updatedAt == other.updatedAt;
 
   @override
-  int get hashCode => Object.hash(
-        friendshipId,
-        userId1,
-        userId2,
-        status,
-        createdAt,
-        updatedAt,
-      );
+  int get hashCode =>
+      Object.hash(friendshipId, userId1, userId2, status, createdAt, updatedAt);
 }

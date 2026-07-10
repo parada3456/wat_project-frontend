@@ -70,15 +70,15 @@ class ExpenseSplitModel {
 
   @override
   int get hashCode => Object.hash(
-        splitId,
-        transactionId,
-        userId,
-        oweAmount,
-        paymentStatus,
-        paymentMethod,
-        payslipUrl,
-        approvalStatus,
-        settledAt,
-        updatedAt,
-      );
+    splitId,
+    transactionId,
+    userId,
+    oweAmount,
+    paymentStatus,
+    paymentMethod,
+    payslipUrl,
+    approvalStatus,
+    settledAt,
+    updatedAt,
+  );
 }

@@ -29,11 +29,11 @@ class BadgeEntity {
   Map<String, dynamic> toJson() => _$BadgeEntityToJson(this);
 
   BadgeModel toModel() => BadgeModel(
-        badgeId: badgeId,
-        title: title,
-        description: description,
-        triggerType: triggerType,
-        iconUrl: iconUrl,
-        createdAt: createdAt,
-      );
+    badgeId: badgeId,
+    title: title,
+    description: description,
+    triggerType: triggerType,
+    iconUrl: iconUrl,
+    createdAt: createdAt,
+  );
 }

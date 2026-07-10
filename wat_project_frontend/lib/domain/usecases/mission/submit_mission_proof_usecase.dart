@@ -10,7 +10,7 @@ class SubmitMissionProofUseCase {
 
   SubmitMissionProofUseCase(this._repository);
 
-  Future<Either<Failure, void>> call(String missionId, File file) async {
+  Future<Either<Failure, void>> call(String missionId, File? file) async {
     try {
       await _repository.submitProof(missionId, file);
       return const Right(null);

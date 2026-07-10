@@ -29,7 +29,11 @@ class RadarMapPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.map_outlined, size: 80, color: AppColors.secondary),
+                  const Icon(
+                    Icons.map_outlined,
+                    size: 80,
+                    color: AppColors.secondary,
+                  ),
                   const SizedBox(height: AppDimension.space16),
                   const Text(
                     'Map View Integration Needed',

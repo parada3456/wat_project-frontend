@@ -6,10 +6,9 @@ part 'update_cart_status_request.g.dart';
 class UpdateCartStatusRequest {
   final String status;
 
-  UpdateCartStatusRequest({
-    required this.status,
-  });
+  UpdateCartStatusRequest({required this.status});
 
-  factory UpdateCartStatusRequest.fromJson(Map<String, dynamic> json) => _$UpdateCartStatusRequestFromJson(json);
+  factory UpdateCartStatusRequest.fromJson(Map<String, dynamic> json) =>
+      _$UpdateCartStatusRequestFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateCartStatusRequestToJson(this);
 }

@@ -11,7 +11,11 @@ class MediaRepoImpl implements MediaRepository {
   MediaRepoImpl(this._api);
 
   @override
-  Future<UploadMediaResponse> uploadMedia(File file, {String? bucket, String? key}) {
+  Future<UploadMediaResponse> uploadMedia(
+    File file, {
+    String? bucket,
+    String? key,
+  }) {
     return _api.uploadMedia(file, bucket: bucket, key: key);
   }
 

@@ -34,10 +34,7 @@ class ExpenseSplitRequest {
   @JsonKey(name: 'owe_amount')
   final double oweAmount;
 
-  ExpenseSplitRequest({
-    required this.userId,
-    required this.oweAmount,
-  });
+  ExpenseSplitRequest({required this.userId, required this.oweAmount});
 
   factory ExpenseSplitRequest.fromJson(Map<String, dynamic> json) =>
       _$ExpenseSplitRequestFromJson(json);

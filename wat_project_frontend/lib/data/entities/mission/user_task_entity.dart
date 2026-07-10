@@ -30,16 +30,17 @@ class UserTaskEntity {
     required this.updatedAt,
   });
 
-  factory UserTaskEntity.fromJson(Map<String, dynamic> json) => _$UserTaskEntityFromJson(json);
+  factory UserTaskEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserTaskEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserTaskEntityToJson(this);
 
-  UserTaskModel toModel() => UserTaskModel(
-        userTaskId: userTaskId,
-        userId: userId,
-        taskId: taskId,
-        userMissionId: userMissionId,
-        isCompleted: isCompleted,
-        completedAt: completedAt,
-        updatedAt: updatedAt,
-      );
+  // UserTaskModel toModel() => UserTaskModel(
+  //       userTaskId: userTaskId,
+  //       userId: userId,
+  //       taskId: taskId,
+  //       userMissionId: userMissionId,
+  //       isCompleted: isCompleted,
+  //       completedAt: completedAt,
+  //       updatedAt: updatedAt,
+  //     );
 }

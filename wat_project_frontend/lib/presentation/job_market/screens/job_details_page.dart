@@ -41,10 +41,7 @@ class JobDetailsPage extends StatelessWidget {
               ),
               const Text(
                 'Disney World Resort',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: AppColors.textSecondary,
-                ),
+                style: TextStyle(fontSize: 18, color: AppColors.textSecondary),
               ),
               const SizedBox(height: AppDimension.space32),
               Row(
@@ -55,7 +52,10 @@ class JobDetailsPage extends StatelessWidget {
                     children: [
                       Text(
                         'Salary',
-                        style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                       Text(
                         '\$16.50/hr',
@@ -112,20 +112,19 @@ class JobDetailsPage extends StatelessWidget {
                 author: 'Jane Smith',
                 date: 'May 20, 2026',
                 rating: 5.0,
-                comment: 'Amazing experience! The housing is great and the people are friendly.',
+                comment:
+                    'Amazing experience! The housing is great and the people are friendly.',
               ),
               const SizedBox(height: AppDimension.space16),
               const JobReviewCommentCard(
                 author: 'Mike Johnson',
                 date: 'May 15, 2026',
                 rating: 4.0,
-                comment: 'Good job but very hot in the summer. Make sure you stay hydrated.',
+                comment:
+                    'Good job but very hot in the summer. Make sure you stay hydrated.',
               ),
               const SizedBox(height: AppDimension.space50),
-              WatButton(
-                label: 'Save to Cart',
-                onPressed: () {},
-              ),
+              WatButton(label: 'Save to Cart', onPressed: () {}),
               const SizedBox(height: AppDimension.space50),
             ],
           ),

@@ -17,7 +17,7 @@ abstract class AppColors {
 
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color(0xFF494551);
-  
+
   static const Color blackText = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
 }
@@ -42,7 +42,7 @@ abstract class AppDimension {
   static const double paddingSmall = space8;
   static const double paddingMedium = space16;
   static const double paddingLarge = space32;
-  
+
   static const double radiusSmall = 10.0;
   static const double radiusMedium = 15.0;
   static const double radiusLarge = 20.0;

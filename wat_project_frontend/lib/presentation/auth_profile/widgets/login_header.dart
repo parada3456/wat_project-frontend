@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class LoginHeader extends StatelessWidget {
   const LoginHeader({super.key});
 
@@ -16,11 +17,7 @@ class LoginHeader extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: const Center(
-            child: Icon(
-              Icons.work_outline,
-              color: AppColors.white,
-              size: 40,
-            ),
+            child: Icon(Icons.work_outline, color: AppColors.white, size: 40),
           ),
         ),
         const SizedBox(height: AppDimension.space16),
@@ -35,10 +32,7 @@ class LoginHeader extends StatelessWidget {
         const SizedBox(height: AppDimension.space8),
         const Text(
           'Sign in to continue your journey',
-          style: TextStyle(
-            fontSize: 15,
-            color: AppColors.textSecondary,
-          ),
+          style: TextStyle(fontSize: 15, color: AppColors.textSecondary),
         ),
       ],
     );

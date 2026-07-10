@@ -14,24 +14,24 @@ class UserProfileEntity {
   @JsonKey(name: 'user')
   final UserAccountEntity userAccount;
   @JsonKey(name: 'credit_score')
-  final CreditScoreEntity creditScore;
+  final CreditScoreEntity? creditScore;
   @JsonKey(name: 'user_jobs')
-  final List<AssignedJobEntity> userJobs;
+  final List<AssignedJobEntity>? userJobs;
 
   UserProfileEntity({
     required this.userAccount,
-    required this.creditScore,
-    required this.userJobs,
+    this.creditScore,
+    this.userJobs,
   });
 
-  factory UserProfileEntity.fromJson(Map<String, dynamic> json) => _$UserProfileEntityFromJson(json);
+  factory UserProfileEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileEntityFromJson(json);
   Map<String, dynamic> toJson() => _$UserProfileEntityToJson(this);
 
   UserProfileModel toModel() => UserProfileModel(
     user: userAccount.toModel(),
     profile: userAccount.toProfileModel(),
-    creditScore: creditScore.toModel(),
-    userJobs: userJobs.map((job) => job.toModel()).toList()
+    creditScore: creditScore?.toModel(),
+    userJobs: userJobs?.map((job) => job.toModel()).toList() ?? [],
   );
-
 }

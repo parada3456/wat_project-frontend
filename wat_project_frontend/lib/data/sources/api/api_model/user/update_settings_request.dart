@@ -9,11 +9,9 @@ class UpdateSettingsRequest {
   @JsonKey(name: 'push_notifications')
   final bool? pushNotifications;
 
-  UpdateSettingsRequest({
-    this.radarVisibility,
-    this.pushNotifications,
-  });
+  UpdateSettingsRequest({this.radarVisibility, this.pushNotifications});
 
-  factory UpdateSettingsRequest.fromJson(Map<String, dynamic> json) => _$UpdateSettingsRequestFromJson(json);
+  factory UpdateSettingsRequest.fromJson(Map<String, dynamic> json) =>
+      _$UpdateSettingsRequestFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateSettingsRequestToJson(this);
 }

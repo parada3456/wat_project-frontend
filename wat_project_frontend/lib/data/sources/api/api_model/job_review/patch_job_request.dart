@@ -57,6 +57,7 @@ class PatchJobRequest {
     this.updatedAt,
   });
 
-  factory PatchJobRequest.fromJson(Map<String, dynamic> json) => _$PatchJobRequestFromJson(json);
+  factory PatchJobRequest.fromJson(Map<String, dynamic> json) =>
+      _$PatchJobRequestFromJson(json);
   Map<String, dynamic> toJson() => _$PatchJobRequestToJson(this);
 }

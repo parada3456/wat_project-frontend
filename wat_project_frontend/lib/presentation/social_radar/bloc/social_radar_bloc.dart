@@ -59,15 +59,26 @@ class SocialRadarBloc extends Bloc<SocialRadarEvent, SocialRadarState> {
     if (errorMessage != null) {
       emit(SocialRadarFailure(errorMessage!));
     } else {
-      final radarUsers = radarRes.fold((_) => <RadarEntry>[], (data) => data as List<RadarEntry>);
-      final friends = friendsRes.fold((_) => <FriendshipModel>[], (data) => data as List<FriendshipModel>);
-      final pendingRequests = pendingRes.fold((_) => <FriendshipModel>[], (data) => data as List<FriendshipModel>);
+      final radarUsers = radarRes.fold(
+        (_) => <RadarEntry>[],
+        (data) => data as List<RadarEntry>,
+      );
+      final friends = friendsRes.fold(
+        (_) => <FriendshipModel>[],
+        (data) => data as List<FriendshipModel>,
+      );
+      final pendingRequests = pendingRes.fold(
+        (_) => <FriendshipModel>[],
+        (data) => data as List<FriendshipModel>,
+      );
 
-      emit(SocialRadarLoadSuccess(
-        radarUsers: radarUsers,
-        friends: friends,
-        pendingRequests: pendingRequests,
-      ));
+      emit(
+        SocialRadarLoadSuccess(
+          radarUsers: radarUsers,
+          friends: friends,
+          pendingRequests: pendingRequests,
+        ),
+      );
     }
   }
 

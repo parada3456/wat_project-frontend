@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class WatInputField extends StatelessWidget {
   final String label;
   final String hint;
@@ -40,7 +41,9 @@ class WatInputField extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.backgroundAlt,
             borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-            border: errorText != null ? Border.all(color: Colors.red.shade300) : null,
+            border: errorText != null
+                ? Border.all(color: Colors.red.shade300)
+                : null,
           ),
           child: Row(
             children: [
@@ -72,12 +75,9 @@ class WatInputField extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             errorText!,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.red.shade400,
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.red.shade400),
           ),
-        ]
+        ],
       ],
     );
   }

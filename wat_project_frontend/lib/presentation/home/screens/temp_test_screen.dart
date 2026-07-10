@@ -22,8 +22,8 @@ class _TempTestScreenState extends State<TempTestScreen> {
     final defaultUrl = kIsWeb
         ? 'http://localhost:3456/health'
         : (defaultTargetPlatform == TargetPlatform.android
-            ? 'http://10.0.2.2:3456/health'
-            : 'http://localhost:3456/health');
+              ? 'http://10.0.2.2:3456/health'
+              : 'http://localhost:3456/health');
     _urlController = TextEditingController(text: defaultUrl);
   }
 
@@ -49,7 +49,8 @@ class _TempTestScreenState extends State<TempTestScreen> {
       }
     } catch (e) {
       setState(() {
-        _status = 'Connection failed: $e\n\nTips:\n'
+        _status =
+            'Connection failed: $e\n\nTips:\n'
             '- Android Emulator: http://10.0.2.2:3456/health\n'
             '- iOS Simulator: http://localhost:3456/health\n'
             '- Physical Device: http://<YOUR_IP>:3456/health';
@@ -86,44 +87,144 @@ class _TempTestScreenState extends State<TempTestScreen> {
     final Map<String, List<_RouteNavInfo>> categories = {
       'Auth & Profile': [
         const _RouteNavInfo(title: 'Login', path: '/login', icon: Icons.login),
-        const _RouteNavInfo(title: 'Register', path: '/register', icon: Icons.person_add),
+        const _RouteNavInfo(
+          title: 'Register',
+          path: '/register',
+          icon: Icons.person_add,
+        ),
         const _RouteNavInfo(title: 'Home', path: '/home', icon: Icons.home),
-        const _RouteNavInfo(title: 'Profile', path: '/profile', icon: Icons.account_circle),
-        const _RouteNavInfo(title: 'Edit Profile', path: '/profile/edit', icon: Icons.edit),
-        const _RouteNavInfo(title: 'Settings', path: '/settings', icon: Icons.settings),
-        const _RouteNavInfo(title: 'Admin', path: '/admin', icon: Icons.admin_panel_settings),
+        const _RouteNavInfo(
+          title: 'Profile',
+          path: '/profile',
+          icon: Icons.account_circle,
+        ),
+        const _RouteNavInfo(
+          title: 'Edit Profile',
+          path: '/profile/edit',
+          icon: Icons.edit,
+        ),
+        const _RouteNavInfo(
+          title: 'Settings',
+          path: '/settings',
+          icon: Icons.settings,
+        ),
+        const _RouteNavInfo(
+          title: 'Admin',
+          path: '/admin',
+          icon: Icons.admin_panel_settings,
+        ),
       ],
       'Missions & Tasks': [
-        const _RouteNavInfo(title: 'Missions Dashboard', path: '/missions', icon: Icons.dashboard),
-        const _RouteNavInfo(title: 'Mission Detail', path: '/missions/detail', icon: Icons.info),
-        const _RouteNavInfo(title: 'Mission Calendar', path: '/missions/calendar', icon: Icons.calendar_month),
-        const _RouteNavInfo(title: 'Missions Search', path: '/missions/search', icon: Icons.search),
+        const _RouteNavInfo(
+          title: 'Missions Dashboard',
+          path: '/missions',
+          icon: Icons.dashboard,
+        ),
+        const _RouteNavInfo(
+          title: 'Mission Detail',
+          path: '/missions/detail',
+          icon: Icons.info,
+        ),
+        const _RouteNavInfo(
+          title: 'Mission Calendar',
+          path: '/missions/calendar',
+          icon: Icons.calendar_month,
+        ),
+        const _RouteNavInfo(
+          title: 'Missions Search',
+          path: '/missions/search',
+          icon: Icons.search,
+        ),
       ],
       'Journey & Gamification': [
-        const _RouteNavInfo(title: 'Journey Timeline', path: '/journey', icon: Icons.timeline),
-        const _RouteNavInfo(title: 'Leaderboard', path: '/leaderboard', icon: Icons.leaderboard),
-        const _RouteNavInfo(title: 'Badges', path: '/badges', icon: Icons.emoji_events),
-        const _RouteNavInfo(title: 'Credit History', path: '/credit-history', icon: Icons.history),
+        const _RouteNavInfo(
+          title: 'Journey Timeline',
+          path: '/journey',
+          icon: Icons.timeline,
+        ),
+        const _RouteNavInfo(
+          title: 'Leaderboard',
+          path: '/leaderboard',
+          icon: Icons.leaderboard,
+        ),
+        const _RouteNavInfo(
+          title: 'Badges',
+          path: '/badges',
+          icon: Icons.emoji_events,
+        ),
+        const _RouteNavInfo(
+          title: 'Credit History',
+          path: '/credit-history',
+          icon: Icons.history,
+        ),
       ],
       'Social & Radar': [
-        const _RouteNavInfo(title: 'Friends List', path: '/friends', icon: Icons.people),
-        const _RouteNavInfo(title: 'Friend Requests', path: '/friend-requests', icon: Icons.person_pin),
-        const _RouteNavInfo(title: 'Radar Map', path: '/radar', icon: Icons.map),
+        const _RouteNavInfo(
+          title: 'Friends List',
+          path: '/friends',
+          icon: Icons.people,
+        ),
+        const _RouteNavInfo(
+          title: 'Friend Requests',
+          path: '/friend-requests',
+          icon: Icons.person_pin,
+        ),
+        const _RouteNavInfo(
+          title: 'Radar Map',
+          path: '/radar',
+          icon: Icons.map,
+        ),
       ],
       'Expense Sharing': [
-        const _RouteNavInfo(title: 'Expense History', path: '/expenses', icon: Icons.payments),
-        const _RouteNavInfo(title: 'Create Expense', path: '/expenses/create', icon: Icons.add_card),
-        const _RouteNavInfo(title: 'Expense Details', path: '/expenses/details', icon: Icons.receipt),
-        const _RouteNavInfo(title: 'Payment Submission', path: '/expenses/submit', icon: Icons.send),
+        const _RouteNavInfo(
+          title: 'Expense History',
+          path: '/expenses',
+          icon: Icons.payments,
+        ),
+        const _RouteNavInfo(
+          title: 'Create Expense',
+          path: '/expenses/create',
+          icon: Icons.add_card,
+        ),
+        const _RouteNavInfo(
+          title: 'Expense Details',
+          path: '/expenses/details',
+          icon: Icons.receipt,
+        ),
+        const _RouteNavInfo(
+          title: 'Payment Submission',
+          path: '/expenses/submit',
+          icon: Icons.send,
+        ),
       ],
       'Job Market': [
-        const _RouteNavInfo(title: 'Job Search', path: '/jobs', icon: Icons.work),
-        const _RouteNavInfo(title: 'Job Details', path: '/jobs/details', icon: Icons.business_center),
-        const _RouteNavInfo(title: 'Job Cart', path: '/jobs/cart', icon: Icons.shopping_cart),
-        const _RouteNavInfo(title: 'Write Review', path: '/jobs/review', icon: Icons.rate_review),
+        const _RouteNavInfo(
+          title: 'Job Search',
+          path: '/jobs',
+          icon: Icons.work,
+        ),
+        const _RouteNavInfo(
+          title: 'Job Details',
+          path: '/jobs/details',
+          icon: Icons.business_center,
+        ),
+        const _RouteNavInfo(
+          title: 'Job Cart',
+          path: '/jobs/cart',
+          icon: Icons.shopping_cart,
+        ),
+        const _RouteNavInfo(
+          title: 'Write Review',
+          path: '/jobs/review',
+          icon: Icons.rate_review,
+        ),
       ],
       'Notifications': [
-        const _RouteNavInfo(title: 'Notifications Center', path: '/notifications', icon: Icons.notifications),
+        const _RouteNavInfo(
+          title: 'Notifications Center',
+          path: '/notifications',
+          icon: Icons.notifications,
+        ),
       ],
     };
 
@@ -141,9 +242,15 @@ class _TempTestScreenState extends State<TempTestScreen> {
         child: ExpansionTile(
           title: Text(
             categoryTitle,
-            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
-          leading: Icon(_getCategoryIcon(categoryTitle), color: const Color(0xFF9747FF)),
+          leading: Icon(
+            _getCategoryIcon(categoryTitle),
+            color: const Color(0xFF9747FF),
+          ),
           childrenPadding: const EdgeInsets.all(12),
           children: [
             Align(
@@ -160,7 +267,10 @@ class _TempTestScreenState extends State<TempTestScreen> {
                       backgroundColor: const Color(0xFFF2E7FF),
                       foregroundColor: const Color(0xFF9747FF),
                       elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -204,7 +314,10 @@ class _TempTestScreenState extends State<TempTestScreen> {
                         SizedBox(width: 12),
                         Text(
                           'Backend Connectivity Test',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -229,7 +342,10 @@ class _TempTestScreenState extends State<TempTestScreen> {
                       child: Text(
                         _status,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -249,7 +365,10 @@ class _TempTestScreenState extends State<TempTestScreen> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Text('Test Connection'),
                       ),
@@ -263,7 +382,11 @@ class _TempTestScreenState extends State<TempTestScreen> {
             const SizedBox(height: 16),
             const Text(
               'App Screen Navigator',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF9747FF)),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF9747FF),
+              ),
             ),
             const SizedBox(height: 8),
             const Text(

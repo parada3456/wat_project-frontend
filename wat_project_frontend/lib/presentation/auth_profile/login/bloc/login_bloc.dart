@@ -44,7 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmittedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: const UIStatus.loading()),);
+    emit(state.copyWith(status: const UIStatus.loading()));
 
     final result = await _loginUseCase(event.email, event.password);
 
@@ -64,7 +64,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           print("fail unknown");
           emit(
-            state.copyWith(status: UIStatus.loadFailed(message: failure.message,),),
+            state.copyWith(
+              status: UIStatus.loadFailed(message: failure.message),
+            ),
           );
         }
       },
@@ -72,13 +74,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print("login success");
         await _authManager.saveSession(tokens, null);
         try {
-          final UserProfileEntity userProfileEntity = await _userRepository.getMe();
-          await _authManager.saveSession(tokens, userProfileEntity.userAccount.userId);
-          
-          emit(state.copyWith(status: const UIStatus.loadSuccess(message: 'เข้าสู่ระบบสำเร็จ'),),);
+          final UserProfileEntity userProfileEntity = await _userRepository
+              .getMe();
+          await _authManager.saveSession(
+            tokens,
+            userProfileEntity.userAccount.userId,
+          );
+
+          emit(
+            state.copyWith(
+              status: const UIStatus.loadSuccess(message: 'เข้าสู่ระบบสำเร็จ'),
+            ),
+          );
         } catch (e) {
           print("auth save failed");
-          emit(state.copyWith(status: UIStatus.loadFailed(message: e.toString(),),),);
+          emit(
+            state.copyWith(status: UIStatus.loadFailed(message: e.toString())),
+          );
         }
       },
     );
@@ -88,7 +100,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     RegisterSubmittedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: const UIStatus.loading()),);
+    emit(state.copyWith(status: const UIStatus.loading()));
 
     final result = await _registerUseCase(
       event.email,
@@ -113,7 +125,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           print("fail unknown");
           emit(
-            state.copyWith(status: UIStatus.loadFailed(message: failure.message,),),
+            state.copyWith(
+              status: UIStatus.loadFailed(message: failure.message),
+            ),
           );
         }
       },
@@ -121,13 +135,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print("register success");
         await _authManager.saveSession(tokens, null);
         try {
-          final UserProfileEntity userProfileEntity = await _userRepository.getMe();
-          await _authManager.saveSession(tokens, userProfileEntity.userAccount.userId);
-          
-          emit(state.copyWith(status: const UIStatus.loadSuccess(message: 'สมัครสมาชิกสำเร็จ'),),);
+          final UserProfileEntity userProfileEntity = await _userRepository
+              .getMe();
+          await _authManager.saveSession(
+            tokens,
+            userProfileEntity.userAccount.userId,
+          );
+
+          emit(
+            state.copyWith(
+              status: const UIStatus.loadSuccess(message: 'สมัครสมาชิกสำเร็จ'),
+            ),
+          );
         } catch (e) {
           print("auth save failed");
-          emit(state.copyWith(status: UIStatus.loadFailed(message: e.toString(),),),);
+          emit(
+            state.copyWith(status: UIStatus.loadFailed(message: e.toString())),
+          );
         }
       },
     );
@@ -137,7 +161,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ForgotPasswordSubmittedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: const UIStatus.loading()),);
+    emit(state.copyWith(status: const UIStatus.loading()));
 
     final result = await _forgotPasswordUseCase(event.email);
 
@@ -157,13 +181,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           print("fail unknown");
           emit(
-            state.copyWith(status: UIStatus.loadFailed(message: failure.message,),),
+            state.copyWith(
+              status: UIStatus.loadFailed(message: failure.message),
+            ),
           );
         }
       },
       (success) async {
         print("forgot password success");
-        emit(state.copyWith(status: const UIStatus.loadSuccess(message: 'ส่งคำขอรีเซ็ตรหัสผ่านสำเร็จ'),),);
+        emit(
+          state.copyWith(
+            status: const UIStatus.loadSuccess(
+              message: 'ส่งคำขอรีเซ็ตรหัสผ่านสำเร็จ',
+            ),
+          ),
+        );
       },
     );
   }
@@ -172,7 +204,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ResetPasswordSubmittedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: const UIStatus.loading()),);
+    emit(state.copyWith(status: const UIStatus.loading()));
 
     final result = await _resetPasswordUseCase(event.token, event.newPassword);
 
@@ -192,13 +224,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           print("fail unknown");
           emit(
-            state.copyWith(status: UIStatus.loadFailed(message: failure.message,),),
+            state.copyWith(
+              status: UIStatus.loadFailed(message: failure.message),
+            ),
           );
         }
       },
       (success) async {
         print("reset password success");
-        emit(state.copyWith(status: const UIStatus.loadSuccess(message: 'รีเซ็ตรหัสผ่านสำเร็จ'),),);
+        emit(
+          state.copyWith(
+            status: const UIStatus.loadSuccess(message: 'รีเซ็ตรหัสผ่านสำเร็จ'),
+          ),
+        );
       },
     );
   }
@@ -207,7 +245,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LogoutRequestedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: const UIStatus.loading()),);
+    emit(state.copyWith(status: const UIStatus.loading()));
 
     final refreshToken = _authManager.currentSession?.refreshToken ?? '';
     final result = await _logoutUseCase(refreshToken);
@@ -228,14 +266,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           print("fail unknown");
           emit(
-            state.copyWith(status: UIStatus.loadFailed(message: failure.message,),),
+            state.copyWith(
+              status: UIStatus.loadFailed(message: failure.message),
+            ),
           );
         }
       },
       (success) async {
         print("logout success");
         await _authManager.clearSession();
-        emit(state.copyWith(status: const UIStatus.loadSuccess(message: 'ออกจากระบบสำเร็จ'),),);
+        emit(
+          state.copyWith(
+            status: const UIStatus.loadSuccess(message: 'ออกจากระบบสำเร็จ'),
+          ),
+        );
       },
     );
   }

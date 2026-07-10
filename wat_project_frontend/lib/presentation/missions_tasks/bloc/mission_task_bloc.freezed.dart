@@ -137,7 +137,7 @@ return filterMissionsRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  listRequested,TResult Function( String missionId)?  detailRequested,TResult Function( String missionId,  File file)?  proofSubmitted,TResult Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult Function()?  exploreMissionsRequested,TResult Function( String missionId)?  joinMissionRequested,TResult Function( bool? showMandatory)?  filterMissionsRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  listRequested,TResult Function( String missionId)?  detailRequested,TResult Function( String missionId,  File? file)?  proofSubmitted,TResult Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult Function()?  exploreMissionsRequested,TResult Function( String missionId)?  joinMissionRequested,TResult Function( bool? showMandatory)?  filterMissionsRequested,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case MissionsTasksListRequested() when listRequested != null:
 return listRequested();case MissionTaskDetailRequested() when detailRequested != null:
@@ -164,7 +164,7 @@ return filterMissionsRequested(_that.showMandatory);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  listRequested,required TResult Function( String missionId)  detailRequested,required TResult Function( String missionId,  File file)  proofSubmitted,required TResult Function( String userMissionId,  String taskId,  bool completed)  toggleRequested,required TResult Function()  exploreMissionsRequested,required TResult Function( String missionId)  joinMissionRequested,required TResult Function( bool? showMandatory)  filterMissionsRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  listRequested,required TResult Function( String missionId)  detailRequested,required TResult Function( String missionId,  File? file)  proofSubmitted,required TResult Function( String userMissionId,  String taskId,  bool completed)  toggleRequested,required TResult Function()  exploreMissionsRequested,required TResult Function( String missionId)  joinMissionRequested,required TResult Function( bool? showMandatory)  filterMissionsRequested,}) {final _that = this;
 switch (_that) {
 case MissionsTasksListRequested():
 return listRequested();case MissionTaskDetailRequested():
@@ -190,7 +190,7 @@ return filterMissionsRequested(_that.showMandatory);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  listRequested,TResult? Function( String missionId)?  detailRequested,TResult? Function( String missionId,  File file)?  proofSubmitted,TResult? Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult? Function()?  exploreMissionsRequested,TResult? Function( String missionId)?  joinMissionRequested,TResult? Function( bool? showMandatory)?  filterMissionsRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  listRequested,TResult? Function( String missionId)?  detailRequested,TResult? Function( String missionId,  File? file)?  proofSubmitted,TResult? Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult? Function()?  exploreMissionsRequested,TResult? Function( String missionId)?  joinMissionRequested,TResult? Function( bool? showMandatory)?  filterMissionsRequested,}) {final _that = this;
 switch (_that) {
 case MissionsTasksListRequested() when listRequested != null:
 return listRequested();case MissionTaskDetailRequested() when detailRequested != null:
@@ -309,11 +309,11 @@ as String,
 
 
 class MissionTaskProofSubmitted implements MissionTaskEvent {
-  const MissionTaskProofSubmitted({required this.missionId, required this.file});
+  const MissionTaskProofSubmitted({required this.missionId, this.file});
   
 
  final  String missionId;
- final  File file;
+ final  File? file;
 
 /// Create a copy of MissionTaskEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -345,7 +345,7 @@ abstract mixin class $MissionTaskProofSubmittedCopyWith<$Res> implements $Missio
   factory $MissionTaskProofSubmittedCopyWith(MissionTaskProofSubmitted value, $Res Function(MissionTaskProofSubmitted) _then) = _$MissionTaskProofSubmittedCopyWithImpl;
 @useResult
 $Res call({
- String missionId, File file
+ String missionId, File? file
 });
 
 
@@ -362,11 +362,11 @@ class _$MissionTaskProofSubmittedCopyWithImpl<$Res>
 
 /// Create a copy of MissionTaskEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? missionId = null,Object? file = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? missionId = null,Object? file = freezed,}) {
   return _then(MissionTaskProofSubmitted(
 missionId: null == missionId ? _self.missionId : missionId // ignore: cast_nullable_to_non_nullable
-as String,file: null == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
-as File,
+as String,file: freezed == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as File?,
   ));
 }
 
@@ -610,7 +610,7 @@ as bool?,
 /// @nodoc
 mixin _$MissionTaskState {
 
- UIStatus get status; List<MissionDetailModel> get missions; MissionDetailModel? get detail; List<MissionModel> get exploreMissions; List<MissionModel> get allMissions; String? get currentPhaseId; bool? get isFilterMandatory;
+ UIStatus get status; List<MissionModel> get missions; MissionModel? get detail; List<MissionModel> get exploreMissions; List<MissionModel> get allMissions; String? get currentPhaseId; bool? get isFilterMandatory;
 /// Create a copy of MissionTaskState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -641,7 +641,7 @@ abstract mixin class $MissionTaskStateCopyWith<$Res>  {
   factory $MissionTaskStateCopyWith(MissionTaskState value, $Res Function(MissionTaskState) _then) = _$MissionTaskStateCopyWithImpl;
 @useResult
 $Res call({
- UIStatus status, List<MissionDetailModel> missions, MissionDetailModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory
+ UIStatus status, List<MissionModel> missions, MissionModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory
 });
 
 
@@ -662,8 +662,8 @@ class _$MissionTaskStateCopyWithImpl<$Res>
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UIStatus,missions: null == missions ? _self.missions : missions // ignore: cast_nullable_to_non_nullable
-as List<MissionDetailModel>,detail: freezed == detail ? _self.detail : detail // ignore: cast_nullable_to_non_nullable
-as MissionDetailModel?,exploreMissions: null == exploreMissions ? _self.exploreMissions : exploreMissions // ignore: cast_nullable_to_non_nullable
+as List<MissionModel>,detail: freezed == detail ? _self.detail : detail // ignore: cast_nullable_to_non_nullable
+as MissionModel?,exploreMissions: null == exploreMissions ? _self.exploreMissions : exploreMissions // ignore: cast_nullable_to_non_nullable
 as List<MissionModel>,allMissions: null == allMissions ? _self.allMissions : allMissions // ignore: cast_nullable_to_non_nullable
 as List<MissionModel>,currentPhaseId: freezed == currentPhaseId ? _self.currentPhaseId : currentPhaseId // ignore: cast_nullable_to_non_nullable
 as String?,isFilterMandatory: freezed == isFilterMandatory ? _self.isFilterMandatory : isFilterMandatory // ignore: cast_nullable_to_non_nullable
@@ -761,7 +761,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionDetailModel> missions,  MissionDetailModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MissionTaskState() when $default != null:
 return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory);case _:
@@ -782,7 +782,7 @@ return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionDetailModel> missions,  MissionDetailModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)  $default,) {final _that = this;
 switch (_that) {
 case _MissionTaskState():
 return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory);case _:
@@ -802,7 +802,7 @@ return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UIStatus status,  List<MissionDetailModel> missions,  MissionDetailModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)?  $default,) {final _that = this;
 switch (_that) {
 case _MissionTaskState() when $default != null:
 return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory);case _:
@@ -817,18 +817,18 @@ return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_
 
 
 class _MissionTaskState implements MissionTaskState {
-  const _MissionTaskState({this.status = const UIStatus.initial(), final  List<MissionDetailModel> missions = const [], this.detail, final  List<MissionModel> exploreMissions = const [], final  List<MissionModel> allMissions = const [], this.currentPhaseId, this.isFilterMandatory}): _missions = missions,_exploreMissions = exploreMissions,_allMissions = allMissions;
+  const _MissionTaskState({this.status = const UIStatus.initial(), final  List<MissionModel> missions = const [], this.detail, final  List<MissionModel> exploreMissions = const [], final  List<MissionModel> allMissions = const [], this.currentPhaseId, this.isFilterMandatory}): _missions = missions,_exploreMissions = exploreMissions,_allMissions = allMissions;
   
 
 @override@JsonKey() final  UIStatus status;
- final  List<MissionDetailModel> _missions;
-@override@JsonKey() List<MissionDetailModel> get missions {
+ final  List<MissionModel> _missions;
+@override@JsonKey() List<MissionModel> get missions {
   if (_missions is EqualUnmodifiableListView) return _missions;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_missions);
 }
 
-@override final  MissionDetailModel? detail;
+@override final  MissionModel? detail;
  final  List<MissionModel> _exploreMissions;
 @override@JsonKey() List<MissionModel> get exploreMissions {
   if (_exploreMissions is EqualUnmodifiableListView) return _exploreMissions;
@@ -876,7 +876,7 @@ abstract mixin class _$MissionTaskStateCopyWith<$Res> implements $MissionTaskSta
   factory _$MissionTaskStateCopyWith(_MissionTaskState value, $Res Function(_MissionTaskState) _then) = __$MissionTaskStateCopyWithImpl;
 @override @useResult
 $Res call({
- UIStatus status, List<MissionDetailModel> missions, MissionDetailModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory
+ UIStatus status, List<MissionModel> missions, MissionModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory
 });
 
 
@@ -897,8 +897,8 @@ class __$MissionTaskStateCopyWithImpl<$Res>
   return _then(_MissionTaskState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UIStatus,missions: null == missions ? _self._missions : missions // ignore: cast_nullable_to_non_nullable
-as List<MissionDetailModel>,detail: freezed == detail ? _self.detail : detail // ignore: cast_nullable_to_non_nullable
-as MissionDetailModel?,exploreMissions: null == exploreMissions ? _self._exploreMissions : exploreMissions // ignore: cast_nullable_to_non_nullable
+as List<MissionModel>,detail: freezed == detail ? _self.detail : detail // ignore: cast_nullable_to_non_nullable
+as MissionModel?,exploreMissions: null == exploreMissions ? _self._exploreMissions : exploreMissions // ignore: cast_nullable_to_non_nullable
 as List<MissionModel>,allMissions: null == allMissions ? _self._allMissions : allMissions // ignore: cast_nullable_to_non_nullable
 as List<MissionModel>,currentPhaseId: freezed == currentPhaseId ? _self.currentPhaseId : currentPhaseId // ignore: cast_nullable_to_non_nullable
 as String?,isFilterMandatory: freezed == isFilterMandatory ? _self.isFilterMandatory : isFilterMandatory // ignore: cast_nullable_to_non_nullable

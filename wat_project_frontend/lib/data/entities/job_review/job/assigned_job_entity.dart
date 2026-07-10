@@ -27,15 +27,16 @@ class AssignedJobEntity {
     this.endDate,
   });
 
-  factory AssignedJobEntity.fromJson(Map<String, dynamic> json) => _$AssignedJobEntityFromJson(json);
+  factory AssignedJobEntity.fromJson(Map<String, dynamic> json) =>
+      _$AssignedJobEntityFromJson(json);
   Map<String, dynamic> toJson() => _$AssignedJobEntityToJson(this);
 
   UserJobModel toModel() => UserJobModel(
-        userId: userId,
-        jobId: jobId,
-        assignedAt: assignedAt,
-        isMain: isMain,
-        startDate: startDate,
-        endDate: endDate,
-      );
+    userId: userId,
+    jobId: jobId,
+    assignedAt: assignedAt,
+    isMain: isMain,
+    startDate: startDate,
+    endDate: endDate,
+  );
 }

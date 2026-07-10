@@ -32,28 +32,29 @@ class NotificationCenterPage extends StatelessWidget {
         child: ListView.separated(
           padding: const EdgeInsets.all(AppDimension.space16),
           itemCount: 5,
-          separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space8),
+          separatorBuilder: (context, index) =>
+              const SizedBox(height: AppDimension.space8),
           itemBuilder: (context, index) {
             final titles = [
               'New Mission Assigned',
               'Friend Request',
               'Expense Alert',
               'Phase Unlocked',
-              'System Update'
+              'System Update',
             ];
             final messages = [
               'Phase 1: Visa Prep is now available.',
               'Alex Smith sent you a friend request.',
               'Maria Garcia added a new expense for Pizza Night.',
               'Congratulations! You have moved to Phase 2.',
-              'New features are available in the latest version.'
+              'New features are available in the latest version.',
             ];
             final icons = [
               Icons.assignment_outlined,
               Icons.person_add_outlined,
               Icons.receipt_long_outlined,
               Icons.workspace_premium_outlined,
-              Icons.system_update_outlined
+              Icons.system_update_outlined,
             ];
             return NotificationItemTile(
               title: titles[index],

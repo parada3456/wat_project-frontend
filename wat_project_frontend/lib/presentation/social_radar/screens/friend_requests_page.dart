@@ -28,7 +28,8 @@ class FriendRequestsPage extends StatelessWidget {
         child: ListView.separated(
           padding: const EdgeInsets.all(AppDimension.space16),
           itemCount: 3,
-          separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space8),
+          separatorBuilder: (context, index) =>
+              const SizedBox(height: AppDimension.space8),
           itemBuilder: (context, index) {
             return FriendRequestActionTile(
               name: 'Request ${index + 1}',

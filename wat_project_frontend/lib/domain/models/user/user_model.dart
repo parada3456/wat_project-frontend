@@ -47,17 +47,17 @@ class UserModel {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        email,
-        firstName,
-        lastName,
-        currentPhaseId,
-        totalLifetimePoints,
-        currentPhasePoints,
-        missionStreak,
-        arrivalDate,
-        jobStartDate,
-        createdAt,
-        updatedAt,
-      );
+    id,
+    email,
+    firstName,
+    lastName,
+    currentPhaseId,
+    totalLifetimePoints,
+    currentPhasePoints,
+    missionStreak,
+    arrivalDate,
+    jobStartDate,
+    createdAt,
+    updatedAt,
+  );
 }

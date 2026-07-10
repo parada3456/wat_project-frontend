@@ -86,13 +86,19 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   color: AppColors.backgroundAlt,
                   borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimension.space16,
+                ),
                 child: TextField(
                   controller: _reviewController,
                   maxLines: 5,
                   decoration: const InputDecoration(
-                    hintText: 'Share details of your work, housing, and tips for others...',
-                    hintStyle: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                    hintText:
+                        'Share details of your work, housing, and tips for others...',
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
                     border: InputBorder.none,
                   ),
                 ),

@@ -25,11 +25,11 @@ class AdminStatsEntity {
   Map<String, dynamic> toJson() => _$AdminStatsEntityToJson(this);
 
   AdminStatsModel toModel() => AdminStatsModel(
-        totalUsers: totalUsers,
-        activeUsers: activeUsers,
-        pendingVerifications: pendingVerifications,
-        activeJobs: activeJobs,
-        averageCreditScore: averageCreditScore,
-        totalPointsAwarded: totalPointsAwarded,
-      );
+    totalUsers: totalUsers,
+    activeUsers: activeUsers,
+    pendingVerifications: pendingVerifications,
+    activeJobs: activeJobs,
+    averageCreditScore: averageCreditScore,
+    totalPointsAwarded: totalPointsAwarded,
+  );
 }

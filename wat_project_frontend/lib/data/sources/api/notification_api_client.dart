@@ -7,7 +7,8 @@ part 'notification_api_client.g.dart';
 
 @RestApi()
 abstract class NotificationApiService {
-  factory NotificationApiService(Dio dio, {String baseUrl}) = _NotificationApiService;
+  factory NotificationApiService(Dio dio, {String baseUrl}) =
+      _NotificationApiService;
 
   @GET('notifications')
   Future<PaginationResponse<NotificationEntity>> listNotifications();

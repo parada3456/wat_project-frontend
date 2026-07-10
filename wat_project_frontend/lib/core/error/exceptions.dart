@@ -4,10 +4,7 @@ class ApiException implements Exception {
   final ApiError apiError;
   final int? statusCode;
 
-  const ApiException({
-    required this.apiError,
-    this.statusCode,
-  });
+  const ApiException({required this.apiError, this.statusCode});
 
   @override
   String toString() {
@@ -18,7 +15,7 @@ class ApiException implements Exception {
 class ServerException implements Exception {
   final String message;
   const ServerException(this.message);
-  
+
   @override
   String toString() => message;
 }

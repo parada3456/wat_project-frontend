@@ -7,10 +7,9 @@ class AuthRefreshRequest {
   @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
-  AuthRefreshRequest({
-    required this.refreshToken,
-  });
+  AuthRefreshRequest({required this.refreshToken});
 
-  factory AuthRefreshRequest.fromJson(Map<String, dynamic> json) => _$AuthRefreshRequestFromJson(json);
+  factory AuthRefreshRequest.fromJson(Map<String, dynamic> json) =>
+      _$AuthRefreshRequestFromJson(json);
   Map<String, dynamic> toJson() => _$AuthRefreshRequestToJson(this);
 }

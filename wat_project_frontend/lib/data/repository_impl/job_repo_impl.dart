@@ -49,7 +49,10 @@ class JobRepoImpl implements JobRepository {
 
   @override
   Future<void> updateCartStatus(String cartId, String status) async {
-    return _api.updateCartStatus(cartId, UpdateCartStatusRequest(status: status));
+    return _api.updateCartStatus(
+      cartId,
+      UpdateCartStatusRequest(status: status),
+    );
   }
 
   @override
@@ -92,7 +95,9 @@ class JobRepoImpl implements JobRepository {
 
   @override
   Future<void> createReviewAlternative(Map<String, dynamic> body) async {
-    return _api.createReviewAlternative(CreateReviewAlternativeRequest.fromJson(body));
+    return _api.createReviewAlternative(
+      CreateReviewAlternativeRequest.fromJson(body),
+    );
   }
 
   JobPostingEntity _fromModel(JobPostingModel model) {

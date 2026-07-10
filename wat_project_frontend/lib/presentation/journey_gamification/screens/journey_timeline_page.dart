@@ -35,10 +35,7 @@ class JourneyTimelinePage extends StatelessWidget {
                 title: 'Interview & Visa',
                 isActive: true,
               ),
-              const PhaseNodeWidget(
-                phaseNumber: 3,
-                title: 'Pre-Departure',
-              ),
+              const PhaseNodeWidget(phaseNumber: 3, title: 'Pre-Departure'),
               const PhaseNodeWidget(
                 phaseNumber: 4,
                 title: 'On-Site Experience',

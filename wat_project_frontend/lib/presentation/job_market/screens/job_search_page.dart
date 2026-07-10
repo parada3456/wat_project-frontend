@@ -35,7 +35,10 @@ class _JobSearchPageState extends State<JobSearchPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined, color: AppColors.textPrimary),
+            icon: const Icon(
+              Icons.shopping_cart_outlined,
+              color: AppColors.textPrimary,
+            ),
             onPressed: () {
               // TODO: Navigate to Job Cart
             },
@@ -52,14 +55,18 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 label: 'Search Jobs',
                 hint: 'Position, city, or employer...',
                 controller: _searchController,
-                suffixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                suffixIcon: const Icon(
+                  Icons.search,
+                  color: AppColors.textSecondary,
+                ),
               ),
             ),
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.all(AppDimension.space16),
                 itemCount: 5,
-                separatorBuilder: (context, index) => const SizedBox(height: AppDimension.space16),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppDimension.space16),
                 itemBuilder: (context, index) {
                   return JobCard(
                     title: 'Position ${index + 1}',

@@ -41,7 +41,8 @@ abstract class RepositoryModule {
   MissionRepository missionRepository(MissionRepoImpl impl) => impl;
 
   @injectable
-  NotificationRepository notificationRepository(NotificationRepoImpl impl) => impl;
+  NotificationRepository notificationRepository(NotificationRepoImpl impl) =>
+      impl;
 
   @injectable
   UserRepository userRepository(UserRepoImpl impl) => impl;

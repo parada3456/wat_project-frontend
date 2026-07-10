@@ -12,7 +12,7 @@ class ExpenseDetailResponse {
   ExpenseDetailResponse({
     required this.transaction,
     required this.splits,
-  });
+    });
 
   factory ExpenseDetailResponse.fromJson(Map<String, dynamic> json) => _$ExpenseDetailResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ExpenseDetailResponseToJson(this);

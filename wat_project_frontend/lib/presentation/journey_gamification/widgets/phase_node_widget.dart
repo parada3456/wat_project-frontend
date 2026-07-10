@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class PhaseNodeWidget extends StatelessWidget {
   final int phaseNumber;
   final String title;
@@ -39,12 +40,18 @@ class PhaseNodeWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: isCompleted
-                        ? const Icon(Icons.check, color: AppColors.white, size: 20)
+                        ? const Icon(
+                            Icons.check,
+                            color: AppColors.white,
+                            size: 20,
+                          )
                         : Text(
                             '$phaseNumber',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
-                              color: isActive ? AppColors.primary : AppColors.textSecondary,
+                              color: isActive
+                                  ? AppColors.primary
+                                  : AppColors.textSecondary,
                             ),
                           ),
                   ),
@@ -67,7 +74,9 @@ class PhaseNodeWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: isActive ? AppColors.primary : AppColors.textSecondary,
+                      color: isActive
+                          ? AppColors.primary
+                          : AppColors.textSecondary,
                     ),
                   ),
                   Text(
@@ -75,7 +84,9 @@ class PhaseNodeWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: isActive ? AppColors.textPrimary : AppColors.textSecondary,
+                      color: isActive
+                          ? AppColors.textPrimary
+                          : AppColors.textSecondary,
                     ),
                   ),
                   if (isActive) ...[

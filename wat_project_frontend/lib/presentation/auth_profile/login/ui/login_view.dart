@@ -7,6 +7,7 @@ import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -52,7 +53,9 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () {
                 final email = emailController.text.trim();
                 if (email.isNotEmpty) {
-                  context.read<LoginBloc>().add(ForgotPasswordSubmittedEvent(email));
+                  context.read<LoginBloc>().add(
+                    ForgotPasswordSubmittedEvent(email),
+                  );
                   Navigator.pop(dialogContext);
                 }
               },
@@ -71,7 +74,9 @@ class _LoginViewState extends State<LoginView> {
     final status = state.status;
     if (status is UILoadFailed && status.apiError != null) {
       try {
-        return status.apiError!.details.firstWhere((e) => e.field == field).reason;
+        return status.apiError!.details
+            .firstWhere((e) => e.field == field)
+            .reason;
       } catch (_) {
         return null;
       }
@@ -86,21 +91,36 @@ class _LoginViewState extends State<LoginView> {
         print('status: ${state.status}');
         state.status.whenOrNull(
           loadFailed: (message, apiError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message ?? 'An error occurred'),
-                backgroundColor: Colors.red,
-              ),
+            AppPopup.show<void>(
+              context: context,
+              title: 'Login Failed',
+              message: message ?? 'An error occurred',
+              type: AppPopupType.error,
+              buttons: [
+                AppPopupButton(
+                  label: 'Dismiss',
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
             );
           },
           loadSuccess: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message ?? 'Login successful!'),
-                backgroundColor: Colors.green,
-              ),
+            AppPopup.show<void>(
+              context: context,
+              title: 'Success',
+              message: message ?? 'Login successful!',
+              type: AppPopupType.success,
+              buttons: [
+                AppPopupButton(
+                  label: 'OK',
+                  isPrimary: true,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.push('/home');
+                  },
+                ),
+              ],
             );
-            context.push('/home');
           },
         );
       },
@@ -110,14 +130,19 @@ class _LoginViewState extends State<LoginView> {
           child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimension.space32,
+                ),
                 child: Column(
                   children: [
                     const SizedBox(height: AppDimension.space50),
                     const LoginHeader(),
                     const SizedBox(height: AppDimension.space50),
                     IconButton(
-                      icon: const Icon(Icons.home, color: AppColors.textPrimary),
+                      icon: const Icon(
+                        Icons.home,
+                        color: AppColors.textPrimary,
+                      ),
                       onPressed: () {
                         context.push('/home');
                       },
@@ -174,7 +199,9 @@ class _LoginViewState extends State<LoginView> {
                         });
 
                         bool isValid = true;
-                        final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                        final emailRegex = RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                        );
 
                         if (email.isEmpty) {
                           _emailError = 'Email is required';
@@ -188,14 +215,15 @@ class _LoginViewState extends State<LoginView> {
                           _passwordError = 'Password is required';
                           isValid = false;
                         } else if (password.length < 8) {
-                          _passwordError = 'Password must be at least 8 characters';
+                          _passwordError =
+                              'Password must be at least 8 characters';
                           isValid = false;
                         }
 
                         if (isValid) {
                           context.read<LoginBloc>().add(
-                                LoginSubmittedEvent(email, password),
-                              );
+                            LoginSubmittedEvent(email, password),
+                          );
                         } else {
                           setState(() {});
                         }

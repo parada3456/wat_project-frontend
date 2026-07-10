@@ -18,10 +18,14 @@ abstract class JobApiService {
   factory JobApiService(Dio dio, {String baseUrl}) = _JobApiService;
 
   @GET('jobs')
-  Future<PaginationResponse<JobPostingEntity>> listJobs(@Queries() Map<String, dynamic> filters);
+  Future<PaginationResponse<JobPostingEntity>> listJobs(
+    @Queries() Map<String, dynamic> filters,
+  );
 
   @GET('jobs')
-  Future<PaginationResponse<JobPostingEntity>> getJobsByIds(@Query('ids') String ids);
+  Future<PaginationResponse<JobPostingEntity>> getJobsByIds(
+    @Query('ids') String ids,
+  );
 
   @GET('jobs/{id}')
   Future<JobDetailResponse> getJobDetail(@Path('id') String id);
@@ -42,7 +46,9 @@ abstract class JobApiService {
   Future<void> removeFromCart(@Path('id') String id);
 
   @GET('jobs/{id}/reviews')
-  Future<PaginationResponse<JobReviewEntity>> getJobReviews(@Path('id') String jobId);
+  Future<PaginationResponse<JobReviewEntity>> getJobReviews(
+    @Path('id') String jobId,
+  );
 
   @POST('jobs/{id}/reviews')
   Future<void> createReview(
@@ -60,14 +66,13 @@ abstract class JobApiService {
   );
 
   @PATCH('jobs/{id}')
-  Future<void> patchJob(
-    @Path('id') String id,
-    @Body() PatchJobRequest request,
-  );
+  Future<void> patchJob(@Path('id') String id, @Body() PatchJobRequest request);
 
   @DELETE('jobs/{id}')
   Future<void> deleteJob(@Path('id') String id);
 
   @POST('reviews')
-  Future<void> createReviewAlternative(@Body() CreateReviewAlternativeRequest request);
+  Future<void> createReviewAlternative(
+    @Body() CreateReviewAlternativeRequest request,
+  );
 }

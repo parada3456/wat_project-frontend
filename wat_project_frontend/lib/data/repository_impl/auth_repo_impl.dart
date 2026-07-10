@@ -11,7 +11,6 @@ import 'package:wat_project_frontend/data/sources/api/api_model/authentication/l
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/forgot_password_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/reset_password_request.dart';
 
-
 @injectable
 class AuthRepoImpl implements AuthRepository {
   final AuthApiService _api;
@@ -20,20 +19,28 @@ class AuthRepoImpl implements AuthRepository {
 
   @override
   Future<LoginEntity> register(
-    String email, String password, String firstName, String lastName) async {
-    final response = await _api.register(RegisterRequest(
-      email: email,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-    ));
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+  ) async {
+    final response = await _api.register(
+      RegisterRequest(
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      ),
+    );
     return response;
   }
 
   @override
   Future<LoginEntity> login(String email, String password) async {
-      final response = await _api.login(LoginRequest(email: email, password: password));
-      return response;
+    final response = await _api.login(
+      LoginRequest(email: email, password: password),
+    );
+    return response;
   }
 
   @override
@@ -43,7 +50,9 @@ class AuthRepoImpl implements AuthRepository {
 
   @override
   Future<AuthEntity> refresh(String refreshToken) async {
-    final response = await _api.refresh(AuthRefreshRequest(refreshToken: refreshToken));
+    final response = await _api.refresh(
+      AuthRefreshRequest(refreshToken: refreshToken),
+    );
     return response;
   }
 
@@ -54,9 +63,8 @@ class AuthRepoImpl implements AuthRepository {
 
   @override
   Future<void> resetPassword(String token, String newPassword) async {
-    return _api.resetPassword(ResetPasswordRequest(
-      token: token,
-      newPassword: newPassword,
-    ));
+    return _api.resetPassword(
+      ResetPasswordRequest(token: token, newPassword: newPassword),
+    );
   }
 }

@@ -10,7 +10,10 @@ class GetLeaderboardUseCase {
 
   GetLeaderboardUseCase(this._repository);
 
-  Future<Either<Failure, List<LeaderboardEntry>>> call(String? scope, String? jobId) async {
+  Future<Either<Failure, List<LeaderboardEntry>>> call(
+    String? scope,
+    String? jobId,
+  ) async {
     try {
       final result = await _repository.getLeaderboard(scope, jobId);
       return Right(result);

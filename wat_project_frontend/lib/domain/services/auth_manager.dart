@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wat_project_frontend/data/sources/api/auth_api_client.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/auth_refresh_request.dart';
 import 'package:wat_project_frontend/domain/models/auth_models.dart';
+
 class AuthSessionManager {
   final FlutterSecureStorage _storage;
   final AuthApiService _api;
@@ -19,11 +20,30 @@ class AuthSessionManager {
   AuthModel? get currentSession => sessionNotifier.value;
   String? get userId => _userId;
 
+  bool get isAdmin {
+    final session = currentSession;
+    if (session == null) return false;
+    final parts = session.token.split('.');
+    if (parts.length >= 2) {
+      try {
+        final payload = parts[1];
+        final normalized = base64.normalize(payload);
+        final decoded = utf8.decode(base64Decode(normalized));
+        final Map<String, dynamic> claims =
+            jsonDecode(decoded) as Map<String, dynamic>;
+        return claims['is_admin'] == true;
+      } catch (_) {}
+    }
+    return false;
+  }
+
   Future<void> initialize() async {
     final sessionJson = await _storage.read(key: _sessionKey);
     if (sessionJson != null) {
       try {
-        final session = AuthModel.fromJson(jsonDecode(sessionJson) as Map<String, dynamic>);
+        final session = AuthModel.fromJson(
+          jsonDecode(sessionJson) as Map<String, dynamic>,
+        );
         sessionNotifier.value = session;
         _userId = await _storage.read(key: _userIdKey);
       } catch (e) {
@@ -55,7 +75,7 @@ class AuthSessionManager {
     final response = await _api.refresh(
       AuthRefreshRequest(refreshToken: session.refreshToken),
     );
-    
+
     final newSession = response.toModel();
     await saveSession(newSession, _userId);
     return newSession;

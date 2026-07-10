@@ -29,10 +29,10 @@ void main() {
           "code": "validation_error",
           "message": "One or more fields failed validation.",
           "details": [
-            { "field": "email", "reason": "must be a valid email address" },
-            { "field": "password", "reason": "must be at least 8 characters" }
-          ]
-        }
+            {"field": "email", "reason": "must be a valid email address"},
+            {"field": "password", "reason": "must be at least 8 characters"},
+          ],
+        },
       };
 
       final apiError = ApiError.fromJson(json['error'] as Map<String, dynamic>);
@@ -44,42 +44,45 @@ void main() {
       expect(apiError.details[0].reason, 'must be a valid email address');
     });
 
-    test('ErrorInterceptor intercepts DioException and parses to ApiException', () {
-      final interceptor = ErrorInterceptor();
-      final handler = FakeErrorInterceptorHandler();
+    test(
+      'ErrorInterceptor intercepts DioException and parses to ApiException',
+      () {
+        final interceptor = ErrorInterceptor();
+        final handler = FakeErrorInterceptorHandler();
 
-      final requestOptions = RequestOptions(path: '/api/login');
-      final responseData = {
-        "error": {
-          "code": "validation_error",
-          "message": "One or more fields failed validation.",
-          "details": [
-            { "field": "email", "reason": "must be a valid email address" }
-          ]
-        }
-      };
-      
-      final dioException = DioException(
-        requestOptions: requestOptions,
-        response: Response(
+        final requestOptions = RequestOptions(path: '/api/login');
+        final responseData = {
+          "error": {
+            "code": "validation_error",
+            "message": "One or more fields failed validation.",
+            "details": [
+              {"field": "email", "reason": "must be a valid email address"},
+            ],
+          },
+        };
+
+        final dioException = DioException(
           requestOptions: requestOptions,
-          statusCode: 400,
-          data: responseData,
-        ),
-        type: DioExceptionType.badResponse,
-      );
+          response: Response(
+            requestOptions: requestOptions,
+            statusCode: 400,
+            data: responseData,
+          ),
+          type: DioExceptionType.badResponse,
+        );
 
-      interceptor.onError(dioException, handler);
+        interceptor.onError(dioException, handler);
 
-      expect(handler.rejectedError, isNotNull);
-      final finalError = handler.rejectedError!.error;
-      
-      expect(finalError, isA<ApiException>());
-      
-      final apiException = finalError as ApiException;
-      expect(apiException.statusCode, 400);
-      expect(apiException.apiError.code, 'validation_error');
-      expect(apiException.apiError.details.first.field, 'email');
-    });
+        expect(handler.rejectedError, isNotNull);
+        final finalError = handler.rejectedError!.error;
+
+        expect(finalError, isA<ApiException>());
+
+        final apiException = finalError as ApiException;
+        expect(apiException.statusCode, 400);
+        expect(apiException.apiError.code, 'validation_error');
+        expect(apiException.apiError.details.first.field, 'email');
+      },
+    );
   });
 }

@@ -16,7 +16,7 @@ class ApiError {
     this.details = const [],
   });
 
-  factory ApiError.fromJson(Map<String, dynamic> json) => _$ApiErrorFromJson(json);
+  factory ApiError.fromJson(Map<String, dynamic> json) =>
+      _$ApiErrorFromJson(json);
   Map<String, dynamic> toJson() => _$ApiErrorToJson(this);
-
 }

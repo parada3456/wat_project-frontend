@@ -18,10 +18,9 @@ class GetExpenseDetailUseCase {
       final transactionModel = result.transaction.toModel();
       final splitModels = splits.map((e) => e.toModel()).toList();
 
-      return Right(ExpenseDetailModel(
-        transaction: transactionModel,
-        splits: splitModels,
-      ));
+      return Right(
+        ExpenseDetailModel(transaction: transactionModel, splits: splitModels),
+      );
     } catch (e) {
       return Left(mapExceptionToFailure(e));
     }

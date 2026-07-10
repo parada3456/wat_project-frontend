@@ -27,6 +27,7 @@ class ReviewScoreModel {
     required this.overtimeAvailability,
   });
 
-  factory ReviewScoreModel.fromJson(Map<String, dynamic> json) => _$ReviewScoreModelFromJson(json);
+  factory ReviewScoreModel.fromJson(Map<String, dynamic> json) =>
+      _$ReviewScoreModelFromJson(json);
   Map<String, dynamic> toJson() => _$ReviewScoreModelToJson(this);
 }

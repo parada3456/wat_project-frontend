@@ -183,10 +183,12 @@ import 'package:wat_project_frontend/domain/usecases/mission/get_mission_detail_
     as _i350;
 import 'package:wat_project_frontend/domain/usecases/mission/join_mission_usecase.dart'
     as _i985;
+import 'package:wat_project_frontend/domain/usecases/mission/list_3_my_mission_usecase.dart'
+    as _i625;
 import 'package:wat_project_frontend/domain/usecases/mission/list_all_missions_usecase.dart'
     as _i749;
-import 'package:wat_project_frontend/domain/usecases/mission/list_user_missions_usecase.dart'
-    as _i1036;
+import 'package:wat_project_frontend/domain/usecases/mission/list_my_missions_usecase.dart'
+    as _i640;
 import 'package:wat_project_frontend/domain/usecases/mission/submit_mission_proof_usecase.dart'
     as _i166;
 import 'package:wat_project_frontend/domain/usecases/mission/toggle_task_usecase.dart'
@@ -444,11 +446,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i985.JoinMissionUseCase>(
       () => _i985.JoinMissionUseCase(gh<_i448.MissionRepository>()),
     );
+    gh.factory<_i625.ListMyMissionsUseCase>(
+      () => _i625.ListMyMissionsUseCase(gh<_i448.MissionRepository>()),
+    );
     gh.factory<_i749.ListAllMissionsUseCase>(
       () => _i749.ListAllMissionsUseCase(gh<_i448.MissionRepository>()),
     );
-    gh.factory<_i1036.ListUserMissionsUseCase>(
-      () => _i1036.ListUserMissionsUseCase(gh<_i448.MissionRepository>()),
+    gh.factory<_i640.ListMyMissionsUseCase>(
+      () => _i640.ListMyMissionsUseCase(gh<_i448.MissionRepository>()),
     );
     gh.factory<_i166.SubmitMissionProofUseCase>(
       () => _i166.SubmitMissionProofUseCase(gh<_i448.MissionRepository>()),
@@ -551,18 +556,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i349.AuthSessionManager>(),
       ),
     );
-    gh.factory<_i928.MissionTaskBloc>(
-      () => blocModule.missionTaskBloc(
-        gh<_i936.ListUserMissionsUseCase>(),
-        gh<_i936.GetMissionDetailUseCase>(),
-        gh<_i936.SubmitMissionProofUseCase>(),
-        gh<_i936.ToggleTaskUseCase>(),
-        gh<_i936.GetExploreMissionUseCase>(),
-        gh<_i936.JoinMissionUseCase>(),
-        gh<_i624.GetProfileUseCase>(),
-        gh<_i936.ListAllMissionsUseCase>(),
-      ),
-    );
     gh.factory<_i234.AddJobToCartUseCase>(
       () => _i234.AddJobToCartUseCase(gh<_i39.JobRepository>()),
     );
@@ -621,6 +614,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i421.LogoutUseCase>(),
         gh<_i349.AuthSessionManager>(),
         gh<_i455.UserRepository>(),
+      ),
+    );
+    gh.factory<_i928.MissionTaskBloc>(
+      () => blocModule.missionTaskBloc(
+        gh<_i936.ListMyMissionsUseCase>(),
+        gh<_i936.GetMissionDetailUseCase>(),
+        gh<_i936.SubmitMissionProofUseCase>(),
+        gh<_i936.ToggleTaskUseCase>(),
+        gh<_i936.GetExploreMissionUseCase>(),
+        gh<_i936.JoinMissionUseCase>(),
+        gh<_i624.GetProfileUseCase>(),
+        gh<_i936.ListAllMissionsUseCase>(),
       ),
     );
     gh.factory<_i459.SocialRadarBloc>(

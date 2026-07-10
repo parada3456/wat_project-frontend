@@ -1,85 +1,45 @@
 import 'package:injectable/injectable.dart';
+import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/auth_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/auth_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/auth_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/auth_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/auth_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/user_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 
 // Module 2 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 
 // Module 3 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
 
 // Module 4 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
 
 // Module 5 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
 
 // Module 6 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/social_radar/bloc/social_radar_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart';
 
 // Module 7 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/notifications/bloc/notifications_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/notification_usecases.dart';
 
 @module
 abstract class BlocModule {
   @injectable
-  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) => HomeBloc(getHomeDataUseCase);
+  HomeBloc homeBloc(GetHomeDataUseCase getHomeDataUseCase) =>
+      HomeBloc(getHomeDataUseCase);
 
   @injectable
   LoginBloc loginBloc(
@@ -90,16 +50,15 @@ abstract class BlocModule {
     LogoutUseCase logoutUseCase,
     AuthSessionManager authManager,
     UserRepository userRepository,
-  ) =>
-      LoginBloc(
-        loginUseCase,
-        registerUseCase,
-        forgotPasswordUseCase,
-        resetPasswordUseCase,
-        logoutUseCase,
-        authManager,
-        userRepository,
-      );
+  ) => LoginBloc(
+    loginUseCase,
+    registerUseCase,
+    forgotPasswordUseCase,
+    resetPasswordUseCase,
+    logoutUseCase,
+    authManager,
+    userRepository,
+  );
 
   @injectable
   ProfileBloc profileBloc(
@@ -109,15 +68,14 @@ abstract class BlocModule {
     GetCreditScoreHistoryUseCase getCreditScoreHistoryUseCase,
     UpdateLocationUseCase updateLocationUseCase,
     DeleteAccountUseCase deleteAccountUseCase,
-  ) =>
-      ProfileBloc(
-        getProfileUseCase,
-        updateProfileUseCase,
-        getBadgesUseCase,
-        getCreditScoreHistoryUseCase,
-        updateLocationUseCase,
-        deleteAccountUseCase,
-      );
+  ) => ProfileBloc(
+    getProfileUseCase,
+    updateProfileUseCase,
+    getBadgesUseCase,
+    getCreditScoreHistoryUseCase,
+    updateLocationUseCase,
+    deleteAccountUseCase,
+  );
 
   @injectable
   AdminDashboardBloc adminDashboardBloc(
@@ -127,15 +85,14 @@ abstract class BlocModule {
     GetAdminUsersUseCase getAdminUsersUseCase,
     GetAdminUserDetailUseCase getAdminUserDetailUseCase,
     AdjustPointsUseCase adjustPointsUseCase,
-  ) =>
-      AdminDashboardBloc(
-        getAdminStatsUseCase,
-        listPendingVerificationsUseCase,
-        verifyAdminMissionUseCase,
-        getAdminUsersUseCase,
-        getAdminUserDetailUseCase,
-        adjustPointsUseCase,
-      );
+  ) => AdminDashboardBloc(
+    getAdminStatsUseCase,
+    listPendingVerificationsUseCase,
+    verifyAdminMissionUseCase,
+    getAdminUsersUseCase,
+    getAdminUserDetailUseCase,
+    adjustPointsUseCase,
+  );
 
   @injectable
   ExpenseSharingBloc expenseSharingBloc(
@@ -146,16 +103,15 @@ abstract class BlocModule {
     ListPendingSplitsUseCase listPendingSplitsUseCase,
     PayExpenseSplitUseCase payExpenseSplitUseCase,
     ApproveExpenseSplitPaymentUseCase approveExpenseSplitPaymentUseCase,
-  ) =>
-      ExpenseSharingBloc(
-        listExpensesUseCase,
-        createExpenseUseCase,
-        getExpenseDetailUseCase,
-        deleteExpenseUseCase,
-        listPendingSplitsUseCase,
-        payExpenseSplitUseCase,
-        approveExpenseSplitPaymentUseCase,
-      );
+  ) => ExpenseSharingBloc(
+    listExpensesUseCase,
+    createExpenseUseCase,
+    getExpenseDetailUseCase,
+    deleteExpenseUseCase,
+    listPendingSplitsUseCase,
+    payExpenseSplitUseCase,
+    approveExpenseSplitPaymentUseCase,
+  );
 
   @injectable
   JobMarketBloc jobMarketBloc(
@@ -166,20 +122,19 @@ abstract class BlocModule {
     RemoveJobFromCartUseCase removeJobFromCartUseCase,
     CreateJobReviewUseCase createJobReviewUseCase,
     ListApplicationsUseCase listApplicationsUseCase,
-  ) =>
-      JobMarketBloc(
-        listJobsUseCase: listJobsUseCase,
-        getJobDetailUseCase: getJobDetailUseCase,
-        addJobToCartUseCase: addJobToCartUseCase,
-        listCartItemsUseCase: listCartItemsUseCase,
-        removeJobFromCartUseCase: removeJobFromCartUseCase,
-        createJobReviewUseCase: createJobReviewUseCase,
-        listApplicationsUseCase: listApplicationsUseCase,
-      );
+  ) => JobMarketBloc(
+    listJobsUseCase: listJobsUseCase,
+    getJobDetailUseCase: getJobDetailUseCase,
+    addJobToCartUseCase: addJobToCartUseCase,
+    listCartItemsUseCase: listCartItemsUseCase,
+    removeJobFromCartUseCase: removeJobFromCartUseCase,
+    createJobReviewUseCase: createJobReviewUseCase,
+    listApplicationsUseCase: listApplicationsUseCase,
+  );
 
   @injectable
   MissionTaskBloc missionTaskBloc(
-    ListUserMissionsUseCase listAvailableMissionsUseCase,
+    ListMyMissionsUseCase listMyMissionsUseCase,
     GetMissionDetailUseCase getMissionDetailUseCase,
     SubmitMissionProofUseCase submitMissionProofUseCase,
     ToggleTaskUseCase toggleTaskUseCase,
@@ -187,23 +142,21 @@ abstract class BlocModule {
     JoinMissionUseCase joinMissionUseCase,
     GetProfileUseCase getProfileUseCase,
     ListAllMissionsUseCase listAllMissionsUseCase,
-  ) =>
-      MissionTaskBloc(
-        listAvailableMissionsUseCase,
-        getMissionDetailUseCase,
-        submitMissionProofUseCase,
-        toggleTaskUseCase,
-        getExploreMissionUseCase,
-        joinMissionUseCase,
-        getProfileUseCase,
-        listAllMissionsUseCase,
-      );
+  ) => MissionTaskBloc(
+    listMyMissionsUseCase,
+    getMissionDetailUseCase,
+    submitMissionProofUseCase,
+    toggleTaskUseCase,
+    getExploreMissionUseCase,
+    joinMissionUseCase,
+    getProfileUseCase,
+    listAllMissionsUseCase,
+  );
 
   @injectable
   CreateMissionBloc createMissionBloc(
     CreateMissionUseCase createMissionUseCase,
-  ) =>
-      CreateMissionBloc(createMissionUseCase);
+  ) => CreateMissionBloc(createMissionUseCase);
 
   @injectable
   JourneyGamificationBloc journeyGamificationBloc(
@@ -211,13 +164,12 @@ abstract class BlocModule {
     AdvancePhaseUseCase advancePhaseUseCase,
     GetJourneyHistoryUseCase getJourneyHistoryUseCase,
     GetLeaderboardUseCase getLeaderboardUseCase,
-  ) =>
-      JourneyGamificationBloc(
-        listJourneyPhasesUseCase,
-        advancePhaseUseCase,
-        getJourneyHistoryUseCase,
-        getLeaderboardUseCase,
-      );
+  ) => JourneyGamificationBloc(
+    listJourneyPhasesUseCase,
+    advancePhaseUseCase,
+    getJourneyHistoryUseCase,
+    getLeaderboardUseCase,
+  );
 
   @injectable
   SocialRadarBloc socialRadarBloc(
@@ -227,15 +179,14 @@ abstract class BlocModule {
     ListFriendsUseCase listFriendsUseCase,
     RemoveFriendUseCase removeFriendUseCase,
     GetRadarUsersUseCase getRadarUsersUseCase,
-  ) =>
-      SocialRadarBloc(
-        sendFriendRequestUseCase,
-        listPendingRequestsUseCase,
-        respondToFriendRequestUseCase,
-        listFriendsUseCase,
-        removeFriendUseCase,
-        getRadarUsersUseCase,
-      );
+  ) => SocialRadarBloc(
+    sendFriendRequestUseCase,
+    listPendingRequestsUseCase,
+    respondToFriendRequestUseCase,
+    listFriendsUseCase,
+    removeFriendUseCase,
+    getRadarUsersUseCase,
+  );
 
   @injectable
   NotificationsBloc notificationsBloc(
@@ -243,11 +194,10 @@ abstract class BlocModule {
     MarkNotificationReadUseCase markNotificationReadUseCase,
     MarkAllNotificationsReadUseCase markAllNotificationsReadUseCase,
     DeleteNotificationUseCase deleteNotificationUseCase,
-  ) =>
-      NotificationsBloc(
-        listNotificationsUseCase,
-        markNotificationReadUseCase,
-        markAllNotificationsReadUseCase,
-        deleteNotificationUseCase,
-      );
+  ) => NotificationsBloc(
+    listNotificationsUseCase,
+    markNotificationReadUseCase,
+    markAllNotificationsReadUseCase,
+    deleteNotificationUseCase,
+  );
 }

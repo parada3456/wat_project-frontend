@@ -1,12 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum RadarVisibility {
-  @JsonValue('show_anonymous')                                                                                                
-  showAnonymous,                                                                                                              
-  @JsonValue('show_friends')                                                                                                  
-  showFriends,                                                                                                                
-  @JsonValue('hidden')                                                                                                        
-  hidden,                                                                                                                     
+  @JsonValue('show_anonymous')
+  showAnonymous,
+  @JsonValue('show_friends')
+  showFriends,
+  @JsonValue('hidden')
+  hidden,
 }
 
 class ProfileModel {
@@ -49,14 +49,14 @@ class ProfileModel {
 
   @override
   int get hashCode => Object.hash(
-        profileId,
-        userId,
-        phoneNumber,
-        bio,
-        avatarUrl,
-        radarVisibility,
-        currentCoordinates,
-        locationUpdatedAt,
-        updatedAt,
-      );
+    profileId,
+    userId,
+    phoneNumber,
+    bio,
+    avatarUrl,
+    radarVisibility,
+    currentCoordinates,
+    locationUpdatedAt,
+    updatedAt,
+  );
 }

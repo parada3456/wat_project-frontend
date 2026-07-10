@@ -5,8 +5,5 @@ class ExpenseDetailModel {
   final ExpenseTransactionModel transaction;
   final List<ExpenseSplitModel> splits;
 
-  const ExpenseDetailModel({
-    required this.transaction,
-    required this.splits,
-  });
+  const ExpenseDetailModel({required this.transaction, required this.splits});
 }

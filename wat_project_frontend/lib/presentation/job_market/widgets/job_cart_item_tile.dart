@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class JobCartItemTile extends StatelessWidget {
   final String title;
   final String company;
@@ -32,7 +33,11 @@ class JobCartItemTile extends StatelessWidget {
               color: AppColors.surfaceAlt,
               borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
             ),
-            child: const Icon(Icons.business, color: AppColors.primary, size: 20),
+            child: const Icon(
+              Icons.business,
+              color: AppColors.primary,
+              size: 20,
+            ),
           ),
           const SizedBox(width: AppDimension.space16),
           Expanded(
@@ -60,7 +65,9 @@ class JobCartItemTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: isApplied ? Colors.green.withOpacity(0.1) : AppColors.primary.withOpacity(0.1),
+              color: isApplied
+                  ? Colors.green.withOpacity(0.1)
+                  : AppColors.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -73,7 +80,11 @@ class JobCartItemTile extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.delete_outline, color: AppColors.error, size: 20),
+            icon: const Icon(
+              Icons.delete_outline,
+              color: AppColors.error,
+              size: 20,
+            ),
             onPressed: onDelete,
           ),
         ],

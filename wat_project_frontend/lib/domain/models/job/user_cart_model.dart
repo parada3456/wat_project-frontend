@@ -49,12 +49,6 @@ class UserCartModel {
           updatedAt == other.updatedAt;
 
   @override
-  int get hashCode => Object.hash(
-        cartId,
-        userId,
-        jobId,
-        status,
-        createdAt,
-        updatedAt,
-      );
+  int get hashCode =>
+      Object.hash(cartId, userId, jobId, status, createdAt, updatedAt);
 }

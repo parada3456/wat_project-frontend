@@ -7,11 +7,7 @@ class CreateTaskRequest {
   final String title;
   final String? description;
 
-
-  CreateTaskRequest({
-    required this.title, 
-    this.description
-  });
+  CreateTaskRequest({required this.title, this.description});
 
   factory CreateTaskRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateTaskRequestFromJson(json);

@@ -16,7 +16,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
   final _amountController = TextEditingController();
   final List<TextEditingController> _memberControllers = [
     TextEditingController(),
-    TextEditingController()
+    TextEditingController(),
   ];
   final List<bool> _memberSelected = [true, true];
 
@@ -67,7 +67,10 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                 controller: _amountController,
                 suffixIcon: const Padding(
                   padding: EdgeInsets.all(12.0),
-                  child: Text('\$', style: TextStyle(fontWeight: FontWeight.w700)),
+                  child: Text(
+                    '\$',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
               const SizedBox(height: AppDimension.space32),
@@ -84,13 +87,15 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                 name: 'Alex Smith',
                 amountController: _memberControllers[0],
                 isSelected: _memberSelected[0],
-                onSelected: (val) => setState(() => _memberSelected[0] = val ?? false),
+                onSelected: (val) =>
+                    setState(() => _memberSelected[0] = val ?? false),
               ),
               SplitMemberInputRow(
                 name: 'Maria Garcia',
                 amountController: _memberControllers[1],
                 isSelected: _memberSelected[1],
-                onSelected: (val) => setState(() => _memberSelected[1] = val ?? false),
+                onSelected: (val) =>
+                    setState(() => _memberSelected[1] = val ?? false),
               ),
               const SizedBox(height: AppDimension.space32),
               WatButton(

@@ -7,6 +7,7 @@ import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -58,11 +59,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             listener: (context, state) {
               state.status.whenOrNull(
                 loadFailed: (message, _) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(message ?? 'An error occurred'),
-                      backgroundColor: Colors.red,
-                    ),
+                  AppPopup.show<void>(
+                    context: context,
+                    title: 'Update Failed',
+                    message: message ?? 'An error occurred',
+                    type: AppPopupType.error,
+                    buttons: [
+                      AppPopupButton(
+                        label: 'Dismiss',
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
                   );
                   setState(() {
                     _wasSaving = false;
@@ -70,22 +77,34 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 },
                 loadSuccess: (message) {
                   if (state.profile != null && !_initialized) {
-                    _firstNameController.text = state.profile!.user.firstName ?? '';
-                    _lastNameController.text = state.profile!.user.lastName ?? '';
+                    _firstNameController.text =
+                        state.profile!.user.firstName ?? '';
+                    _lastNameController.text =
+                        state.profile!.user.lastName ?? '';
                     _bioController.text = state.profile!.profile.bio ?? '';
-                    _avatarController.text = state.profile!.profile.avatarUrl ?? '';
+                    _avatarController.text =
+                        state.profile!.profile.avatarUrl ?? '';
                     setState(() {
                       _initialized = true;
                     });
                   }
                   if (_wasSaving) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message ?? 'Profile successfully updated!'),
-                        backgroundColor: Colors.green,
-                      ),
+                    AppPopup.show<void>(
+                      context: context,
+                      title: 'Success',
+                      message: message ?? 'Profile successfully updated!',
+                      type: AppPopupType.success,
+                      buttons: [
+                        AppPopupButton(
+                          label: 'OK',
+                          isPrimary: true,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            context.pop();
+                          },
+                        ),
+                      ],
                     );
-                    context.pop();
                   }
                 },
               );
@@ -104,7 +123,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               final isLoading = state.status is UILoading;
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimension.space32,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -121,7 +142,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               shape: BoxShape.circle,
                               image: _avatarController.text.isNotEmpty
                                   ? DecorationImage(
-                                      image: NetworkImage(_avatarController.text),
+                                      image: NetworkImage(
+                                        _avatarController.text,
+                                      ),
                                       fit: BoxFit.cover,
                                     )
                                   : null,
@@ -138,7 +161,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             bottom: 0,
                             right: 0,
                             child: Container(
-                              padding: const EdgeInsets.all(AppDimension.space8),
+                              padding: const EdgeInsets.all(
+                                AppDimension.space8,
+                              ),
                               decoration: const BoxDecoration(
                                 color: AppColors.primary,
                                 shape: BoxShape.circle,
@@ -191,13 +216,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           _wasSaving = true;
                         });
                         context.read<ProfileBloc>().add(
-                              UpdateProfileSubmittedEvent(
-                                firstName: _firstNameController.text.trim(),
-                                lastName: _lastNameController.text.trim(),
-                                bio: _bioController.text.trim(),
-                                avatarUrl: _avatarController.text.trim(),
-                              ),
-                            );
+                          UpdateProfileSubmittedEvent(
+                            firstName: _firstNameController.text.trim(),
+                            lastName: _lastNameController.text.trim(),
+                            bio: _bioController.text.trim(),
+                            avatarUrl: _avatarController.text.trim(),
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: AppDimension.space32),

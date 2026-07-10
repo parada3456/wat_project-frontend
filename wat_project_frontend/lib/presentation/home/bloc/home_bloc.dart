@@ -20,17 +20,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(status: const UIStatus.loading()));
-    
+
     final result = await _getHomeDataUseCase();
-    
+
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: UIStatus.loadFailed(message: failure.message),
-      )),
-      (homeData) => emit(state.copyWith(
-        status: const UIStatus.loadSuccess(),
-        homeData: homeData,
-      )),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (homeData) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(),
+          homeData: homeData,
+        ),
+      ),
     );
   }
 }

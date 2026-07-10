@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class SplitMemberInputRow extends StatelessWidget {
   final String name;
   final TextEditingController amountController;
@@ -47,7 +48,9 @@ class SplitMemberInputRow extends StatelessWidget {
                   prefixText: '\$ ',
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                    borderRadius: BorderRadius.circular(
+                      AppDimension.radiusSmall,
+                    ),
                   ),
                 ),
                 style: const TextStyle(fontSize: 14),

@@ -33,7 +33,8 @@ class BadgeModel {
     required this.createdAt,
   });
 
-  factory BadgeModel.fromJson(Map<String, dynamic> json) => _$BadgeModelFromJson(json);
+  factory BadgeModel.fromJson(Map<String, dynamic> json) =>
+      _$BadgeModelFromJson(json);
   Map<String, dynamic> toJson() => _$BadgeModelToJson(this);
 
   @override
@@ -49,12 +50,6 @@ class BadgeModel {
           createdAt == other.createdAt;
 
   @override
-  int get hashCode => Object.hash(
-        badgeId,
-        title,
-        description,
-        triggerType,
-        iconUrl,
-        createdAt,
-      );
+  int get hashCode =>
+      Object.hash(badgeId, title, description, triggerType, iconUrl, createdAt);
 }

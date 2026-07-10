@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class FriendRequestActionTile extends StatelessWidget {
   final String name;
   final VoidCallback onAccept;
@@ -41,11 +42,17 @@ class FriendRequestActionTile extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+                icon: const Icon(
+                  Icons.check_circle_outline,
+                  color: Colors.green,
+                ),
                 onPressed: onAccept,
               ),
               IconButton(
-                icon: const Icon(Icons.cancel_outlined, color: AppColors.textSecondary),
+                icon: const Icon(
+                  Icons.cancel_outlined,
+                  color: AppColors.textSecondary,
+                ),
                 onPressed: onDecline,
               ),
             ],

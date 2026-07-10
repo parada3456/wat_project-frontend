@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class PaymentSplitStatusTile extends StatelessWidget {
   final String name;
   final double amount;

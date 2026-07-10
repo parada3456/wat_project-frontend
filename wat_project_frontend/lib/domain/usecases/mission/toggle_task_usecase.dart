@@ -9,7 +9,11 @@ class ToggleTaskUseCase {
 
   ToggleTaskUseCase(this._repository);
 
-  Future<Either<Failure, void>> call(String userMissionId, String taskId, bool completed) async {
+  Future<Either<Failure, void>> call(
+    String userMissionId,
+    String taskId,
+    bool completed,
+  ) async {
     try {
       await _repository.toggleTask(userMissionId, taskId, completed);
       return const Right(null);

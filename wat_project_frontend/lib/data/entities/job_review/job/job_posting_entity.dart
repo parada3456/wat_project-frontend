@@ -58,26 +58,27 @@ class JobPostingEntity {
     required this.updatedAt,
   });
 
-  factory JobPostingEntity.fromJson(Map<String, dynamic> json) => _$JobPostingEntityFromJson(json);
+  factory JobPostingEntity.fromJson(Map<String, dynamic> json) =>
+      _$JobPostingEntityFromJson(json);
   Map<String, dynamic> toJson() => _$JobPostingEntityToJson(this);
 
   JobPostingModel toModel() => JobPostingModel(
-        jobId: jobId,
-        agencyName: agencyName,
-        employerTitle: employerTitle,
-        position: position,
-        positionType: positionType,
-        locationCity: locationCity,
-        locationState: locationState,
-        groupLocation: groupLocation,
-        usSponsor: usSponsor,
-        salaryRangeMin: salaryRangeMin,
-        salaryRangeMax: salaryRangeMax,
-        availableSlots: availableSlots,
-        description: description,
-        sourceUrl: sourceUrl,
-        scrapeAt: scrapeAt,
-        postedAt: postedAt,
-        updatedAt: updatedAt,
-      );
+    jobId: jobId,
+    agencyName: agencyName,
+    employerTitle: employerTitle,
+    position: position,
+    positionType: positionType,
+    locationCity: locationCity,
+    locationState: locationState,
+    groupLocation: groupLocation,
+    usSponsor: usSponsor,
+    salaryRangeMin: salaryRangeMin,
+    salaryRangeMax: salaryRangeMax,
+    availableSlots: availableSlots,
+    description: description,
+    sourceUrl: sourceUrl,
+    scrapeAt: scrapeAt,
+    postedAt: postedAt,
+    updatedAt: updatedAt,
+  );
 }

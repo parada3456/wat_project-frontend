@@ -5,16 +5,15 @@ part 'journey_phase_entity.g.dart';
 
 @JsonSerializable()
 class JourneyPhaseEntity {
-  @JsonKey(name: 'PhaseId')
+  @JsonKey(name: 'phase_id')
   final String phaseId;
-  @JsonKey(name: 'PhaseNumber')
+  @JsonKey(name: 'phase_number')
   final int phaseNumber;
-  @JsonKey(name: 'title')
   final String title;
   final String? description;
-  @JsonKey(name: 'CreatedAt')
+  @JsonKey(name: 'created_at')
   final DateTime createdAt;
-  @JsonKey(name: 'UpdatedAt')
+  @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
   JourneyPhaseEntity({
@@ -30,11 +29,11 @@ class JourneyPhaseEntity {
   Map<String, dynamic> toJson() => _$JourneyPhaseEntityToJson(this);
 
   JourneyPhaseModel toModel() => JourneyPhaseModel(
-        phaseId: phaseId,
-        phaseNumber: phaseNumber,
-        title: title,
-        description: description,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
+    phaseId: phaseId,
+    phaseNumber: phaseNumber,
+    title: title,
+    description: description,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+  );
 }

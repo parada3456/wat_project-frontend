@@ -6,7 +6,8 @@ import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart'
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_event.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_state.dart';
 
-class JourneyGamificationBloc extends Bloc<JourneyGamificationEvent, JourneyGamificationState> {
+class JourneyGamificationBloc
+    extends Bloc<JourneyGamificationEvent, JourneyGamificationState> {
   final ListJourneyPhasesUseCase _listJourneyPhasesUseCase;
   final AdvancePhaseUseCase _advancePhaseUseCase;
   final GetJourneyHistoryUseCase _getJourneyHistoryUseCase;

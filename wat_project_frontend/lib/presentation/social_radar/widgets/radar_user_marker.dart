@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+
 class RadarUserMarker extends StatelessWidget {
   final String name;
   final String? avatarUrl;
 
-  const RadarUserMarker({
-    super.key,
-    required this.name,
-    this.avatarUrl,
-  });
+  const RadarUserMarker({super.key, required this.name, this.avatarUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +18,7 @@ class RadarUserMarker extends StatelessWidget {
             color: AppColors.background,
             borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 4,
-              ),
+              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
             ],
           ),
           child: Text(

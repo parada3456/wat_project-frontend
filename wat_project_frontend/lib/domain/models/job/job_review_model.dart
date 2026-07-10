@@ -69,21 +69,21 @@ class JobReviewModel {
 
   @override
   int get hashCode => Object.hashAll([
-        reviewId,
-        jobId,
-        userId,
-        ratingStars,
-        reviewText,
-        tipsForNextGeneration,
-        scoreAgency,
-        scoreJob,
-        scoreCoworkers,
-        scoreTown,
-        scoreHours,
-        scoreHousing,
-        scoreSecondJobFeasibility,
-        scoreOvertimeAvailability,
-        createdAt,
-        updatedAt,
-      ]);
+    reviewId,
+    jobId,
+    userId,
+    ratingStars,
+    reviewText,
+    tipsForNextGeneration,
+    scoreAgency,
+    scoreJob,
+    scoreCoworkers,
+    scoreTown,
+    scoreHours,
+    scoreHousing,
+    scoreSecondJobFeasibility,
+    scoreOvertimeAvailability,
+    createdAt,
+    updatedAt,
+  ]);
 }
