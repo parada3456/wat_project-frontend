@@ -11,6 +11,8 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
   final RemoveJobFromCartUseCase _removeJobFromCartUseCase;
   final CreateJobReviewUseCase _createJobReviewUseCase;
   final ListApplicationsUseCase _listApplicationsUseCase;
+  final ListJobReviewsUseCase _listJobReviewsUseCase;
+  final UpdateCartStatusUseCase _updateCartStatusUseCase;
 
   JobMarketBloc({
     required ListJobsUseCase listJobsUseCase,
@@ -20,6 +22,8 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     required RemoveJobFromCartUseCase removeJobFromCartUseCase,
     required CreateJobReviewUseCase createJobReviewUseCase,
     required ListApplicationsUseCase listApplicationsUseCase,
+    required ListJobReviewsUseCase listJobReviewsUseCase,
+    required UpdateCartStatusUseCase updateCartStatusUseCase,
   }) : _listJobsUseCase = listJobsUseCase,
        _getJobDetailUseCase = getJobDetailUseCase,
        _addJobToCartUseCase = addJobToCartUseCase,
@@ -27,6 +31,8 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
        _removeJobFromCartUseCase = removeJobFromCartUseCase,
        _createJobReviewUseCase = createJobReviewUseCase,
        _listApplicationsUseCase = listApplicationsUseCase,
+       _listJobReviewsUseCase = listJobReviewsUseCase,
+       _updateCartStatusUseCase = updateCartStatusUseCase,
        super(const JobMarketInitial()) {
     on<ListJobsEvent>(_onListJobs);
     on<GetJobDetailEvent>(_onGetJobDetail);
@@ -35,6 +41,8 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     on<RemoveJobFromCartEvent>(_onRemoveJobFromCart);
     on<CreateJobReviewEvent>(_onCreateJobReview);
     on<ListApplicationsEvent>(_onListApplications);
+    on<ListJobReviewsEvent>(_onListJobReviews);
+    on<UpdateCartStatusEvent>(_onUpdateCartStatus);
   }
 
   Future<void> _onListJobs(
@@ -118,6 +126,29 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     result.fold(
       (failure) => emit(JobMarketFailure(failure.message)),
       (applications) => emit(ListApplicationsSuccess(applications)),
+    );
+  }
+
+  Future<void> _onListJobReviews(
+    ListJobReviewsEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
+    emit(const JobMarketLoading());
+    final result = await _listJobReviewsUseCase(event.jobId);
+    result.fold(
+      (failure) => emit(JobMarketFailure(failure.message)),
+      (reviews) => emit(ListJobReviewsSuccess(reviews)),
+    );
+  }
+
+  Future<void> _onUpdateCartStatus(
+    UpdateCartStatusEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
+    final result = await _updateCartStatusUseCase(event.cartId, event.status);
+    result.fold(
+      (failure) => emit(JobMarketFailure(failure.message)),
+      (_) => emit(const UpdateCartStatusSuccess()),
     );
   }
 }

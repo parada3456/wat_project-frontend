@@ -36,3 +36,14 @@ class CreateJobReviewEvent extends JobMarketEvent {
 class ListApplicationsEvent extends JobMarketEvent {
   const ListApplicationsEvent();
 }
+
+class ListJobReviewsEvent extends JobMarketEvent {
+  final String? jobId;
+  const ListJobReviewsEvent({this.jobId});
+}
+
+class UpdateCartStatusEvent extends JobMarketEvent {
+  final String cartId;
+  final String status;
+  const UpdateCartStatusEvent({required this.cartId, required this.status});
+}
