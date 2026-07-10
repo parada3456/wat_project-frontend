@@ -6,6 +6,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_m
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_task_request.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
@@ -53,7 +54,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
   static const List<String> _verificationTypes = ['none', 'upload', 'admin'];
   static const List<String> _dueDateTypes = ['fixed', 'relative'];
 
-  static const List<Map<String, String>> _phases = [
+  List<Map<String, String>> _phases = [
     {'id': 'phase-1', 'name': 'Phase 1: Pre-Departure Prep'},
     {'id': 'phase-2', 'name': 'Phase 2: Arrival & Onboarding'},
     {'id': 'phase-3', 'name': 'Phase 3: Work Period'},
@@ -68,6 +69,30 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
       _pointsController.text = '100';
       _isMandatory = false;
     }
+    _loadPhases();
+  }
+
+  Future<void> _loadPhases() async {
+    try {
+      final usecase = getIt<ListJourneyPhasesUseCase>();
+      final result = await usecase();
+      result.fold(
+        (failure) {},
+        (phases) {
+          if (phases.isNotEmpty && mounted) {
+            setState(() {
+              _phases = phases.map((p) => {
+                'id': p.phaseId,
+                'name': p.title,
+              }).toList();
+              if (!_phases.any((p) => p['id'] == _selectedPhaseId)) {
+                _selectedPhaseId = _phases.first['id']!;
+              }
+            });
+          }
+        },
+      );
+    } catch (_) {}
   }
 
   @override
