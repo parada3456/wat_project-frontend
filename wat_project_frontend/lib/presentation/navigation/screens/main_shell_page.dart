@@ -13,12 +13,14 @@ class MainShellPage extends StatelessWidget {
     final String location = GoRouterState.of(context).matchedLocation;
     int currentIndex = 0;
 
-    if (location.startsWith('/expenses')) {
+    if (location.startsWith('/journey')) {
       currentIndex = 1;
-    } else if (location.startsWith('/jobs')) {
+    } else if (location.startsWith('/expenses')) {
       currentIndex = 2;
-    } else if (location.startsWith('/profile')) {
+    } else if (location.startsWith('/jobs')) {
       currentIndex = 3;
+    } else if (location.startsWith('/profile')) {
+      currentIndex = 4;
     }
 
     return Scaffold(
@@ -33,12 +35,15 @@ class MainShellPage extends StatelessWidget {
               context.go('/home');
               break;
             case 1:
-              context.go('/expenses');
+              context.go('/journey');
               break;
             case 2:
-              context.go('/jobs');
+              context.go('/expenses');
               break;
             case 3:
+              context.go('/jobs');
+              break;
+            case 4:
               context.go('/profile');
               break;
           }

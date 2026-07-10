@@ -74,6 +74,10 @@ class AppRouter {
         routes: [
           GoRoute(path: '/home', builder: (context, state) => const HomePage()),
           GoRoute(
+            path: '/journey',
+            builder: (context, state) => const JourneyTimelinePage(),
+          ),
+          GoRoute(
             path: '/expenses',
             builder: (context, state) => const ExpenseHistoryPage(),
           ),
@@ -121,10 +125,6 @@ class AppRouter {
       GoRoute(
         path: '/missions/create',
         builder: (context, state) => const CreateMissionPage(),
-      ),
-      GoRoute(
-        path: '/journey',
-        builder: (context, state) => const JourneyTimelinePage(),
       ),
       GoRoute(
         path: '/leaderboard',
