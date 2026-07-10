@@ -50,12 +50,14 @@ class UserAccountEntity {
   @JsonKey(name: 'user_id')
   final String userId;
   final String email;
-  @JsonKey(name: 'profile_id')
-  final String? profileId;
+  @JsonKey(name: 'username')
+  final String username;
   @JsonKey(name: 'first_name')
   final String? firstName;
   @JsonKey(name: 'last_name')
   final String? lastName;
+  @JsonKey(name: 'profile_id')
+  final String? profileId;
   @JsonKey(name: 'phone_number')
   final String? phoneNumber;
   final String? bio;
@@ -89,6 +91,7 @@ class UserAccountEntity {
     required this.userId,
     required this.email,
     this.currentPhaseId,
+    required this.username,
     this.totalLifetimePoints,
     this.currentPhasePoints,
     this.missionStreak,
@@ -115,6 +118,7 @@ class UserAccountEntity {
   UserModel toModel() => UserModel(
     id: userId,
     email: email,
+    username: username,
     firstName: firstName,
     lastName: lastName,
     currentPhaseId: currentPhaseId,

@@ -1,6 +1,7 @@
 class UserModel {
   final String id;
   final String email;
+  final String username;
   final String? firstName;
   final String? lastName;
   final String? currentPhaseId;
@@ -15,6 +16,7 @@ class UserModel {
   const UserModel({
     required this.id,
     required this.email,
+    required this.username,
     this.firstName,
     this.lastName,
     this.currentPhaseId,
