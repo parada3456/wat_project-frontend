@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/login_header.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
@@ -22,6 +23,7 @@ class _LoginViewState extends State<LoginView> {
 
   String? _emailError;
   String? _passwordError;
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -152,6 +154,9 @@ class _LoginViewState extends State<LoginView> {
                       hint: 'username@email.com',
                       controller: _emailController,
                       errorText: _getError(state, 'email'),
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      keyboardType: TextInputType.emailAddress,
                       onChanged: (_) {
                         if (_emailError != null) {
                           setState(() => _emailError = null);
@@ -163,8 +168,17 @@ class _LoginViewState extends State<LoginView> {
                       label: 'Password',
                       hint: 'Enter your password',
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: _obscurePassword,
+                      autocorrect: false,
+                      enableSuggestions: false,
                       errorText: _getError(state, 'password'),
+                      suffixIcon: GestureDetector(
+                        onTap: () => setState(() => _obscurePassword = !_obscurePassword),
+                        child: Icon(
+                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                       onChanged: (_) {
                         if (_passwordError != null) {
                           setState(() => _passwordError = null);
@@ -229,6 +243,60 @@ class _LoginViewState extends State<LoginView> {
                         }
                       },
                     ),
+                    const SizedBox(height: AppDimension.space16),
+                    const Row(
+                      children: [
+                        Expanded(child: Divider(color: AppColors.divider)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'OR',
+                            style: TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(child: Divider(color: AppColors.divider)),
+                      ],
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    OutlinedButton(
+                      onPressed: () => _handleGoogleSignIn(),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 45),
+                        side: const BorderSide(color: AppColors.divider),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                        ),
+                        backgroundColor: AppColors.surface,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png',
+                            height: 18,
+                            width: 18,
+                            errorBuilder: (context, error, stackTrace) => const Icon(
+                              Icons.login,
+                              size: 18,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'Sign in with Google',
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: AppDimension.space32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -257,5 +325,34 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  Future<String?> getGoogleIdToken() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+
+    try {
+      await googleSignIn.initialize();
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate(
+        scopeHint: ['email'],
+      );
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      return googleAuth.idToken;
+    } catch (error) {
+      print('Google Sign-In Error: $error');
+      return null;
+    }
+  }
+
+  void _handleGoogleSignIn() async {
+    final idToken = await getGoogleIdToken();
+    if (idToken == null) {
+      return;
+    }
+
+    if (mounted) {
+      context.read<LoginBloc>().add(
+            GoogleLoginSubmittedEvent(idToken),
+          );
+    }
   }
 }

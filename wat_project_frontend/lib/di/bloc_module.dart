@@ -50,6 +50,7 @@ abstract class BlocModule {
     LogoutUseCase logoutUseCase,
     AuthSessionManager authManager,
     UserRepository userRepository,
+    GoogleLoginUseCase googleLoginUseCase,
   ) => LoginBloc(
     loginUseCase,
     registerUseCase,
@@ -58,6 +59,7 @@ abstract class BlocModule {
     logoutUseCase,
     authManager,
     userRepository,
+    googleLoginUseCase,
   );
 
   @injectable

@@ -23,6 +23,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LogoutUseCase _logoutUseCase;
   final AuthSessionManager _authManager;
   final UserRepository _userRepository;
+  final GoogleLoginUseCase _googleLoginUseCase;
 
   LoginBloc(
     this._loginUseCase,
@@ -32,11 +33,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     this._logoutUseCase,
     this._authManager,
     this._userRepository,
+    this._googleLoginUseCase,
   ) : super(LoginState()) {
     on<LoginSubmittedEvent>(_onLoginSubmitted);
     on<RegisterSubmittedEvent>(_onRegisterSubmitted);
     on<ForgotPasswordSubmittedEvent>(_onForgotPasswordSubmitted);
     on<ResetPasswordSubmittedEvent>(_onResetPasswordSubmitted);
+    on<GoogleLoginSubmittedEvent>(_onGoogleLoginSubmitted);
     on<LogoutRequestedEvent>(_onLogoutRequested);
   }
 
@@ -72,6 +75,62 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       },
       (tokens) async {
         print("login success");
+        await _authManager.saveSession(tokens, null);
+        try {
+          final UserProfileEntity userProfileEntity = await _userRepository
+              .getMe();
+          await _authManager.saveSession(
+            tokens,
+            userProfileEntity.userAccount.userId,
+          );
+
+          emit(
+            state.copyWith(
+              status: const UIStatus.loadSuccess(message: 'เข้าสู่ระบบสำเร็จ'),
+            ),
+          );
+        } catch (e) {
+          print("auth save failed");
+          emit(
+            state.copyWith(status: UIStatus.loadFailed(message: e.toString())),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> _onGoogleLoginSubmitted(
+    GoogleLoginSubmittedEvent event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: const UIStatus.loading()));
+
+    final result = await _googleLoginUseCase(event.idToken);
+
+    await result.fold(
+      (failure) async {
+        print("google login fail");
+        if (failure is BackendFailure) {
+          print("backend failed");
+          emit(
+            state.copyWith(
+              status: UIStatus.loadFailed(
+                message: failure.message,
+                apiError: failure.apiError,
+              ),
+            ),
+          );
+        } else {
+          print("fail unknown");
+          emit(
+            state.copyWith(
+              status: UIStatus.loadFailed(message: failure.message),
+            ),
+          );
+        }
+      },
+      (tokens) async {
+        print("google login success");
         await _authManager.saveSession(tokens, null);
         try {
           final UserProfileEntity userProfileEntity = await _userRepository

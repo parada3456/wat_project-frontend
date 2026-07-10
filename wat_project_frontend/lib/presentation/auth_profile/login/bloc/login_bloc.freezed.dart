@@ -330,14 +330,15 @@ extension LoginEventPatterns on LoginEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoginSubmittedEvent value)?  loginSubmitted,TResult Function( RegisterSubmittedEvent value)?  registerSubmitted,TResult Function( ForgotPasswordSubmittedEvent value)?  forgotPasswordSubmitted,TResult Function( ResetPasswordSubmittedEvent value)?  resetPasswordSubmitted,TResult Function( LogoutRequestedEvent value)?  logoutRequested,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoginSubmittedEvent value)?  loginSubmitted,TResult Function( RegisterSubmittedEvent value)?  registerSubmitted,TResult Function( ForgotPasswordSubmittedEvent value)?  forgotPasswordSubmitted,TResult Function( ResetPasswordSubmittedEvent value)?  resetPasswordSubmitted,TResult Function( GoogleLoginSubmittedEvent value)?  googleLoginSubmitted,TResult Function( LogoutRequestedEvent value)?  logoutRequested,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case LoginSubmittedEvent() when loginSubmitted != null:
 return loginSubmitted(_that);case RegisterSubmittedEvent() when registerSubmitted != null:
 return registerSubmitted(_that);case ForgotPasswordSubmittedEvent() when forgotPasswordSubmitted != null:
 return forgotPasswordSubmitted(_that);case ResetPasswordSubmittedEvent() when resetPasswordSubmitted != null:
-return resetPasswordSubmitted(_that);case LogoutRequestedEvent() when logoutRequested != null:
+return resetPasswordSubmitted(_that);case GoogleLoginSubmittedEvent() when googleLoginSubmitted != null:
+return googleLoginSubmitted(_that);case LogoutRequestedEvent() when logoutRequested != null:
 return logoutRequested(_that);case _:
   return orElse();
 
@@ -356,14 +357,15 @@ return logoutRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoginSubmittedEvent value)  loginSubmitted,required TResult Function( RegisterSubmittedEvent value)  registerSubmitted,required TResult Function( ForgotPasswordSubmittedEvent value)  forgotPasswordSubmitted,required TResult Function( ResetPasswordSubmittedEvent value)  resetPasswordSubmitted,required TResult Function( LogoutRequestedEvent value)  logoutRequested,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoginSubmittedEvent value)  loginSubmitted,required TResult Function( RegisterSubmittedEvent value)  registerSubmitted,required TResult Function( ForgotPasswordSubmittedEvent value)  forgotPasswordSubmitted,required TResult Function( ResetPasswordSubmittedEvent value)  resetPasswordSubmitted,required TResult Function( GoogleLoginSubmittedEvent value)  googleLoginSubmitted,required TResult Function( LogoutRequestedEvent value)  logoutRequested,}){
 final _that = this;
 switch (_that) {
 case LoginSubmittedEvent():
 return loginSubmitted(_that);case RegisterSubmittedEvent():
 return registerSubmitted(_that);case ForgotPasswordSubmittedEvent():
 return forgotPasswordSubmitted(_that);case ResetPasswordSubmittedEvent():
-return resetPasswordSubmitted(_that);case LogoutRequestedEvent():
+return resetPasswordSubmitted(_that);case GoogleLoginSubmittedEvent():
+return googleLoginSubmitted(_that);case LogoutRequestedEvent():
 return logoutRequested(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -381,14 +383,15 @@ return logoutRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoginSubmittedEvent value)?  loginSubmitted,TResult? Function( RegisterSubmittedEvent value)?  registerSubmitted,TResult? Function( ForgotPasswordSubmittedEvent value)?  forgotPasswordSubmitted,TResult? Function( ResetPasswordSubmittedEvent value)?  resetPasswordSubmitted,TResult? Function( LogoutRequestedEvent value)?  logoutRequested,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoginSubmittedEvent value)?  loginSubmitted,TResult? Function( RegisterSubmittedEvent value)?  registerSubmitted,TResult? Function( ForgotPasswordSubmittedEvent value)?  forgotPasswordSubmitted,TResult? Function( ResetPasswordSubmittedEvent value)?  resetPasswordSubmitted,TResult? Function( GoogleLoginSubmittedEvent value)?  googleLoginSubmitted,TResult? Function( LogoutRequestedEvent value)?  logoutRequested,}){
 final _that = this;
 switch (_that) {
 case LoginSubmittedEvent() when loginSubmitted != null:
 return loginSubmitted(_that);case RegisterSubmittedEvent() when registerSubmitted != null:
 return registerSubmitted(_that);case ForgotPasswordSubmittedEvent() when forgotPasswordSubmitted != null:
 return forgotPasswordSubmitted(_that);case ResetPasswordSubmittedEvent() when resetPasswordSubmitted != null:
-return resetPasswordSubmitted(_that);case LogoutRequestedEvent() when logoutRequested != null:
+return resetPasswordSubmitted(_that);case GoogleLoginSubmittedEvent() when googleLoginSubmitted != null:
+return googleLoginSubmitted(_that);case LogoutRequestedEvent() when logoutRequested != null:
 return logoutRequested(_that);case _:
   return null;
 
@@ -406,13 +409,14 @@ return logoutRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  loginSubmitted,TResult Function( String email,  String password,  String firstName,  String lastName)?  registerSubmitted,TResult Function( String email)?  forgotPasswordSubmitted,TResult Function( String token,  String newPassword)?  resetPasswordSubmitted,TResult Function()?  logoutRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  loginSubmitted,TResult Function( String email,  String password,  String firstName,  String lastName)?  registerSubmitted,TResult Function( String email)?  forgotPasswordSubmitted,TResult Function( String token,  String newPassword)?  resetPasswordSubmitted,TResult Function( String idToken)?  googleLoginSubmitted,TResult Function()?  logoutRequested,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoginSubmittedEvent() when loginSubmitted != null:
 return loginSubmitted(_that.email,_that.password);case RegisterSubmittedEvent() when registerSubmitted != null:
 return registerSubmitted(_that.email,_that.password,_that.firstName,_that.lastName);case ForgotPasswordSubmittedEvent() when forgotPasswordSubmitted != null:
 return forgotPasswordSubmitted(_that.email);case ResetPasswordSubmittedEvent() when resetPasswordSubmitted != null:
-return resetPasswordSubmitted(_that.token,_that.newPassword);case LogoutRequestedEvent() when logoutRequested != null:
+return resetPasswordSubmitted(_that.token,_that.newPassword);case GoogleLoginSubmittedEvent() when googleLoginSubmitted != null:
+return googleLoginSubmitted(_that.idToken);case LogoutRequestedEvent() when logoutRequested != null:
 return logoutRequested();case _:
   return orElse();
 
@@ -431,13 +435,14 @@ return logoutRequested();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  loginSubmitted,required TResult Function( String email,  String password,  String firstName,  String lastName)  registerSubmitted,required TResult Function( String email)  forgotPasswordSubmitted,required TResult Function( String token,  String newPassword)  resetPasswordSubmitted,required TResult Function()  logoutRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  loginSubmitted,required TResult Function( String email,  String password,  String firstName,  String lastName)  registerSubmitted,required TResult Function( String email)  forgotPasswordSubmitted,required TResult Function( String token,  String newPassword)  resetPasswordSubmitted,required TResult Function( String idToken)  googleLoginSubmitted,required TResult Function()  logoutRequested,}) {final _that = this;
 switch (_that) {
 case LoginSubmittedEvent():
 return loginSubmitted(_that.email,_that.password);case RegisterSubmittedEvent():
 return registerSubmitted(_that.email,_that.password,_that.firstName,_that.lastName);case ForgotPasswordSubmittedEvent():
 return forgotPasswordSubmitted(_that.email);case ResetPasswordSubmittedEvent():
-return resetPasswordSubmitted(_that.token,_that.newPassword);case LogoutRequestedEvent():
+return resetPasswordSubmitted(_that.token,_that.newPassword);case GoogleLoginSubmittedEvent():
+return googleLoginSubmitted(_that.idToken);case LogoutRequestedEvent():
 return logoutRequested();case _:
   throw StateError('Unexpected subclass');
 
@@ -455,13 +460,14 @@ return logoutRequested();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  loginSubmitted,TResult? Function( String email,  String password,  String firstName,  String lastName)?  registerSubmitted,TResult? Function( String email)?  forgotPasswordSubmitted,TResult? Function( String token,  String newPassword)?  resetPasswordSubmitted,TResult? Function()?  logoutRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  loginSubmitted,TResult? Function( String email,  String password,  String firstName,  String lastName)?  registerSubmitted,TResult? Function( String email)?  forgotPasswordSubmitted,TResult? Function( String token,  String newPassword)?  resetPasswordSubmitted,TResult? Function( String idToken)?  googleLoginSubmitted,TResult? Function()?  logoutRequested,}) {final _that = this;
 switch (_that) {
 case LoginSubmittedEvent() when loginSubmitted != null:
 return loginSubmitted(_that.email,_that.password);case RegisterSubmittedEvent() when registerSubmitted != null:
 return registerSubmitted(_that.email,_that.password,_that.firstName,_that.lastName);case ForgotPasswordSubmittedEvent() when forgotPasswordSubmitted != null:
 return forgotPasswordSubmitted(_that.email);case ResetPasswordSubmittedEvent() when resetPasswordSubmitted != null:
-return resetPasswordSubmitted(_that.token,_that.newPassword);case LogoutRequestedEvent() when logoutRequested != null:
+return resetPasswordSubmitted(_that.token,_that.newPassword);case GoogleLoginSubmittedEvent() when googleLoginSubmitted != null:
+return googleLoginSubmitted(_that.idToken);case LogoutRequestedEvent() when logoutRequested != null:
 return logoutRequested();case _:
   return null;
 
@@ -737,6 +743,72 @@ class _$ResetPasswordSubmittedEventCopyWithImpl<$Res>
   return _then(ResetPasswordSubmittedEvent(
 null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,null == newPassword ? _self.newPassword : newPassword // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class GoogleLoginSubmittedEvent implements LoginEvent {
+  const GoogleLoginSubmittedEvent(this.idToken);
+  
+
+ final  String idToken;
+
+/// Create a copy of LoginEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GoogleLoginSubmittedEventCopyWith<GoogleLoginSubmittedEvent> get copyWith => _$GoogleLoginSubmittedEventCopyWithImpl<GoogleLoginSubmittedEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GoogleLoginSubmittedEvent&&(identical(other.idToken, idToken) || other.idToken == idToken));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,idToken);
+
+@override
+String toString() {
+  return 'LoginEvent.googleLoginSubmitted(idToken: $idToken)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GoogleLoginSubmittedEventCopyWith<$Res> implements $LoginEventCopyWith<$Res> {
+  factory $GoogleLoginSubmittedEventCopyWith(GoogleLoginSubmittedEvent value, $Res Function(GoogleLoginSubmittedEvent) _then) = _$GoogleLoginSubmittedEventCopyWithImpl;
+@useResult
+$Res call({
+ String idToken
+});
+
+
+
+
+}
+/// @nodoc
+class _$GoogleLoginSubmittedEventCopyWithImpl<$Res>
+    implements $GoogleLoginSubmittedEventCopyWith<$Res> {
+  _$GoogleLoginSubmittedEventCopyWithImpl(this._self, this._then);
+
+  final GoogleLoginSubmittedEvent _self;
+  final $Res Function(GoogleLoginSubmittedEvent) _then;
+
+/// Create a copy of LoginEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? idToken = null,}) {
+  return _then(GoogleLoginSubmittedEvent(
+null == idToken ? _self.idToken : idToken // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

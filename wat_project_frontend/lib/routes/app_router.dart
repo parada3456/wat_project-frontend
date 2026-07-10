@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/ui/login_page.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/login/ui/register_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/edit_profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/ui/profile_page.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/screens/user_settings_page.dart';
@@ -58,10 +59,10 @@ class AppRouter {
       //   builder: (context, state) => const HomePage(),
       // ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
-      // GoRoute(
-      //   path: '/register',
-      //   builder: (context, state) => const RegisterPage(),
-      // ),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegisterPage(),
+      ),
       // GoRoute(
       //   path: '/register',
       //   builder: (context, state) => const RegisterPage2(),

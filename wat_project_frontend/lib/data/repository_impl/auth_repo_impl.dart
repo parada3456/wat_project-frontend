@@ -10,6 +10,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/authentication/a
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/logout_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/forgot_password_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/reset_password_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/authentication/google_login_request.dart';
 
 @injectable
 class AuthRepoImpl implements AuthRepository {
@@ -39,6 +40,14 @@ class AuthRepoImpl implements AuthRepository {
   Future<LoginEntity> login(String email, String password) async {
     final response = await _api.login(
       LoginRequest(email: email, password: password),
+    );
+    return response;
+  }
+
+  @override
+  Future<LoginEntity> googleLogin(String idToken) async {
+    final response = await _api.googleLogin(
+      GoogleLoginRequest(idToken: idToken),
     );
     return response;
   }

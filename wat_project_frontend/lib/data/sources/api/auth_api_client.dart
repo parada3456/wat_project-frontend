@@ -8,6 +8,7 @@ import 'package:wat_project_frontend/data/sources/api/api_model/authentication/r
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/logout_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/forgot_password_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/authentication/reset_password_request.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/authentication/google_login_request.dart';
 part 'auth_api_client.g.dart';
 
 @RestApi()
@@ -21,6 +22,10 @@ abstract class AuthApiService {
   @POST('auth/login')
   @Extra({'needLogin': false})
   Future<LoginEntity> login(@Body() LoginRequest request);
+
+  @POST('auth/google')
+  @Extra({'needLogin': false})
+  Future<LoginEntity> googleLogin(@Body() GoogleLoginRequest request);
 
   @POST('auth/logout')
   Future<void> logout(@Body() LogoutRequest request);
