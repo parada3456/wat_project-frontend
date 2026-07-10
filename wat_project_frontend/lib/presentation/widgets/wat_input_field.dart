@@ -9,6 +9,9 @@ class WatInputField extends StatelessWidget {
   final bool obscureText;
   final ValueChanged<String>? onChanged;
   final String? errorText;
+  final bool autocorrect;
+  final bool enableSuggestions;
+  final TextInputType? keyboardType;
 
   const WatInputField({
     super.key,
@@ -19,6 +22,9 @@ class WatInputField extends StatelessWidget {
     this.obscureText = false,
     this.onChanged,
     this.errorText,
+    this.autocorrect = true,
+    this.enableSuggestions = true,
+    this.keyboardType,
   });
 
   @override
@@ -52,6 +58,9 @@ class WatInputField extends StatelessWidget {
                   controller: controller,
                   obscureText: obscureText,
                   onChanged: onChanged,
+                  autocorrect: autocorrect,
+                  enableSuggestions: enableSuggestions,
+                  keyboardType: keyboardType,
                   decoration: InputDecoration(
                     hintText: hint,
                     hintStyle: const TextStyle(

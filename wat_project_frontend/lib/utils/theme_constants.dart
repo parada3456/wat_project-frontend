@@ -14,6 +14,7 @@ abstract class AppColors {
   static const Color onBackground = Color(0xFF000000);
   static const Color onSurface = Color(0xFF000000);
   static const Color onError = Color(0xFFFFFFFF);
+  static const Color divider = Color.fromARGB(255, 124, 124, 124);
 
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color(0xFF494551);

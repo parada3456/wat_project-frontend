@@ -1,4 +1,4 @@
-package com.example.wat_project_frontend
+package com.parada3456.watproject
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,6 +10,7 @@ abstract class AuthRepository {
     String lastName,
   );
   Future<LoginEntity> login(String email, String password);
+  Future<LoginEntity> googleLogin(String idToken);
   Future<void> logout(String refreshToken);
   Future<AuthEntity> refresh(String refreshToken);
   Future<void> forgotPassword(String email);

@@ -20,5 +20,8 @@ class LoginEvent with _$LoginEvent {
     String newPassword,
   ) = ResetPasswordSubmittedEvent;
 
+  const factory LoginEvent.googleLoginSubmitted(String idToken) =
+      GoogleLoginSubmittedEvent;
+
   const factory LoginEvent.logoutRequested() = LogoutRequestedEvent;
 }

@@ -105,6 +105,8 @@ import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart'
     as _i826;
 import 'package:wat_project_frontend/domain/usecases/auth/get_login_usecase.dart'
     as _i689;
+import 'package:wat_project_frontend/domain/usecases/auth/google_login_usecase.dart'
+    as _i592;
 import 'package:wat_project_frontend/domain/usecases/auth/login_usecase.dart'
     as _i890;
 import 'package:wat_project_frontend/domain/usecases/auth/logout_usecase.dart'
@@ -333,6 +335,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1052.ExpenseRepository>(
       () => repositoryModule.expenseRepository(gh<_i377.ExpenseRepoImpl>()),
+    );
+    gh.factory<_i592.GoogleLoginUseCase>(
+      () => _i592.GoogleLoginUseCase(gh<_i416.AuthRepository>()),
     );
     gh.factory<_i890.LoginUseCase>(
       () => _i890.LoginUseCase(gh<_i416.AuthRepository>()),
@@ -605,17 +610,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i906.HomeBloc>(
       () => blocModule.homeBloc(gh<_i624.GetHomeDataUseCase>()),
     );
-    gh.factory<_i1031.LoginBloc>(
-      () => blocModule.loginBloc(
-        gh<_i421.LoginUseCase>(),
-        gh<_i421.RegisterUseCase>(),
-        gh<_i624.ForgotPasswordUseCase>(),
-        gh<_i421.ResetPasswordUseCase>(),
-        gh<_i421.LogoutUseCase>(),
-        gh<_i349.AuthSessionManager>(),
-        gh<_i455.UserRepository>(),
-      ),
-    );
     gh.factory<_i928.MissionTaskBloc>(
       () => blocModule.missionTaskBloc(
         gh<_i936.ListMyMissionsUseCase>(),
@@ -626,6 +620,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i936.JoinMissionUseCase>(),
         gh<_i624.GetProfileUseCase>(),
         gh<_i936.ListAllMissionsUseCase>(),
+      ),
+    );
+    gh.factory<_i1031.LoginBloc>(
+      () => blocModule.loginBloc(
+        gh<_i421.LoginUseCase>(),
+        gh<_i421.RegisterUseCase>(),
+        gh<_i624.ForgotPasswordUseCase>(),
+        gh<_i421.ResetPasswordUseCase>(),
+        gh<_i421.LogoutUseCase>(),
+        gh<_i349.AuthSessionManager>(),
+        gh<_i455.UserRepository>(),
+        gh<_i421.GoogleLoginUseCase>(),
       ),
     );
     gh.factory<_i459.SocialRadarBloc>(
