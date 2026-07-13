@@ -148,16 +148,21 @@ class AppRouter {
         builder: (context, state) => const RadarMapPage(),
       ),
       GoRoute(
-        path: '/expenses/create',
+        path: '/expenses/new',
         builder: (context, state) => const CreateExpensePage(),
       ),
       GoRoute(
-        path: '/expenses/details',
-        builder: (context, state) => const ExpenseDetailsPage(),
+        path: '/expenses/:id',
+        builder: (context, state) => ExpenseDetailsPage(
+          expenseId: state.pathParameters['id']!,
+        ),
       ),
       GoRoute(
-        path: '/expenses/submit',
-        builder: (context, state) => const PaymentSubmissionPage(),
+        path: '/expenses/:id/pay',
+        builder: (context, state) => PaymentSubmissionPage(
+          expenseId: state.pathParameters['id']!,
+          splitId: state.uri.queryParameters['splitId'] ?? '',
+        ),
       ),
       GoRoute(
         path: '/notifications',
