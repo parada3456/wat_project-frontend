@@ -131,7 +131,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
     final totalAmount = double.tryParse(_amountController.text) ?? 0.0;
 
     if (title.isEmpty) {
-      _showWarning('Validation', 'Please enter a description.');
+      _showWarning('Validation', 'Please enter a Title.');
       return;
     }
 
@@ -261,7 +261,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                       child: Column(
                         children: [
                           WatInputField(
-                            label: 'Description',
+                            label: 'Title',
                             hint: 'e.g. Pizza Night',
                             controller: _titleController,
                           ),
