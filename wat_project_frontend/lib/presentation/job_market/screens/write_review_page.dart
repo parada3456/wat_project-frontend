@@ -36,7 +36,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
   void _submit() {
     if (_reviewController.text.trim().isEmpty) {
-      AppPopup.show(
+      AppPopup.show<void>(
         context: context,
         type: AppPopupType.warning,
         title: 'Required',
@@ -76,7 +76,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
           } else if (state.createReviewStatus is UILoadFailed) {
             final msg = (state.createReviewStatus as UILoadFailed).message ?? 
                 'Failed to submit review.';
-            AppPopup.show(
+            AppPopup.show<void>(
               context: context,
               type: AppPopupType.error,
               title: 'Error',

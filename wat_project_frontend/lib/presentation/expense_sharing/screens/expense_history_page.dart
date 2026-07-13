@@ -79,7 +79,7 @@ class _ExpenseHistoryPageState extends State<ExpenseHistoryPage> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => context.go('/expenses/new'),
+            onPressed: () => context.push('/expenses/new'),
             backgroundColor: AppColors.primary,
             child: const Icon(Icons.add, color: Colors.white),
           ),
@@ -106,7 +106,7 @@ class _ExpenseHistoryPageState extends State<ExpenseHistoryPage> {
                         const SizedBox(height: AppDimension.space16),
                         ..._pendingSplits.map(
                           (split) => GestureDetector(
-                            onTap: () => context.go('/expenses/${split.transactionId}'),
+                            onTap: () => context.push('/expenses/${split.transactionId}'),
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: AppDimension.space8),
                               child: PendingOweTile(
@@ -144,7 +144,7 @@ class _ExpenseHistoryPageState extends State<ExpenseHistoryPage> {
                       else
                         ..._expenses.map(
                           (expense) => GestureDetector(
-                            onTap: () => context.go('/expenses/${expense.transactionId}'),
+                            onTap: () => context.push('/expenses/${expense.transactionId}'),
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: AppDimension.space8),
                               child: ExpenseHistoryCard(
