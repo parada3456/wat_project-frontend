@@ -101,7 +101,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                   Icons.shopping_cart_outlined,
                   color: AppColors.textPrimary,
                 ),
-                onPressed: () => context.go('/jobs/cart'),
+                onPressed: () => context.push('/jobs/cart'),
               ),
             ],
           ),
@@ -149,7 +149,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                           final job = _filteredJobs[index];
                           return JobCard(
                             job: job,
-                            onTap: () => context.go('/jobs/${job.jobId}'),
+                            onTap: () => context.push('/jobs/${job.jobId}'),
                             onAddToCart: () => _bloc.add(
                               JobMarketEvent.addJobToCart(jobId: job.jobId),
                             ),

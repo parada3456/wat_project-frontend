@@ -184,7 +184,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                         WatButton(
                           label: 'Submit Payment Proof',
                           onPressed: () {
-                            context.go(
+                            context.push(
                               '/expenses/${transaction.transactionId}/pay?splitId=${pendingSplit.splitId}',
                             );
                           },

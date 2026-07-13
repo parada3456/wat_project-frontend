@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
-import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_review_comment_card.dart';
@@ -63,9 +62,24 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
               onPressed: () => context.pop(),
             ),
+            actions: [
+              BlocBuilder<JobMarketBloc, JobMarketState>(
+                builder: (context, state) {
+                  final jobDetail = state.jobDetail;
+                  final sourceUrl = jobDetail?.job.sourceUrl;
+                  if (sourceUrl == null || sourceUrl.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return IconButton(
+                    onPressed: () => launchUrl(Uri.parse(sourceUrl)),
+                    icon: const Icon(Icons.ios_share),
+                  );
+                },
+              ),
+            ],
           ),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () => context.go('/jobs/${widget.jobId}/reviews/new'),
+            onPressed: () => context.push('/jobs/${widget.jobId}/reviews/new'),
             backgroundColor: AppColors.primary,
             icon: const Icon(Icons.rate_review_outlined, color: Colors.white),
             label: const Text('Write Review', style: TextStyle(color: Colors.white)),
@@ -235,7 +249,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
   }
 
   void _showPopup(BuildContext context, AppPopupType type, String title, String message) {
-    AppPopup.show(
+    AppPopup.show<void>(
       context: context,
       type: type,
       title: title,
