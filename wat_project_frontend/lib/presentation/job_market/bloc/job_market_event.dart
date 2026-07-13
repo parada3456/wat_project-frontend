@@ -1,38 +1,39 @@
-import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
 
-abstract class JobMarketEvent {
-  const JobMarketEvent();
-}
 
-class ListJobsEvent extends JobMarketEvent {
-  final Map<String, dynamic> filters;
-  const ListJobsEvent(this.filters);
-}
+part of 'job_market_bloc.dart';
 
-class GetJobDetailEvent extends JobMarketEvent {
-  final String jobId;
-  const GetJobDetailEvent(this.jobId);
-}
+@freezed
+class JobMarketEvent with _$JobMarketEvent {
+  const factory JobMarketEvent.listJobs({
+    required Map<String, dynamic> filters,
+  }) = ListJobsEvent;
 
-class AddJobToCartEvent extends JobMarketEvent {
-  final String jobId;
-  const AddJobToCartEvent(this.jobId);
-}
+  const factory JobMarketEvent.getJobDetail({
+    required String jobId,
+  }) = GetJobDetailEvent;
 
-class ListCartItemsEvent extends JobMarketEvent {
-  const ListCartItemsEvent();
-}
+  const factory JobMarketEvent.addJobToCart({
+    required String jobId,
+  }) = AddJobToCartEvent;
 
-class RemoveJobFromCartEvent extends JobMarketEvent {
-  final String cartItemId;
-  const RemoveJobFromCartEvent(this.cartItemId);
-}
+  const factory JobMarketEvent.listCartItems() = ListCartItemsEvent;
 
-class CreateJobReviewEvent extends JobMarketEvent {
-  final CreateReviewRequest request;
-  const CreateJobReviewEvent(this.request);
-}
+  const factory JobMarketEvent.removeJobFromCart({
+    required String cartItemId,
+  }) = RemoveJobFromCartEvent;
 
-class ListApplicationsEvent extends JobMarketEvent {
-  const ListApplicationsEvent();
+  const factory JobMarketEvent.createJobReview({
+    required CreateReviewRequest request,
+  }) = CreateJobReviewEvent;
+
+  const factory JobMarketEvent.listApplications() = ListApplicationsEvent;
+
+  const factory JobMarketEvent.listJobReviews({
+    String? jobId,
+  }) = ListJobReviewsEvent;
+
+  const factory JobMarketEvent.updateCartStatus({
+    required String cartId,
+    required String status,
+  }) = UpdateCartStatusEvent;
 }

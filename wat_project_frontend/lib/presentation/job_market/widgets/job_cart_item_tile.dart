@@ -4,8 +4,9 @@ import 'package:wat_project_frontend/utils/theme_constants.dart';
 class JobCartItemTile extends StatelessWidget {
   final String title;
   final String company;
-  final String status; // 'Saved', 'Applied'
+  final String status; // 'Saved', 'Applied', etc.
   final VoidCallback onDelete;
+  final ValueChanged<String>? onStatusChanged;
 
   const JobCartItemTile({
     super.key,
@@ -13,6 +14,7 @@ class JobCartItemTile extends StatelessWidget {
     required this.company,
     required this.status,
     required this.onDelete,
+    this.onStatusChanged,
   });
 
   @override
@@ -62,23 +64,66 @@ class JobCartItemTile extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: isApplied
-                  ? Colors.green.withOpacity(0.1)
-                  : AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              status,
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                color: isApplied ? Colors.green : AppColors.primary,
+          if (onStatusChanged != null)
+            PopupMenuButton<String>(
+              onSelected: onStatusChanged,
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'Saved',
+                  child: Text('Saved'),
+                ),
+                const PopupMenuItem(
+                  value: 'Applied',
+                  child: Text('Applied'),
+                ),
+              ],
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isApplied
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      status,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: isApplied ? Colors.green : AppColors.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 12,
+                      color: isApplied ? Colors.green : AppColors.primary,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: isApplied
+                    ? Colors.green.withValues(alpha: 0.1)
+                    : AppColors.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                status,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: isApplied ? Colors.green : AppColors.primary,
+                ),
               ),
             ),
-          ),
           IconButton(
             icon: const Icon(
               Icons.delete_outline,
