@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
@@ -25,6 +26,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _otpController = TextEditingController();
 
   String? _selectedPhase = 'phase-1';
+  List<Map<String, String>> _phases = [
+    {'id': 'phase-1', 'name': 'Phase 1'},
+    {'id': 'phase-2', 'name': 'Phase 2'},
+    {'id': 'phase-3', 'name': 'Phase 3'},
+    {'id': 'phase-4', 'name': 'Phase 4'},
+  ];
 
   String? _usernameError;
   String? _emailError;
@@ -37,6 +44,33 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _showOtpStep = false;
 
   @override
+  void initState() {
+    super.initState();
+    _loadPhases();
+  }
+
+  Future<void> _loadPhases() async {
+    try {
+      final usecase = getIt<ListJourneyPhasesUseCase>();
+      final result = await usecase();
+      result.fold(
+        (failure) {},
+        (phases) {
+          if (phases.isNotEmpty && mounted) {
+            setState(() {
+              _phases = phases.map((p) => {
+                'id': p.phaseId,
+                'name': p.title,
+              }).toList();
+              if (!_phases.any((p) => p['id'] == _selectedPhase)) {
+                _selectedPhase = _phases.first['id'];
+              }
+            });
+          }
+        },
+      );
+    } catch (_) {}
+  }
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
@@ -227,12 +261,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         ),
-                        items: const [
-                          DropdownMenuItem(value: 'phase-1', child: Text('Phase 1')),
-                          DropdownMenuItem(value: 'phase-2', child: Text('Phase 2')),
-                          DropdownMenuItem(value: 'phase-3', child: Text('Phase 3')),
-                          DropdownMenuItem(value: 'phase-4', child: Text('Phase 4')),
-                        ],
+                        items: _phases
+                            .map((p) => DropdownMenuItem<String>(
+                                  value: p['id'],
+                                  child: Text(p['name']!),
+                                ))
+                            .toList(),
                         onChanged: (val) {
                           setState(() {
                             _selectedPhase = val;
