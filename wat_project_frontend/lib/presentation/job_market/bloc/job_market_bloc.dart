@@ -1,7 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
+import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
+import 'package:wat_project_frontend/domain/models/job/job_posting_model.dart';
+import 'package:wat_project_frontend/domain/models/job/user_cart_model.dart';
+import 'package:wat_project_frontend/domain/models/job/user_job_model.dart';
 import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
-import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_event.dart';
-import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_state.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+
+part 'job_market_event.dart';
+part 'job_market_state.dart';
+part 'job_market_bloc.freezed.dart'; // Ensure matching name with file name if needed
 
 class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
   final ListJobsUseCase _listJobsUseCase;
@@ -33,7 +43,8 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
        _listApplicationsUseCase = listApplicationsUseCase,
        _listJobReviewsUseCase = listJobReviewsUseCase,
        _updateCartStatusUseCase = updateCartStatusUseCase,
-       super(const JobMarketInitial()) {
+       super(const JobMarketState()) {
+    
     on<ListJobsEvent>(_onListJobs);
     on<GetJobDetailEvent>(_onGetJobDetail);
     on<AddJobToCartEvent>(_onAddJobToCart);
@@ -49,11 +60,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     ListJobsEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listJobsUseCase(event.filters);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (jobs) => emit(ListJobsSuccess(jobs)),
+      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (jobs) => emit(state.copyWith(status: const UIStatus.loadSuccess(), jobs: jobs)),
     );
   }
 
@@ -61,11 +72,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     GetJobDetailEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _getJobDetailUseCase(event.jobId);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (jobDetail) => emit(GetJobDetailSuccess(jobDetail)),
+      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (jobDetail) => emit(state.copyWith(status: const UIStatus.loadSuccess(), jobDetail: jobDetail)),
     );
   }
 
@@ -73,11 +84,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     AddJobToCartEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(addToCartStatus: const UIStatus.loading()));
     final result = await _addJobToCartUseCase(event.jobId);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (_) => emit(const AddJobToCartSuccess()),
+      (failure) => emit(state.copyWith(addToCartStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) => emit(state.copyWith(addToCartStatus: const UIStatus.loadSuccess())),
     );
   }
 
@@ -85,11 +96,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     ListCartItemsEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listCartItemsUseCase();
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (cartItems) => emit(ListCartItemsSuccess(cartItems)),
+      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (cartItems) => emit(state.copyWith(status: const UIStatus.loadSuccess(), cartItems: cartItems)),
     );
   }
 
@@ -97,11 +108,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     RemoveJobFromCartEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(removeFromCartStatus: const UIStatus.loading()));
     final result = await _removeJobFromCartUseCase(event.cartItemId);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (_) => emit(const RemoveJobFromCartSuccess()),
+      (failure) => emit(state.copyWith(removeFromCartStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) => emit(state.copyWith(removeFromCartStatus: const UIStatus.loadSuccess())),
     );
   }
 
@@ -109,11 +120,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     CreateJobReviewEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(createReviewStatus: const UIStatus.loading()));
     final result = await _createJobReviewUseCase(event.request);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (_) => emit(const CreateJobReviewSuccess()),
+      (failure) => emit(state.copyWith(createReviewStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) => emit(state.copyWith(createReviewStatus: const UIStatus.loadSuccess())),
     );
   }
 
@@ -121,11 +132,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     ListApplicationsEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listApplicationsUseCase();
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (applications) => emit(ListApplicationsSuccess(applications)),
+      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (applications) => emit(state.copyWith(status: const UIStatus.loadSuccess(), applications: applications)),
     );
   }
 
@@ -133,11 +144,13 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     ListJobReviewsEvent event,
     Emitter<JobMarketState> emit,
   ) async {
-    emit(const JobMarketLoading());
+    // If we already have job details, we might not want to show full screen status loading.
+    // However, sticking to the standard workflow:
+    emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listJobReviewsUseCase(event.jobId);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (reviews) => emit(ListJobReviewsSuccess(reviews)),
+      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
+      (reviews) => emit(state.copyWith(status: const UIStatus.loadSuccess(), reviews: reviews)),
     );
   }
 
@@ -145,10 +158,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     UpdateCartStatusEvent event,
     Emitter<JobMarketState> emit,
   ) async {
+    emit(state.copyWith(updateCartStatus: const UIStatus.loading()));
     final result = await _updateCartStatusUseCase(event.cartId, event.status);
     result.fold(
-      (failure) => emit(JobMarketFailure(failure.message)),
-      (_) => emit(const UpdateCartStatusSuccess()),
+      (failure) => emit(state.copyWith(updateCartStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) => emit(state.copyWith(updateCartStatus: const UIStatus.loadSuccess())),
     );
   }
 }

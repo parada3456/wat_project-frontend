@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
-import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_event.dart';
-import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_state.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_cart_item_tile.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
@@ -18,14 +17,12 @@ class JobCartPage extends StatefulWidget {
 
 class _JobCartPageState extends State<JobCartPage> {
   late final JobMarketBloc _bloc;
-  List<UserCartModel> _cartItems = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _bloc = GetIt.instance<JobMarketBloc>();
-    _bloc.add(const ListCartItemsEvent());
+    _bloc.add(const JobMarketEvent.listCartItems());
   }
 
   @override
@@ -33,25 +30,30 @@ class _JobCartPageState extends State<JobCartPage> {
     return BlocProvider.value(
       value: _bloc,
       child: BlocListener<JobMarketBloc, JobMarketState>(
+        listenWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.removeFromCartStatus != current.removeFromCartStatus ||
+            previous.updateCartStatus != current.updateCartStatus,
         listener: (context, state) {
-          if (state is ListCartItemsSuccess) {
-            setState(() {
-              _cartItems = state.cartItems;
-              _isLoading = false;
-            });
-          } else if (state is RemoveJobFromCartSuccess) {
-            _bloc.add(const ListCartItemsEvent());
-          } else if (state is UpdateCartStatusSuccess) {
-            _bloc.add(const ListCartItemsEvent());
-          } else if (state is JobMarketFailure) {
-            setState(() => _isLoading = false);
-            AppPopup.show(
-              context: context,
-              type: AppPopupType.error,
-              title: 'Error',
-              message: state.message,
-              buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
-            );
+          // 1. Check for Load Failures across different operations
+          if (state.status is UILoadFailed) {
+            final msg = (state.status as UILoadFailed).message ?? 'An error occurred loading your cart.';
+            _showErrorPopup(context, msg);
+          }
+          
+          if (state.removeFromCartStatus is UILoadFailed) {
+            final msg = (state.removeFromCartStatus as UILoadFailed).message ?? 'Failed to remove job.';
+            _showErrorPopup(context, msg);
+          }
+          
+          if (state.updateCartStatus is UILoadFailed) {
+            final msg = (state.updateCartStatus as UILoadFailed).message ?? 'Failed to update status.';
+            _showErrorPopup(context, msg);
+          }
+
+          // 2. Trigger fresh fetch only if mutations successfully finish
+          if (state.removeFromCartStatus is UILoadSuccess || state.updateCartStatus is UILoadSuccess) {
+            _bloc.add(const JobMarketEvent.listCartItems());
           }
         },
         child: Scaffold(
@@ -73,10 +75,12 @@ class _JobCartPageState extends State<JobCartPage> {
           ),
           body: BlocBuilder<JobMarketBloc, JobMarketState>(
             builder: (context, state) {
-              if (_isLoading) {
+              // Show loader only if status is loading AND no data exists yet (prevents shifting layouts)
+              if (state.status is UILoading && state.cartItems.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (_cartItems.isEmpty) {
+              
+              if (state.cartItems.isEmpty) {
                 return const Center(
                   child: Text(
                     'Your cart is empty.',
@@ -84,23 +88,24 @@ class _JobCartPageState extends State<JobCartPage> {
                   ),
                 );
               }
+
               return SafeArea(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(AppDimension.space16),
-                  itemCount: _cartItems.length,
+                  itemCount: state.cartItems.length,
                   separatorBuilder: (_, __) =>
                       const SizedBox(height: AppDimension.space8),
                   itemBuilder: (context, index) {
-                    final item = _cartItems[index];
+                    final item = state.cartItems[index];
                     return JobCartItemTile(
                       title: 'Job #${item.jobId.substring(0, item.jobId.length > 8 ? 8 : item.jobId.length)}',
                       company: 'Saved Job Posting',
                       status: item.status.name[0].toUpperCase() + item.status.name.substring(1),
                       onDelete: () => _bloc.add(
-                        RemoveJobFromCartEvent(item.cartId),
+                        JobMarketEvent.removeJobFromCart(cartItemId: item.cartId),
                       ),
                       onStatusChanged: (newStatus) => _bloc.add(
-                        UpdateCartStatusEvent(
+                        JobMarketEvent.updateCartStatus(
                           cartId: item.cartId,
                           status: newStatus,
                         ),
@@ -113,6 +118,21 @@ class _JobCartPageState extends State<JobCartPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showErrorPopup(BuildContext context, String message) {
+    AppPopup.show(
+      context: context,
+      type: AppPopupType.error,
+      title: 'Error',
+      message: message,
+      buttons: [
+        AppPopupButton(
+          label: 'OK', 
+          onPressed: () => Navigator.pop(context),
+        )
+      ],
     );
   }
 }

@@ -8,7 +8,7 @@ part 'job_detail_response.g.dart';
 @JsonSerializable()
 class JobDetailResponse {
   final JobPostingEntity job;
-  final List<JobHousingEntity> housing;
+  final JobHousingEntity? housing;
   final JobOverallRatingEntity? rating;
 
   JobDetailResponse({required this.job, required this.housing, this.rating});

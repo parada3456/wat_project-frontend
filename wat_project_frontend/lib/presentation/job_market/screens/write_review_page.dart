@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
-import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_event.dart';
-import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_state.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/review_stars_row.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
@@ -21,7 +20,6 @@ class WriteReviewPage extends StatefulWidget {
 class _WriteReviewPageState extends State<WriteReviewPage> {
   final _reviewController = TextEditingController();
   double _rating = 5.0;
-  bool _isSubmitting = false;
   late final JobMarketBloc _bloc;
 
   @override
@@ -43,14 +41,19 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
         type: AppPopupType.warning,
         title: 'Required',
         message: 'Please write your review before submitting.',
-        buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+        buttons: [
+          AppPopupButton(
+            label: 'OK', 
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
       );
       return;
     }
-    setState(() => _isSubmitting = true);
+
     _bloc.add(
-      CreateJobReviewEvent(
-        CreateReviewRequest(
+      JobMarketEvent.createJobReview(
+        request: CreateReviewRequest(
           jobId: widget.jobId,
           ratingStars: _rating,
           reviewText: _reviewController.text.trim(),
@@ -64,18 +67,26 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
     return BlocProvider.value(
       value: _bloc,
       child: BlocListener<JobMarketBloc, JobMarketState>(
+        listenWhen: (previous, current) =>
+            previous.createReviewStatus != current.createReviewStatus,
         listener: (context, state) {
-          if (state is CreateJobReviewSuccess) {
-            setState(() => _isSubmitting = false);
+          if (state.createReviewStatus is UILoadSuccess) {
+            // Dismiss current page upon successful post submission
             Navigator.pop(context);
-          } else if (state is JobMarketFailure) {
-            setState(() => _isSubmitting = false);
+          } else if (state.createReviewStatus is UILoadFailed) {
+            final msg = (state.createReviewStatus as UILoadFailed).message ?? 
+                'Failed to submit review.';
             AppPopup.show(
               context: context,
               type: AppPopupType.error,
               title: 'Error',
-              message: state.message,
-              buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+              message: msg,
+              buttons: [
+                AppPopupButton(
+                  label: 'OK', 
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
             );
           }
         },
@@ -154,10 +165,16 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     ),
                   ),
                   const SizedBox(height: AppDimension.space50),
-                  WatButton(
-                    label: 'Submit Review',
-                    isLoading: _isSubmitting,
-                    onPressed: _submit,
+                  BlocBuilder<JobMarketBloc, JobMarketState>(
+                    buildWhen: (previous, current) => 
+                        previous.createReviewStatus != current.createReviewStatus,
+                    builder: (context, state) {
+                      return WatButton(
+                        label: 'Submit Review',
+                        isLoading: state.createReviewStatus is UILoading,
+                        onPressed: _submit,
+                      );
+                    },
                   ),
                   const SizedBox(height: AppDimension.space50),
                 ],
