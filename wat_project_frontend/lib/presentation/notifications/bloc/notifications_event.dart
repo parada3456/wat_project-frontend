@@ -1,21 +1,11 @@
-abstract class NotificationsEvent {
-  const NotificationsEvent();
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LoadNotificationsEvent extends NotificationsEvent {
-  const LoadNotificationsEvent();
-}
+part 'notifications_event.freezed.dart';
 
-class MarkNotificationReadEvent extends NotificationsEvent {
-  final String notificationId;
-  const MarkNotificationReadEvent(this.notificationId);
-}
-
-class MarkAllNotificationsReadEvent extends NotificationsEvent {
-  const MarkAllNotificationsReadEvent();
-}
-
-class DeleteNotificationEvent extends NotificationsEvent {
-  final String notificationId;
-  const DeleteNotificationEvent(this.notificationId);
+@freezed
+class NotificationsEvent with _$NotificationsEvent {
+  const factory NotificationsEvent.loadNotifications() = LoadNotificationsEvent;
+  const factory NotificationsEvent.markNotificationRead(String notificationId) = MarkNotificationReadEvent;
+  const factory NotificationsEvent.markAllNotificationsRead() = MarkAllNotificationsReadEvent;
+  const factory NotificationsEvent.deleteNotification(String notificationId) = DeleteNotificationEvent;
 }

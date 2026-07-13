@@ -78,6 +78,11 @@ class AdminRepoImpl implements AdminRepository {
   }
 
   @override
+  Future<List<UserAccountEntity>> listUsers(String search) async {
+    return _adminApi.listUsers(search);
+  }
+
+  @override
   Future<UserAccountEntity> getUserDetail(String id) async {
     return _adminApi.getUserDetail(id);
   }

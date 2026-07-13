@@ -1,23 +1,12 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/domain/models/notification_models.dart';
 
-abstract class NotificationsState {
-  const NotificationsState();
-}
+part 'notifications_state.freezed.dart';
 
-class NotificationsInitial extends NotificationsState {
-  const NotificationsInitial();
-}
-
-class NotificationsLoading extends NotificationsState {
-  const NotificationsLoading();
-}
-
-class NotificationsSuccess extends NotificationsState {
-  final List<NotificationModel> notifications;
-  const NotificationsSuccess(this.notifications);
-}
-
-class NotificationsFailure extends NotificationsState {
-  final String errorMessage;
-  const NotificationsFailure(this.errorMessage);
+@freezed
+class NotificationsState with _$NotificationsState {
+  const factory NotificationsState.initial() = NotificationsInitial;
+  const factory NotificationsState.loading() = NotificationsLoading;
+  const factory NotificationsState.success(List<NotificationModel> notifications) = NotificationsSuccess;
+  const factory NotificationsState.failure(String errorMessage) = NotificationsFailure;
 }

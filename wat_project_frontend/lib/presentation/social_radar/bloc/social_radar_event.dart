@@ -1,39 +1,17 @@
-abstract class SocialRadarEvent {
-  const SocialRadarEvent();
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LoadSocialRadar extends SocialRadarEvent {
-  const LoadSocialRadar();
-}
+part 'social_radar_event.freezed.dart';
 
-class GetRadarUsers extends SocialRadarEvent {
-  const GetRadarUsers();
-}
-
-class ListPendingRequests extends SocialRadarEvent {
-  const ListPendingRequests();
-}
-
-class ListFriends extends SocialRadarEvent {
-  const ListFriends();
-}
-
-class SendFriendRequest extends SocialRadarEvent {
-  final String targetUserId;
-  const SendFriendRequest(this.targetUserId);
-}
-
-class RespondToFriendRequest extends SocialRadarEvent {
-  final String friendshipId;
-  final bool accept;
-
-  const RespondToFriendRequest({
-    required this.friendshipId,
-    required this.accept,
-  });
-}
-
-class RemoveFriend extends SocialRadarEvent {
-  final String friendId;
-  const RemoveFriend(this.friendId);
+@freezed
+class SocialRadarEvent with _$SocialRadarEvent {
+  const factory SocialRadarEvent.loadSocialRadar() = LoadSocialRadar;
+  const factory SocialRadarEvent.getRadarUsers() = GetRadarUsers;
+  const factory SocialRadarEvent.listPendingRequests() = ListPendingRequests;
+  const factory SocialRadarEvent.listFriends() = ListFriends;
+  const factory SocialRadarEvent.sendFriendRequest(String targetUserId) = SendFriendRequest;
+  const factory SocialRadarEvent.respondToFriendRequest({
+    required String friendshipId,
+    required bool accept,
+  }) = RespondToFriendRequest;
+  const factory SocialRadarEvent.removeFriend(String friendId) = RemoveFriend;
 }

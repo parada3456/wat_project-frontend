@@ -1,40 +1,16 @@
-import 'package:wat_project_frontend/domain/models/journey_models.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 
-abstract class JourneyGamificationState {
-  const JourneyGamificationState();
-}
+part 'journey_gamification_state.freezed.dart';
 
-class JourneyGamificationInitial extends JourneyGamificationState {
-  const JourneyGamificationInitial();
-}
-
-class JourneyGamificationLoading extends JourneyGamificationState {
-  const JourneyGamificationLoading();
-}
-
-class JourneyPhasesLoadSuccess extends JourneyGamificationState {
-  final List<JourneyPhaseModel> phases;
-  const JourneyPhasesLoadSuccess(this.phases);
-}
-
-class JourneyHistoryLoadSuccess extends JourneyGamificationState {
-  final List<UserPhaseHistoryModel> history;
-  const JourneyHistoryLoadSuccess(this.history);
-}
-
-class LeaderboardLoadSuccess extends JourneyGamificationState {
-  final List<LeaderboardEntry> leaderboard;
-  const LeaderboardLoadSuccess(this.leaderboard);
-}
-
-class AdvancePhaseSuccess extends JourneyGamificationState {
-  final bool success;
-  const AdvancePhaseSuccess(this.success);
-}
-
-class JourneyGamificationFailure extends JourneyGamificationState {
-  final String message;
-  const JourneyGamificationFailure(this.message);
+@freezed
+class JourneyGamificationState with _$JourneyGamificationState {
+  const factory JourneyGamificationState.initial() = JourneyGamificationInitial;
+  const factory JourneyGamificationState.loading() = JourneyGamificationLoading;
+  const factory JourneyGamificationState.phasesLoadSuccess(List<JourneyPhaseModel> phases) = JourneyPhasesLoadSuccess;
+  const factory JourneyGamificationState.historyLoadSuccess(List<UserPhaseHistoryModel> history) = JourneyHistoryLoadSuccess;
+  const factory JourneyGamificationState.leaderboardLoadSuccess(List<LeaderboardEntry> leaderboard) = LeaderboardLoadSuccess;
+  const factory JourneyGamificationState.advancePhaseSuccess(bool success) = AdvancePhaseSuccess;
+  const factory JourneyGamificationState.failure(String message) = JourneyGamificationFailure;
 }

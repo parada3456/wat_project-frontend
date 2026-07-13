@@ -1,45 +1,21 @@
-abstract class AdminDashboardEvent {
-  const AdminDashboardEvent();
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class AdminStatsRequested extends AdminDashboardEvent {
-  const AdminStatsRequested();
-}
+part 'admin_dashboard_event.freezed.dart';
 
-class AdminPendingVerificationsRequested extends AdminDashboardEvent {
-  const AdminPendingVerificationsRequested();
-}
-
-class AdminVerifyMissionSubmitted extends AdminDashboardEvent {
-  final String userMissionId;
-  final bool approved;
-  final String? reason;
-
-  const AdminVerifyMissionSubmitted({
-    required this.userMissionId,
-    required this.approved,
-    this.reason,
-  });
-}
-
-class AdminUsersSearchRequested extends AdminDashboardEvent {
-  final String search;
-  const AdminUsersSearchRequested(this.search);
-}
-
-class AdminUserDetailRequested extends AdminDashboardEvent {
-  final String userId;
-  const AdminUserDetailRequested(this.userId);
-}
-
-class AdminAdjustPointsSubmitted extends AdminDashboardEvent {
-  final String userId;
-  final int pointsDelta;
-  final String reason;
-
-  const AdminAdjustPointsSubmitted({
-    required this.userId,
-    required this.pointsDelta,
-    required this.reason,
-  });
+@freezed
+class AdminDashboardEvent with _$AdminDashboardEvent {
+  const factory AdminDashboardEvent.statsRequested() = AdminStatsRequested;
+  const factory AdminDashboardEvent.pendingVerificationsRequested() = AdminPendingVerificationsRequested;
+  const factory AdminDashboardEvent.verifyMissionSubmitted({
+    required String userMissionId,
+    required bool approved,
+    String? reason,
+  }) = AdminVerifyMissionSubmitted;
+  const factory AdminDashboardEvent.usersSearchRequested(String search) = AdminUsersSearchRequested;
+  const factory AdminDashboardEvent.userDetailRequested(String userId) = AdminUserDetailRequested;
+  const factory AdminDashboardEvent.adjustPointsSubmitted({
+    required String userId,
+    required int pointsDelta,
+    required String reason,
+  }) = AdminAdjustPointsSubmitted;
 }
