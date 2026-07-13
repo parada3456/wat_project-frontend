@@ -9,9 +9,9 @@ part of 'job_detail_response.dart';
 JobDetailResponse _$JobDetailResponseFromJson(Map<String, dynamic> json) =>
     JobDetailResponse(
       job: JobPostingEntity.fromJson(json['job'] as Map<String, dynamic>),
-      housing: (json['housing'] as List<dynamic>)
-          .map((e) => JobHousingEntity.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      housing: json['housing'] == null
+          ? null
+          : JobHousingEntity.fromJson(json['housing'] as Map<String, dynamic>),
       rating: json['rating'] == null
           ? null
           : JobOverallRatingEntity.fromJson(
