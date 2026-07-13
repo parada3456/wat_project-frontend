@@ -40,7 +40,8 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
         });
       }
     } catch (e) {
-      AppPopup.show(
+      if (!mounted) return;
+      AppPopup.show<void>(
         context: context,
         type: AppPopupType.error,
         title: 'Error',
@@ -58,7 +59,7 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
 
   void _submit() {
     if (_selectedFile == null) {
-      AppPopup.show(
+      AppPopup.show<void>(
         context: context,
         type: AppPopupType.warning,
         title: 'Required',
@@ -86,33 +87,36 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
       value: bloc,
       child: BlocListener<ExpenseSharingBloc, ExpenseSharingState>(
         listener: (context, state) {
-          if (state is PayExpenseSplitSuccess) {
-            setState(() => _isUploading = false);
-            AppPopup.show(
-              context: context,
-              type: AppPopupType.success,
-              title: 'Success',
-              message: 'Payment proof submitted successfully.',
-              buttons: [
-                AppPopupButton(
-                  label: 'OK',
-                  onPressed: () {
-                    Navigator.pop(context); // pop dialog
-                    Navigator.pop(context); // pop page back to detail
-                  },
-                ),
-              ],
-            );
-          } else if (state is ExpenseSharingFailure) {
-            setState(() => _isUploading = false);
-            AppPopup.show(
-              context: context,
-              type: AppPopupType.error,
-              title: 'Submission Failed',
-              message: state.message,
-              buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
-            );
-          }
+          state.whenOrNull(
+            payExpenseSplitSuccess: () {
+              setState(() => _isUploading = false);
+              AppPopup.show<void>(
+                context: context,
+                type: AppPopupType.success,
+                title: 'Success',
+                message: 'Payment proof submitted successfully.',
+                buttons: [
+                  AppPopupButton(
+                    label: 'OK',
+                    onPressed: () {
+                      Navigator.pop(context); // pop dialog
+                      Navigator.pop(context); // pop page back to detail
+                    },
+                  ),
+                ],
+              );
+            },
+            failure: (message) {
+              setState(() => _isUploading = false);
+              AppPopup.show<void>(
+                context: context,
+                type: AppPopupType.error,
+                title: 'Submission Failed',
+                message: message,
+                buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+              );
+            },
+          );
         },
         child: Scaffold(
           backgroundColor: AppColors.background,

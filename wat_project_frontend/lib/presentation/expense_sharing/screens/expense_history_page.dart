@@ -54,7 +54,7 @@ class _ExpenseHistoryPageState extends State<ExpenseHistoryPage> {
               _isLoadingExpenses = false;
               _isLoadingSplits = false;
             });
-            AppPopup.show(
+            AppPopup.show<void>(
               context: context,
               type: AppPopupType.error,
               title: 'Error',
