@@ -1,51 +1,23 @@
 import 'dart:io';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
 
-abstract class ExpenseSharingEvent {
-  const ExpenseSharingEvent();
-}
+part 'expense_sharing_event.freezed.dart';
 
-class ListExpensesRequested extends ExpenseSharingEvent {
-  const ListExpensesRequested();
-}
-
-class CreateExpenseSubmitted extends ExpenseSharingEvent {
-  final CreateExpenseRequest request;
-  const CreateExpenseSubmitted(this.request);
-}
-
-class GetExpenseDetailRequested extends ExpenseSharingEvent {
-  final String id;
-  const GetExpenseDetailRequested(this.id);
-}
-
-class DeleteExpenseSubmitted extends ExpenseSharingEvent {
-  final String id;
-  const DeleteExpenseSubmitted(this.id);
-}
-
-class ListPendingSplitsRequested extends ExpenseSharingEvent {
-  const ListPendingSplitsRequested();
-}
-
-class PayExpenseSplitSubmitted extends ExpenseSharingEvent {
-  final String expenseId;
-  final String splitId;
-  final File file;
-
-  const PayExpenseSplitSubmitted({
-    required this.expenseId,
-    required this.splitId,
-    required this.file,
-  });
-}
-
-class ApproveExpenseSplitPaymentSubmitted extends ExpenseSharingEvent {
-  final String expenseId;
-  final String splitId;
-
-  const ApproveExpenseSplitPaymentSubmitted({
-    required this.expenseId,
-    required this.splitId,
-  });
+@freezed
+class ExpenseSharingEvent with _$ExpenseSharingEvent {
+  const factory ExpenseSharingEvent.listExpensesRequested() = ListExpensesRequested;
+  const factory ExpenseSharingEvent.createExpenseSubmitted(CreateExpenseRequest request) = CreateExpenseSubmitted;
+  const factory ExpenseSharingEvent.getExpenseDetailRequested(String id) = GetExpenseDetailRequested;
+  const factory ExpenseSharingEvent.deleteExpenseSubmitted(String id) = DeleteExpenseSubmitted;
+  const factory ExpenseSharingEvent.listPendingSplitsRequested() = ListPendingSplitsRequested;
+  const factory ExpenseSharingEvent.payExpenseSplitSubmitted({
+    required String expenseId,
+    required String splitId,
+    required File file,
+  }) = PayExpenseSplitSubmitted;
+  const factory ExpenseSharingEvent.approveExpenseSplitPaymentSubmitted({
+    required String expenseId,
+    required String splitId,
+  }) = ApproveExpenseSplitPaymentSubmitted;
 }

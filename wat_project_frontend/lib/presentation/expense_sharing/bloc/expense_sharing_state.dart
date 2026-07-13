@@ -1,51 +1,26 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/domain/models/expense_models.dart';
-import 'package:wat_project_frontend/domain/models/expense_models.dart';
-import 'package:wat_project_frontend/domain/models/expense_models.dart';
 
-abstract class ExpenseSharingState {
-  const ExpenseSharingState();
-}
+part 'expense_sharing_state.freezed.dart';
 
-class ExpenseSharingInitial extends ExpenseSharingState {
-  const ExpenseSharingInitial();
-}
-
-class ExpenseSharingLoading extends ExpenseSharingState {
-  const ExpenseSharingLoading();
-}
-
-class ListExpensesSuccess extends ExpenseSharingState {
-  final List<ExpenseTransactionModel> expenses;
-  const ListExpensesSuccess(this.expenses);
-}
-
-class CreateExpenseSuccess extends ExpenseSharingState {
-  const CreateExpenseSuccess();
-}
-
-class GetExpenseDetailSuccess extends ExpenseSharingState {
-  final ExpenseDetailModel expenseDetail;
-  const GetExpenseDetailSuccess(this.expenseDetail);
-}
-
-class DeleteExpenseSuccess extends ExpenseSharingState {
-  const DeleteExpenseSuccess();
-}
-
-class ListPendingSplitsSuccess extends ExpenseSharingState {
-  final List<ExpenseSplitModel> pendingSplits;
-  const ListPendingSplitsSuccess(this.pendingSplits);
-}
-
-class PayExpenseSplitSuccess extends ExpenseSharingState {
-  const PayExpenseSplitSuccess();
-}
-
-class ApproveExpenseSplitPaymentSuccess extends ExpenseSharingState {
-  const ApproveExpenseSplitPaymentSuccess();
-}
-
-class ExpenseSharingFailure extends ExpenseSharingState {
-  final String message;
-  const ExpenseSharingFailure(this.message);
+@freezed
+class ExpenseSharingState with _$ExpenseSharingState {
+  const factory ExpenseSharingState.initial() = ExpenseSharingInitial;
+  const factory ExpenseSharingState.loading() = ExpenseSharingLoading;
+  const factory ExpenseSharingState.listExpensesSuccess({
+    required List<ExpenseTransactionModel> expenses,
+  }) = ListExpensesSuccess;
+  const factory ExpenseSharingState.createExpenseSuccess() = CreateExpenseSuccess;
+  const factory ExpenseSharingState.getExpenseDetailSuccess({
+    required ExpenseDetailModel expenseDetail,
+  }) = GetExpenseDetailSuccess;
+  const factory ExpenseSharingState.deleteExpenseSuccess() = DeleteExpenseSuccess;
+  const factory ExpenseSharingState.listPendingSplitsSuccess({
+    required List<ExpenseSplitModel> pendingSplits,
+  }) = ListPendingSplitsSuccess;
+  const factory ExpenseSharingState.payExpenseSplitSuccess() = PayExpenseSplitSuccess;
+  const factory ExpenseSharingState.approveExpenseSplitPaymentSuccess() = ApproveExpenseSplitPaymentSuccess;
+  const factory ExpenseSharingState.failure({
+    required String message,
+  }) = ExpenseSharingFailure;
 }

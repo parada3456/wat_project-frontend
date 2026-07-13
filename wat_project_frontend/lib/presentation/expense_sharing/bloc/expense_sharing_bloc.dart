@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
 import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
+import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
 
@@ -22,7 +22,7 @@ class ExpenseSharingBloc
     this._listPendingSplitsUseCase,
     this._payExpenseSplitUseCase,
     this._approveExpenseSplitPaymentUseCase,
-  ) : super(const ExpenseSharingInitial()) {
+  ) : super(const ExpenseSharingState.initial()) {
     on<ListExpensesRequested>(_onListExpenses);
     on<CreateExpenseSubmitted>(_onCreateExpense);
     on<GetExpenseDetailRequested>(_onGetExpenseDetail);
@@ -36,11 +36,11 @@ class ExpenseSharingBloc
     ListExpensesRequested event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _listExpensesUseCase();
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (expenses) => emit(ListExpensesSuccess(expenses)),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (expenses) => emit(ExpenseSharingState.listExpensesSuccess(expenses: expenses)),
     );
   }
 
@@ -48,11 +48,11 @@ class ExpenseSharingBloc
     CreateExpenseSubmitted event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _createExpenseUseCase(event.request);
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (_) => emit(const CreateExpenseSuccess()),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (_) => emit(const ExpenseSharingState.createExpenseSuccess()),
     );
   }
 
@@ -60,11 +60,11 @@ class ExpenseSharingBloc
     GetExpenseDetailRequested event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _getExpenseDetailUseCase(event.id);
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (detail) => emit(GetExpenseDetailSuccess(detail)),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (detail) => emit(ExpenseSharingState.getExpenseDetailSuccess(expenseDetail: detail)),
     );
   }
 
@@ -72,11 +72,11 @@ class ExpenseSharingBloc
     DeleteExpenseSubmitted event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _deleteExpenseUseCase(event.id);
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (_) => emit(const DeleteExpenseSuccess()),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (_) => emit(const ExpenseSharingState.deleteExpenseSuccess()),
     );
   }
 
@@ -84,11 +84,11 @@ class ExpenseSharingBloc
     ListPendingSplitsRequested event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _listPendingSplitsUseCase();
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (splits) => emit(ListPendingSplitsSuccess(splits)),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (splits) => emit(ExpenseSharingState.listPendingSplitsSuccess(pendingSplits: splits)),
     );
   }
 
@@ -96,15 +96,15 @@ class ExpenseSharingBloc
     PayExpenseSplitSubmitted event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _payExpenseSplitUseCase(
       event.expenseId,
       event.splitId,
       event.file,
     );
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (_) => emit(const PayExpenseSplitSuccess()),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (_) => emit(const ExpenseSharingState.payExpenseSplitSuccess()),
     );
   }
 
@@ -112,14 +112,14 @@ class ExpenseSharingBloc
     ApproveExpenseSplitPaymentSubmitted event,
     Emitter<ExpenseSharingState> emit,
   ) async {
-    emit(const ExpenseSharingLoading());
+    emit(const ExpenseSharingState.loading());
     final result = await _approveExpenseSplitPaymentUseCase(
       event.expenseId,
       event.splitId,
     );
     result.fold(
-      (failure) => emit(ExpenseSharingFailure(failure.message)),
-      (_) => emit(const ApproveExpenseSplitPaymentSuccess()),
+      (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
+      (_) => emit(const ExpenseSharingState.approveExpenseSplitPaymentSuccess()),
     );
   }
 }
