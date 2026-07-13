@@ -185,16 +185,18 @@ class AppRouter {
         // },
       ),
       GoRoute(
-        path: '/jobs/details',
-        builder: (context, state) => const JobDetailsPage(),
-      ),
-      GoRoute(
         path: '/jobs/cart',
         builder: (context, state) => const JobCartPage(),
       ),
       GoRoute(
-        path: '/jobs/review',
-        builder: (context, state) => const WriteReviewPage(),
+        path: '/jobs/:id',
+        builder: (context, state) =>
+            JobDetailsPage(jobId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/jobs/:id/reviews/new',
+        builder: (context, state) =>
+            WriteReviewPage(jobId: state.pathParameters['id']!),
       ),
     ],
   );
