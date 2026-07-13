@@ -188,7 +188,7 @@ class _TempTestScreenState extends State<TempTestScreen> {
         ),
         const _RouteNavInfo(
           title: 'Expense Details',
-          path: '/expenses/details',
+          path: '/expenses/tx_001',
           icon: Icons.receipt,
         ),
         const _RouteNavInfo(

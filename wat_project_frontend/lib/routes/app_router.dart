@@ -154,9 +154,10 @@ class AppRouter {
       ),
       GoRoute(
         path: '/expenses/:id',
-        builder: (context, state) => ExpenseDetailsPage(
-          expenseId: state.pathParameters['id']!,
-        ),
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return ExpenseDetailsPage(expenseId: id);
+        },
       ),
       GoRoute(
         path: '/expenses/:id/pay',
