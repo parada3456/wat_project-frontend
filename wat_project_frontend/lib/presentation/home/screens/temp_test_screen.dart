@@ -205,7 +205,7 @@ class _TempTestScreenState extends State<TempTestScreen> {
         ),
         const _RouteNavInfo(
           title: 'Job Details',
-          path: '/jobs/details',
+          path: '/jobs/job-123',
           icon: Icons.business_center,
         ),
         const _RouteNavInfo(
