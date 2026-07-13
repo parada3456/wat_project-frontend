@@ -143,7 +143,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                       return ListView.separated(
                         padding: const EdgeInsets.all(AppDimension.space16),
                         itemCount: _filteredJobs.length,
-                        separatorBuilder: (_, __) =>
+                        separatorBuilder: (context, index) =>
                             const SizedBox(height: AppDimension.space16),
                         itemBuilder: (context, index) {
                           final job = _filteredJobs[index];
@@ -168,7 +168,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
   }
 
   void _showPopup(BuildContext context, AppPopupType type, String title, String message) {
-    AppPopup.show(
+    AppPopup.show<void>(
       context: context,
       type: type,
       title: title,

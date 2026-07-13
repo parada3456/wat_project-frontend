@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
-import 'package:wat_project_frontend/presentation/job_market/widgets/job_cart_item_tile.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -17,12 +17,14 @@ class JobCartPage extends StatefulWidget {
 
 class _JobCartPageState extends State<JobCartPage> {
   late final JobMarketBloc _bloc;
+  final Set<String> _selectedJobIds = {};
 
   @override
   void initState() {
     super.initState();
     _bloc = GetIt.instance<JobMarketBloc>();
     _bloc.add(const JobMarketEvent.listCartItems());
+    _bloc.add(const JobMarketEvent.listJobs(filters: {}));
   }
 
   @override
@@ -51,8 +53,12 @@ class _JobCartPageState extends State<JobCartPage> {
             _showErrorPopup(context, msg);
           }
 
-          // 2. Trigger fresh fetch only if mutations successfully finish
-          if (state.removeFromCartStatus is UILoadSuccess || state.updateCartStatus is UILoadSuccess) {
+          // 2. Clean up selections and refresh on success
+          if (state.removeFromCartStatus is UILoadSuccess) {
+            setState(_selectedJobIds.clear);
+            _bloc.add(const JobMarketEvent.listCartItems());
+          }
+          if (state.updateCartStatus is UILoadSuccess) {
             _bloc.add(const JobMarketEvent.listCartItems());
           }
         },
@@ -73,9 +79,44 @@ class _JobCartPageState extends State<JobCartPage> {
               ),
             ),
           ),
+          bottomNavigationBar: _selectedJobIds.isEmpty
+              ? null
+              : SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppDimension.space16),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.white,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: _selectedJobIds.length < 2
+                          ? null
+                          : () {
+                              final idsParam = _selectedJobIds.join(',');
+                              context.push(
+                                '/jobs/compare?ids=$idsParam',
+                                extra: _selectedJobIds.toList(),
+                              );
+                            },
+                      child: Text(
+                        _selectedJobIds.length < 2
+                            ? 'Select at least 2 jobs to compare (${_selectedJobIds.length} selected)'
+                            : 'Compare Selected (${_selectedJobIds.length})',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
           body: BlocBuilder<JobMarketBloc, JobMarketState>(
             builder: (context, state) {
-              // Show loader only if status is loading AND no data exists yet (prevents shifting layouts)
               if (state.status is UILoading && state.cartItems.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
               }
@@ -93,21 +134,194 @@ class _JobCartPageState extends State<JobCartPage> {
                 child: ListView.separated(
                   padding: const EdgeInsets.all(AppDimension.space16),
                   itemCount: state.cartItems.length,
-                  separatorBuilder: (_, __) =>
-                      const SizedBox(height: AppDimension.space8),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: AppDimension.space12),
                   itemBuilder: (context, index) {
                     final item = state.cartItems[index];
-                    return JobCartItemTile(
-                      title: 'Job #${item.jobId.substring(0, item.jobId.length > 8 ? 8 : item.jobId.length)}',
-                      company: 'Saved Job Posting',
-                      status: item.status.name[0].toUpperCase() + item.status.name.substring(1),
-                      onDelete: () => _bloc.add(
-                        JobMarketEvent.removeJobFromCart(cartItemId: item.cartId),
+                    
+                    // Match corresponding job info
+                    final job = state.jobs.firstWhere(
+                      (j) => j.jobId == item.jobId,
+                      orElse: () => JobPostingModel(
+                        jobId: item.jobId,
+                        position: 'Saved Job Posting',
+                        employerTitle: 'Job Info Loading...',
+                        updatedAt: DateTime.now(),
                       ),
-                      onStatusChanged: (newStatus) => _bloc.add(
-                        JobMarketEvent.updateCartStatus(
-                          cartId: item.cartId,
-                          status: newStatus,
+                    );
+
+                    return Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                      ),
+                      color: AppColors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppDimension.space12,
+                          vertical: AppDimension.space16,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Checkbox(
+                                value: _selectedJobIds.contains(item.jobId),
+                                activeColor: AppColors.primary,
+                                onChanged: (checked) {
+                                  setState(() {
+                                    if (checked == true) {
+                                      _selectedJobIds.add(item.jobId);
+                                    } else {
+                                      _selectedJobIds.remove(item.jobId);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () => context.push('/jobs/${item.jobId}'),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            job.position ?? 'Unknown Position',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.textPrimary,
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.delete_outline,
+                                            color: AppColors.error,
+                                            size: 22,
+                                          ),
+                                          onPressed: () => _bloc.add(
+                                            JobMarketEvent.removeJobFromCart(cartItemId: item.cartId),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      job.employerTitle ?? 'Unknown Employer',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.location_on_outlined, size: 16, color: AppColors.primary),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '${job.locationCity ?? 'N/A'}, ${job.locationState ?? 'N/A'}',
+                                          style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.monetization_on_outlined, size: 16, color: Colors.green),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '\$${job.salaryRangeMin.toStringAsFixed(2)} - \$${job.salaryRangeMax.toStringAsFixed(2)}/hr',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        PopupMenuButton<String>(
+                                          onSelected: (newStatus) => _bloc.add(
+                                            JobMarketEvent.updateCartStatus(
+                                              cartId: item.cartId,
+                                              status: newStatus,
+                                            ),
+                                          ),
+                                          itemBuilder: (context) => [
+                                            const PopupMenuItem(
+                                              value: 'Saved',
+                                              child: Text('Saved'),
+                                            ),
+                                            const PopupMenuItem(
+                                              value: 'Applied',
+                                              child: Text('Applied'),
+                                            ),
+                                          ],
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                            decoration: BoxDecoration(
+                                              color: item.status == CartStatus.applied
+                                                  ? Colors.green.withValues(alpha: 0.1)
+                                                  : AppColors.primary.withValues(alpha: 0.1),
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  item.status.name[0].toUpperCase() + item.status.name.substring(1),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: item.status == CartStatus.applied
+                                                        ? Colors.green
+                                                        : AppColors.primary,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Icon(
+                                                  Icons.arrow_drop_down,
+                                                  size: 14,
+                                                  color: item.status == CartStatus.applied
+                                                      ? Colors.green
+                                                      : AppColors.primary,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        if (job.usSponsor)
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue.withValues(alpha: 0.1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: const Text(
+                                              'Sponsor',
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -122,7 +336,7 @@ class _JobCartPageState extends State<JobCartPage> {
   }
 
   void _showErrorPopup(BuildContext context, String message) {
-    AppPopup.show(
+    AppPopup.show<void>(
       context: context,
       type: AppPopupType.error,
       title: 'Error',

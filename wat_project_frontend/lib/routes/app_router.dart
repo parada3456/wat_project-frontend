@@ -10,6 +10,7 @@ import 'package:wat_project_frontend/presentation/expense_sharing/screens/expens
 import 'package:wat_project_frontend/presentation/expense_sharing/screens/payment_submission_page.dart';
 import 'package:wat_project_frontend/presentation/home/screens/temp_test_screen.dart';
 import 'package:wat_project_frontend/presentation/job_market/screens/job_cart_page.dart';
+import 'package:wat_project_frontend/presentation/job_market/screens/job_compare_page.dart';
 import 'package:wat_project_frontend/presentation/job_market/screens/job_details_page.dart';
 import 'package:wat_project_frontend/presentation/job_market/screens/job_search_page.dart';
 import 'package:wat_project_frontend/presentation/job_market/screens/write_review_page.dart';
@@ -192,6 +193,15 @@ class AppRouter {
       GoRoute(
         path: '/jobs/cart',
         builder: (context, state) => const JobCartPage(),
+      ),
+      GoRoute(
+        path: '/jobs/compare',
+        builder: (context, state) {
+          final idsString = state.uri.queryParameters['ids'] ?? '';
+          final ids = idsString.isNotEmpty ? idsString.split(',') : <String>[];
+          final extraIds = state.extra as List<String>?;
+          return JobComparePage(jobIds: extraIds ?? ids);
+        },
       ),
       GoRoute(
         path: '/jobs/:id',

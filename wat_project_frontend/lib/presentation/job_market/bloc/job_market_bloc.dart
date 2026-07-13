@@ -88,7 +88,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     final result = await _addJobToCartUseCase(event.jobId);
     result.fold(
       (failure) => emit(state.copyWith(addToCartStatus: UIStatus.loadFailed(message: failure.message))),
-      (_) => emit(state.copyWith(addToCartStatus: const UIStatus.loadSuccess())),
+      (_) {
+        emit(state.copyWith(addToCartStatus: const UIStatus.loadSuccess()));
+        add(const JobMarketEvent.listCartItems());
+      },
     );
   }
 
@@ -112,7 +115,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     final result = await _removeJobFromCartUseCase(event.cartItemId);
     result.fold(
       (failure) => emit(state.copyWith(removeFromCartStatus: UIStatus.loadFailed(message: failure.message))),
-      (_) => emit(state.copyWith(removeFromCartStatus: const UIStatus.loadSuccess())),
+      (_) {
+        emit(state.copyWith(removeFromCartStatus: const UIStatus.loadSuccess()));
+        add(const JobMarketEvent.listCartItems());
+      },
     );
   }
 
@@ -124,7 +130,10 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     final result = await _createJobReviewUseCase(event.request);
     result.fold(
       (failure) => emit(state.copyWith(createReviewStatus: UIStatus.loadFailed(message: failure.message))),
-      (_) => emit(state.copyWith(createReviewStatus: const UIStatus.loadSuccess())),
+      (_) {
+        emit(state.copyWith(createReviewStatus: const UIStatus.loadSuccess()));
+        add(JobMarketEvent.listJobReviews(jobId: event.request.jobId));
+      },
     );
   }
 
