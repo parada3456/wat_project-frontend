@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class JobComparePage extends StatefulWidget {
@@ -26,29 +29,25 @@ class _JobComparePageState extends State<JobComparePage> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocProvider.value(
       value: _bloc,
       child: Scaffold(
-        backgroundColor: AppColors.backgroundAlt,
+        backgroundColor: AppColors.bg(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
             onPressed: () => context.pop(),
           ),
-          title: const Text(
-            'Job Comparison',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          title: const Text('JOB COMPARE'),
         ),
         body: BlocBuilder<JobMarketBloc, JobMarketState>(
           builder: (context, state) {
             if (state.status is UILoading && state.jobs.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: PixelLoadingDots(color: AppColors.primary));
             }
 
             final selectedJobs = state.jobs
@@ -56,12 +55,15 @@ class _JobComparePageState extends State<JobComparePage> {
                 .toList();
 
             if (selectedJobs.isEmpty) {
-              return const Center(
+              return Center(
                 child: Padding(
-                  padding: EdgeInsets.all(AppDimension.space32),
+                  padding: const EdgeInsets.all(AppDimension.space32),
                   child: Text(
-                    'No matching jobs found to compare.',
-                    style: TextStyle(color: AppColors.textSecondary),
+                    'NO MATCHING JOBS TO COMPARE.',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      color: subtextColor,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -71,142 +73,137 @@ class _JobComparePageState extends State<JobComparePage> {
             return SafeArea(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(AppDimension.space16),
-                child: Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-                  ),
-                  color: AppColors.background,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: AppDimension.space16),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columnSpacing: 24,
-                        headingRowColor: WidgetStateProperty.all(
-                          AppColors.backgroundAlt,
-                        ),
-                        columns: [
-                          const DataColumn(
-                            label: Text(
-                              'Attribute',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ),
-                          ...selectedJobs.map(
-                            (job) => DataColumn(
-                              label: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 150),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      job.position ?? 'Unknown Position',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primary,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      job.employerTitle ?? 'Unknown Employer',
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        color: AppColors.textSecondary,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                        rows: [
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Employer', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.employerTitle ?? 'N/A'))),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Agency', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.agencyName ?? 'Direct'))),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Min Salary', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map(
-                                (j) => DataCell(
-                                  Text('\$${j.salaryRangeMin.toStringAsFixed(2)}/hr',
-                                      style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Max Salary', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map(
-                                (j) => DataCell(
-                                  Text('\$${j.salaryRangeMax.toStringAsFixed(2)}/hr',
-                                      style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Position Type', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.positionType ?? 'N/A'))),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Visa Sponsor', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map(
-                                (j) => DataCell(
-                                  Icon(
-                                    j.usSponsor ? Icons.check_circle : Icons.cancel,
-                                    color: j.usSponsor ? Colors.green : Colors.red,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Location', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map(
-                                (j) => DataCell(
-                                  Text('${j.locationCity ?? ''}, ${j.locationState ?? ''}'),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Group Location', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.groupLocation ?? 'N/A'))),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              const DataCell(Text('Available Slots', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text('${j.availableSlots}'))),
-                            ],
-                          ),
-                        ],
+                child: PixelBorderContainer(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: 24,
+                      headingRowColor: WidgetStateProperty.all(
+                        isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
                       ),
+                      columns: [
+                        DataColumn(
+                          label: Text(
+                            'ATTRIBUTE',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 6,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
+                        ...selectedJobs.map(
+                          (job) => DataColumn(
+                            label: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 150),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    (job.position ?? 'UNKNOWN POSITION').toUpperCase(),
+                                    style: GoogleFonts.pressStart2p(
+                                      fontSize: 6,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primary,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    (job.employerTitle ?? 'UNKNOWN').toUpperCase(),
+                                    style: GoogleFonts.pressStart2p(
+                                      fontSize: 5,
+                                      color: subtextColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                      rows: [
+                        DataRow(
+                          cells: [
+                            DataCell(Text('EMPLOYER', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.employerTitle ?? 'N/A').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('AGENCY', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.agencyName ?? 'DIRECT').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('MIN SALARY', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map(
+                              (j) => DataCell(
+                                Text('\$${j.salaryRangeMin.toStringAsFixed(2)}/HR',
+                                    style: GoogleFonts.pressStart2p(fontSize: 6, color: AppColors.success, fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('MAX SALARY', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map(
+                              (j) => DataCell(
+                                Text('\$${j.salaryRangeMax.toStringAsFixed(2)}/HR',
+                                    style: GoogleFonts.pressStart2p(fontSize: 6, color: AppColors.success, fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('POSITION TYPE', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.positionType ?? 'N/A').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('SPONSOR', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map(
+                              (j) => DataCell(
+                                AppAssets.img(
+                                  j.usSponsor ? AppAssets.iconCheck : AppAssets.iconClose,
+                                  color: j.usSponsor ? AppColors.success : AppColors.error,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('LOCATION', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map(
+                              (j) => DataCell(
+                                Text('${j.locationCity ?? ''}, ${j.locationState ?? ''}'.toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('GROUP LOC', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.groupLocation ?? 'N/A').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text('SLOTS', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text('${j.availableSlots}', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

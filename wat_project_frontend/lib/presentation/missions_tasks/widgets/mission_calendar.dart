@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -9,40 +11,35 @@ class MissionCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    final textColor = AppColors.text(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
+    return PixelBorderContainer(
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'June 2026',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+              Text(
+                'JUNE 2026',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
               ),
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.chevron_left),
+                    icon: AppAssets.img(AppAssets.iconBack, size: 14, color: textColor),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_right),
+                    icon: RotatedBox(
+                      quarterTurns: 2,
+                      child: AppAssets.img(AppAssets.iconBack, size: 14, color: textColor),
+                    ),
                     onPressed: () {},
                   ),
                 ],
@@ -55,8 +52,8 @@ class MissionCalendar extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
+              mainAxisSpacing: 6,
+              crossAxisSpacing: 6,
             ),
             itemCount: 30,
             itemBuilder: (context, index) {
@@ -69,27 +66,25 @@ class MissionCalendar extends StatelessWidget {
                     m.userMission!.calculatedDueDate!.year == 2026,
               );
 
+              final dayBg = isDeadline
+                  ? AppColors.primary.withValues(alpha: 0.15)
+                  : (isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt);
+
               return Container(
                 decoration: BoxDecoration(
-                  color: isDeadline
-                      ? AppColors.primary.withOpacity(0.1)
-                      : Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: isDeadline
-                      ? Border.all(color: AppColors.primary)
-                      : null,
+                  color: dayBg,
+                  border: Border.all(
+                    color: isDeadline ? AppColors.primary : borderColor,
+                    width: AppDimension.pixelBorderWidth,
+                  ),
                 ),
                 child: Center(
                   child: Text(
                     '$day',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: isDeadline
-                          ? FontWeight.w700
-                          : FontWeight.w400,
-                      color: isDeadline
-                          ? AppColors.primary
-                          : AppColors.textPrimary,
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 6,
+                      fontWeight: isDeadline ? FontWeight.bold : FontWeight.normal,
+                      color: isDeadline ? AppColors.primary : textColor,
                     ),
                   ),
                 ),

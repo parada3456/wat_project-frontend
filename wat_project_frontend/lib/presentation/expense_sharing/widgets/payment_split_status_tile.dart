@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class PaymentSplitStatusTile extends StatelessWidget {
   final String name;
   final double amount;
-  final String status; // 'Paid', 'Pending'
+  final String status;
 
   const PaymentSplitStatusTile({
     super.key,
@@ -16,44 +18,65 @@ class PaymentSplitStatusTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPaid = status.toLowerCase() == 'paid';
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
+    return PixelBorderContainer(
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: AppColors.surface,
-            child: const Icon(Icons.person, size: 20, color: AppColors.white),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+              border: Border.all(
+                color: borderColor,
+                width: AppDimension.pixelBorderWidth,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: AppAssets.img(
+              AppAssets.iconCharacter,
+              size: 16,
+              color: textColor,
+            ),
           ),
-          const SizedBox(width: AppDimension.space16),
+          const SizedBox(width: AppDimension.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                  name.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    height: 1.4,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  isPaid ? 'Paid' : 'Awaiting payment',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isPaid ? Colors.green : AppColors.textSecondary,
+                  isPaid ? 'PAID' : 'PENDING',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 6,
+                    color: isPaid ? AppColors.success : subtextColor,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Text(
             '\$${amount.toStringAsFixed(2)}',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
+            style: GoogleFonts.pressStart2p(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
         ],

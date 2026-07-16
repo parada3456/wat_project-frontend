@@ -7,34 +7,35 @@ class AppTheme {
 
   // ─── Press Start 2P text theme ───
   static TextTheme _pixelTextTheme(Color color) {
-    final base = GoogleFonts.pressStart2pTextTheme();
+    // final base = GoogleFonts.pressStart2pTextTheme();
+    final base = GoogleFonts.interTextTheme();
     return base.copyWith(
       displayLarge: GoogleFonts.pressStart2p(
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.8,
       ),
       displayMedium: GoogleFonts.pressStart2p(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.8,
       ),
       displaySmall: GoogleFonts.pressStart2p(
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.8,
       ),
       headlineLarge: GoogleFonts.pressStart2p(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.8,
       ),
       headlineMedium: GoogleFonts.pressStart2p(
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.8,
@@ -68,12 +69,12 @@ class AppTheme {
         color: color,
         height: 1.8,
       ),
-      bodyMedium: GoogleFonts.pressStart2p(
+      bodyMedium: GoogleFonts.inter(
         fontSize: 10,
         color: color,
         height: 1.8,
       ),
-      bodySmall: GoogleFonts.pressStart2p(
+      bodySmall: GoogleFonts.inter(
         fontSize: 8,
         color: color,
         height: 1.8,
@@ -89,7 +90,7 @@ class AppTheme {
         color: color,
         height: 1.8,
       ),
-      labelSmall: GoogleFonts.pressStart2p(
+      labelSmall: GoogleFonts.inter(
         fontSize: 7,
         color: color,
         height: 1.8,

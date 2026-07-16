@@ -1,61 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class BadgeGridTile extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String iconAsset;
   final bool isEarned;
 
   const BadgeGridTile({
     super.key,
     required this.title,
-    required this.icon,
+    required this.iconAsset,
     this.isEarned = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final badgeColor = isEarned
+        ? AppColors.primary
+        : (isDark ? AppColors.darkBorder : AppColors.lightBorder);
+
+    return PixelBorderContainer(
+      borderColor: badgeColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               color: isEarned
-                  ? AppColors.primary.withOpacity(0.1)
-                  : AppColors.surfaceAlt,
-              shape: BoxShape.circle,
+                  ? AppColors.primary.withValues(alpha: 0.15)
+                  : (isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt),
+              border: Border.all(
+                color: badgeColor,
+                width: AppDimension.pixelBorderWidth,
+              ),
             ),
-            child: Icon(
-              icon,
-              size: 30,
-              color: isEarned
-                  ? AppColors.primary
-                  : AppColors.textSecondary.withOpacity(0.5),
+            alignment: Alignment.center,
+            child: AppAssets.img(
+              iconAsset,
+              size: 24,
+              color: isEarned ? AppColors.primary : subtextColor,
             ),
           ),
           const SizedBox(height: AppDimension.space12),
           Text(
-            title,
+            title.toUpperCase(),
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: isEarned ? AppColors.textPrimary : AppColors.textSecondary,
+            style: GoogleFonts.pressStart2p(
+              fontSize: 6,
+              fontWeight: FontWeight.bold,
+              color: isEarned ? textColor : subtextColor,
+              height: 1.4,
             ),
           ),
         ],

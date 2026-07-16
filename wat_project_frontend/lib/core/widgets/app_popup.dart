@@ -109,7 +109,7 @@ class AppPopup extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.inter(
                 fontSize: 8,
                 color: subtextColor,
                 height: 2.0,
@@ -207,7 +207,7 @@ class AppPopup extends StatelessWidget {
 
   Widget _buildSingleButton(BuildContext context, AppPopupButton button) {
     void action() {
-      if (button.autoPop) context.pop();
+      // if (button.autoPop) context.pop();
       button.onPressed?.call();
       if (button.path != null) {
         var url = button.path!;

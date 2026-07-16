@@ -7,18 +7,16 @@ class BadgesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        title: const Text(
-          'My Badges',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
+        leading: IconButton(
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
+        title: const Text('MY BADGES'),
       ),
       body: SafeArea(
         child: GridView.builder(
@@ -42,18 +40,18 @@ class BadgesPage extends StatelessWidget {
               'Program Completer',
             ];
             final icons = [
-              Icons.wb_sunny_outlined,
-              Icons.description_outlined,
-              Icons.group_add_outlined,
-              Icons.account_balance_wallet_outlined,
-              Icons.work_outline,
-              Icons.explore_outlined,
-              Icons.emoji_events_outlined,
-              Icons.workspace_premium_outlined,
+              AppAssets.iconCalendar,
+              AppAssets.iconSponsor,
+              AppAssets.iconFriend,
+              AppAssets.iconSalary,
+              AppAssets.iconJobs,
+              AppAssets.iconLocation,
+              AppAssets.iconBadge,
+              AppAssets.iconBadge,
             ];
             return BadgeGridTile(
               title: titles[index],
-              icon: icons[index],
+              iconAsset: icons[index],
               isEarned: index < 3,
             );
           },

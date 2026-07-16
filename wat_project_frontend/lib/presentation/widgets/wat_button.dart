@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 /// WatButton — Pixel RPG styled button.
@@ -101,9 +101,7 @@ class _WatButtonState extends State<WatButton> {
               ? PixelLoadingDots(color: fg)
               : Text(
                   widget.label.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 9,
-                    color: disabled ? fg.withValues(alpha: 0.5) : fg,
+                  style: context.textTheme.labelLarge?.copyWith(color: disabled ? fg.withValues(alpha: 0.5,) : fg,
                     height: 1.5,
                   ),
                 ),
@@ -151,10 +149,7 @@ class _PixelLoadingDotsState extends State<PixelLoadingDots>
         final dots = '.' * (_step.value + 1);
         return Text(
           dots,
-          style: GoogleFonts.pressStart2p(
-            fontSize: 16,
-            color: widget.color,
-          ),
+          style: context.textTheme.titleMedium?.copyWith(color: widget.color,),
         );
       },
     );

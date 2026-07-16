@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_calendar.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class MissionCalendarPage extends StatelessWidget {
@@ -26,38 +28,37 @@ class MissionCalendarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Mission Calendar',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        title: const Text('QUEST CALENDAR'),
       ),
       body: SafeArea(
         child: BlocBuilder<MissionTaskBloc, MissionTaskState>(
           builder: (context, state) {
             if (state.missions.isEmpty && state.status is UILoading) {
               return const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: PixelLoadingDots(color: AppColors.primary),
               );
             }
 
             if (state.status is UILoadFailed) {
-              final message = (state.status as UILoadFailed).message;
-              return Center(child: Text(message ?? 'Failed to load missions'));
+              final message = (state.status as UILoadFailed).message ?? 'Failed to load missions';
+              return Center(
+                child: Text(
+                  message.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(fontSize: 7, color: AppColors.error),
+                ),
+              );
             }
 
-            // Filter missions with deadlines in June 2026
             final deadlinesThisMonth = state.missions
                 .where(
                   (m) =>
@@ -81,33 +82,36 @@ class MissionCalendarView extends StatelessWidget {
                   children: [
                     MissionCalendar(missions: state.missions),
                     const SizedBox(height: AppDimension.space32),
-                    const Text(
-                      'Deadlines this month',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                    Text(
+                      'DEADLINES THIS MONTH',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
                       ),
                     ),
                     const SizedBox(height: AppDimension.space16),
                     if (deadlinesThisMonth.isEmpty)
-                      const Center(
+                      Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24.0),
-                          child: Text('No deadlines this month.'),
+                          padding: const EdgeInsets.symmetric(vertical: 24.0),
+                          child: Text(
+                            'NO DEADLINES THIS MONTH.',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 7,
+                              color: subtextColor,
+                            ),
+                          ),
                         ),
                       )
                     else
                       ...deadlinesThisMonth.map((dm) {
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
+                          padding: const EdgeInsets.only(bottom: 12.0),
                           child: InkWell(
                             onTap: () => context.push(
                               '/missions/detail',
                               extra: dm.missionId,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              AppDimension.radiusMedium,
                             ),
                             child: MissionCard(mission: dm),
                           ),

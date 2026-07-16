@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class JobPreviewItem extends StatelessWidget {
@@ -8,25 +10,37 @@ class JobPreviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 73,
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceAlt,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
+    return PixelBorderContainer(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimension.space16,
+        vertical: AppDimension.space12,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+          Expanded(
+            child: Text(
+              title.toUpperCase(),
+              style: GoogleFonts.pressStart2p(
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+                height: 1.5,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+          const SizedBox(width: AppDimension.space8),
+          // Renders a fallback right chevron/arrow using AppAssets.iconBack mirrored/colored
+          AppAssets.img(
+            AppAssets.iconBack, // using back flipped/colored as indicator
+            size: 16,
+            color: subtextColor,
+          ),
         ],
       ),
     );

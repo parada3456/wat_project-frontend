@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 /// WatInputField — Pixel RPG styled text input.
@@ -90,11 +90,7 @@ class _WatInputFieldState extends State<WatInputField> {
         // ─── Label ───
         Text(
           widget.label.toUpperCase(),
-          style: GoogleFonts.pressStart2p(
-            fontSize: 8,
-            color: labelColor,
-            height: 1.8,
-          ),
+          style: context.textTheme.labelMedium?.copyWith(color: labelColor,),
         ),
         const SizedBox(height: AppDimension.space4),
 
@@ -131,18 +127,10 @@ class _WatInputFieldState extends State<WatInputField> {
                   focusNode: _focusNode,
                   textInputAction: widget.textInputAction,
                   onEditingComplete: widget.onEditingComplete,
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 10,
-                    color: textColor,
-                    height: 1.8,
-                  ),
+                  style: context.textTheme.bodySmall?.copyWith(color: textColor,),
                   decoration: InputDecoration(
                     hintText: widget.hint,
-                    hintStyle: GoogleFonts.pressStart2p(
-                      fontSize: 9,
-                      color: hintColor,
-                      height: 1.8,
-                    ),
+                    hintStyle: context.textTheme.labelLarge?.copyWith(color: hintColor,),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: AppDimension.space12,
@@ -168,11 +156,7 @@ class _WatInputFieldState extends State<WatInputField> {
           const SizedBox(height: AppDimension.space4),
           Text(
             '! ${widget.errorText!}',
-            style: GoogleFonts.pressStart2p(
-              fontSize: 7,
-              color: AppColors.error,
-              height: 1.8,
-            ),
+            style: context.textTheme.labelSmall?.copyWith(color: AppColors.error,),
           ),
         ],
       ],

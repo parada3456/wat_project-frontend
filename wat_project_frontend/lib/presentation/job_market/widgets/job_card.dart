@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -19,128 +21,111 @@ class JobCard extends StatelessWidget {
     final salary = job.salaryRangeMin;
     final location =
         '${job.locationCity ?? ''}, ${job.locationState ?? ''}'.trim();
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
 
-    return GestureDetector(
+    return PixelBorderContainer(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppDimension.space16),
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceAlt,
-                    borderRadius: BorderRadius.circular(
-                      AppDimension.radiusSmall,
-                    ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.15),
+                  border: Border.all(
+                    color: borderColor,
+                    width: AppDimension.pixelBorderWidth,
                   ),
-                  child: const Icon(Icons.business, color: AppColors.primary),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                alignment: Alignment.center,
+                child: AppAssets.img(
+                  AppAssets.iconJobs,
+                  size: 24,
+                  color: AppColors.primary,
+                ),
+              ),
+              if (onAddToCart != null)
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: AppAssets.img(
+                    AppAssets.iconStar,
+                    size: 20,
+                    color: AppColors.secondary,
+                  ),
+                  onPressed: onAddToCart,
+                ),
+            ],
+          ),
+          const SizedBox(height: AppDimension.space12),
+          Text(
+            (job.position ?? 'UNKNOWN POSITION').toUpperCase(),
+            style: GoogleFonts.pressStart2p(
+              fontSize: 9,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            (job.employerTitle ?? '').toUpperCase(),
+            style: GoogleFonts.pressStart2p(
+              fontSize: 7,
+              color: subtextColor,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: AppDimension.space12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Row(
                   children: [
-                    Text(
-                      '\$${salary.toStringAsFixed(2)}/hr',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
+                    AppAssets.img(
+                      AppAssets.iconLocation,
+                      size: 14,
+                      color: subtextColor,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        location.toUpperCase(),
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 6,
+                          color: subtextColor,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    // const Text(
-                    //   'Full-time',
-                    //   style: TextStyle(
-                    //     fontSize: 12,
-                    //     color: AppColors.textSecondary,
-                    //   ),
-                    // ),
                   ],
                 ),
-              ],
-            ),
-            const SizedBox(height: AppDimension.space16),
-            Text(
-              job.position ?? 'Unknown Position',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
               ),
-            ),
-            Text(
-              job.employerTitle ?? '',
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: AppDimension.space16),
-            Row(
-              children: [
-                const Icon(
-                  Icons.location_on_outlined,
-                  size: 16,
-                  color: AppColors.textSecondary,
-                ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    location,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            if (onAddToCart != null) ...[
-              const SizedBox(height: AppDimension.space16),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton.icon(
-                  onPressed: onAddToCart,
-                  icon: const Icon(
-                    Icons.add_shopping_cart_outlined,
-                    size: 16,
-                    color: AppColors.primary,
-                  ),
-                  label: const Text(
-                    'Add to Cart',
-                    style: TextStyle(
-                      fontSize: 12,
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '\$${salary.toStringAsFixed(2)}/HR',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
                       color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimension.space8,
-                      vertical: 4,
-                    ),
-                  ),
-                ),
+                ],
               ),
             ],
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

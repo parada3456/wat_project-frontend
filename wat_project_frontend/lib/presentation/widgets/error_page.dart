@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -36,10 +36,7 @@ class ErrorPage extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 '!',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 32,
-                  color: AppColors.error,
-                ),
+                style: context.textTheme.displayLarge?.copyWith(color: AppColors.error,),
               ),
             ),
             const SizedBox(height: AppDimension.space16),
@@ -55,11 +52,7 @@ class ErrorPage extends StatelessWidget {
               child: Text(
                 message?.toUpperCase() ?? 'SOMETHING WENT WRONG',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 8,
-                  color: textColor,
-                  height: 2.0,
-                ),
+                style: context.textTheme.labelMedium?.copyWith(color: textColor,),
               ),
             ),
             if (onRetry != null) ...[

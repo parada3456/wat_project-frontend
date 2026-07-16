@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_entity.dart';
 import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
@@ -13,20 +14,12 @@ import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_ta
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
 import 'package:wat_project_frontend/presentation/widgets/error_page.dart';
 import 'package:wat_project_frontend/presentation/widgets/list_bloc.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
-// ---------------------------------------------------------------------------
-// Feed type enum — controls which API endpoint is used
-// ---------------------------------------------------------------------------
-
 enum MissionFeedType {
-  /// GET /missions  — all missions
   all,
-
-  /// GET /user-missions  — missions the current user has joined
   my,
-
-  /// GET /missions/explore  — explore / discovery feed
   explore,
 }
 
@@ -41,22 +34,11 @@ class MissionCardList extends StatefulWidget {
     this.emptyMessage,
   });
 
-  /// Which mission feed to load.
   final MissionFeedType feedType;
-
-  /// Number of items fetched per page.
   final int pageSize;
-
-  /// Optional padding around the list.
   final EdgeInsetsGeometry? padding;
-
-  /// Optional initial items to display (turns off initial network fetch).
   final List<MissionModel>? missions;
-
-  /// Optional minimum height for the list.
   final double? minHeight;
-
-  /// Optional message to display when the list is empty.
   final String? emptyMessage;
 
   @override
@@ -71,7 +53,6 @@ class _MissionCardListState extends State<MissionCardList> {
   @override
   void initState() {
     super.initState();
-    // Prefer RepositoryProvider if available, otherwise fall back to GetIt.
     _repository =
         context.read<MissionRepository?>() ?? getIt<MissionRepository>();
 
@@ -118,8 +99,6 @@ class _MissionCardListState extends State<MissionCardList> {
     super.dispose();
   }
 
-  // ── Scroll listener ──────────────────────────────────────────────────────
-
   void _onScroll() {
     final pos = _scrollController.position;
     if (pos.pixels >= pos.maxScrollExtent - 250) {
@@ -127,7 +106,6 @@ class _MissionCardListState extends State<MissionCardList> {
     }
   }
 
-  /// Delegates to the correct repository method based on [widget.feedType].
   Future<PaginationResponse<MissionEntity>> _loadPage(int page) {
     switch (widget.feedType) {
       case MissionFeedType.my:
@@ -145,14 +123,11 @@ class _MissionCardListState extends State<MissionCardList> {
     }
   }
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
-
   Widget _buildMissionCard(MissionModel mission) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () => context.push('/missions/detail', extra: mission.missionId),
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
         child: MissionCard(
           mission: mission,
           onJoinTap:
@@ -163,16 +138,16 @@ class _MissionCardListState extends State<MissionCardList> {
                     JoinMissionRequested(mission.missionId),
                   );
                 }
-              : null,
+               : null,
         ),
       ),
     );
   }
 
-  // ── Build ─────────────────────────────────────────────────────────────────
-
   @override
   Widget build(BuildContext context) {
+    final subtextColor = AppColors.textSub(context);
+
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: widget.minHeight ?? 200.0),
       child: BlocBuilder<ListBloc<MissionModel>, ListState<MissionModel>>(
@@ -187,28 +162,28 @@ class _MissionCardListState extends State<MissionCardList> {
                 f.message ?? 'Failed to load missions. Please try again.',
           );
 
-          // Initial loading
           if (missions.isEmpty && isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: PixelLoadingDots(color: AppColors.primary));
           }
 
-          // Initial error (no items yet)
           if (missions.isEmpty && isFailed) {
             return ErrorPage(
               message:
-                  errorMessage ?? 'Failed to load missions. Please try again.',
+                  (errorMessage ?? 'Failed to load missions. Please try again.').toUpperCase(),
               onRetry: () => _listBloc.add(const ListFetchNextPage()),
             );
           }
 
-          // Empty state
           if (missions.isEmpty && !hasMore) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
                 child: Text(
-                  widget.emptyMessage ?? 'No missions available.',
-                  style: const TextStyle(color: AppColors.textSecondary),
+                  (widget.emptyMessage ?? 'No missions available.').toUpperCase(),
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    color: subtextColor,
+                  ),
                 ),
               ),
             );
@@ -226,11 +201,10 @@ class _MissionCardListState extends State<MissionCardList> {
                 return _buildMissionCard(missions[index]);
               }
 
-              // Bottom sentinel row
               if (isLoading) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 24),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: PixelLoadingDots(color: AppColors.primary)),
                 );
               }
 
@@ -241,12 +215,15 @@ class _MissionCardListState extends State<MissionCardList> {
               }
 
               if (!hasMore) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Center(
                     child: Text(
-                      "You've seen all missions 🎉",
-                      style: TextStyle(color: AppColors.textSecondary),
+                      "YOU'VE SEEN ALL MISSIONS 🎉",
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 6,
+                        color: subtextColor,
+                      ),
                     ),
                   ),
                 );
@@ -263,7 +240,6 @@ class _MissionCardListState extends State<MissionCardList> {
           return RefreshIndicator(
             onRefresh: () async {
               _listBloc.add(const ListRefresh());
-              // Wait until loading finishes or fails
               await _listBloc.stream.firstWhere(
                 (state) => state.status != const UIStatus.loading(),
               );
@@ -276,10 +252,6 @@ class _MissionCardListState extends State<MissionCardList> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Private helper widgets
-// ---------------------------------------------------------------------------
-
 class _RetryRow extends StatelessWidget {
   const _RetryRow({required this.onRetry});
 
@@ -290,10 +262,10 @@ class _RetryRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Center(
-        child: TextButton.icon(
+        child: WatButton(
+          label: 'LOAD MORE',
+          width: 140,
           onPressed: onRetry,
-          icon: const Icon(Icons.refresh),
-          label: const Text('Load more'),
         ),
       ),
     );

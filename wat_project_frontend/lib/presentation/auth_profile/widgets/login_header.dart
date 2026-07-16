@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 /// LoginHeader — Pixel RPG title screen logo block.
@@ -48,32 +47,18 @@ class LoginHeader extends StatelessWidget {
         // ─── Game title ───
         Text(
           'WAT PROJECT',
-          style: GoogleFonts.pressStart2p(
-            fontSize: 14,
-            color: AppColors.primary,
-            height: 1.8,
-            letterSpacing: 2,
-          ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.primary),
         ),
         const SizedBox(height: AppDimension.space8),
         Text(
           'WORK & TRAVEL',
-          style: GoogleFonts.pressStart2p(
-            fontSize: 8,
-            color: textColor,
-            height: 1.8,
-            letterSpacing: 4,
-          ),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: textColor),
         ),
         const SizedBox(height: AppDimension.space8),
         Text(
           'sign in to continue your journey',
           textAlign: TextAlign.center,
-          style: GoogleFonts.pressStart2p(
-            fontSize: 7,
-            color: subtextColor,
-            height: 2.0,
-          ),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(color: subtextColor),
         ),
       ],
     );

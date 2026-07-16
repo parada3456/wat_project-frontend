@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_housing_entity.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -12,56 +14,64 @@ class JobHousingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Housing',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
+        Text(
+          'HOUSING',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: textColor,
           ),
         ),
         const SizedBox(height: AppDimension.space8),
-        Container(
+        PixelBorderContainer(
           width: double.infinity,
-          padding: const EdgeInsets.all(AppDimension.space16),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundAlt,
-            borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.home_outlined, color: AppColors.primary),
-                  SizedBox(width: 8),
+                  AppAssets.img(
+                    AppAssets.iconHome,
+                    size: 18,
+                    color: AppColors.primary,
+                  ),
+                  const SizedBox(width: 8),
                   Text(
-                    'Housing Provided',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                    'HOUSING PROVIDED',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: AppDimension.space8),
+              const SizedBox(height: AppDimension.space12),
               Text(
-                'Cost: \$${housing.weeklyRate.toStringAsFixed(2)}/week',
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
-                  height: 1.5,
+                'COST: \$${housing.weeklyRate.toStringAsFixed(2)}/WEEK',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 7,
+                  color: subtextColor,
+                  height: 1.8,
                 ),
               ),
-              if (housing.deposit > 0)
+              if (housing.deposit > 0) ...[
+                const SizedBox(height: 4),
                 Text(
-                  'Deposit: \$${housing.deposit.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    height: 1.5,
+                  'DEPOSIT: \$${housing.deposit.toStringAsFixed(2)}',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    color: subtextColor,
+                    height: 1.8,
                   ),
                 ),
+              ],
             ],
           ),
         ),

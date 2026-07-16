@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
@@ -201,11 +201,7 @@ class _LoginViewState extends State<LoginView> {
                               onTap: _showForgotPasswordDialog,
                               child: Text(
                                 '> FORGOT PASSWORD?',
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 7,
-                                  color: AppColors.primary,
-                                  height: 1.8,
-                                ),
+                                style: context.textTheme.labelSmall?.copyWith(color: AppColors.primary,),
                               ),
                             ),
                           ),
@@ -231,10 +227,7 @@ class _LoginViewState extends State<LoginView> {
                                 ),
                                 child: Text(
                                   'OR',
-                                  style: GoogleFonts.pressStart2p(
-                                    fontSize: 8,
-                                    color: subtextColor,
-                                  ),
+                                  style: context.textTheme.labelMedium?.copyWith(color: subtextColor,),
                                 ),
                               ),
                               Expanded(
@@ -263,21 +256,13 @@ class _LoginViewState extends State<LoginView> {
                       children: [
                         Text(
                           "NO ACCOUNT?  ",
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 7,
-                            color: subtextColor,
-                            height: 1.8,
-                          ),
+                          style: context.textTheme.labelSmall?.copyWith(color: subtextColor,),
                         ),
                         GestureDetector(
                           onTap: () => context.push('/register'),
                           child: Text(
                             'SIGN UP',
-                            style: GoogleFonts.pressStart2p(
-                              fontSize: 7,
-                              color: AppColors.primary,
-                              height: 1.8,
-                            ),
+                            style: context.textTheme.labelSmall?.copyWith(color: AppColors.primary,),
                           ),
                         ),
                       ],

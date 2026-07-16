@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card_list.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
@@ -34,32 +37,28 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = AppColors.bg(context);
+    final textColor = AppColors.text(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: const Text(
-          'WAT Project',
-          style: TextStyle(
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: AppColors.background,
-        centerTitle: false,
+        title: const Text('WAT DASHBOARD'),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.bug_report_outlined,
+            icon: AppAssets.img(
+              AppAssets.iconAdmin,
+              size: 20,
               color: AppColors.primary,
             ),
             tooltip: 'Debug Dashboard',
             onPressed: () => context.push('/home/debug'),
           ),
           IconButton(
-            icon: const Icon(
-              Icons.notifications_outlined,
-              color: AppColors.textPrimary,
+            icon: AppAssets.img(
+              AppAssets.iconNotification,
+              size: 20,
+              color: textColor,
             ),
             onPressed: () => context.push('/notifications'),
           ),
@@ -69,7 +68,7 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           if (state.homeData == null && state.status is UILoading) {
             return const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+              child: PixelLoadingDots(color: AppColors.primary),
             );
           }
 
@@ -105,6 +104,7 @@ class HomeView extends StatelessWidget {
   }) {
     final currentProgress = data.allPhases.indexOf(data.currentPhase) + 1;
     final totalPhases = data.allPhases.isNotEmpty ? data.allPhases.length : 3;
+    final textColor = AppColors.text(context);
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -113,49 +113,62 @@ class HomeView extends StatelessWidget {
       color: AppColors.primary,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimension.space16,
+          vertical: AppDimension.space20,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (data.isMock || errorMessage != null)
               _buildDemoBanner(
                 context,
-                errorMessage ?? 'Showing cached demo data.',
+                errorMessage ?? 'Showing cached offline data.',
               ),
 
-            _buildGreeting(data.user),
-            const SizedBox(height: 20),
+            _buildGreeting(context, data.user),
+            const SizedBox(height: AppDimension.space24),
 
-            _buildPhaseCard(data.currentPhase, currentProgress, totalPhases),
-            const SizedBox(height: 28),
+            _buildPhaseCard(context, data.currentPhase, currentProgress, totalPhases),
+            const SizedBox(height: AppDimension.space24),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Active Missions',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
+                Text(
+                  'ACTIVE QUESTS',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
                   ),
                 ),
-                TextButton.icon(
-                  onPressed: () => context.push('/missions'),
-                  icon: const Icon(Icons.arrow_forward, size: 16),
-                  label: const Text('View All'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.primary,
+                GestureDetector(
+                  onTap: () => context.push('/missions'),
+                  child: Row(
+                    children: [
+                      Text(
+                        'VIEW ALL ',
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 7,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      AppAssets.img(
+                        AppAssets.iconBack, // flipped arrow helper
+                        size: 10,
+                        color: AppColors.primary,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppDimension.space12),
 
             if (data.phaseMissions.isEmpty)
-              _buildEmptyMissionsState()
+              _buildEmptyMissionsState(context)
             else
-              // SizedBox bounds the lazy list within the scrollable home page
               SizedBox(
                 height: 420,
                 child: MissionCardList(
@@ -172,231 +185,258 @@ class HomeView extends StatelessWidget {
   }
 
   Widget _buildDemoBanner(BuildContext context, String message) {
-    return Container(
-      width: double.infinity,
+    return PixelBorderContainer(
+      borderColor: AppColors.primary,
       margin: const EdgeInsets.only(bottom: 16.0),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
-      ),
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
-          const Icon(Icons.info_outline_rounded, color: AppColors.primary),
+          AppAssets.img(
+            AppAssets.iconWarning,
+            size: 20,
+            color: AppColors.primary,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Demo/Offline Mode Active',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
+                Text(
+                  'DEMO MODE ACTIVE',
+                  style: GoogleFonts.pressStart2p(
+                    fontWeight: FontWeight.bold,
                     color: AppColors.primary,
-                    fontSize: 13,
+                    fontSize: 8,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  'Unable to reach server. Showing cached demo data.',
-                  style: TextStyle(color: Colors.grey[700], fontSize: 11),
+                  'Server offline. Using cached data.',
+                  style: GoogleFonts.pressStart2p(
+                    color: AppColors.textSub(context),
+                    fontSize: 6,
+                    height: 1.5,
+                  ),
                 ),
               ],
             ),
           ),
-          TextButton(
+          const SizedBox(width: 8),
+          WatButton(
+            label: 'Retry',
+            width: 80,
             onPressed: () {
               context.read<HomeBloc>().add(const HomeFetched());
             },
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: const Text('Retry'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildGreeting(UserModel user) {
+  Widget _buildGreeting(BuildContext context, UserModel user) {
     final name = (user.firstName != null && user.firstName!.trim().isNotEmpty)
         ? user.firstName!.trim()
         : 'Traveler';
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return Row(
       children: [
-        CircleAvatar(
-          radius: 26,
-          backgroundColor: AppColors.primary.withOpacity(0.15),
+        // Square pixel avatar frame
+        Container(
+          width: 52,
+          height: 52,
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.15),
+            border: Border.all(
+              color: AppColors.border(context),
+              width: AppDimension.pixelBorderWidth,
+            ),
+          ),
+          alignment: Alignment.center,
           child: Text(
             name.isNotEmpty ? name[0].toUpperCase() : 'T',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
+            style: GoogleFonts.pressStart2p(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
               color: AppColors.primary,
             ),
           ),
         ),
         const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hi, $name!',
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'HI, ${name.toUpperCase()}!',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                  height: 1.5,
+                ),
               ),
-            ),
-            const Text(
-              'Welcome back to your WAT adventure.',
-              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                'Welcome back to your adventure.',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 7,
+                  color: subtextColor,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
   Widget _buildPhaseCard(
+    BuildContext context,
     JourneyPhaseModel phase,
     int currentProgress,
     int totalPhases,
   ) {
     final progressFraction = currentProgress / totalPhases;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
 
-    return Card(
-      elevation: 0,
-      margin: EdgeInsets.zero,
-      color: AppColors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        side: BorderSide(color: Colors.grey.withOpacity(0.15)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(
-                      AppDimension.radiusSmall,
-                    ),
-                  ),
-                  child: Text(
-                    'Phase $currentProgress of $totalPhases',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primary,
-                    ),
+    return PixelBorderContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.15),
+                  border: Border.all(
+                    color: AppColors.border(context),
+                    width: AppDimension.pixelBorderWidth,
                   ),
                 ),
-                const Icon(
-                  Icons.flag_rounded,
-                  color: AppColors.primary,
-                  size: 20,
+                child: Text(
+                  'PHASE $currentProgress OF $totalPhases',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
                 ),
-              ],
+              ),
+              AppAssets.img(
+                AppAssets.iconBadge,
+                size: 20,
+                color: AppColors.primary,
+              ),
+            ],
+          ),
+          const SizedBox(height: AppDimension.space16),
+          Text(
+            phase.title.toUpperCase(),
+            style: GoogleFonts.pressStart2p(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+              height: 1.5,
             ),
-            const SizedBox(height: 12),
+          ),
+          if (phase.description != null) ...[
+            const SizedBox(height: 8),
             Text(
-              phase.title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
+              phase.description!,
+              style: GoogleFonts.pressStart2p(
+                fontSize: 7,
+                color: subtextColor,
+                height: 1.8,
               ),
             ),
-            if (phase.description != null) ...[
-              const SizedBox(height: 8),
+          ],
+          const SizedBox(height: AppDimension.space20),
+          // Flat Pixel Linear Progress Bar
+          Container(
+            height: 12,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+              border: Border.all(
+                color: AppColors.border(context),
+                width: AppDimension.pixelBorderWidth,
+              ),
+            ),
+            alignment: Alignment.centerLeft,
+            child: FractionallySizedBox(
+              widthFactor: progressFraction,
+              child: Container(
+                color: AppColors.primary,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text(
-                phase.description!,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
-                  height: 1.4,
+                'JOURNEY STATUS',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 6,
+                  color: subtextColor,
+                ),
+              ),
+              Text(
+                '${(progressFraction * 100).toInt()}% COMPLETED',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 6,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
               ),
             ],
-            const SizedBox(height: 20),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              child: LinearProgressIndicator(
-                value: progressFraction,
-                minHeight: 8,
-                backgroundColor: AppColors.surfaceAlt,
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  AppColors.primary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Journey Status',
-                  style: TextStyle(fontSize: 11, color: Colors.grey),
-                ),
-                Text(
-                  '${(progressFraction * 100).toInt()}% Completed',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildEmptyMissionsState() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        border: Border.all(color: Colors.grey.withOpacity(0.15)),
-      ),
-      child: const Column(
+  Widget _buildEmptyMissionsState(BuildContext context) {
+    return PixelBorderContainer(
+      child: Column(
         children: [
-          Icon(
-            Icons.assignment_turned_in_outlined,
-            size: 48,
-            color: Colors.grey,
+          const SizedBox(height: AppDimension.space16),
+          AppAssets.img(
+            AppAssets.iconSuccess,
+            size: 40,
+            color: AppColors.textSub(context),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Text(
-            'All Done for This Phase!',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+            'ALL DONE FOR THIS PHASE!',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 9,
+              fontWeight: FontWeight.bold,
+              color: AppColors.text(context),
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
-            'No active missions in this phase. Keep it up!',
-            style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            'No active quests in this phase. Keep it up!',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 7,
+              color: AppColors.textSub(context),
+              height: 1.5,
+            ),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: AppDimension.space16),
         ],
       ),
     );
@@ -405,29 +445,42 @@ class HomeView extends StatelessWidget {
   Widget _buildErrorState(BuildContext context, String message) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(AppDimension.space24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.cloud_off, size: 64, color: AppColors.error),
+            AppAssets.img(
+              AppAssets.iconError,
+              size: 48,
+              color: AppColors.error,
+            ),
             const SizedBox(height: 16),
-            const Text(
-              'Unable to load your home dashboard',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              'UNABLE TO LOAD HOME DASHBOARD',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 9,
+                fontWeight: FontWeight.bold,
+                color: AppColors.text(context),
+                height: 1.5,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              message,
-              style: const TextStyle(color: Colors.grey),
+              message.toUpperCase(),
+              style: GoogleFonts.pressStart2p(
+                fontSize: 7,
+                color: AppColors.textSub(context),
+                height: 1.8,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
+            WatButton(
+              label: 'Try Again',
               onPressed: () {
                 context.read<HomeBloc>().add(const HomeFetched());
               },
-              child: const Text('Try Again'),
             ),
           ],
         ),

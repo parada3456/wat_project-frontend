@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/credit_score_badge.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
@@ -16,24 +20,20 @@ class ProfilePage extends StatelessWidget {
     AppPopup.show<void>(
       context: context,
       title: 'Delete Account',
-      message: 'This action is permanent and cannot be undone. Please enter your password to confirm account deletion.',
+      message: 'This action is permanent. Enter your password to confirm.',
       type: AppPopupType.error,
-      content: TextField(
+      content: WatInputField(
+        label: 'Current Password',
+        hint: 'enter password',
         controller: passwordController,
         obscureText: true,
-        decoration: const InputDecoration(
-          labelText: 'Current Password',
-          border: OutlineInputBorder(),
-        ),
       ),
       buttons: [
-        const AppPopupButton(
-          label: 'Cancel',
-        ),
+        const AppPopupButton(label: 'Cancel'),
         AppPopupButton(
           label: 'Delete',
           isPrimary: true,
-          color: Colors.red,
+          color: AppColors.error,
           autoPop: false,
           onPressed: () {
             final password = passwordController.text.trim();
@@ -54,8 +54,13 @@ class ProfilePage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final profileBloc = context.read<ProfileBloc>();
+          final bgColor = AppColors.bg(context);
+          final textColor = AppColors.text(context);
+          final subtextColor = AppColors.textSub(context);
+          final borderColor = AppColors.border(context);
+
           return Scaffold(
-            backgroundColor: AppColors.background,
+            backgroundColor: bgColor,
             body: SafeArea(
               child: BlocConsumer<ProfileBloc, ProfileState>(
                 listener: (context, state) {
@@ -98,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                 },
                 builder: (context, state) {
                   if (state.profile == null && state.status is UILoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: PixelLoadingDots(color: AppColors.primary));
                   }
 
                   if (state.profile == null) {
@@ -106,9 +111,10 @@ class ProfilePage extends StatelessWidget {
                       child: Text(
                         state.status.maybeWhen(
                           loadFailed: (message, _) =>
-                              message ?? 'An error occurred',
-                          orElse: () => 'No profile data loaded',
+                              (message ?? 'An error occurred').toUpperCase(),
+                          orElse: () => 'NO PROFILE DATA LOADED',
                         ),
+                        style: GoogleFonts.pressStart2p(fontSize: 8, color: textColor),
                       ),
                     );
                   }
@@ -119,29 +125,33 @@ class ProfilePage extends StatelessWidget {
 
                   return SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimension.space32,
+                      horizontal: AppDimension.space24,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppDimension.space32),
+                        const SizedBox(height: AppDimension.space24),
+                        // ─── Header ───
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'My Profile',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
+                            Text(
+                              'MY PROFILE',
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: textColor,
                               ),
                             ),
                             Row(
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.my_location),
+                                  icon: AppAssets.img(
+                                    AppAssets.iconLocation,
+                                    size: 20,
+                                    color: textColor,
+                                  ),
                                   onPressed: () {
-                                    // Trigger update location with sample coordinates
                                     profileBloc.add(
                                       const UpdateLocationSubmittedEvent(
                                         latitude: 13.7563,
@@ -151,8 +161,7 @@ class ProfilePage extends StatelessWidget {
                                     AppPopup.show<void>(
                                       context: context,
                                       title: 'Updating Location',
-                                      message:
-                                          'Updating location coordinates...',
+                                      message: 'Updating location coordinates...',
                                       type: AppPopupType.info,
                                       buttons: [
                                         AppPopupButton(
@@ -165,45 +174,48 @@ class ProfilePage extends StatelessWidget {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.settings_outlined),
+                                  icon: AppAssets.img(
+                                    AppAssets.iconSettings,
+                                    size: 20,
+                                    color: textColor,
+                                  ),
                                   onPressed: () => context.push('/settings'),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                        const SizedBox(height: AppDimension.space32),
-                        Center(
+                        const SizedBox(height: AppDimension.space24),
+
+                        // ─── Character Card ───
+                        PixelBorderContainer(
+                          width: double.infinity,
                           child: Column(
                             children: [
+                              // Avatar Frame
                               Container(
-                                width: 120,
-                                height: 120,
+                                width: 96,
+                                height: 96,
                                 decoration: BoxDecoration(
-                                  color: AppColors.surface,
-                                  shape: BoxShape.circle,
+                                  color: AppColors.panel(context),
                                   border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 2,
+                                    color: borderColor,
+                                    width: AppDimension.pixelBorderWidth,
                                   ),
-                                  image:
-                                      profile.avatarUrl != null &&
+                                  image: profile.avatarUrl != null &&
                                           profile.avatarUrl!.isNotEmpty
                                       ? DecorationImage(
-                                          image: NetworkImage(
-                                            profile.avatarUrl!,
-                                          ),
+                                          image: NetworkImage(profile.avatarUrl!),
                                           fit: BoxFit.cover,
                                         )
                                       : null,
                                 ),
-                                child:
-                                    profile.avatarUrl == null ||
+                                child: profile.avatarUrl == null ||
                                         profile.avatarUrl!.isEmpty
-                                    ? const Icon(
-                                        Icons.person,
-                                        size: 60,
-                                        color: AppColors.white,
+                                    ? AppAssets.img(
+                                        AppAssets.iconCharacter,
+                                        size: 48,
+                                        color: textColor,
                                       )
                                     : null,
                               ),
@@ -214,37 +226,45 @@ class ProfilePage extends StatelessWidget {
                                         .isNotEmpty
                                     ? '${user.firstName ?? ""} ${user.lastName ?? ""}'
                                           .trim()
-                                    : 'Unknown User',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textPrimary,
+                                          .toUpperCase()
+                                    : 'UNKNOWN PLAYER',
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
+                                  height: 1.5,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
+                              const SizedBox(height: AppDimension.space4),
                               Text(
-                                user.email,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: AppColors.textSecondary,
+                                user.email.toLowerCase(),
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 7,
+                                  color: subtextColor,
+                                  height: 1.5,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                               if (profile.bio != null &&
                                   profile.bio!.isNotEmpty) ...[
-                                const SizedBox(height: 8),
+                                const SizedBox(height: AppDimension.space12),
                                 Text(
-                                  profile.bio!,
+                                  '"${profile.bio!}"',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.textSecondary,
+                                  style: GoogleFonts.pressStart2p(
+                                    fontSize: 7,
+                                    color: subtextColor,
+                                    height: 1.8,
                                   ),
                                 ),
                               ],
                             ],
                           ),
                         ),
-                        const SizedBox(height: AppDimension.space32),
+                        const SizedBox(height: AppDimension.space24),
+
+                        // ─── Credit Score ───
                         if (creditScore != null)
                           Center(
                             child: CreditScoreBadge(
@@ -252,102 +272,103 @@ class ProfilePage extends StatelessWidget {
                             ),
                           )
                         else
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(AppDimension.space16),
+                          PixelBorderContainer(
+                            width: double.infinity,
+                            borderColor: AppColors.warning,
+                            child: Center(
                               child: Text(
-                                'Credit score not established yet',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.textSecondary,
-                                  fontStyle: FontStyle.italic,
+                                'CREDIT SCORE NOT ESTABLISHED YET',
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 7,
+                                  color: AppColors.warning,
+                                  height: 1.5,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        const SizedBox(height: AppDimension.space24),
+
+                        // ─── Actions Section ───
+                        PixelSectionHeader(label: 'ACTIONS'),
+                        const SizedBox(height: AppDimension.space12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: WatButton(
+                                label: 'Edit Profile',
+                                onPressed: () => context.push('/profile/edit'),
+                              ),
+                            ),
+                            const SizedBox(width: AppDimension.space12),
+                            Expanded(
+                              child: WatButton(
+                                label: 'Delete Account',
+                                backgroundColor: AppColors.error.withValues(alpha: 0.15),
+                                borderColor: AppColors.error,
+                                textColor: AppColors.error,
+                                onPressed: () => _showDeleteAccountDialog(
+                                  context,
+                                  profileBloc,
                                 ),
                               ),
                             ),
-                          ),
-                        const SizedBox(height: AppDimension.space32),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Actions',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () => context.push('/profile/edit'),
-                              child: const Text('Edit Profile'),
-                            ),
                           ],
                         ),
-                        const SizedBox(height: AppDimension.space8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red[50],
-                                foregroundColor: Colors.red,
-                              ),
-                              onPressed: () => _showDeleteAccountDialog(
-                                context,
-                                profileBloc,
-                              ),
-                              icon: const Icon(Icons.delete_forever, size: 18),
-                              label: const Text('Delete Account'),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppDimension.space32),
-                        const Text(
-                          'Earned Badges',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: AppDimension.space16),
+                        const SizedBox(height: AppDimension.space24),
+
+                        // ─── Badges Section ───
+                        PixelSectionHeader(label: 'BADGES'),
+                        const SizedBox(height: AppDimension.space12),
                         state.badges.isEmpty
-                            ? const Text(
-                                'No badges earned yet.',
-                                style: TextStyle(
-                                  color: AppColors.textSecondary,
+                            ? Text(
+                                'NO BADGES EARNED YET.',
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 8,
+                                  color: subtextColor,
                                 ),
                               )
                             : Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
                                 children: state.badges.map((badge) {
-                                  return Chip(
-                                    avatar: const Icon(
-                                      Icons.stars,
-                                      color: Colors.orangeAccent,
-                                      size: 18,
+                                  return PixelBorderContainer(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: AppDimension.space8,
+                                      vertical: AppDimension.space8,
                                     ),
-                                    label: Text(badge.title),
-                                    backgroundColor: AppColors.surface,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        AppAssets.img(
+                                          AppAssets.iconBadge,
+                                          size: 16,
+                                          color: AppColors.secondary,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          badge.title.toUpperCase(),
+                                          style: GoogleFonts.pressStart2p(
+                                            fontSize: 7,
+                                            color: textColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 }).toList(),
                               ),
-                        const SizedBox(height: AppDimension.space32),
-                        const Text(
-                          'Credit History Records',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: AppDimension.space16),
+                        const SizedBox(height: AppDimension.space24),
+
+                        // ─── Credit History ───
+                        PixelSectionHeader(label: 'CREDIT HISTORY'),
+                        const SizedBox(height: AppDimension.space12),
                         state.creditHistory.isEmpty
-                            ? const Text(
-                                'No credit records found.',
-                                style: TextStyle(
-                                  color: AppColors.textSecondary,
+                            ? Text(
+                                'NO CREDIT RECORDS FOUND.',
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 8,
+                                  color: subtextColor,
                                 ),
                               )
                             : ListView.separated(
@@ -355,35 +376,63 @@ class ProfilePage extends StatelessWidget {
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: state.creditHistory.length,
                                 separatorBuilder: (context, index) =>
-                                    const Divider(),
+                                    const SizedBox(height: AppDimension.space8),
                                 itemBuilder: (context, index) {
                                   final record = state.creditHistory[index];
-                                  return ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: Text(
-                                      record.note ?? 'Score Adjustment',
-                                    ),
-                                    subtitle: Text(
-                                      record.createdAt
-                                          .toLocal()
-                                          .toString()
-                                          .split(' ')[0],
-                                    ),
-                                    trailing: Text(
-                                      record.delta > 0
-                                          ? '+${record.delta}'
-                                          : '${record.delta}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: record.delta > 0
-                                            ? Colors.green
-                                            : Colors.red,
-                                      ),
+                                  final Color deltaColor = record.delta > 0
+                                      ? AppColors.success
+                                      : AppColors.error;
+
+                                  return PixelBorderContainer(
+                                    padding: const EdgeInsets.all(AppDimension.space12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                (record.note ?? 'SCORE ADJUSTMENT')
+                                                    .toUpperCase(),
+                                                style: GoogleFonts.pressStart2p(
+                                                  fontSize: 8,
+                                                  color: textColor,
+                                                  height: 1.5,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                record.createdAt
+                                                    .toLocal()
+                                                    .toString()
+                                                    .split(' ')[0],
+                                                style: GoogleFonts.pressStart2p(
+                                                  fontSize: 6,
+                                                  color: subtextColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          record.delta > 0
+                                              ? '+${record.delta}'
+                                              : '${record.delta}',
+                                          style: GoogleFonts.pressStart2p(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.bold,
+                                            color: deltaColor,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },
                               ),
-                        const SizedBox(height: AppDimension.space50),
+                        const SizedBox(height: AppDimension.space48),
                       ],
                     ),
                   );

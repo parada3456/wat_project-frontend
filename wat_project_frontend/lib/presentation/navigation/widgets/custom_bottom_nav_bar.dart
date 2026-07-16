@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 /// CustomBottomNavBar — Pixel RPG map toolbar.
@@ -122,11 +122,7 @@ class _PixelNavItem extends StatelessWidget {
               const SizedBox(height: AppDimension.space4),
               Text(
                 tab.label,
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 6,
-                  color: isSelected ? activeColor : inactiveColor,
-                  height: 1.5,
-                ),
+                style: context.textTheme.labelSmall?.copyWith(color: isSelected ? activeColor : inactiveColor,),
               ),
             ],
           ),

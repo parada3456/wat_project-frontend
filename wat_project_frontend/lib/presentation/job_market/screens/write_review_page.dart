@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
@@ -44,7 +46,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
         message: 'Please write your review before submitting.',
         buttons: [
           AppPopupButton(
-            label: 'OK', 
+            label: 'OK',
             onPressed: () => context.pop(),
           )
         ],
@@ -65,6 +67,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return BlocProvider.value(
       value: _bloc,
       child: BlocListener<JobMarketBloc, JobMarketState>(
@@ -72,10 +77,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             previous.createReviewStatus != current.createReviewStatus,
         listener: (context, state) {
           if (state.createReviewStatus is UILoadSuccess) {
-            // Dismiss current page upon successful post submission
             context.pop();
           } else if (state.createReviewStatus is UILoadFailed) {
-            final msg = (state.createReviewStatus as UILoadFailed).message ?? 
+            final msg = (state.createReviewStatus as UILoadFailed).message ??
                 'Failed to submit review.';
             AppPopup.show<void>(
               context: context,
@@ -84,7 +88,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
               message: msg,
               buttons: [
                 AppPopupButton(
-                  label: 'OK', 
+                  label: 'OK',
                   onPressed: () => context.pop(),
                 )
               ],
@@ -92,82 +96,74 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.bg(context),
           appBar: AppBar(
-            backgroundColor: AppColors.background,
-            elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+              icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
               onPressed: () => context.pop(),
             ),
-            title: const Text(
-              'Write a Review',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            title: const Text('WRITE REVIEW'),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppDimension.space32),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimension.space24,
+                vertical: AppDimension.space32,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'How was your experience?',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                  Text(
+                    'HOW WAS YOUR EXPERIENCE?',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      height: 1.5,
                     ),
                   ),
                   const SizedBox(height: AppDimension.space16),
                   Center(
                     child: ReviewStarsRow(
                       rating: _rating,
-                      size: 40,
+                      size: 32,
                       isInteractive: true,
                       onRatingChanged: (val) => setState(() => _rating = val),
                     ),
                   ),
                   const SizedBox(height: AppDimension.space32),
-                  const Text(
-                    'Your Review',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.textPrimary,
+                  Text(
+                    'YOUR REVIEW',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
                   ),
                   const SizedBox(height: AppDimension.space8),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundAlt,
-                      borderRadius: BorderRadius.circular(
-                        AppDimension.radiusSmall,
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimension.space16,
-                    ),
+                  PixelBorderContainer(
                     child: TextField(
                       controller: _reviewController,
                       maxLines: 5,
-                      decoration: const InputDecoration(
-                        hintText:
-                            'Share details of your work, housing, and tips for others...',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.textSecondary,
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 8,
+                        color: textColor,
+                        height: 1.6,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Share your work experience, housing conditions, or tips...',
+                        hintStyle: GoogleFonts.pressStart2p(
+                          fontSize: 7,
+                          color: subtextColor,
+                          height: 1.6,
                         ),
                         border: InputBorder.none,
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppDimension.space50),
+                  const SizedBox(height: AppDimension.space48),
                   BlocBuilder<JobMarketBloc, JobMarketState>(
-                    buildWhen: (previous, current) => 
+                    buildWhen: (previous, current) =>
                         previous.createReviewStatus != current.createReviewStatus,
                     builder: (context, state) {
                       return WatButton(
@@ -177,7 +173,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: AppDimension.space50),
+                  const SizedBox(height: AppDimension.space48),
                 ],
               ),
             ),

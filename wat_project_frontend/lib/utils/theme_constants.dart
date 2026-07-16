@@ -5,38 +5,86 @@ import 'package:flutter/material.dart';
 // Light = day-mode RPG town  |  Dark = night-mode dungeon
 // ─────────────────────────────────────────────────────────────────────────────
 
+// abstract class AppColors {
+//   // ─── Shared accents (same in both modes) ───
+//   static const Color primary = Color(0xFF4CAF50);        // Pixel green (active/primary)
+//   static const Color primaryVariant = Color(0xFF2E7D32);
+//   static const Color secondary = Color(0xFFFFC107);      // Pixel amber (secondary accent)
+//   static const Color error = Color(0xFFE53935);
+//   static const Color success = Color(0xFF43A047);
+//   static const Color warning = Color(0xFFFB8C00);
+//   static const Color info = Color(0xFF1565C0);
+
+//   // ─── Light mode (day / outdoor RPG town) ───
+//   static const Color lightBackground = Color(0xFFE8F5E9);    // Soft grass green
+//   static const Color lightBackgroundAlt = Color(0xFFDCEDC8);
+//   static const Color lightSurface = Color(0xFFF9FBE7);       // Parchment panel
+//   static const Color lightSurfaceAlt = Color(0xFFF0F4C3);
+//   static const Color lightBorder = Color(0xFF558B2F);        // Dark green border
+//   static const Color lightTextPrimary = Color(0xFF1B5E20);   // Deep green text
+//   static const Color lightTextSecondary = Color(0xFF33691E);
+//   static const Color lightNavBar = Color(0xFF33691E);
+
+//   // ─── Dark mode (night / dungeon RPG) ───
+//   static const Color darkBackground = Color(0xFF1A1C2C);     // Deep navy dungeon
+//   static const Color darkBackgroundAlt = Color(0xFF16213E);
+//   static const Color darkSurface = Color(0xFF2D2B55);        // Dark panel purple
+//   static const Color darkSurfaceAlt = Color(0xFF252344);
+//   static const Color darkBorder = Color(0xFF4CAF50);         // Bright green border
+//   static const Color darkTextPrimary = Color(0xFFE8F5E9);    // Soft white
+//   static const Color darkTextSecondary = Color(0xFFA5D6A7);  // Muted green
+//   static const Color darkNavBar = Color(0xFF1A1C2C);
+
+//   // ─── Semantic aliases (use these in widgets) ───
+//   // These will be resolved at runtime from context brightness.
+//   static const Color white = Color(0xFFFFFFFF);
+//   static const Color black = Color(0xFF000000);
+
+//   // Legacy aliases kept for backward compatibility during migration
+//   static const Color background = darkBackground;
+//   static const Color backgroundAlt = darkBackgroundAlt;
+//   static const Color surface = darkSurface;
+//   static const Color surfaceAlt = darkSurfaceAlt;
+//   static const Color textPrimary = darkTextPrimary;
+//   static const Color textSecondary = darkTextSecondary;
+//   static const Color blackText = Color(0xFF1B5E20);
+//   static const Color onPrimary = white;
+//   static const Color onSecondary = black;
+//   static const Color onBackground = darkTextPrimary;
+//   static const Color onSurface = darkTextPrimary;
+//   static const Color onError = white;
+//   static const Color divider = Color(0xFF4CAF50);
 abstract class AppColors {
-  // ─── Shared accents (same in both modes) ───
-  static const Color primary = Color(0xFF4CAF50);        // Pixel green (active/primary)
-  static const Color primaryVariant = Color(0xFF2E7D32);
-  static const Color secondary = Color(0xFFFFC107);      // Pixel amber (secondary accent)
-  static const Color error = Color(0xFFE53935);
-  static const Color success = Color(0xFF43A047);
-  static const Color warning = Color(0xFFFB8C00);
-  static const Color info = Color(0xFF1565C0);
+  // ─── Shared Accents (Vibrant, 2D Top-Down Game Style) ───
+  static const Color primary = Color(0xFF4EA8DE);        // Radiant Sky Blue (Main Accent)
+  static const Color primaryVariant = Color(0xFF3A86C8); // Deep Cyber Blue
+  static const Color secondary = Color(0xFF70E000);      // Slime/Grass Green (Lively Contrast)
+  static const Color error = Color(0xFFFF4D6D);          // Ruby Heart Red (Health bar / Danger)
+  static const Color success = Color(0xFF38B000);        // Vivid Potion Green
+  static const Color warning = Color(0xFFFF9F1C);        // Bright Amber Orange (Coins / Alerts)
+  static const Color info = Color(0xFF9E0059);           // Mythic Magenta / Purple
 
-  // ─── Light mode (day / outdoor RPG town) ───
-  static const Color lightBackground = Color(0xFFE8F5E9);    // Soft grass green
-  static const Color lightBackgroundAlt = Color(0xFFDCEDC8);
-  static const Color lightSurface = Color(0xFFF9FBE7);       // Parchment panel
-  static const Color lightSurfaceAlt = Color(0xFFF0F4C3);
-  static const Color lightBorder = Color(0xFF558B2F);        // Dark green border
-  static const Color lightTextPrimary = Color(0xFF1B5E20);   // Deep green text
-  static const Color lightTextSecondary = Color(0xFF33691E);
-  static const Color lightNavBar = Color(0xFF33691E);
+  // ─── Light Mode (Cozy Cream & Pop Blue) ───
+  static const Color lightBackground = Color(0xFFFFFDF6);    // Rich Sweet Cream
+  static const Color lightBackgroundAlt = Color(0xFFF3EED8); // Warm Pastry Cream
+  static const Color lightSurface = Color(0xFFE7F5FF);       // Soft Tinted Ice Blue
+  static const Color lightSurfaceAlt = Color(0xFFD0EBFF);    // Clear Sky Surface
+  static const Color lightBorder = Color(0xFFB5D8F7);        // Defined Comic-style Blue Border
+  static const Color lightTextPrimary = Color(0xFF1A2238);   // High-contrast Deep Navy Blue
+  static const Color lightTextSecondary = Color(0xFF4A5E80); // Muted Steel Blue text
+  static const Color lightNavBar = Color(0xFFE7F5FF);
 
-  // ─── Dark mode (night / dungeon RPG) ───
-  static const Color darkBackground = Color(0xFF1A1C2C);     // Deep navy dungeon
-  static const Color darkBackgroundAlt = Color(0xFF16213E);
-  static const Color darkSurface = Color(0xFF2D2B55);        // Dark panel purple
-  static const Color darkSurfaceAlt = Color(0xFF252344);
-  static const Color darkBorder = Color(0xFF4CAF50);         // Bright green border
-  static const Color darkTextPrimary = Color(0xFFE8F5E9);    // Soft white
-  static const Color darkTextSecondary = Color(0xFFA5D6A7);  // Muted green
-  static const Color darkNavBar = Color(0xFF1A1C2C);
+  // ─── Dark Mode (Deep Midnight Blue & Neon Accents) ───
+  static const Color darkBackground = Color(0xFF0F1423);     // Deep Space Blue-Black
+  static const Color darkBackgroundAlt = Color(0xFF161D33);  // Shadow Navy
+  static const Color darkSurface = Color(0xFF1D2744);        // Luminous Dark Blue Panel
+  static const Color darkSurfaceAlt = Color(0xFF28355E);     // Highlighted Blue Panel
+  static const Color darkBorder = Color(0xFF3B4D87);         // Neon-adjacent Blue Border
+  static const Color darkTextPrimary = Color(0xFFE2E8F0);    // Crisp Clear White-Blue
+  static const Color darkTextSecondary = Color(0xFF94A3B8);  // Slate Blue text
+  static const Color darkNavBar = Color(0xFF0F1423);
 
-  // ─── Semantic aliases (use these in widgets) ───
-  // These will be resolved at runtime from context brightness.
+  // ─── Semantic Aliases ───
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
@@ -47,13 +95,13 @@ abstract class AppColors {
   static const Color surfaceAlt = darkSurfaceAlt;
   static const Color textPrimary = darkTextPrimary;
   static const Color textSecondary = darkTextSecondary;
-  static const Color blackText = Color(0xFF1B5E20);
+  static const Color blackText = Color(0xFF1A2238);
   static const Color onPrimary = white;
-  static const Color onSecondary = black;
+  static const Color onSecondary = black;                     // Swapped to black for better pop against bright green
   static const Color onBackground = darkTextPrimary;
   static const Color onSurface = darkTextPrimary;
   static const Color onError = white;
-  static const Color divider = Color(0xFF4CAF50);
+  static const Color divider = Color(0xFFB5D8F7);
 
   // ─── Helper: resolve by context ───
   static Color bg(BuildContext context) =>
@@ -154,15 +202,16 @@ abstract class AppAssets {
 
   // ─── Navigation icons ───
   static const String iconHome = 'assets/icons/home.png';
-  static const String iconHomeActive = 'assets/icons/home_active.png';
+  // static const String iconHomeActive = 'assets/icons/home_active.png';
+  static const String iconHomeActive = 'assets/icons/home.png';
   static const String iconMap = 'assets/icons/map.png';
-  static const String iconMapActive = 'assets/icons/map_active.png';
+  static const String iconMapActive = 'assets/icons/map.png';
   static const String iconExpenses = 'assets/icons/expenses.png';
-  static const String iconExpensesActive = 'assets/icons/expenses_active.png';
+  static const String iconExpensesActive = 'assets/icons/expenses.png';
   static const String iconJobs = 'assets/icons/jobs.png';
-  static const String iconJobsActive = 'assets/icons/jobs_active.png';
+  static const String iconJobsActive = 'assets/icons/jobs.png';
   static const String iconProfile = 'assets/icons/profile.png';
-  static const String iconProfileActive = 'assets/icons/profile_active.png';
+  static const String iconProfileActive = 'assets/icons/profile.png';
 
   // ─── Action icons ───
   static const String iconBack = 'assets/icons/back.png';
@@ -213,6 +262,9 @@ abstract class AppAssets {
   static const String iconLogout = 'assets/icons/logout.png';
   static const String iconHousing = 'assets/icons/housing.png';
   static const String iconCharacter = 'assets/icons/character.png';
+  static const String iconSocial = 'assets/icons/social.png';
+  static const String iconCartAdd = 'assets/icons/cartAdd.png';
+  static const String iconCartDelete = 'assets/icons/cartDelete.png';
 
   /// Returns a safe fallback widget when the real asset file is not yet present.
   /// Use this to wrap Image.asset() calls:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
@@ -9,6 +10,7 @@ import 'package:wat_project_frontend/presentation/journey_gamification/bloc/jour
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/phase_node_widget.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/leaderboard_row.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/badge_grid_tile.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class JourneyTimelinePage extends StatefulWidget {
@@ -48,32 +50,27 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider<JourneyGamificationBloc>(
       create: (context) => getIt<JourneyGamificationBloc>()
         ..add(const JourneyPhasesRequested()),
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.bg(context),
           appBar: AppBar(
-            backgroundColor: AppColors.background,
-            elevation: 0,
-            title: const Text(
-              'Your Journey',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            bottom: const TabBar(
+            title: const Text('YOUR JOURNEY'),
+            bottom: TabBar(
+              labelStyle: GoogleFonts.pressStart2p(fontSize: 6, fontWeight: FontWeight.bold),
+              unselectedLabelStyle: GoogleFonts.pressStart2p(fontSize: 6),
               labelColor: AppColors.primary,
-              unselectedLabelColor: AppColors.textSecondary,
+              unselectedLabelColor: AppColors.textSub(context),
               indicatorColor: AppColors.primary,
               indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
-                Tab(text: 'Timeline'),
-                Tab(text: 'Leaderboard'),
-                Tab(text: 'Badges'),
+              tabs: const [
+                Tab(text: 'TIMELINE'),
+                Tab(text: 'RANKINGS'),
+                Tab(text: 'BADGES'),
               ],
             ),
           ),
@@ -93,8 +90,8 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
 
   Widget _buildTimelineTab() {
     if (_isLoadingProfile) {
-      return const Center(
-        child: CircularProgressIndicator(color: AppColors.primary),
+      return Center(
+        child: PixelLoadingDots(color: AppColors.primary),
       );
     }
 
@@ -106,8 +103,8 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
           current is JourneyGamificationLoading,
       builder: (context, state) {
         if (state is JourneyGamificationLoading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
+          return Center(
+            child: PixelLoadingDots(color: AppColors.primary),
           );
         }
 
@@ -120,20 +117,25 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
           if (state is JourneyGamificationFailure) {
             return Center(
               child: Text(
-                'Failed to load journey: ${state.message}',
-                style: const TextStyle(color: AppColors.textSecondary),
+                'FAILED TO LOAD REGIONS: ${state.message.toUpperCase()}',
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 7,
+                  color: AppColors.textSub(context),
+                ),
               ),
             );
           }
-          return const Center(
+          return Center(
             child: Text(
-              'No journey phases available',
-              style: TextStyle(color: AppColors.textSecondary),
+              'NO REGIONS UNLOCKED YET.',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 7,
+                color: AppColors.textSub(context),
+              ),
             ),
           );
         }
 
-        // Determine which phase is active / completed
         int activePhaseNumber = 1;
         final activePhase = phases.firstWhere(
           (p) => p.phaseId == _currentPhaseId,
@@ -142,7 +144,10 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
         activePhaseNumber = activePhase.phaseNumber;
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(AppDimension.space32),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimension.space24,
+            vertical: AppDimension.space32,
+          ),
           child: Column(
             children: [
               ...phases.asMap().entries.map((entry) {
@@ -160,7 +165,7 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
                   isLast: isLast,
                 );
               }),
-              const SizedBox(height: AppDimension.space50),
+              const SizedBox(height: AppDimension.space48),
             ],
           ),
         );
@@ -207,18 +212,18 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
           'Program Completer',
         ];
         final icons = [
-          Icons.wb_sunny_outlined,
-          Icons.description_outlined,
-          Icons.group_add_outlined,
-          Icons.account_balance_wallet_outlined,
-          Icons.work_outline,
-          Icons.explore_outlined,
-          Icons.emoji_events_outlined,
-          Icons.workspace_premium_outlined,
+          AppAssets.iconCalendar,
+          AppAssets.iconSponsor,
+          AppAssets.iconFriend,
+          AppAssets.iconSalary,
+          AppAssets.iconJobs,
+          AppAssets.iconLocation,
+          AppAssets.iconBadge,
+          AppAssets.iconBadge,
         ];
         return BadgeGridTile(
           title: titles[index],
-          icon: icons[index],
+          iconAsset: icons[index],
           isEarned: index < 3,
         );
       },

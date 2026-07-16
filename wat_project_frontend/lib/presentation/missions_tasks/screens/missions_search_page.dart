@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -31,9 +33,9 @@ class MissionsSearchView extends StatefulWidget {
 
 class _MissionsSearchViewState extends State<MissionsSearchView> {
   final _searchController = TextEditingController();
-  String _selectedFilter = 'All';
+  String _selectedFilter = 'ALL';
 
-  final List<String> _filters = ['All', 'Mandatory', 'Completed', 'Overdue'];
+  final List<String> _filters = ['ALL', 'MANDATORY', 'COMPLETED', 'OVERDUE'];
 
   @override
   void initState() {
@@ -51,38 +53,38 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
+          onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Search Missions',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        title: const Text('SEARCH QUESTS'),
       ),
       body: SafeArea(
         child: BlocBuilder<MissionTaskBloc, MissionTaskState>(
           builder: (context, state) {
             if (state.missions.isEmpty && state.status is UILoading) {
               return const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: PixelLoadingDots(color: AppColors.primary),
               );
             }
 
             if (state.status is UILoadFailed) {
-              final message = (state.status as UILoadFailed).message;
-              return Center(child: Text(message ?? 'Failed to load missions'));
+              final message = (state.status as UILoadFailed).message ?? 'Failed to load missions';
+              return Center(
+                child: Text(
+                  message.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(fontSize: 7, color: AppColors.error),
+                ),
+              );
             }
 
-            // Filter missions locally based on search text and selected filter
             final query = _searchController.text.trim().toLowerCase();
             final filteredMissions = state.missions.where((dm) {
               final matchesQuery =
@@ -91,12 +93,12 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                   (dm.description?.toLowerCase().contains(query) ?? false);
 
               bool matchesFilter = true;
-              if (_selectedFilter == 'Mandatory') {
+              if (_selectedFilter == 'MANDATORY') {
                 matchesFilter = dm.isMandatory;
-              } else if (_selectedFilter == 'Completed') {
+              } else if (_selectedFilter == 'COMPLETED') {
                 matchesFilter =
                     dm.userMission?.status == UserMissionStatus.completed;
-              } else if (_selectedFilter == 'Overdue') {
+              } else if (_selectedFilter == 'OVERDUE') {
                 matchesFilter =
                     dm.userMission?.status == UserMissionStatus.overdue;
               }
@@ -108,21 +110,25 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(AppDimension.space16),
-                  color: AppColors.background,
+                  color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
                   child: Column(
                     children: [
                       WatInputField(
-                        label: 'Search',
-                        hint: 'Search missions...',
+                        label: 'QUERY',
+                        hint: 'Type keyword...',
                         controller: _searchController,
-                        suffixIcon: const Icon(
-                          Icons.search,
-                          color: AppColors.textSecondary,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: AppAssets.img(
+                            AppAssets.iconSearch,
+                            size: 16,
+                            color: subtextColor,
+                          ),
                         ),
                       ),
                       const SizedBox(height: AppDimension.space16),
                       SizedBox(
-                        height: 40,
+                        height: 36,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: _filters.length,
@@ -131,6 +137,8 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                           itemBuilder: (context, index) {
                             final filter = _filters[index];
                             final isSelected = _selectedFilter == filter;
+                            final borderColor = AppColors.border(context);
+
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -144,21 +152,21 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                                 decoration: BoxDecoration(
                                   color: isSelected
                                       ? AppColors.primary
-                                      : AppColors.surfaceAlt,
-                                  borderRadius: BorderRadius.circular(
-                                    AppDimension.radiusExtraLarge,
+                                      : (isDark ? AppColors.darkSurface : AppColors.lightSurface),
+                                  border: Border.all(
+                                    color: isSelected ? AppColors.primary : borderColor,
+                                    width: AppDimension.pixelBorderWidth,
                                   ),
                                 ),
                                 child: Center(
                                   child: Text(
                                     filter,
-                                    style: TextStyle(
+                                    style: GoogleFonts.pressStart2p(
+                                      fontSize: 6,
                                       color: isSelected
-                                          ? AppColors.white
-                                          : AppColors.textSecondary,
-                                      fontWeight: isSelected
-                                          ? FontWeight.w700
-                                          : FontWeight.w400,
+                                          ? AppColors.black
+                                          : textColor,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
@@ -178,30 +186,33 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                       );
                     },
                     child: filteredMissions.isEmpty
-                        ? const Center(
-                            child: Text('No matching missions found.'),
-                          )
-                        : ListView.separated(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(AppDimension.space16),
-                            itemCount: filteredMissions.length,
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: AppDimension.space16),
-                            itemBuilder: (context, index) {
-                              final dm = filteredMissions[index];
-
-                              return InkWell(
-                                onTap: () => context.push(
-                                  '/missions/detail',
-                                  extra: dm.missionId,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  AppDimension.radiusMedium,
-                                ),
-                                child: MissionCard(mission: dm),
-                              );
-                            },
+                      ? Center(
+                          child: Text(
+                            'NO QUESTS FOUND.',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 7,
+                              color: subtextColor,
+                            ),
                           ),
+                        )
+                      : ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(AppDimension.space16),
+                          itemCount: filteredMissions.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: AppDimension.space12),
+                          itemBuilder: (context, index) {
+                            final dm = filteredMissions[index];
+
+                            return InkWell(
+                              onTap: () => context.push(
+                                '/missions/detail',
+                                extra: dm.missionId,
+                              ),
+                              child: MissionCard(mission: dm),
+                            );
+                          },
+                        ),
                   ),
                 ),
               ],

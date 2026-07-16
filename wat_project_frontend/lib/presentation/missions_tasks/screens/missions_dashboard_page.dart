@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card_list.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class MissionsDashboardPage extends StatelessWidget {
@@ -30,32 +33,18 @@ class MissionsDashboardView extends StatefulWidget {
 }
 
 class _MissionsDashboardViewState extends State<MissionsDashboardView> {
-  String _selectedTab = 'my_mission'; // 'my_mission' or 'explore'
-  String _selectedView = 'list'; // 'list' or 'calendar'
-  String _selectedFilter = 'all'; // 'all', 'recommended', or 'personal'
+  String _selectedTab = 'my_mission';
+  String _selectedView = 'list';
+  String _selectedFilter = 'all';
 
-  // Calendar states
-  DateTime _currentMonth = DateTime(
-    2026,
-    5,
-  ); // Default to May 2026 to match wireframe
+  DateTime _currentMonth = DateTime(2026, 5);
   DateTime _selectedDate = DateTime(2026, 5, 16);
 
   final List<String> _months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+    'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
   ];
-  final List<String> _weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  final List<String> _weekdays = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
 
   int _daysInMonth(DateTime date) {
     final firstOfNextMonth = DateTime(date.year, date.month + 1, 1);
@@ -96,26 +85,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => context.canPop(),
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
+          onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Mission Explorer',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-          ),
-        ),
+        title: const Text('MISSION BOARD'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconSearch, size: 20, color: textColor),
             onPressed: () => context.push('/missions/search'),
           ),
         ],
@@ -129,15 +112,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 state.missions.isEmpty &&
                 state.exploreMissions.isEmpty) {
               return const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: PixelLoadingDots(color: AppColors.primary),
               );
             }
 
             if (state.status is UILoadFailed &&
                 state.missions.isEmpty &&
                 state.exploreMissions.isEmpty) {
-              final message = (state.status as UILoadFailed).message;
-              return Center(child: Text(message ?? 'Failed to load missions'));
+              final message = (state.status as UILoadFailed).message ?? 'Failed to load missions';
+              return Center(
+                child: Text(
+                  message.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(fontSize: 7, color: AppColors.error),
+                ),
+              );
             }
 
             return _selectedView == 'list'
@@ -147,21 +135,14 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         ),
       ),
       floatingActionButton: _selectedView == 'list'
-          ? FloatingActionButton.extended(
+          ? FloatingActionButton(
               onPressed: () => context.push('/missions/create'),
-              backgroundColor: AppColors.surface,
+              backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
               elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
               ),
-              icon: const Icon(Icons.add, color: AppColors.textPrimary),
-              label: const Text(
-                'Add Mission',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              child: AppAssets.img(AppAssets.iconAdd, size: 20, color: textColor),
             )
           : null,
     );
@@ -174,7 +155,6 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
 
     return Column(
       children: [
-        // Header controls (tabs + filter + toggle)
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimension.space16,
@@ -188,7 +168,6 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
             ],
           ),
         ),
-        // Lazy-loading card list — keyed so it resets when tab or filter changes
         Expanded(
           child: MissionCardList(
             key: ValueKey('$_selectedTab-$_selectedFilter'),
@@ -208,7 +187,6 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
     List<MissionModel> myMissions,
     MissionTaskState state,
   ) {
-    // Only show missions with deadlines in the current month on the calendar grid
     final currentMonthMissions = myMissions.where((m) {
       final dueDate = m.userMission?.calculatedDueDate;
       if (dueDate == null) return false;
@@ -216,16 +194,16 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
           dueDate.month == _currentMonth.month;
     }).toList();
 
-    // Show missions due on the selected day in the list underneath the calendar
     final selectedDayMissions = myMissions.where((m) {
       final dueDate = m.userMission?.calculatedDueDate;
       if (dueDate == null) return false;
       return _isSameDay(dueDate, _selectedDate);
     }).toList();
 
+    final textColor = AppColors.text(context);
+
     return Column(
       children: [
-        // Header controls
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimension.space16,
@@ -239,42 +217,21 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               const SizedBox(height: 20),
               _buildCalendarCard(currentMonthMissions),
               const SizedBox(height: 24),
-              // Selected date header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '${_selectedDate.day} ${_getMonthName(_selectedDate.month)}',
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
                   ),
-                  TextButton.icon(
+                  WatButton(
+                    label: 'New Mission',
+                    width: 130,
                     onPressed: () => context.push('/missions/create'),
-                    icon: const Icon(
-                      Icons.add,
-                      size: 18,
-                      color: AppColors.textPrimary,
-                    ),
-                    label: const Text(
-                      'New Mission',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      backgroundColor: AppColors.surface,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -282,7 +239,6 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
             ],
           ),
         ),
-        // Lazy-loading mission list for the selected day
         Expanded(
           child: MissionCardList(
             key: ValueKey('calendar-my-${_selectedDate.toIso8601String()}'),
@@ -301,12 +257,15 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
   }
 
   Widget _buildSegmentedTab() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
     return Container(
-      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
+        color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+        border: Border.all(color: borderColor, width: AppDimension.pixelBorderWidth),
       ),
+      padding: const EdgeInsets.all(2),
       child: Row(
         children: [
           Expanded(
@@ -317,30 +276,19 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 });
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: _selectedTab == 'my_mission'
-                      ? Colors.white
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: _selectedTab == 'my_mission'
-                      ? [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : [],
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                color: _selectedTab == 'my_mission'
+                    ? AppColors.primary
+                    : Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
-                  'My mission',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
+                  'MY QUESTS',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
                     color: _selectedTab == 'my_mission'
-                        ? Colors.black
-                        : Colors.grey[600],
+                        ? AppColors.black
+                        : AppColors.textSub(context),
                   ),
                 ),
               ),
@@ -354,30 +302,19 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 });
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: _selectedTab == 'explore'
-                      ? Colors.white
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: _selectedTab == 'explore'
-                      ? [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : [],
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                color: _selectedTab == 'explore'
+                    ? AppColors.primary
+                    : Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
-                  'Explore',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
+                  'EXPLORE',
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
                     color: _selectedTab == 'explore'
-                        ? Colors.black
-                        : Colors.grey[600],
+                        ? AppColors.black
+                        : AppColors.textSub(context),
                   ),
                 ),
               ),
@@ -389,14 +326,16 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
   }
 
   Widget _buildFilterAndToggleRow() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Filter pills
         Row(
           children: [
             _buildFilterPill(
-              'recommended',
+              'RECOMMENDED',
               _selectedFilter == 'recommended',
               () {
                 setState(() {
@@ -407,7 +346,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               },
             ),
             const SizedBox(width: 8),
-            _buildFilterPill('personal', _selectedFilter == 'personal', () {
+            _buildFilterPill('PERSONAL', _selectedFilter == 'personal', () {
               setState(() {
                 _selectedFilter = _selectedFilter == 'personal'
                     ? 'all'
@@ -416,14 +355,12 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
             }),
           ],
         ),
-
-        // List/Calendar Switcher
         Container(
-          padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
+            color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+            border: Border.all(color: borderColor, width: AppDimension.pixelBorderWidth),
           ),
+          padding: const EdgeInsets.all(2),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -435,18 +372,15 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 },
                 child: Container(
                   padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
+                  color: _selectedView == 'list'
+                      ? AppColors.primary
+                      : Colors.transparent,
+                  child: AppAssets.img(
+                    AppAssets.iconMenu,
+                    size: 16,
                     color: _selectedView == 'list'
-                        ? Colors.white
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(
-                    Icons.list_alt,
-                    size: 20,
-                    color: _selectedView == 'list'
-                        ? Colors.black
-                        : Colors.grey[600],
+                        ? AppColors.black
+                        : AppColors.textSub(context),
                   ),
                 ),
               ),
@@ -458,18 +392,15 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 },
                 child: Container(
                   padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
+                  color: _selectedView == 'calendar'
+                      ? AppColors.primary
+                      : Colors.transparent,
+                  child: AppAssets.img(
+                    AppAssets.iconCalendar,
+                    size: 16,
                     color: _selectedView == 'calendar'
-                        ? Colors.white
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(
-                    Icons.calendar_month,
-                    size: 20,
-                    color: _selectedView == 'calendar'
-                        ? Colors.black
-                        : Colors.grey[600],
+                        ? AppColors.black
+                        : AppColors.textSub(context),
                   ),
                 ),
               ),
@@ -481,23 +412,25 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
   }
 
   Widget _buildFilterPill(String label, bool isSelected, VoidCallback onTap) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.textPrimary : Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? AppColors.textPrimary : Colors.grey[300]!,
-          ),
+          color: isSelected
+              ? AppColors.primary
+              : (isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt),
+          border: Border.all(color: isSelected ? AppColors.primary : borderColor, width: AppDimension.pixelBorderWidth),
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: isSelected ? Colors.white : Colors.grey[700],
+          style: GoogleFonts.pressStart2p(
+            fontSize: 6,
+            fontWeight: FontWeight.bold,
+            color: isSelected ? AppColors.black : AppColors.text(context),
           ),
         ),
       ),
@@ -508,47 +441,41 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
     final daysInMonth = _daysInMonth(_currentMonth);
     final firstWeekday = _firstWeekdayOfMonth(_currentMonth);
     final totalCells = firstWeekday + daysInMonth;
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
 
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    return PixelBorderContainer(
       child: Column(
         children: [
-          // Calendar Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 '${_months[_currentMonth.month - 1]} ${_currentMonth.year}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 7,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
               ),
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(
-                      Icons.chevron_left,
-                      color: AppColors.textPrimary,
+                    icon: AppAssets.img(
+                      AppAssets.iconBack,
+                      size: 14,
+                      color: textColor,
                     ),
                     onPressed: _prevMonth,
                   ),
                   IconButton(
-                    icon: const Icon(
-                      Icons.chevron_right,
-                      color: AppColors.textPrimary,
+                    icon: RotatedBox(
+                      quarterTurns: 2,
+                      child: AppAssets.img(
+                        AppAssets.iconBack,
+                        size: 14,
+                        color: textColor,
+                      ),
                     ),
                     onPressed: _nextMonth,
                   ),
@@ -557,8 +484,6 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
             ],
           ),
           const SizedBox(height: AppDimension.space16),
-
-          // Weekdays header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: _weekdays
@@ -567,10 +492,10 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                     child: Center(
                       child: Text(
                         day,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textSecondary,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 6,
+                          fontWeight: FontWeight.bold,
+                          color: subtextColor,
                         ),
                       ),
                     ),
@@ -579,15 +504,13 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 .toList(),
           ),
           const SizedBox(height: AppDimension.space12),
-
-          // Grid view of days
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
+              mainAxisSpacing: 6,
+              crossAxisSpacing: 6,
             ),
             itemCount: totalCells,
             itemBuilder: (context, index) {
@@ -607,7 +530,6 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
     final date = DateTime(_currentMonth.year, _currentMonth.month, day);
     final isSelected = _isSameDay(date, _selectedDate);
 
-    // Find missions due on this date
     final dayMissions = missions
         .where(
           (m) =>
@@ -621,20 +543,24 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
     );
     final hasActive = dayMissions.isNotEmpty && !hasOverdue;
 
-    Color? bgColor;
-    Color textColor = AppColors.textPrimary;
-    Border? border;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+    final borderColor = AppColors.border(context);
 
-    if (isSelected) {
-      border = Border.all(color: Colors.amber[700]!, width: 2);
-    }
+    Color? bgColor = isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    Color cellText = textColor;
 
     if (hasOverdue) {
-      bgColor = Colors.red[500];
-      textColor = Colors.white;
+      bgColor = AppColors.error.withValues(alpha: 0.15);
+      cellText = AppColors.error;
     } else if (hasActive) {
-      bgColor = Colors.grey[300];
-      textColor = Colors.black87;
+      bgColor = AppColors.success.withValues(alpha: 0.15);
+      cellText = AppColors.success;
+    }
+
+    if (isSelected) {
+      bgColor = AppColors.primary;
+      cellText = AppColors.black;
     }
 
     return GestureDetector(
@@ -646,18 +572,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
       child: Container(
         decoration: BoxDecoration(
           color: bgColor,
-          shape: BoxShape.circle,
-          border: border,
+          border: Border.all(
+            color: isSelected ? AppColors.primary : borderColor,
+            width: AppDimension.pixelBorderWidth,
+          ),
         ),
         alignment: Alignment.center,
         child: Text(
           '$day',
-          style: TextStyle(
-            fontSize: 14,
+          style: GoogleFonts.pressStart2p(
+            fontSize: 6,
             fontWeight: (isSelected || dayMissions.isNotEmpty)
                 ? FontWeight.bold
                 : FontWeight.normal,
-            color: textColor,
+            color: cellText,
           ),
         ),
       ),
@@ -666,18 +594,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
 
   String _getMonthName(int month) {
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+      'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
     ];
     return months[month - 1];
   }

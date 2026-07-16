@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/job/job_posting_model.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
@@ -122,40 +124,40 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
     bool isValid = true;
 
     if (_positionController.text.trim().isEmpty) {
-      setState(() => _positionError = 'Position title is required');
+      setState(() => _positionError = 'Required');
       isValid = false;
     }
     if (_employerController.text.trim().isEmpty) {
-      setState(() => _employerError = 'Employer name is required');
+      setState(() => _employerError = 'Required');
       isValid = false;
     }
     if (_cityController.text.trim().isEmpty) {
-      setState(() => _cityError = 'Location city is required');
+      setState(() => _cityError = 'Required');
       isValid = false;
     }
     if (_stateController.text.trim().isEmpty) {
-      setState(() => _stateError = 'Location state is required');
+      setState(() => _stateError = 'Required');
       isValid = false;
     }
 
     final salaryMin = double.tryParse(_salaryMinController.text) ?? -1;
     if (salaryMin < 0) {
-      setState(() => _salaryMinError = 'Salary min must be non-negative');
+      setState(() => _salaryMinError = 'Invalid');
       isValid = false;
     }
 
     final salaryMax = double.tryParse(_salaryMaxController.text) ?? -1;
     if (salaryMax < 0) {
-      setState(() => _salaryMaxError = 'Salary max must be non-negative');
+      setState(() => _salaryMaxError = 'Invalid');
       isValid = false;
     } else if (salaryMax < salaryMin) {
-      setState(() => _salaryMaxError = 'Salary max must be >= salary min');
+      setState(() => _salaryMaxError = 'Max < Min');
       isValid = false;
     }
 
     final slots = int.tryParse(_slotsController.text) ?? -1;
     if (slots < 0) {
-      setState(() => _slotsError = 'Available slots must be non-negative');
+      setState(() => _slotsError = 'Invalid');
       isValid = false;
     }
 
@@ -196,6 +198,12 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = AppColors.bg(context);
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
+
     return BlocListener<JobMarketBloc, JobMarketState>(
       listenWhen: (previous, current) =>
           previous.status != current.status ||
@@ -211,8 +219,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
           _showPopup(
             context,
             AppPopupType.success,
-            'Job Created',
-            'The job has been created successfully.',
+            'Success',
+            'Job posting created successfully.',
             onConfirm: () {
               context.pop();
               context.pop();
@@ -228,8 +236,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
           _showPopup(
             context,
             AppPopupType.success,
-            'Job Updated',
-            'The job has been updated successfully.',
+            'Success',
+            'Job posting updated successfully.',
             onConfirm: () {
               context.pop();
               context.pop();
@@ -242,28 +250,20 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
             onPressed: () => context.pop(),
           ),
-          title: Text(
-            isEdit ? 'Edit Job' : 'Create Job',
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          title: Text(isEdit ? 'EDIT JOB' : 'CREATE JOB'),
         ),
         body: SafeArea(
           child: BlocBuilder<JobMarketBloc, JobMarketState>(
             builder: (context, state) {
               if (isEdit && state.status is UILoading && !_initialized) {
                 return const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary),
+                  child: PixelLoadingDots(color: AppColors.primary),
                 );
               }
 
@@ -271,225 +271,245 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                   state.updateJobStatus is UILoading;
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.all(AppDimension.space16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimension.space16,
+                  vertical: AppDimension.space24,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    WatInputField(
-                      label: 'Job Title / Position',
-                      hint: 'e.g. Ride Operator',
-                      controller: _positionController,
-                      errorText: _positionError,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'Employer / Business Title',
-                      hint: 'e.g. Cedar Point',
-                      controller: _employerController,
-                      errorText: _employerError,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'Agency Name',
-                      hint: 'e.g. OEG',
-                      controller: _agencyController,
-                      errorText: _agencyError,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    const Text(
-                      'Position Type',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: AppDimension.space4),
-                    Container(
-                      height: 45,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimension.space16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundAlt,
-                        borderRadius: BorderRadius.circular(
-                          AppDimension.radiusSmall,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: _positionType,
-                          isExpanded: true,
-                          icon: const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: AppColors.textSecondary,
+                    PixelDialogBox(
+                      title: 'JOB META DETAILS',
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WatInputField(
+                            label: 'Job Title / Position',
+                            hint: 'e.g. Ride Operator',
+                            controller: _positionController,
+                            errorText: _positionError,
                           ),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              setState(() {
-                                _positionType = newValue;
-                              });
-                            }
-                          },
-                          items: <String>[
-                            'Full-time',
-                            'Part-time',
-                            'Seasonal',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: AppColors.textPrimary,
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Employer / Business Title',
+                            hint: 'e.g. Cedar Point',
+                            controller: _employerController,
+                            errorText: _employerError,
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Agency Name',
+                            hint: 'e.g. OEG',
+                            controller: _agencyController,
+                            errorText: _agencyError,
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          Text(
+                            'POSITION TYPE',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 7,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
+                            ),
+                          ),
+                          const SizedBox(height: AppDimension.space8),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: borderColor,
+                                width: AppDimension.pixelBorderWidth,
+                              ),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppDimension.space12,
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: _positionType,
+                                isExpanded: true,
+                                dropdownColor: isDark
+                                    ? AppColors.darkSurface
+                                    : AppColors.lightSurface,
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 8,
+                                  color: textColor,
+                                ),
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    setState(() {
+                                      _positionType = newValue;
+                                    });
+                                  }
+                                },
+                                items: <String>[
+                                  'Full-time',
+                                  'Part-time',
+                                  'Seasonal',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value.toUpperCase()),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    PixelDialogBox(
+                      title: 'JOB LOCATION',
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: WatInputField(
+                                  label: 'City',
+                                  hint: 'e.g. Sandusky',
+                                  controller: _cityController,
+                                  errorText: _cityError,
                                 ),
                               ),
-                            );
-                          }).toList(),
-                        ),
+                              const SizedBox(width: AppDimension.space12),
+                              Expanded(
+                                child: WatInputField(
+                                  label: 'State',
+                                  hint: 'e.g. OH',
+                                  controller: _stateController,
+                                  errorText: _stateError,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Group / Housing Location',
+                            hint: 'e.g. Sandusky, OH area',
+                            controller: _groupLocationController,
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: AppDimension.space16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: WatInputField(
-                            label: 'City',
-                            hint: 'e.g. Sandusky',
-                            controller: _cityController,
-                            errorText: _cityError,
-                          ),
-                        ),
-                        const SizedBox(width: AppDimension.space16),
-                        Expanded(
-                          child: WatInputField(
-                            label: 'State',
-                            hint: 'e.g. OH',
-                            controller: _stateController,
-                            errorText: _stateError,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'Group Location / Housing Location',
-                      hint: 'e.g. Sandusky, OH area',
-                      controller: _groupLocationController,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: WatInputField(
-                            label: 'Salary Min (\$ / hour)',
-                            hint: '15.00',
-                            controller: _salaryMinController,
-                            errorText: _salaryMinError,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: AppDimension.space16),
-                        Expanded(
-                          child: WatInputField(
-                            label: 'Salary Max (\$ / hour)',
-                            hint: '18.00',
-                            controller: _salaryMaxController,
-                            errorText: _salaryMaxError,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'Available Slots',
-                      hint: 'e.g. 5',
-                      controller: _slotsController,
-                      errorText: _slotsError,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Requires US Sponsor Verification',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        Switch(
-                          value: _usSponsor,
-                          activeThumbColor: AppColors.primary,
-                          onChanged: (val) {
-                            setState(() {
-                              _usSponsor = val;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Job Description',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: AppDimension.space4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppDimension.space16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundAlt,
-                            borderRadius: BorderRadius.circular(
-                              AppDimension.radiusSmall,
-                            ),
-                          ),
-                          child: TextField(
-                            controller: _descriptionController,
-                            maxLines: 4,
-                            decoration: const InputDecoration(
-                              hintText: 'Provide details about the job, role, or requirements...',
-                              hintStyle: TextStyle(
-                                fontSize: 15,
-                                color: AppColors.textSecondary,
+                    PixelDialogBox(
+                      title: 'NUMBERS & REQUISITIONS',
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: WatInputField(
+                                  label: 'Salary Min (\$/hr)',
+                                  hint: '15.00',
+                                  controller: _salaryMinController,
+                                  errorText: _salaryMinError,
+                                  keyboardType: const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                                ),
                               ),
-                              border: InputBorder.none,
-                            ),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: AppColors.textPrimary,
-                            ),
+                              const SizedBox(width: AppDimension.space12),
+                              Expanded(
+                                child: WatInputField(
+                                  label: 'Salary Max (\$/hr)',
+                                  hint: '18.00',
+                                  controller: _salaryMaxController,
+                                  errorText: _salaryMaxError,
+                                  keyboardType: const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Available Slots',
+                            hint: 'e.g. 5',
+                            controller: _slotsController,
+                            errorText: _slotsError,
+                            keyboardType: TextInputType.number,
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'US SPONSOR REQUIRED',
+                                  style: GoogleFonts.pressStart2p(
+                                    fontSize: 7,
+                                    color: textColor,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
+                              Switch(
+                                value: _usSponsor,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _usSponsor = val;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'Info Link / Source URL',
-                      hint: 'https://...',
-                      controller: _sourceUrlController,
+                    PixelDialogBox(
+                      title: 'DESCRIPTION & LINKS',
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'JOB DESCRIPTION',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 7,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
+                            ),
+                          ),
+                          const SizedBox(height: AppDimension.space8),
+                          PixelBorderContainer(
+                            child: TextField(
+                              controller: _descriptionController,
+                              maxLines: 4,
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 7,
+                                color: textColor,
+                                height: 1.6,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Provide details about the job, role, or requirements...',
+                                hintStyle: GoogleFonts.pressStart2p(
+                                  fontSize: 6,
+                                  color: subtextColor,
+                                  height: 1.6,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Source Url / Info Link',
+                            hint: 'https://...',
+                            controller: _sourceUrlController,
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppDimension.space32),
                     WatButton(
-                      label: isEdit ? 'Save Changes' : 'Create Job Posting',
+                      label: isEdit ? 'Save Changes' : 'Create Job',
                       isLoading: isSaving,
                       onPressed: _saveJob,
                     ),
+                    const SizedBox(height: AppDimension.space48),
                   ],
                 ),
               );

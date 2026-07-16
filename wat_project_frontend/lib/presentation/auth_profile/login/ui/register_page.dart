@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
@@ -329,10 +329,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ? AppColors.darkSurface
                                     : AppColors.lightSurface,
                                 underline: const SizedBox.shrink(),
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 9,
-                                  color: textColor,
-                                ),
+                                style: context.textTheme.labelLarge?.copyWith(color: textColor,),
                                 items: _phases.map((p) {
                                   return DropdownMenuItem<String>(
                                     value: p['id'],
@@ -404,20 +401,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           children: [
                             Text(
                               'We sent a 6-digit code to:',
-                              style: GoogleFonts.pressStart2p(
-                                fontSize: 8,
-                                color: subtextColor,
-                                height: 2.0,
-                              ),
+                              style: context.textTheme.labelMedium?.copyWith(color: subtextColor,),
                             ),
                             const SizedBox(height: AppDimension.space8),
                             Text(
                               _emailController.text,
-                              style: GoogleFonts.pressStart2p(
-                                fontSize: 8,
-                                color: AppColors.primary,
-                                height: 1.8,
-                              ),
+                              style: context.textTheme.labelMedium?.copyWith(color: AppColors.primary,),
                             ),
                             const SizedBox(height: AppDimension.space24),
                             WatInputField(
@@ -468,21 +457,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         Text(
                           'HAVE ACCOUNT?  ',
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 7,
-                            color: subtextColor,
-                            height: 1.8,
-                          ),
+                          style: context.textTheme.labelSmall?.copyWith(color: subtextColor,),
                         ),
                         GestureDetector(
                           onTap: () => context.pop(),
                           child: Text(
                             'SIGN IN',
-                            style: GoogleFonts.pressStart2p(
-                              fontSize: 7,
-                              color: AppColors.primary,
-                              height: 1.8,
-                            ),
+                            style: context.textTheme.labelSmall?.copyWith(color: AppColors.primary,),
                           ),
                         ),
                       ],

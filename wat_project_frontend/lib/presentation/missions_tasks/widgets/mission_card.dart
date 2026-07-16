@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class MissionCard extends StatelessWidget {
@@ -17,34 +20,21 @@ class MissionCard extends StatelessWidget {
     final isLocked = mission.isLocked;
     final status = mission.userMission?.status;
 
-    // Resolve deadline string
     final due = mission.userMission?.calculatedDueDate;
     final String deadline;
     if (due == null) {
-      deadline = 'Soon';
+      deadline = 'SOON';
     } else {
       final months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
+        'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+        'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
       ];
       deadline = '${due.day} ${months[due.month - 1]}';
     }
 
-    // Resolve location
     final resolvedLocation =
-        location ?? (isMandatory ? 'Mandatory' : 'Optional');
+        (location ?? (isMandatory ? 'MANDATORY' : 'OPTIONAL')).toUpperCase();
 
-    // Resolve status and task counts
     final totalTasks = mission.tasks.length;
     final completedTasks = mission.tasks
         .where((t) => t.isCompleted == true)
@@ -60,79 +50,60 @@ class MissionCard extends StatelessWidget {
       }
     }
 
-    final resolvedTotalTasks = totalTasks;
-    final resolvedCompletedTasks = completedTasks;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
 
-    // Determine status widget matching the wireframe design
     Widget statusWidget;
 
     if (isLocked) {
       statusWidget = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey[300]!),
+          color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+          border: Border.all(color: borderColor, width: AppDimension.pixelBorderWidth),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.lock_outline, size: 14, color: Colors.grey[600]),
+            AppAssets.img(AppAssets.iconClose, size: 10, color: subtextColor),
             const SizedBox(width: 4),
             Text(
-              'Locked',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
+              'LOCKED',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 6,
+                fontWeight: FontWeight.bold,
+                color: subtextColor,
               ),
             ),
           ],
         ),
       );
     } else if (resolvedStatus == UserMissionStatus.notStarted) {
-      statusWidget = ElevatedButton.icon(
+      statusWidget = WatButton(
+        label: 'START',
+        width: 80,
         onPressed: onJoinTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          elevation: 1,
-          shadowColor: Colors.black.withOpacity(0.1),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: Colors.grey[300]!),
-          ),
-        ),
-        icon: const Icon(Icons.play_circle_outline, size: 14),
-        label: const Text(
-          'Start',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-        ),
       );
     } else if (resolvedStatus == UserMissionStatus.completed) {
       statusWidget = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.green[50],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.green[200]!),
+          color: AppColors.success.withValues(alpha: 0.15),
+          border: Border.all(color: AppColors.success, width: AppDimension.pixelBorderWidth),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.check_circle_outline,
-              size: 14,
-              color: Colors.green[700],
-            ),
+            AppAssets.img(AppAssets.iconCheck, size: 10, color: AppColors.success),
             const SizedBox(width: 4),
             Text(
-              'Complete',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.green[700],
+              'DONE',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 6,
+                fontWeight: FontWeight.bold,
+                color: AppColors.success,
               ),
             ),
           ],
@@ -141,59 +112,38 @@ class MissionCard extends StatelessWidget {
     } else if (resolvedStatus == UserMissionStatus.inProgress ||
         resolvedStatus == UserMissionStatus.pendingVerification) {
       statusWidget = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.blue[50],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.blue[200]!),
+          color: AppColors.primary.withValues(alpha: 0.15),
+          border: Border.all(color: AppColors.primary, width: AppDimension.pixelBorderWidth),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 10,
-              height: 10,
-              child: CircularProgressIndicator(
-                value: resolvedTotalTasks > 0
-                    ? resolvedCompletedTasks / resolvedTotalTasks
-                    : 0.0,
-                strokeWidth: 2,
-                color: Colors.blue[700],
-                backgroundColor: Colors.blue[100],
-              ),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              'In progress $resolvedCompletedTasks/$resolvedTotalTasks',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.blue[700],
-              ),
-            ),
-          ],
+        child: Text(
+          '$completedTasks/$totalTasks',
+          style: GoogleFonts.pressStart2p(
+            fontSize: 6,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primary,
+          ),
         ),
       );
     } else {
-      // Overdue
       statusWidget = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.red[50],
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.red[200]!),
+          color: AppColors.error.withValues(alpha: 0.15),
+          border: Border.all(color: AppColors.error, width: AppDimension.pixelBorderWidth),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline, size: 14, color: Colors.red[700]),
+            AppAssets.img(AppAssets.iconWarning, size: 10, color: AppColors.error),
             const SizedBox(width: 4),
             Text(
-              'Overdue',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.red[700],
+              'OVERDUE',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 6,
+                fontWeight: FontWeight.bold,
+                color: AppColors.error,
               ),
             ),
           ],
@@ -203,19 +153,8 @@ class MissionCard extends StatelessWidget {
 
     return Opacity(
       opacity: isLocked ? 0.6 : 1.0,
-      child: Container(
-        padding: const EdgeInsets.all(AppDimension.space16),
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
+      child: PixelBorderContainer(
+        padding: const EdgeInsets.all(AppDimension.space12),
         child: Row(
           children: [
             Expanded(
@@ -224,13 +163,14 @@ class MissionCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Flexible(
+                      Expanded(
                         child: Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 16,
+                          title.toUpperCase(),
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 8,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: textColor,
+                            height: 1.4,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -238,35 +178,18 @@ class MissionCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.amber[50],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.amber[200]!),
+                          color: AppColors.secondary.withValues(alpha: 0.15),
+                          border: Border.all(color: AppColors.secondary, width: AppDimension.pixelBorderWidth),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '$bonusPoints',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amber[800],
-                              ),
-                            ),
-                            const SizedBox(width: 2),
-                            Text(
-                              '✦',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.amber[800],
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          '$bonusPoints EXP',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 5,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.secondary,
+                          ),
                         ),
                       ),
                     ],
@@ -274,17 +197,17 @@ class MissionCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.location_on_outlined,
-                        size: 14,
-                        color: AppColors.textSecondary,
+                      AppAssets.img(
+                        AppAssets.iconLocation,
+                        size: 12,
+                        color: subtextColor,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 6),
                       Text(
                         resolvedLocation,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 6,
+                          color: subtextColor,
                         ),
                       ),
                     ],
@@ -292,19 +215,19 @@ class MissionCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Text(
-                        'Due: ',
-                        style: TextStyle(
-                          fontSize: 13,
+                      Text(
+                        'DUE: ',
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 6,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textSecondary,
+                          color: subtextColor,
                         ),
                       ),
                       Text(
                         deadline,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
+                        style: GoogleFonts.pressStart2p(
+                          fontSize: 6,
+                          color: subtextColor,
                         ),
                       ),
                     ],
@@ -312,7 +235,7 @@ class MissionCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             statusWidget,
           ],
         ),

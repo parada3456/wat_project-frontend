@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class TaskCheckboxTile extends StatelessWidget {
@@ -17,6 +18,10 @@ class TaskCheckboxTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppDimension.space8),
       child: Row(
@@ -28,10 +33,10 @@ class TaskCheckboxTile extends StatelessWidget {
             child: Checkbox(
               value: isChecked,
               onChanged: onChanged,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimension.space4),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
               ),
-              side: const BorderSide(color: AppColors.secondary, width: 1.5),
+              side: BorderSide(color: borderColor, width: AppDimension.pixelBorderWidth),
               activeColor: AppColors.primary,
             ),
           ),
@@ -41,20 +46,22 @@ class TaskCheckboxTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                  title.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    height: 1.4,
                   ),
                 ),
                 if (subtitle != null) ...[
-                  const SizedBox(height: AppDimension.space4),
+                  const SizedBox(height: 6),
                   Text(
                     subtitle!,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 6,
+                      color: subtextColor,
+                      height: 1.6,
                     ),
                   ),
                 ],

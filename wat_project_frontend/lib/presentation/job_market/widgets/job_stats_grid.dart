@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -22,60 +24,66 @@ class JobStatsGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
-      crossAxisSpacing: AppDimension.space12,
-      mainAxisSpacing: AppDimension.space12,
-      childAspectRatio: 2.2,
+      crossAxisSpacing: AppDimension.space8,
+      mainAxisSpacing: AppDimension.space8,
+      childAspectRatio: 1.6,
       children: [
         _buildStatCard(
-          icon: Icons.monetization_on_outlined,
-          label: 'Salary (Min)',
-          value: '\$${jobDetail.job.salaryRangeMin.toStringAsFixed(2)}/hr',
+          context: context,
+          icon: AppAssets.iconSalary,
+          label: 'SALARY (MIN)',
+          value: '\$${jobDetail.job.salaryRangeMin.toStringAsFixed(2)}/HR',
         ),
         _buildStatCard(
-          icon: Icons.monetization_on,
-          label: 'Salary (Max)',
-          value: '\$${jobDetail.job.salaryRangeMax.toStringAsFixed(2)}/hr',
+          context: context,
+          icon: AppAssets.iconSalary,
+          label: 'SALARY (MAX)',
+          value: '\$${jobDetail.job.salaryRangeMax.toStringAsFixed(2)}/HR',
         ),
         _buildStatCard(
-          icon: Icons.work_outline,
-          label: 'Position Type',
-          value: jobDetail.job.positionType ?? 'N/A',
+          context: context,
+          icon: AppAssets.iconJobs,
+          label: 'POSITION TYPE',
+          value: (jobDetail.job.positionType ?? 'N/A').toUpperCase(),
         ),
         _buildStatCard(
-          icon: Icons.people_outline,
-          label: 'Available Slots',
-          value: '${jobDetail.job.availableSlots} slots',
+          context: context,
+          icon: AppAssets.iconSlots,
+          label: 'SLOTS',
+          value: '${jobDetail.job.availableSlots} SLOTS',
         ),
         _buildStatCard(
-          icon: Icons.assignment_ind_outlined,
-          label: 'Visa Sponsor',
-          value: jobDetail.job.usSponsor ? 'Sponsor' : 'No Sponsor',
-          valueColor: jobDetail.job.usSponsor ? Colors.green : Colors.red,
+          context: context,
+          icon: AppAssets.iconSponsor,
+          label: 'SPONSOR',
+          value: jobDetail.job.usSponsor ? 'SPONSOR' : 'NO SPONSOR',
+          valueColor: jobDetail.job.usSponsor ? AppColors.success : AppColors.error,
         ),
         _buildStatCard(
-          icon: Icons.calendar_today_outlined,
-          label: 'Posted Date',
-          value: _formatDate(jobDetail.job.postedAt),
+          context: context,
+          icon: AppAssets.iconCalendar,
+          label: 'POSTED',
+          value: _formatDate(jobDetail.job.postedAt).toUpperCase(),
         ),
       ],
     );
   }
 
   Widget _buildStatCard({
-    required IconData icon,
+    required BuildContext context,
+    required String icon,
     required String label,
     required String value,
     Color? valueColor,
   }) {
-    return Container(
+    final textColor = valueColor ?? AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
+    return PixelBorderContainer(
       padding: const EdgeInsets.all(AppDimension.space8),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundAlt,
-        borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-      ),
       child: Row(
         children: [
-          Icon(icon, color: AppColors.primary, size: 20),
+          AppAssets.img(icon, color: AppColors.primary, size: 16),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -84,21 +92,20 @@ class JobStatsGrid extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w500,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 5,
+                    color: subtextColor,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Text(
                   value,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: valueColor ?? AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 6,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

@@ -1,36 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class SocialLinkItem extends StatelessWidget {
-  final IconData icon;
+  final String iconAsset;
   final String username;
 
-  const SocialLinkItem({super.key, required this.icon, required this.username});
+  const SocialLinkItem({
+    super.key,
+    required this.iconAsset,
+    required this.username,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 67,
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceAlt,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-      ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+
+    return PixelBorderContainer(
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
           Container(
-            width: 35,
-            height: 35,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+              color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+              border: Border.all(
+                color: AppColors.border(context),
+                width: AppDimension.pixelBorderWidth,
+              ),
             ),
-            child: Icon(icon, size: 20, color: AppColors.primary),
+            alignment: Alignment.center,
+            child: AppAssets.img(
+              iconAsset,
+              size: 16,
+              color: AppColors.primary,
+            ),
           ),
           const SizedBox(width: AppDimension.space16),
           Text(
             username,
-            style: const TextStyle(fontSize: 15, color: AppColors.textPrimary),
+            style: GoogleFonts.pressStart2p(
+              fontSize: 8,
+              color: textColor,
+            ),
           ),
         ],
       ),

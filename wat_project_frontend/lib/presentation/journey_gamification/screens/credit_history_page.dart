@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/credit_history_row.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
@@ -7,62 +8,65 @@ class CreditHistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Credit History',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        title: const Text('CREDIT HISTORY'),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(AppDimension.space32),
-              color: AppColors.background,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimension.space16,
+                vertical: AppDimension.space24,
+              ),
+              color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
               child: Column(
                 children: [
-                  const Text(
-                    'Current Score',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
+                  Text(
+                    'CURRENT SCORE',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
+                      color: subtextColor,
                     ),
                   ),
-                  const Text(
+                  const SizedBox(height: 8),
+                  Text(
                     '850',
-                    style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.w700,
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                       color: AppColors.primary,
                     ),
                   ),
-                  const SizedBox(height: AppDimension.space8),
+                  const SizedBox(height: AppDimension.space12),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
+                      horizontal: 10,
+                      vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.success.withValues(alpha: 0.15),
+                      border: Border.all(
+                        color: AppColors.success,
+                        width: AppDimension.pixelBorderWidth,
+                      ),
                     ),
-                    child: const Text(
-                      'Excellent',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.green,
+                    child: Text(
+                      'EXCELLENT',
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 6,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.success,
                       ),
                     ),
                   ),

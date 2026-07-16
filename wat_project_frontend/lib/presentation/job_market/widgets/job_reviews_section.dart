@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_review_comment_card.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 enum ReviewSortOption { newest, highestRating, lowestRating }
@@ -39,54 +41,72 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
       sortedReviews.sort((a, b) => a.ratingStars.compareTo(b.ratingStars));
     }
 
+    final textColor = AppColors.text(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Reviews',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
+            Text(
+              'REVIEWS',
+              style: GoogleFonts.pressStart2p(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
             Row(
               children: [
-                const Icon(Icons.sort_outlined, size: 18, color: AppColors.primary),
+                AppAssets.img(
+                  AppAssets.iconBack,
+                  size: 14,
+                  color: AppColors.primary,
+                ),
                 const SizedBox(width: 4),
                 PopupMenuButton<ReviewSortOption>(
                   initialValue: _sortOption,
+                  color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
                   onSelected: (option) {
                     setState(() {
                       _sortOption = option;
                     });
                   },
                   itemBuilder: (context) => [
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: ReviewSortOption.newest,
-                      child: Text('Newest First'),
+                      child: Text(
+                        'NEWEST FIRST',
+                        style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                      ),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: ReviewSortOption.highestRating,
-                      child: Text('Highest Rating'),
+                      child: Text(
+                        'HIGHEST RATING',
+                        style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                      ),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: ReviewSortOption.lowestRating,
-                      child: Text('Lowest Rating'),
+                      child: Text(
+                        'LOWEST RATING',
+                        style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                      ),
                     ),
                   ],
                   child: Text(
                     _sortOption == ReviewSortOption.newest
-                        ? 'Newest'
+                        ? 'NEWEST'
                         : _sortOption == ReviewSortOption.highestRating
-                            ? 'Highest'
-                            : 'Lowest',
-                    style: const TextStyle(
-                      fontSize: 14,
+                            ? 'HIGHEST'
+                            : 'LOWEST',
+                    style: GoogleFonts.pressStart2p(
+                      fontSize: 8,
                       color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -96,11 +116,14 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
         ),
         const SizedBox(height: AppDimension.space16),
         if (widget.isLoading && widget.reviews.isEmpty)
-          const Center(child: CircularProgressIndicator())
+          const Center(child: PixelLoadingDots(color: AppColors.primary))
         else if (widget.reviews.isEmpty)
-          const Text(
-            'No reviews yet. Be the first!',
-            style: TextStyle(color: AppColors.textSecondary),
+          Text(
+            'NO REVIEWS YET. BE THE FIRST!',
+            style: GoogleFonts.pressStart2p(
+              fontSize: 7,
+              color: AppColors.textSub(context),
+            ),
           )
         else
           ...sortedReviews.map(
