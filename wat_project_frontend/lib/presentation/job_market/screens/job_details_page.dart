@@ -261,10 +261,9 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                         width: double.infinity,
                         child: Text(
                           jobDetail.job.description ?? 'No description provided.',
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 7,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: textColor,
-                            height: 1.8,
+                            height: 1.5,
                           ),
                         ),
                       ),

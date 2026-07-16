@@ -13,6 +13,9 @@ import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
+import 'package:wat_project_frontend/domain/usecases/job_usecases.dart';
+import 'package:wat_project_frontend/presentation/widgets/list_bloc.dart';
+
 class JobSearchPage extends StatefulWidget {
   const JobSearchPage({super.key});
 
@@ -23,31 +26,40 @@ class JobSearchPage extends StatefulWidget {
 class _JobSearchPageState extends State<JobSearchPage> {
   final _searchController = TextEditingController();
   late final JobMarketBloc _bloc;
-  List<JobPostingModel> _allJobs = [];
-  List<JobPostingModel> _filteredJobs = [];
+  late final ListJobsUseCase _listJobsUseCase;
+  late final ListBloc<JobPostingModel> _listBloc;
 
   @override
   void initState() {
     super.initState();
     _bloc = GetIt.instance<JobMarketBloc>();
-    _bloc.add(const JobMarketEvent.listJobs(filters: {}));
+    _listJobsUseCase = GetIt.instance<ListJobsUseCase>();
+
+    _listBloc = ListBloc<JobPostingModel>(
+      fetchCallback: (page, pageSize) async {
+        final query = _searchController.text.trim();
+        final filters = query.isNotEmpty ? {'search': query} : <String, dynamic>{};
+        final result = await _listJobsUseCase(filters, page: page, pageSize: pageSize);
+        return result.fold(
+          (failure) => throw failure,
+          (pagedModel) => pagedModel,
+        );
+      },
+      pageSize: 10,
+    );
+
+    _listBloc.add(const ListFetchNextPage());
     _searchController.addListener(_onSearch);
   }
 
   void _onSearch() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      _filteredJobs = _allJobs.where((j) {
-        return (j.position ?? '').toLowerCase().contains(query) ||
-            (j.employerTitle ?? '').toLowerCase().contains(query) ||
-            (j.locationCity ?? '').toLowerCase().contains(query);
-      }).toList();
-    });
+    _listBloc.add(const ListRefresh());
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _listBloc.close();
     super.dispose();
   }
 
@@ -63,25 +75,11 @@ class _JobSearchPageState extends State<JobSearchPage> {
       value: _bloc,
       child: BlocListener<JobMarketBloc, JobMarketState>(
         listenWhen: (previous, current) =>
-            previous.status != current.status ||
-            previous.addToCartStatus != current.addToCartStatus ||
-            previous.jobs != current.jobs,
+            previous.addToCartStatus != current.addToCartStatus,
         listener: (context, state) {
-          if (state.status is UILoadSuccess || state.jobs.isNotEmpty) {
-            setState(() {
-              _allJobs = state.jobs;
-              _onSearch();
-            });
-          }
-
-          if (state.status is UILoadFailed) {
-            final msg = (state.status as UILoadFailed).message ?? 'An error occurred loading jobs.';
-            _showPopup(context, AppPopupType.error, 'Error', msg);
-          }
-
           if (state.addToCartStatus is UILoadSuccess) {
             _showPopup(context, AppPopupType.success, 'Added to Cart', 'Job has been saved to your cart.');
-            _bloc.add(const JobMarketEvent.listJobs(filters: {}));
+            _listBloc.add(const ListRefresh());
           } else if (state.addToCartStatus is UILoadFailed) {
             final msg = (state.addToCartStatus as UILoadFailed).message ?? 'Failed to add job to cart.';
             _showPopup(context, AppPopupType.error, 'Error', msg);
@@ -122,41 +120,20 @@ class _JobSearchPageState extends State<JobSearchPage> {
                 ),
                 // Results list
                 Expanded(
-                  child: BlocBuilder<JobMarketBloc, JobMarketState>(
-                    builder: (context, state) {
-                      if (state.status is UILoading && _allJobs.isEmpty) {
-                        return const Center(
-                          child: PixelLoadingDots(color: AppColors.primary),
-                        );
-                      }
-
-                      if (_filteredJobs.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'NO JOBS FOUND.',
-                            style: GoogleFonts.pressStart2p(
-                              fontSize: 8,
-                              color: subtextColor,
-                            ),
-                          ),
-                        );
-                      }
-
-                      return ListView.separated(
-                        padding: const EdgeInsets.all(AppDimension.space16),
-                        itemCount: _filteredJobs.length,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: AppDimension.space16),
-                        itemBuilder: (context, index) {
-                          final job = _filteredJobs[index];
-                          return JobCard(
-                            job: job,
-                            onTap: () => context.push('/jobs/${job.jobId}'),
-                            onAddToCart: () => _bloc.add(
-                              JobMarketEvent.addJobToCart(jobId: job.jobId),
-                            ),
-                          );
-                        },
+                  child: PagedListView<JobPostingModel>(
+                    bloc: _listBloc,
+                    padding: const EdgeInsets.all(AppDimension.space16),
+                    emptyMessage: 'NO JOBS FOUND.',
+                    noMoreItemsMessage: "YOU'VE SEEN ALL JOBS 🎉",
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: AppDimension.space16),
+                    itemBuilder: (context, job) {
+                      return JobCard(
+                        job: job,
+                        onTap: () => context.push('/jobs/${job.jobId}'),
+                        onAddToCart: () => _bloc.add(
+                          JobMarketEvent.addJobToCart(jobId: job.jobId),
+                        ),
                       );
                     },
                   ),

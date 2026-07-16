@@ -7,93 +7,92 @@ class AppTheme {
 
   // ─── Press Start 2P text theme ───
   static TextTheme _pixelTextTheme(Color color) {
-    // final base = GoogleFonts.pressStart2pTextTheme();
-    final base = GoogleFonts.interTextTheme();
+    final base = GoogleFonts.notoSansThaiTextTheme();
     return base.copyWith(
-      displayLarge: GoogleFonts.pressStart2p(
+      displayLarge: GoogleFonts.notoSansThai(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      displayMedium: GoogleFonts.pressStart2p(
+      displayMedium: GoogleFonts.notoSansThai(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      displaySmall: GoogleFonts.pressStart2p(
+      displaySmall: GoogleFonts.notoSansThai(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      headlineLarge: GoogleFonts.pressStart2p(
+      headlineLarge: GoogleFonts.notoSansThai(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      headlineMedium: GoogleFonts.pressStart2p(
+      headlineMedium: GoogleFonts.notoSansThai(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      headlineSmall: GoogleFonts.pressStart2p(
+      headlineSmall: GoogleFonts.notoSansThai(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      titleLarge: GoogleFonts.pressStart2p(
+      titleLarge: GoogleFonts.notoSansThai(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      titleMedium: GoogleFonts.pressStart2p(
+      titleMedium: GoogleFonts.notoSansThai(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      titleSmall: GoogleFonts.pressStart2p(
+      titleSmall: GoogleFonts.notoSansThai(
         fontSize: 10,
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      bodyLarge: GoogleFonts.pressStart2p(
+      bodyLarge: GoogleFonts.notoSansThai(
         fontSize: 12,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      bodyMedium: GoogleFonts.inter(
-        fontSize: 10,
+      bodyMedium: GoogleFonts.notoSansThai(
+        fontSize: 11,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      bodySmall: GoogleFonts.inter(
+      bodySmall: GoogleFonts.notoSansThai(
+        fontSize: 9,
+        color: color,
+        height: 1.4,
+      ),
+      labelLarge: GoogleFonts.notoSansThai(
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        color: color,
+        height: 1.4,
+      ),
+      labelMedium: GoogleFonts.notoSansThai(
         fontSize: 8,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      labelLarge: GoogleFonts.pressStart2p(
-        fontSize: 10,
-        fontWeight: FontWeight.w400,
-        color: color,
-        height: 1.8,
-      ),
-      labelMedium: GoogleFonts.pressStart2p(
+      labelSmall: GoogleFonts.notoSansThai(
         fontSize: 8,
         color: color,
-        height: 1.8,
-      ),
-      labelSmall: GoogleFonts.inter(
-        fontSize: 7,
-        color: color,
-        height: 1.8,
+        height: 1.4,
       ),
     );
   }

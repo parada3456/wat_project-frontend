@@ -55,53 +55,66 @@ import 'package:flutter/material.dart';
 //   static const Color onError = white;
 //   static const Color divider = Color(0xFF4CAF50);
 abstract class AppColors {
-  // ─── Shared Accents (Vibrant, 2D Top-Down Game Style) ───
-  static const Color primary = Color(0xFF4EA8DE);        // Radiant Sky Blue (Main Accent)
-  static const Color primaryVariant = Color(0xFF3A86C8); // Deep Cyber Blue
-  static const Color secondary = Color(0xFF70E000);      // Slime/Grass Green (Lively Contrast)
-  static const Color error = Color(0xFFFF4D6D);          // Ruby Heart Red (Health bar / Danger)
-  static const Color success = Color(0xFF38B000);        // Vivid Potion Green
-  static const Color warning = Color(0xFFFF9F1C);        // Bright Amber Orange (Coins / Alerts)
-  static const Color info = Color(0xFF9E0059);           // Mythic Magenta / Purple
+  // ─── Core Colors ───
+  static const Color color2 = Color.fromARGB(255, 73, 50, 13);  // น้ำตาลเข้มหลัก
+  static const Color color1 = Color.fromARGB(255, 245, 240, 223); // ครีมสว่างหลัก
+  static const Color color3 = Color.fromARGB(255, 90, 106, 56);   // สีที่ 1: เขียวมะนาวสะท้อนแสง (สำหรับไอเทมเด่น/แถบพลังงาน)
+  static const Color color4 = Color.fromARGB(255, 195, 74, 65);    // สีที่ 2: แดงทับทิมการ์ตูน (สำหรับปุ่มอันตราย/แถบ HP)
+  static const Color color5 = Color(0xFF234975);   // สีที่ 3: น้ำเงินเดนิมเข้ม (สำหรับปุ่มกด/เมนูย่อย)
 
-  // ─── Light Mode (Cozy Cream & Pop Blue) ───
-  static const Color lightBackground = Color(0xFFFFFDF6);    // Rich Sweet Cream
-  static const Color lightBackgroundAlt = Color(0xFFF3EED8); // Warm Pastry Cream
-  static const Color lightSurface = Color(0xFFE7F5FF);       // Soft Tinted Ice Blue
-  static const Color lightSurfaceAlt = Color(0xFFD0EBFF);    // Clear Sky Surface
-  static const Color lightBorder = Color(0xFFB5D8F7);        // Defined Comic-style Blue Border
-  static const Color lightTextPrimary = Color(0xFF1A2238);   // High-contrast Deep Navy Blue
-  static const Color lightTextSecondary = Color(0xFF4A5E80); // Muted Steel Blue text
-  static const Color lightNavBar = Color(0xFFE7F5FF);
+  // ─── Shared Accents ───
+  static const Color primary = color2;        
+  static const Color primaryVariant = color1; 
+  static const Color secondary = color5;        // ใช้สีน้ำเงินเดนิมเป็นสีรอง
+  static const Color error = color4;            // ใช้สีแดงทับทิมแจ้งเตือน
+  static const Color success = color3;          // ใช้สีเขียวมะนาวแสดงความสำเร็จ
+  static const Color warning = Color(0xFFFF8426); // ส้มแมนดาริน (ดึงเพิ่มจากพาเลทรูปภาพเดิม)
+  static const Color info = color5;           
 
-  // ─── Dark Mode (Deep Midnight Blue & Neon Accents) ───
-  static const Color darkBackground = Color(0xFF0F1423);     // Deep Space Blue-Black
-  static const Color darkBackgroundAlt = Color(0xFF161D33);  // Shadow Navy
-  static const Color darkSurface = Color(0xFF1D2744);        // Luminous Dark Blue Panel
-  static const Color darkSurfaceAlt = Color(0xFF28355E);     // Highlighted Blue Panel
-  static const Color darkBorder = Color(0xFF3B4D87);         // Neon-adjacent Blue Border
-  static const Color darkTextPrimary = Color(0xFFE2E8F0);    // Crisp Clear White-Blue
-  static const Color darkTextSecondary = Color(0xFF94A3B8);  // Slate Blue text
-  static const Color darkNavBar = Color(0xFF0F1423);
+  // ─── Light Mode (ฉากหลังครีมสว่าง) ───
+  static const Color lightBackground = color1;    
+  static const Color lightBackgroundAlt = color1; 
+  
+  // Surfaces ใน Light Mode ใช้สีสว่าง เพื่อให้ตัวหนังสือ "น้ำตาลเข้ม" เขียนทับแล้วอ่านออกชัดเจน
+  static const Color lightSurface = color1;       
+  static const Color lightSurfaceAlt = color1;       // กล่อง UI พิเศษสีเขียวมะนาว (ตัวหนังสือน้ำตาลเข้มทับแล้วเด่นมาก)
+  static const Color lightBorder = color2;          // ตัดเส้นขอบคมๆ ด้วยน้ำตาลเข้ม
+  static const Color lightTextPrimary = color2;     // ตัวหนังสือหลัก: น้ำตาลเข้ม (อ่านออก 100% บนครีม/มะนาว)
+  static const Color lightTextSecondary = color2;   
+  static const Color lightNavBar = color1;
+
+  // ─── Dark Mode (ฉากหลังน้ำตาลเข้ม) ───
+  static const Color darkBackground = color2;        
+  static const Color darkBackgroundAlt = color2;     
+  
+  // Surfaces ใน Dark Mode ใช้สิมืด เพื่อให้ตัวหนังสือ "ครีมสว่าง" เขียนทับแล้วอ่านออกชัดเจน
+  static const Color darkSurface = color2;          
+  static const Color darkSurfaceAlt = color5;       // กล่อง UI พิเศษสีน้ำเงินเข้ม (ตัวหนังสือครีมสว่างทับแล้วเด่นมาก)
+  static const Color darkBorder = color1;         // ตัดเส้นขอบคมๆ ด้วยครีมสว่าง
+  static const Color darkTextPrimary = color1;    // ตัวหนังสือหลัก: ครีมสว่าง (อ่านออก 100% บนน้ำตาล/น้ำเงิน)
+  static const Color darkTextSecondary = color1;  
+  static const Color darkNavBar = color2;
 
   // ─── Semantic Aliases ───
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color black = Color(0xFF000000);
+  static const Color white = color1;
+  static const Color black = color2;
 
-  // Legacy aliases kept for backward compatibility during migration
+  // Legacy aliases
   static const Color background = darkBackground;
   static const Color backgroundAlt = darkBackgroundAlt;
   static const Color surface = darkSurface;
   static const Color surfaceAlt = darkSurfaceAlt;
   static const Color textPrimary = darkTextPrimary;
   static const Color textSecondary = darkTextSecondary;
-  static const Color blackText = Color(0xFF1A2238);
-  static const Color onPrimary = white;
-  static const Color onSecondary = black;                     // Swapped to black for better pop against bright green
-  static const Color onBackground = darkTextPrimary;
-  static const Color onSurface = darkTextPrimary;
-  static const Color onError = white;
-  static const Color divider = Color(0xFFB5D8F7);
+  static const Color blackText = color2;
+  
+  // แกนสี On-Components สำหรับระบบ Flutter สลับสีอัตโนมัติ
+  static const Color onPrimary = color1;    // ตัวหนังสือครีม บนปุ่มน้ำตาล
+  static const Color onSecondary = color1;  // ตัวหนังสือครีม บนปุ่มน้ำเงิน
+  static const Color onBackground = color1; // ตัวหนังสือครีม บนพื้นหลังมืด
+  static const Color onSurface = color1;    // ตัวหนังสือครีม บนพื้นผิวมืด
+  static const Color onError = color1;      // ตัวหนังสือครีม บนปุ่มแดง
+  static const Color divider = color2;
 
   // ─── Helper: resolve by context ───
   static Color bg(BuildContext context) =>

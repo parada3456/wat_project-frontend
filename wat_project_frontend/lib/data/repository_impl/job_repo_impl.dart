@@ -12,6 +12,8 @@ import 'package:wat_project_frontend/data/sources/api/api_model/job_review/updat
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/patch_job_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_alternative_request.dart';
 
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
+
 @injectable
 class JobRepoImpl implements JobRepository {
   final JobApiService _api;
@@ -19,9 +21,8 @@ class JobRepoImpl implements JobRepository {
   JobRepoImpl(this._api);
 
   @override
-  Future<List<JobPostingEntity>> listJobs(Map<String, dynamic> filters) async {
-    final response = await _api.listJobs(filters);
-    return response.data;
+  Future<PaginationResponse<JobPostingEntity>> listJobs(Map<String, dynamic> filters) async {
+    return _api.listJobs(filters);
   }
 
   @override

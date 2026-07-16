@@ -7,9 +7,10 @@ import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_res
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
 
 import 'package:wat_project_frontend/data/entities/job_review/job/job_posting_entity.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 
 abstract class JobRepository {
-  Future<List<JobPostingEntity>> listJobs(Map<String, dynamic> filters);
+  Future<PaginationResponse<JobPostingEntity>> listJobs(Map<String, dynamic> filters);
   Future<List<JobPostingEntity>> getJobsByIds(List<String> ids);
   Future<JobDetailResponse> getJobDetail(String id);
   Future<void> addToCart(String jobId);

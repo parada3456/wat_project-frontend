@@ -146,127 +146,16 @@ class _MissionCardListState extends State<MissionCardList> {
 
   @override
   Widget build(BuildContext context) {
-    final subtextColor = AppColors.textSub(context);
-
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: widget.minHeight ?? 200.0),
-      child: BlocBuilder<ListBloc<MissionModel>, ListState<MissionModel>>(
+      child: PagedListView<MissionModel>(
         bloc: _listBloc,
-        builder: (context, state) {
-          final missions = state.pagedModel.items;
-          final hasMore = widget.missions == null && state.pagedModel.hasMore;
-          final isLoading = state.status == const UIStatus.loading();
-          final isFailed = state.status is UILoadFailed;
-          final errorMessage = state.status.mapOrNull(
-            loadFailed: (f) =>
-                f.message ?? 'Failed to load missions. Please try again.',
-          );
-
-          if (missions.isEmpty && isLoading) {
-            return const Center(child: PixelLoadingDots(color: AppColors.primary));
-          }
-
-          if (missions.isEmpty && isFailed) {
-            return ErrorPage(
-              message:
-                  (errorMessage ?? 'Failed to load missions. Please try again.').toUpperCase(),
-              onRetry: () => _listBloc.add(const ListFetchNextPage()),
-            );
-          }
-
-          if (missions.isEmpty && !hasMore) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Text(
-                  (widget.emptyMessage ?? 'No missions available.').toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 7,
-                    color: subtextColor,
-                  ),
-                ),
-              ),
-            );
-          }
-
-          final listWidget = ListView.builder(
-            controller: _scrollController,
-            padding:
-                widget.padding ??
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: missions.length + (widget.missions == null ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index < missions.length) {
-                return _buildMissionCard(missions[index]);
-              }
-
-              if (isLoading) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
-                  child: Center(child: PixelLoadingDots(color: AppColors.primary)),
-                );
-              }
-
-              if (isFailed) {
-                return _RetryRow(
-                  onRetry: () => _listBloc.add(const ListFetchNextPage()),
-                );
-              }
-
-              if (!hasMore) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Center(
-                    child: Text(
-                      "YOU'VE SEEN ALL MISSIONS 🎉",
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 6,
-                        color: subtextColor,
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              return const SizedBox.shrink();
-            },
-          );
-
-          if (widget.missions != null) {
-            return listWidget;
-          }
-
-          return RefreshIndicator(
-            onRefresh: () async {
-              _listBloc.add(const ListRefresh());
-              await _listBloc.stream.firstWhere(
-                (state) => state.status != const UIStatus.loading(),
-              );
-            },
-            child: listWidget,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _RetryRow extends StatelessWidget {
-  const _RetryRow({required this.onRetry});
-
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Center(
-        child: WatButton(
-          label: 'LOAD MORE',
-          width: 140,
-          onPressed: onRetry,
-        ),
+        itemBuilder: (context, mission) => _buildMissionCard(mission),
+        emptyMessage: widget.emptyMessage ?? 'No missions available.',
+        noMoreItemsMessage: widget.missions == null ? "YOU'VE SEEN ALL MISSIONS 🎉" : "",
+        padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        scrollController: widget.missions == null ? _scrollController : null,
+        enablePullToRefresh: widget.missions == null,
       ),
     );
   }

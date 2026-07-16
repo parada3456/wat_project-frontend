@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
@@ -27,9 +30,35 @@ class MissionDetailPage extends StatelessWidget {
   }
 }
 
-class MissionDetailView extends StatelessWidget {
+class MissionDetailView extends StatefulWidget {
   final String missionId;
   const MissionDetailView({super.key, required this.missionId});
+
+  @override
+  State<MissionDetailView> createState() => _MissionDetailViewState();
+}
+
+class _MissionDetailViewState extends State<MissionDetailView> {
+  File? _proofFile;
+
+  Future<void> _pickProofImage() async {
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 70,
+      );
+      if (image != null) {
+        setState(() {
+          _proofFile = File(image.path);
+        });
+      }
+    } catch (_) {
+      setState(() {
+        _proofFile = File('mock_proof_image.png');
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +111,11 @@ class MissionDetailView extends StatelessWidget {
                       isPrimary: true,
                       onPressed: () {
                         Navigator.of(context).pop();
+                        setState(() {
+                          _proofFile = null;
+                        });
                         context.read<MissionTaskBloc>().add(
-                          MissionTaskDetailRequested(missionId),
+                          MissionTaskDetailRequested(widget.missionId),
                         );
                       },
                     ),
@@ -221,13 +253,123 @@ class MissionDetailView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimension.space16),
+
+                // Notice Box for Admin Verification
+                if (detail.verificationType == VerificationType.admin) ...[
+                  PixelBorderContainer(
+                    borderColor: AppColors.secondary,
+                    backgroundColor: AppColors.secondary.withValues(alpha: 0.15),
+                    padding: const EdgeInsets.all(AppDimension.space12),
+                    child: Row(
+                      children: [
+                        AppAssets.img(
+                          AppAssets.iconInfo,
+                          size: 16,
+                          color: AppColors.secondary,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'ADMIN VERIFICATION REQUIRED TO CLAIM POINTS.',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 6,
+                              color: AppColors.secondary,
+                              fontWeight: FontWeight.bold,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppDimension.space16),
+                ],
+
+                // Notice Box and File Selection for Proof Upload
+                if (detail.verificationType == VerificationType.upload) ...[
+                  PixelBorderContainer(
+                    borderColor: AppColors.secondary,
+                    backgroundColor: AppColors.secondary.withValues(alpha: 0.15),
+                    padding: const EdgeInsets.all(AppDimension.space12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            AppAssets.img(
+                              AppAssets.iconInfo,
+                              size: 16,
+                              color: AppColors.secondary,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'PROOF OF COMPLETION UPLOAD REQUIRED.',
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 6,
+                                  color: AppColors.secondary,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (_proofFile != null) ...[
+                          const SizedBox(height: AppDimension.space12),
+                          Text(
+                            'PROOF FILE: ${_proofFile!.path.split('/').last.toUpperCase()}',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 6,
+                              color: textColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: AppDimension.space12),
+                        OutlinedButton(
+                          onPressed: _pickProofImage,
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: AppColors.secondary,
+                              width: AppDimension.pixelBorderWidth,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppAssets.img(
+                                AppAssets.iconAdd,
+                                size: 12,
+                                color: AppColors.secondary,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                _proofFile == null ? 'SELECT PROOF IMAGE' : 'CHANGE IMAGE',
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 7,
+                                  color: AppColors.secondary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppDimension.space16),
+                ],
+
                 if (detail.description != null) ...[
                   Text(
                     detail.description!,
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 6,
+                    style: context.textTheme.bodyMedium?.copyWith(
                       color: subtextColor,
-                      height: 1.8,
+                      height: 1.5,
                     ),
                   ),
                   const SizedBox(height: AppDimension.space32),
@@ -305,6 +447,24 @@ class MissionDetailView extends StatelessWidget {
           final allDone = totalCount > 0 && completedCount == totalCount;
           final isCompleted =
               detail.userMission?.status == UserMissionStatus.completed;
+          final isPending =
+              detail.userMission?.status == UserMissionStatus.pendingVerification;
+
+          String btnLabel = 'COMPLETE QUEST';
+          if (isCompleted) {
+            btnLabel = 'COMPLETED';
+          } else if (isPending) {
+            btnLabel = 'PENDING VERIFICATION';
+          } else if (detail.verificationType == VerificationType.upload) {
+            btnLabel = 'SUBMIT PROOF';
+          } else if (detail.verificationType == VerificationType.admin) {
+            btnLabel = 'SUBMIT FOR VERIFICATION';
+          }
+
+          final bool canSubmit = allDone &&
+              !isCompleted &&
+              !isPending &&
+              (detail.verificationType != VerificationType.upload || _proofFile != null);
 
           return SafeArea(
             child: Padding(
@@ -313,12 +473,13 @@ class MissionDetailView extends StatelessWidget {
                 vertical: AppDimension.space16,
               ),
               child: WatButton(
-                label: isCompleted ? 'COMPLETED' : 'COMPLETE QUEST',
-                onPressed: allDone && !isCompleted
+                label: btnLabel,
+                onPressed: canSubmit
                     ? () {
                         context.read<MissionTaskBloc>().add(
                           MissionTaskEvent.proofSubmitted(
                             missionId: detail.missionId,
+                            file: _proofFile,
                           ),
                         );
                       }

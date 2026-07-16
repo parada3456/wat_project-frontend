@@ -58,10 +58,9 @@ class TaskCheckboxTile extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     subtitle!,
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 6,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: subtextColor,
-                      height: 1.6,
+                      height: 1.4,
                     ),
                   ),
                 ],

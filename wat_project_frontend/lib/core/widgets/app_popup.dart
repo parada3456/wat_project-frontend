@@ -110,9 +110,9 @@ class AppPopup extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
-                fontSize: 8,
+                fontSize: 11,
                 color: subtextColor,
-                height: 2.0,
+                height: 1.4,
               ),
             ),
             if (content != null) ...[

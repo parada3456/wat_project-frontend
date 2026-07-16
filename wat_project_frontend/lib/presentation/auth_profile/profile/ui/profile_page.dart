@@ -17,6 +17,7 @@ class ProfilePage extends StatelessWidget {
 
   void _showDeleteAccountDialog(BuildContext context, ProfileBloc profileBloc) {
     final passwordController = TextEditingController();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     AppPopup.show<void>(
       context: context,
       title: 'Delete Account',
@@ -54,6 +55,7 @@ class ProfilePage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final profileBloc = context.read<ProfileBloc>();
+          final isDark = Theme.of(context).brightness == Brightness.dark;
           final bgColor = AppColors.bg(context);
           final textColor = AppColors.text(context);
           final subtextColor = AppColors.textSub(context);

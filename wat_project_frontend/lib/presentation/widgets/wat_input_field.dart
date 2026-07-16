@@ -130,7 +130,7 @@ class _WatInputFieldState extends State<WatInputField> {
                   style: context.textTheme.bodySmall?.copyWith(color: textColor,),
                   decoration: InputDecoration(
                     hintText: widget.hint,
-                    hintStyle: context.textTheme.labelLarge?.copyWith(color: hintColor,),
+                    hintStyle: context.textTheme.bodySmall?.copyWith(color: hintColor,),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: AppDimension.space12,

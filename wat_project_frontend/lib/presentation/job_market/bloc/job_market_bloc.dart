@@ -76,7 +76,7 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     final result = await _listJobsUseCase(event.filters);
     result.fold(
       (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
-      (jobs) => emit(state.copyWith(status: const UIStatus.loadSuccess(), jobs: jobs)),
+      (pagedModel) => emit(state.copyWith(status: const UIStatus.loadSuccess(), jobs: pagedModel.items)),
     );
   }
 

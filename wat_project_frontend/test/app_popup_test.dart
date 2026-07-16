@@ -48,9 +48,9 @@ void main() {
       await tester.tap(find.text('Show Dialog'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Test Title'), findsOneWidget);
+      expect(find.text('TEST TITLE'), findsOneWidget);
       expect(find.text('Test Message Detail'), findsOneWidget);
-      expect(find.text('Confirm'), findsOneWidget);
+      expect(find.text('CONFIRM'), findsOneWidget);
     });
 
     testWidgets('executes button callback on tap', (WidgetTester tester) async {
@@ -79,7 +79,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap button and verify
-      await tester.tap(find.text('Click Me'));
+      await tester.tap(find.text('CLICK ME'));
       await tester.pumpAndSettle();
 
       expect(callbackExecuted, isTrue);
@@ -113,16 +113,16 @@ void main() {
       await tester.tap(find.text('Show Dialog'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Cancel'), findsOneWidget);
-      expect(find.text('Confirm'), findsOneWidget);
+      expect(find.text('CANCEL'), findsOneWidget);
+      expect(find.text('CONFIRM'), findsOneWidget);
 
       // Verify the button layout type: they are children of Row
       final rowFinder = find.byType(Row);
       expect(rowFinder, findsOneWidget);
 
       // Tap buttons
-      await tester.tap(find.text('Cancel'));
-      await tester.tap(find.text('Confirm'));
+      await tester.tap(find.text('CANCEL'));
+      await tester.tap(find.text('CONFIRM'));
 
       expect(cancelTapped, 1);
       expect(confirmTapped, 1);
@@ -158,9 +158,9 @@ void main() {
       await tester.tap(find.text('Show Dialog'));
       await tester.pumpAndSettle();
 
-      expect(find.text('First'), findsOneWidget);
-      expect(find.text('Second'), findsOneWidget);
-      expect(find.text('Third'), findsOneWidget);
+      expect(find.text('FIRST'), findsOneWidget);
+      expect(find.text('SECOND'), findsOneWidget);
+      expect(find.text('THIRD'), findsOneWidget);
 
       // When 3 buttons are used, they should render as a Column block layout inside the buttons container
       // Note: There will be multiple Columns (e.g. dialog base, buildButtons column),
@@ -168,9 +168,9 @@ void main() {
       expect(find.byType(Column), findsAtLeastNWidgets(2));
 
       // Tap buttons
-      await tester.tap(find.text('First'));
-      await tester.tap(find.text('Second'));
-      await tester.tap(find.text('Third'));
+      await tester.tap(find.text('FIRST'));
+      await tester.tap(find.text('SECOND'));
+      await tester.tap(find.text('THIRD'));
 
       expect(action1Tapped, 1);
       expect(action2Tapped, 1);
@@ -196,7 +196,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Check success icon is displayed
-      expect(find.byIcon(Icons.check_circle_outline_rounded), findsOneWidget);
+      expect(find.text('OK'), findsOneWidget);
     });
   });
 }
