@@ -165,7 +165,7 @@ class MissionDetailView extends StatelessWidget {
                           'YOUR CREATION',
                           style: GoogleFonts.notoSansThai(
                             color: AppColors.primary,
-                            fontSize: 5,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

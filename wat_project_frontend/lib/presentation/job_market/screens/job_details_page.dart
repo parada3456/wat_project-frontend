@@ -272,7 +272,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                       Text(
                         'SCRAPED: $scrapeStr | UPDATED: $updateStr'.toUpperCase(),
                         style: GoogleFonts.notoSansThai(
-                          fontSize: 5,
+                          fontSize: 11,
                           color: subtextColor,
                           height: 1.5,
                         ),
