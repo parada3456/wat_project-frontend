@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
@@ -44,7 +45,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
         buttons: [
           AppPopupButton(
             label: 'OK', 
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
           )
         ],
       );
@@ -72,7 +73,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
         listener: (context, state) {
           if (state.createReviewStatus is UILoadSuccess) {
             // Dismiss current page upon successful post submission
-            Navigator.pop(context);
+            context.pop();
           } else if (state.createReviewStatus is UILoadFailed) {
             final msg = (state.createReviewStatus as UILoadFailed).message ?? 
                 'Failed to submit review.';
@@ -84,7 +85,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
               buttons: [
                 AppPopupButton(
                   label: 'OK', 
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                 )
               ],
             );
@@ -97,7 +98,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             title: const Text(
               'Write a Review',

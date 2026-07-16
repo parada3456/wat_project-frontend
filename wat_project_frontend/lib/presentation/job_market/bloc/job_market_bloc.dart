@@ -23,6 +23,9 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
   final ListApplicationsUseCase _listApplicationsUseCase;
   final ListJobReviewsUseCase _listJobReviewsUseCase;
   final UpdateCartStatusUseCase _updateCartStatusUseCase;
+  final CreateJobUseCase _createJobUseCase;
+  final UpdateJobUseCase _updateJobUseCase;
+  final DeleteJobUseCase _deleteJobUseCase;
 
   JobMarketBloc({
     required ListJobsUseCase listJobsUseCase,
@@ -34,6 +37,9 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     required ListApplicationsUseCase listApplicationsUseCase,
     required ListJobReviewsUseCase listJobReviewsUseCase,
     required UpdateCartStatusUseCase updateCartStatusUseCase,
+    required CreateJobUseCase createJobUseCase,
+    required UpdateJobUseCase updateJobUseCase,
+    required DeleteJobUseCase deleteJobUseCase,
   }) : _listJobsUseCase = listJobsUseCase,
        _getJobDetailUseCase = getJobDetailUseCase,
        _addJobToCartUseCase = addJobToCartUseCase,
@@ -43,6 +49,9 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
        _listApplicationsUseCase = listApplicationsUseCase,
        _listJobReviewsUseCase = listJobReviewsUseCase,
        _updateCartStatusUseCase = updateCartStatusUseCase,
+       _createJobUseCase = createJobUseCase,
+       _updateJobUseCase = updateJobUseCase,
+       _deleteJobUseCase = deleteJobUseCase,
        super(const JobMarketState()) {
     
     on<ListJobsEvent>(_onListJobs);
@@ -54,6 +63,9 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     on<ListApplicationsEvent>(_onListApplications);
     on<ListJobReviewsEvent>(_onListJobReviews);
     on<UpdateCartStatusEvent>(_onUpdateCartStatus);
+    on<CreateJobEvent>(_onCreateJob);
+    on<UpdateJobEvent>(_onUpdateJob);
+    on<DeleteJobEvent>(_onDeleteJob);
   }
 
   Future<void> _onListJobs(
@@ -172,6 +184,51 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     result.fold(
       (failure) => emit(state.copyWith(updateCartStatus: UIStatus.loadFailed(message: failure.message))),
       (_) => emit(state.copyWith(updateCartStatus: const UIStatus.loadSuccess())),
+    );
+  }
+
+  Future<void> _onCreateJob(
+    CreateJobEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
+    emit(state.copyWith(createJobStatus: const UIStatus.loading()));
+    final result = await _createJobUseCase(event.job);
+    result.fold(
+      (failure) => emit(state.copyWith(createJobStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) {
+        emit(state.copyWith(createJobStatus: const UIStatus.loadSuccess()));
+        add(const JobMarketEvent.listJobs(filters: {}));
+      },
+    );
+  }
+
+  Future<void> _onUpdateJob(
+    UpdateJobEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
+    emit(state.copyWith(updateJobStatus: const UIStatus.loading()));
+    final result = await _updateJobUseCase(event.id, event.job);
+    result.fold(
+      (failure) => emit(state.copyWith(updateJobStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) {
+        emit(state.copyWith(updateJobStatus: const UIStatus.loadSuccess()));
+        add(const JobMarketEvent.listJobs(filters: {}));
+      },
+    );
+  }
+
+  Future<void> _onDeleteJob(
+    DeleteJobEvent event,
+    Emitter<JobMarketState> emit,
+  ) async {
+    emit(state.copyWith(deleteJobStatus: const UIStatus.loading()));
+    final result = await _deleteJobUseCase(event.id);
+    result.fold(
+      (failure) => emit(state.copyWith(deleteJobStatus: UIStatus.loadFailed(message: failure.message))),
+      (_) {
+        emit(state.copyWith(deleteJobStatus: const UIStatus.loadSuccess()));
+        add(const JobMarketEvent.listJobs(filters: {}));
+      },
     );
   }
 }

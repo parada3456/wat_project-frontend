@@ -14,6 +14,7 @@ import 'package:wat_project_frontend/presentation/job_market/widgets/job_housing
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_reviews_section.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class JobDetailsPage extends StatefulWidget {
@@ -35,27 +36,54 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
     _bloc.add(const JobMarketEvent.listCartItems());
   }
 
-  void _showPopup(BuildContext ctx, AppPopupType type, String title, String msg) {
+  void _showPopup(BuildContext context, AppPopupType type, String title, String msg, {VoidCallback? onConfirm}) {
     AppPopup.show<void>(
-      context: ctx,
+      context: context,
       type: type,
       title: title,
       message: msg,
-      buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(ctx))],
+      buttons: [
+        AppPopupButton(
+          label: 'OK',
+          onPressed: onConfirm ?? () => context.pop(context),
+        ),
+      ],
     );
   }
 
-  void _showCartSuccessPopup(BuildContext ctx) {
+  void _confirmDelete(BuildContext context) {
     AppPopup.show<void>(
-      context: ctx,
+      context: context,
+      type: AppPopupType.warning,
+      title: 'Delete Job Posting',
+      message: 'Are you sure you want to delete this job posting? This action cannot be undone.',
+      buttons: [
+        AppPopupButton(
+          label: 'Cancel',
+          onPressed: () => context.pop(context),
+        ),
+        AppPopupButton(
+          label: 'Delete',
+          isPrimary: true,
+          onPressed: () {
+            context.pop(context);
+            _bloc.add(JobMarketEvent.deleteJob(id: widget.jobId));
+          },
+        ),
+      ],
+    );
+  }
+
+  void _showCartSuccessPopup(BuildContext context) {
+    AppPopup.show<void>(
+      context: context,
       type: AppPopupType.success,
       title: 'Added to Cart',
       message: 'Job saved to cart.',
       buttons: [
-        AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(ctx)),
+        AppPopupButton(label: 'OK', onPressed: () => context.pop(context)),
         AppPopupButton(label: 'Go to Cart', isPrimary: true, onPressed: () {
-          Navigator.pop(ctx);
-          ctx.push('/jobs/cart');
+          context.push('/jobs/cart');
         }),
       ],
     );
@@ -69,7 +97,8 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
         listenWhen: (prev, curr) =>
             prev.status != curr.status ||
             prev.addToCartStatus != curr.addToCartStatus ||
-            prev.removeFromCartStatus != curr.removeFromCartStatus,
+            prev.removeFromCartStatus != curr.removeFromCartStatus ||
+            prev.deleteJobStatus != curr.deleteJobStatus,
         listener: (context, state) {
           if (state.status is UILoadFailed) {
             _showPopup(context, AppPopupType.error, 'Error', (state.status as UILoadFailed).message ?? 'An error occurred.');
@@ -86,6 +115,14 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
           } else if (state.removeFromCartStatus is UILoadFailed) {
             _showPopup(context, AppPopupType.error, 'Error', (state.removeFromCartStatus as UILoadFailed).message ?? 'Failed to remove job.');
           }
+          if (state.deleteJobStatus is UILoadSuccess) {
+            _showPopup(context, AppPopupType.success, 'Job Deleted', 'The job posting has been successfully deleted.', onConfirm: () {
+              context.pop();
+              context.pop();
+            });
+          } else if (state.deleteJobStatus is UILoadFailed) {
+            _showPopup(context, AppPopupType.error, 'Error', (state.deleteJobStatus as UILoadFailed).message ?? 'Failed to delete job.');
+          }
         },
         child: Scaffold(
           backgroundColor: AppColors.background,
@@ -97,6 +134,16 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
               onPressed: () => context.pop(),
             ),
             actions: [
+              if (GetIt.instance<AuthSessionManager>().isAdmin) ...[
+                IconButton(
+                  icon: const Icon(Icons.edit_outlined, color: AppColors.textPrimary),
+                  onPressed: () => context.push('/jobs/${widget.jobId}/edit'),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                  onPressed: () => _confirmDelete(context),
+                ),
+              ],
               BlocBuilder<JobMarketBloc, JobMarketState>(
                 builder: (context, state) {
                   final url = state.jobDetail?.job.sourceUrl;

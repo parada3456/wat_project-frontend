@@ -69,7 +69,7 @@ class _JobCartPageState extends State<JobCartPage> {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             title: const Text(
               'My Cart',
@@ -258,11 +258,11 @@ class _JobCartPageState extends State<JobCartPage> {
                                           ),
                                           itemBuilder: (context) => [
                                             const PopupMenuItem(
-                                              value: 'Saved',
+                                              value: 'saved',
                                               child: Text('Saved'),
                                             ),
                                             const PopupMenuItem(
-                                              value: 'Applied',
+                                              value: 'applied',
                                               child: Text('Applied'),
                                             ),
                                           ],
@@ -344,7 +344,7 @@ class _JobCartPageState extends State<JobCartPage> {
       buttons: [
         AppPopupButton(
           label: 'OK', 
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         )
       ],
     );

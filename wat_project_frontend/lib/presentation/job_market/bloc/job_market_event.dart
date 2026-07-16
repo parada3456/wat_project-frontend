@@ -36,4 +36,17 @@ class JobMarketEvent with _$JobMarketEvent {
     required String cartId,
     required String status,
   }) = UpdateCartStatusEvent;
+
+  const factory JobMarketEvent.createJob({
+    required JobPostingModel job,
+  }) = CreateJobEvent;
+
+  const factory JobMarketEvent.updateJob({
+    required String id,
+    required JobPostingModel job,
+  }) = UpdateJobEvent;
+
+  const factory JobMarketEvent.deleteJob({
+    required String id,
+  }) = DeleteJobEvent;
 }
