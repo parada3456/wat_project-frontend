@@ -14,6 +14,7 @@ import 'package:wat_project_frontend/presentation/job_market/screens/job_compare
 import 'package:wat_project_frontend/presentation/job_market/screens/job_details_page.dart';
 import 'package:wat_project_frontend/presentation/job_market/screens/job_search_page.dart';
 import 'package:wat_project_frontend/presentation/job_market/screens/write_review_page.dart';
+import 'package:wat_project_frontend/presentation/job_market/screens/create_edit_job_page.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/screens/badges_page.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/screens/credit_history_page.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/screens/journey_timeline_page.dart';
@@ -205,9 +206,18 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: '/jobs/create',
+        builder: (context, state) => const CreateEditJobPage(),
+      ),
+      GoRoute(
+        path: '/jobs/:id/edit',
+        builder: (context, state) =>
+            CreateEditJobPage(jobId: state.pathParameters['id']),
+      ),
+      GoRoute(
         path: '/jobs/:id',
         builder: (context, state) =>
-            JobDetailsPage(jobId: state.pathParameters['id']!),
+          JobDetailsPage(jobId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/jobs/:id/reviews/new',
