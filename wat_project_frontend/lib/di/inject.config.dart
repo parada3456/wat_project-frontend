@@ -157,8 +157,14 @@ import 'package:wat_project_frontend/domain/usecases/job/add_job_to_cart_usecase
     as _i234;
 import 'package:wat_project_frontend/domain/usecases/job/create_job_review_usecase.dart'
     as _i517;
+import 'package:wat_project_frontend/domain/usecases/job/create_job_usecase.dart'
+    as _i238;
+import 'package:wat_project_frontend/domain/usecases/job/delete_job_usecase.dart'
+    as _i265;
 import 'package:wat_project_frontend/domain/usecases/job/get_job_detail_usecase.dart'
     as _i57;
+import 'package:wat_project_frontend/domain/usecases/job/get_jobs_by_ids_usecase.dart'
+    as _i384;
 import 'package:wat_project_frontend/domain/usecases/job/list_applications_usecase.dart'
     as _i871;
 import 'package:wat_project_frontend/domain/usecases/job/list_cart_items_usecase.dart'
@@ -167,10 +173,14 @@ import 'package:wat_project_frontend/domain/usecases/job/list_job_reviews_usecas
     as _i366;
 import 'package:wat_project_frontend/domain/usecases/job/list_jobs_usecase.dart'
     as _i784;
+import 'package:wat_project_frontend/domain/usecases/job/patch_job_usecase.dart'
+    as _i84;
 import 'package:wat_project_frontend/domain/usecases/job/remove_job_from_cart_usecase.dart'
     as _i481;
 import 'package:wat_project_frontend/domain/usecases/job/update_cart_status_usecase.dart'
     as _i650;
+import 'package:wat_project_frontend/domain/usecases/job/update_job_usecase.dart'
+    as _i966;
 import 'package:wat_project_frontend/domain/usecases/job_usecases.dart'
     as _i555;
 import 'package:wat_project_frontend/domain/usecases/journey/advance_phase_usecase.dart'
@@ -571,8 +581,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i517.CreateJobReviewUseCase>(
       () => _i517.CreateJobReviewUseCase(gh<_i39.JobRepository>()),
     );
+    gh.factory<_i238.CreateJobUseCase>(
+      () => _i238.CreateJobUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i265.DeleteJobUseCase>(
+      () => _i265.DeleteJobUseCase(gh<_i39.JobRepository>()),
+    );
     gh.factory<_i57.GetJobDetailUseCase>(
       () => _i57.GetJobDetailUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i384.GetJobsByIdsUseCase>(
+      () => _i384.GetJobsByIdsUseCase(gh<_i39.JobRepository>()),
     );
     gh.factory<_i149.ListCartItemsUseCase>(
       () => _i149.ListCartItemsUseCase(gh<_i39.JobRepository>()),
@@ -583,11 +602,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i784.ListJobsUseCase>(
       () => _i784.ListJobsUseCase(gh<_i39.JobRepository>()),
     );
+    gh.factory<_i84.PatchJobUseCase>(
+      () => _i84.PatchJobUseCase(gh<_i39.JobRepository>()),
+    );
     gh.factory<_i481.RemoveJobFromCartUseCase>(
       () => _i481.RemoveJobFromCartUseCase(gh<_i39.JobRepository>()),
     );
     gh.factory<_i650.UpdateCartStatusUseCase>(
       () => _i650.UpdateCartStatusUseCase(gh<_i39.JobRepository>()),
+    );
+    gh.factory<_i966.UpdateJobUseCase>(
+      () => _i966.UpdateJobUseCase(gh<_i39.JobRepository>()),
     );
     gh.factory<_i101.GetRadarUsersUseCase>(
       () => _i101.GetRadarUsersUseCase(gh<_i1013.FriendRepository>()),
@@ -619,19 +644,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i906.HomeBloc>(
       () => blocModule.homeBloc(gh<_i624.GetHomeDataUseCase>()),
-    );
-    gh.factory<_i533.JobMarketBloc>(
-      () => blocModule.jobMarketBloc(
-        gh<_i555.ListJobsUseCase>(),
-        gh<_i555.GetJobDetailUseCase>(),
-        gh<_i555.AddJobToCartUseCase>(),
-        gh<_i555.ListCartItemsUseCase>(),
-        gh<_i555.RemoveJobFromCartUseCase>(),
-        gh<_i555.CreateJobReviewUseCase>(),
-        gh<_i555.ListApplicationsUseCase>(),
-        gh<_i555.ListJobReviewsUseCase>(),
-        gh<_i555.UpdateCartStatusUseCase>(),
-      ),
     );
     gh.factory<_i928.MissionTaskBloc>(
       () => blocModule.missionTaskBloc(
@@ -665,6 +677,22 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i807.ListFriendsUseCase>(),
         gh<_i807.RemoveFriendUseCase>(),
         gh<_i807.GetRadarUsersUseCase>(),
+      ),
+    );
+    gh.factory<_i533.JobMarketBloc>(
+      () => blocModule.jobMarketBloc(
+        gh<_i555.ListJobsUseCase>(),
+        gh<_i555.GetJobDetailUseCase>(),
+        gh<_i555.AddJobToCartUseCase>(),
+        gh<_i555.ListCartItemsUseCase>(),
+        gh<_i555.RemoveJobFromCartUseCase>(),
+        gh<_i555.CreateJobReviewUseCase>(),
+        gh<_i555.ListApplicationsUseCase>(),
+        gh<_i555.ListJobReviewsUseCase>(),
+        gh<_i555.UpdateCartStatusUseCase>(),
+        gh<_i555.CreateJobUseCase>(),
+        gh<_i555.UpdateJobUseCase>(),
+        gh<_i555.DeleteJobUseCase>(),
       ),
     );
     gh.factory<_i384.ProfileBloc>(
