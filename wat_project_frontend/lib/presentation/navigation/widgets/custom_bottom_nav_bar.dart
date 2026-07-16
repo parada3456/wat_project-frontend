@@ -116,8 +116,8 @@ class _PixelNavItem extends StatelessWidget {
             children: [
               AppAssets.img(
                 isSelected ? tab.activeIcon : tab.icon,
-                size: 20,
-                color: isSelected ? activeColor : inactiveColor,
+                size: 24,
+                color: null,
               ),
               const SizedBox(height: AppDimension.space4),
               Text(

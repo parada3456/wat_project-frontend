@@ -201,17 +201,17 @@ abstract class AppAssets {
   static const String logo = 'assets/images/logo.png';
 
   // ─── Navigation icons ───
-  static const String iconHome = 'assets/icons/home.png';
+  static const String iconHome = 'assets/icons/house.png';
   // static const String iconHomeActive = 'assets/icons/home_active.png';
-  static const String iconHomeActive = 'assets/icons/home.png';
+  static const String iconHomeActive = 'assets/icons/house.png';
   static const String iconMap = 'assets/icons/map.png';
   static const String iconMapActive = 'assets/icons/map.png';
   static const String iconExpenses = 'assets/icons/expenses.png';
   static const String iconExpensesActive = 'assets/icons/expenses.png';
-  static const String iconJobs = 'assets/icons/jobs.png';
-  static const String iconJobsActive = 'assets/icons/jobs.png';
-  static const String iconProfile = 'assets/icons/profile.png';
-  static const String iconProfileActive = 'assets/icons/profile.png';
+  static const String iconJobs = 'assets/icons/job.png';
+  static const String iconJobsActive = 'assets/icons/job.png';
+  static const String iconProfile = 'assets/icons/boy.png';
+  static const String iconProfileActive = 'assets/icons/boy.png';
 
   // ─── Action icons ───
   static const String iconBack = 'assets/icons/back.png';

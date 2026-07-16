@@ -185,7 +185,6 @@ class _LoginViewState extends State<LoginView> {
                                     ? AppAssets.iconPassword
                                     : AppAssets.iconCheck,
                                 size: 18,
-                                color: subtextColor,
                               ),
                             ),
                             onChanged: (_) {
