@@ -1,10 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_event.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/bloc/admin_dashboard_state.dart';
 
@@ -79,11 +74,11 @@ class AdminDashboardBloc
     Emitter<AdminDashboardState> emit,
   ) async {
     emit(const AdminDashboardLoading());
-    // final result = await _getAdminUsersUseCase(event.search);
-    // result.fold(
-    //   (failure) => emit(AdminDashboardFailure(failure.message)),
-    //   (users) => emit(AdminDashboardUsersSuccess(users)),
-    // );
+    final result = await _getAdminUsersUseCase(event.search);
+    result.fold(
+      (failure) => emit(AdminDashboardFailure(failure.message)),
+      (users) => emit(AdminDashboardUsersSuccess(users)),
+    );
   }
 
   Future<void> _onUserDetailRequested(

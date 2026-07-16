@@ -55,7 +55,7 @@ extension JobMarketEventPatterns on JobMarketEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ListJobsEvent value)?  listJobs,TResult Function( GetJobDetailEvent value)?  getJobDetail,TResult Function( AddJobToCartEvent value)?  addJobToCart,TResult Function( ListCartItemsEvent value)?  listCartItems,TResult Function( RemoveJobFromCartEvent value)?  removeJobFromCart,TResult Function( CreateJobReviewEvent value)?  createJobReview,TResult Function( ListApplicationsEvent value)?  listApplications,TResult Function( ListJobReviewsEvent value)?  listJobReviews,TResult Function( UpdateCartStatusEvent value)?  updateCartStatus,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ListJobsEvent value)?  listJobs,TResult Function( GetJobDetailEvent value)?  getJobDetail,TResult Function( AddJobToCartEvent value)?  addJobToCart,TResult Function( ListCartItemsEvent value)?  listCartItems,TResult Function( RemoveJobFromCartEvent value)?  removeJobFromCart,TResult Function( CreateJobReviewEvent value)?  createJobReview,TResult Function( ListApplicationsEvent value)?  listApplications,TResult Function( ListJobReviewsEvent value)?  listJobReviews,TResult Function( UpdateCartStatusEvent value)?  updateCartStatus,TResult Function( CreateJobEvent value)?  createJob,TResult Function( UpdateJobEvent value)?  updateJob,TResult Function( DeleteJobEvent value)?  deleteJob,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ListJobsEvent() when listJobs != null:
@@ -67,7 +67,10 @@ return removeJobFromCart(_that);case CreateJobReviewEvent() when createJobReview
 return createJobReview(_that);case ListApplicationsEvent() when listApplications != null:
 return listApplications(_that);case ListJobReviewsEvent() when listJobReviews != null:
 return listJobReviews(_that);case UpdateCartStatusEvent() when updateCartStatus != null:
-return updateCartStatus(_that);case _:
+return updateCartStatus(_that);case CreateJobEvent() when createJob != null:
+return createJob(_that);case UpdateJobEvent() when updateJob != null:
+return updateJob(_that);case DeleteJobEvent() when deleteJob != null:
+return deleteJob(_that);case _:
   return orElse();
 
 }
@@ -85,7 +88,7 @@ return updateCartStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ListJobsEvent value)  listJobs,required TResult Function( GetJobDetailEvent value)  getJobDetail,required TResult Function( AddJobToCartEvent value)  addJobToCart,required TResult Function( ListCartItemsEvent value)  listCartItems,required TResult Function( RemoveJobFromCartEvent value)  removeJobFromCart,required TResult Function( CreateJobReviewEvent value)  createJobReview,required TResult Function( ListApplicationsEvent value)  listApplications,required TResult Function( ListJobReviewsEvent value)  listJobReviews,required TResult Function( UpdateCartStatusEvent value)  updateCartStatus,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ListJobsEvent value)  listJobs,required TResult Function( GetJobDetailEvent value)  getJobDetail,required TResult Function( AddJobToCartEvent value)  addJobToCart,required TResult Function( ListCartItemsEvent value)  listCartItems,required TResult Function( RemoveJobFromCartEvent value)  removeJobFromCart,required TResult Function( CreateJobReviewEvent value)  createJobReview,required TResult Function( ListApplicationsEvent value)  listApplications,required TResult Function( ListJobReviewsEvent value)  listJobReviews,required TResult Function( UpdateCartStatusEvent value)  updateCartStatus,required TResult Function( CreateJobEvent value)  createJob,required TResult Function( UpdateJobEvent value)  updateJob,required TResult Function( DeleteJobEvent value)  deleteJob,}){
 final _that = this;
 switch (_that) {
 case ListJobsEvent():
@@ -97,7 +100,10 @@ return removeJobFromCart(_that);case CreateJobReviewEvent():
 return createJobReview(_that);case ListApplicationsEvent():
 return listApplications(_that);case ListJobReviewsEvent():
 return listJobReviews(_that);case UpdateCartStatusEvent():
-return updateCartStatus(_that);case _:
+return updateCartStatus(_that);case CreateJobEvent():
+return createJob(_that);case UpdateJobEvent():
+return updateJob(_that);case DeleteJobEvent():
+return deleteJob(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -114,7 +120,7 @@ return updateCartStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ListJobsEvent value)?  listJobs,TResult? Function( GetJobDetailEvent value)?  getJobDetail,TResult? Function( AddJobToCartEvent value)?  addJobToCart,TResult? Function( ListCartItemsEvent value)?  listCartItems,TResult? Function( RemoveJobFromCartEvent value)?  removeJobFromCart,TResult? Function( CreateJobReviewEvent value)?  createJobReview,TResult? Function( ListApplicationsEvent value)?  listApplications,TResult? Function( ListJobReviewsEvent value)?  listJobReviews,TResult? Function( UpdateCartStatusEvent value)?  updateCartStatus,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ListJobsEvent value)?  listJobs,TResult? Function( GetJobDetailEvent value)?  getJobDetail,TResult? Function( AddJobToCartEvent value)?  addJobToCart,TResult? Function( ListCartItemsEvent value)?  listCartItems,TResult? Function( RemoveJobFromCartEvent value)?  removeJobFromCart,TResult? Function( CreateJobReviewEvent value)?  createJobReview,TResult? Function( ListApplicationsEvent value)?  listApplications,TResult? Function( ListJobReviewsEvent value)?  listJobReviews,TResult? Function( UpdateCartStatusEvent value)?  updateCartStatus,TResult? Function( CreateJobEvent value)?  createJob,TResult? Function( UpdateJobEvent value)?  updateJob,TResult? Function( DeleteJobEvent value)?  deleteJob,}){
 final _that = this;
 switch (_that) {
 case ListJobsEvent() when listJobs != null:
@@ -126,7 +132,10 @@ return removeJobFromCart(_that);case CreateJobReviewEvent() when createJobReview
 return createJobReview(_that);case ListApplicationsEvent() when listApplications != null:
 return listApplications(_that);case ListJobReviewsEvent() when listJobReviews != null:
 return listJobReviews(_that);case UpdateCartStatusEvent() when updateCartStatus != null:
-return updateCartStatus(_that);case _:
+return updateCartStatus(_that);case CreateJobEvent() when createJob != null:
+return createJob(_that);case UpdateJobEvent() when updateJob != null:
+return updateJob(_that);case DeleteJobEvent() when deleteJob != null:
+return deleteJob(_that);case _:
   return null;
 
 }
@@ -143,7 +152,7 @@ return updateCartStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Map<String, dynamic> filters)?  listJobs,TResult Function( String jobId)?  getJobDetail,TResult Function( String jobId)?  addJobToCart,TResult Function()?  listCartItems,TResult Function( String cartItemId)?  removeJobFromCart,TResult Function( CreateReviewRequest request)?  createJobReview,TResult Function()?  listApplications,TResult Function( String? jobId)?  listJobReviews,TResult Function( String cartId,  String status)?  updateCartStatus,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Map<String, dynamic> filters)?  listJobs,TResult Function( String jobId)?  getJobDetail,TResult Function( String jobId)?  addJobToCart,TResult Function()?  listCartItems,TResult Function( String cartItemId)?  removeJobFromCart,TResult Function( CreateReviewRequest request)?  createJobReview,TResult Function()?  listApplications,TResult Function( String? jobId)?  listJobReviews,TResult Function( String cartId,  String status)?  updateCartStatus,TResult Function( JobPostingModel job)?  createJob,TResult Function( String id,  JobPostingModel job)?  updateJob,TResult Function( String id)?  deleteJob,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ListJobsEvent() when listJobs != null:
 return listJobs(_that.filters);case GetJobDetailEvent() when getJobDetail != null:
@@ -154,7 +163,10 @@ return removeJobFromCart(_that.cartItemId);case CreateJobReviewEvent() when crea
 return createJobReview(_that.request);case ListApplicationsEvent() when listApplications != null:
 return listApplications();case ListJobReviewsEvent() when listJobReviews != null:
 return listJobReviews(_that.jobId);case UpdateCartStatusEvent() when updateCartStatus != null:
-return updateCartStatus(_that.cartId,_that.status);case _:
+return updateCartStatus(_that.cartId,_that.status);case CreateJobEvent() when createJob != null:
+return createJob(_that.job);case UpdateJobEvent() when updateJob != null:
+return updateJob(_that.id,_that.job);case DeleteJobEvent() when deleteJob != null:
+return deleteJob(_that.id);case _:
   return orElse();
 
 }
@@ -172,7 +184,7 @@ return updateCartStatus(_that.cartId,_that.status);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Map<String, dynamic> filters)  listJobs,required TResult Function( String jobId)  getJobDetail,required TResult Function( String jobId)  addJobToCart,required TResult Function()  listCartItems,required TResult Function( String cartItemId)  removeJobFromCart,required TResult Function( CreateReviewRequest request)  createJobReview,required TResult Function()  listApplications,required TResult Function( String? jobId)  listJobReviews,required TResult Function( String cartId,  String status)  updateCartStatus,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Map<String, dynamic> filters)  listJobs,required TResult Function( String jobId)  getJobDetail,required TResult Function( String jobId)  addJobToCart,required TResult Function()  listCartItems,required TResult Function( String cartItemId)  removeJobFromCart,required TResult Function( CreateReviewRequest request)  createJobReview,required TResult Function()  listApplications,required TResult Function( String? jobId)  listJobReviews,required TResult Function( String cartId,  String status)  updateCartStatus,required TResult Function( JobPostingModel job)  createJob,required TResult Function( String id,  JobPostingModel job)  updateJob,required TResult Function( String id)  deleteJob,}) {final _that = this;
 switch (_that) {
 case ListJobsEvent():
 return listJobs(_that.filters);case GetJobDetailEvent():
@@ -183,7 +195,10 @@ return removeJobFromCart(_that.cartItemId);case CreateJobReviewEvent():
 return createJobReview(_that.request);case ListApplicationsEvent():
 return listApplications();case ListJobReviewsEvent():
 return listJobReviews(_that.jobId);case UpdateCartStatusEvent():
-return updateCartStatus(_that.cartId,_that.status);case _:
+return updateCartStatus(_that.cartId,_that.status);case CreateJobEvent():
+return createJob(_that.job);case UpdateJobEvent():
+return updateJob(_that.id,_that.job);case DeleteJobEvent():
+return deleteJob(_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,7 +215,7 @@ return updateCartStatus(_that.cartId,_that.status);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Map<String, dynamic> filters)?  listJobs,TResult? Function( String jobId)?  getJobDetail,TResult? Function( String jobId)?  addJobToCart,TResult? Function()?  listCartItems,TResult? Function( String cartItemId)?  removeJobFromCart,TResult? Function( CreateReviewRequest request)?  createJobReview,TResult? Function()?  listApplications,TResult? Function( String? jobId)?  listJobReviews,TResult? Function( String cartId,  String status)?  updateCartStatus,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Map<String, dynamic> filters)?  listJobs,TResult? Function( String jobId)?  getJobDetail,TResult? Function( String jobId)?  addJobToCart,TResult? Function()?  listCartItems,TResult? Function( String cartItemId)?  removeJobFromCart,TResult? Function( CreateReviewRequest request)?  createJobReview,TResult? Function()?  listApplications,TResult? Function( String? jobId)?  listJobReviews,TResult? Function( String cartId,  String status)?  updateCartStatus,TResult? Function( JobPostingModel job)?  createJob,TResult? Function( String id,  JobPostingModel job)?  updateJob,TResult? Function( String id)?  deleteJob,}) {final _that = this;
 switch (_that) {
 case ListJobsEvent() when listJobs != null:
 return listJobs(_that.filters);case GetJobDetailEvent() when getJobDetail != null:
@@ -211,7 +226,10 @@ return removeJobFromCart(_that.cartItemId);case CreateJobReviewEvent() when crea
 return createJobReview(_that.request);case ListApplicationsEvent() when listApplications != null:
 return listApplications();case ListJobReviewsEvent() when listJobReviews != null:
 return listJobReviews(_that.jobId);case UpdateCartStatusEvent() when updateCartStatus != null:
-return updateCartStatus(_that.cartId,_that.status);case _:
+return updateCartStatus(_that.cartId,_that.status);case CreateJobEvent() when createJob != null:
+return createJob(_that.job);case UpdateJobEvent() when updateJob != null:
+return updateJob(_that.id,_that.job);case DeleteJobEvent() when deleteJob != null:
+return deleteJob(_that.id);case _:
   return null;
 
 }
@@ -754,11 +772,211 @@ as String,
 }
 
 /// @nodoc
+
+
+class CreateJobEvent implements JobMarketEvent {
+  const CreateJobEvent({required this.job});
+  
+
+ final  JobPostingModel job;
+
+/// Create a copy of JobMarketEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CreateJobEventCopyWith<CreateJobEvent> get copyWith => _$CreateJobEventCopyWithImpl<CreateJobEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateJobEvent&&(identical(other.job, job) || other.job == job));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,job);
+
+@override
+String toString() {
+  return 'JobMarketEvent.createJob(job: $job)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CreateJobEventCopyWith<$Res> implements $JobMarketEventCopyWith<$Res> {
+  factory $CreateJobEventCopyWith(CreateJobEvent value, $Res Function(CreateJobEvent) _then) = _$CreateJobEventCopyWithImpl;
+@useResult
+$Res call({
+ JobPostingModel job
+});
+
+
+
+
+}
+/// @nodoc
+class _$CreateJobEventCopyWithImpl<$Res>
+    implements $CreateJobEventCopyWith<$Res> {
+  _$CreateJobEventCopyWithImpl(this._self, this._then);
+
+  final CreateJobEvent _self;
+  final $Res Function(CreateJobEvent) _then;
+
+/// Create a copy of JobMarketEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? job = null,}) {
+  return _then(CreateJobEvent(
+job: null == job ? _self.job : job // ignore: cast_nullable_to_non_nullable
+as JobPostingModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class UpdateJobEvent implements JobMarketEvent {
+  const UpdateJobEvent({required this.id, required this.job});
+  
+
+ final  String id;
+ final  JobPostingModel job;
+
+/// Create a copy of JobMarketEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UpdateJobEventCopyWith<UpdateJobEvent> get copyWith => _$UpdateJobEventCopyWithImpl<UpdateJobEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateJobEvent&&(identical(other.id, id) || other.id == id)&&(identical(other.job, job) || other.job == job));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,job);
+
+@override
+String toString() {
+  return 'JobMarketEvent.updateJob(id: $id, job: $job)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $UpdateJobEventCopyWith<$Res> implements $JobMarketEventCopyWith<$Res> {
+  factory $UpdateJobEventCopyWith(UpdateJobEvent value, $Res Function(UpdateJobEvent) _then) = _$UpdateJobEventCopyWithImpl;
+@useResult
+$Res call({
+ String id, JobPostingModel job
+});
+
+
+
+
+}
+/// @nodoc
+class _$UpdateJobEventCopyWithImpl<$Res>
+    implements $UpdateJobEventCopyWith<$Res> {
+  _$UpdateJobEventCopyWithImpl(this._self, this._then);
+
+  final UpdateJobEvent _self;
+  final $Res Function(UpdateJobEvent) _then;
+
+/// Create a copy of JobMarketEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,Object? job = null,}) {
+  return _then(UpdateJobEvent(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,job: null == job ? _self.job : job // ignore: cast_nullable_to_non_nullable
+as JobPostingModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class DeleteJobEvent implements JobMarketEvent {
+  const DeleteJobEvent({required this.id});
+  
+
+ final  String id;
+
+/// Create a copy of JobMarketEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DeleteJobEventCopyWith<DeleteJobEvent> get copyWith => _$DeleteJobEventCopyWithImpl<DeleteJobEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DeleteJobEvent&&(identical(other.id, id) || other.id == id));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString() {
+  return 'JobMarketEvent.deleteJob(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $DeleteJobEventCopyWith<$Res> implements $JobMarketEventCopyWith<$Res> {
+  factory $DeleteJobEventCopyWith(DeleteJobEvent value, $Res Function(DeleteJobEvent) _then) = _$DeleteJobEventCopyWithImpl;
+@useResult
+$Res call({
+ String id
+});
+
+
+
+
+}
+/// @nodoc
+class _$DeleteJobEventCopyWithImpl<$Res>
+    implements $DeleteJobEventCopyWith<$Res> {
+  _$DeleteJobEventCopyWithImpl(this._self, this._then);
+
+  final DeleteJobEvent _self;
+  final $Res Function(DeleteJobEvent) _then;
+
+/// Create a copy of JobMarketEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(DeleteJobEvent(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$JobMarketState {
 
  UIStatus get status;// Core data cache for the feature
  List<JobPostingModel> get jobs; JobDetailResponse? get jobDetail; List<JobReviewEntity> get reviews; List<UserCartModel> get cartItems; List<UserJobModel> get applications;// Specific action statuses to handle one-off side effects (like showing popups)
- UIStatus get addToCartStatus; UIStatus get removeFromCartStatus; UIStatus get createReviewStatus; UIStatus get updateCartStatus;
+ UIStatus get addToCartStatus; UIStatus get removeFromCartStatus; UIStatus get createReviewStatus; UIStatus get updateCartStatus; UIStatus get createJobStatus; UIStatus get updateJobStatus; UIStatus get deleteJobStatus;
 /// Create a copy of JobMarketState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -769,16 +987,16 @@ $JobMarketStateCopyWith<JobMarketState> get copyWith => _$JobMarketStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is JobMarketState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.jobs, jobs)&&(identical(other.jobDetail, jobDetail) || other.jobDetail == jobDetail)&&const DeepCollectionEquality().equals(other.reviews, reviews)&&const DeepCollectionEquality().equals(other.cartItems, cartItems)&&const DeepCollectionEquality().equals(other.applications, applications)&&(identical(other.addToCartStatus, addToCartStatus) || other.addToCartStatus == addToCartStatus)&&(identical(other.removeFromCartStatus, removeFromCartStatus) || other.removeFromCartStatus == removeFromCartStatus)&&(identical(other.createReviewStatus, createReviewStatus) || other.createReviewStatus == createReviewStatus)&&(identical(other.updateCartStatus, updateCartStatus) || other.updateCartStatus == updateCartStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is JobMarketState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.jobs, jobs)&&(identical(other.jobDetail, jobDetail) || other.jobDetail == jobDetail)&&const DeepCollectionEquality().equals(other.reviews, reviews)&&const DeepCollectionEquality().equals(other.cartItems, cartItems)&&const DeepCollectionEquality().equals(other.applications, applications)&&(identical(other.addToCartStatus, addToCartStatus) || other.addToCartStatus == addToCartStatus)&&(identical(other.removeFromCartStatus, removeFromCartStatus) || other.removeFromCartStatus == removeFromCartStatus)&&(identical(other.createReviewStatus, createReviewStatus) || other.createReviewStatus == createReviewStatus)&&(identical(other.updateCartStatus, updateCartStatus) || other.updateCartStatus == updateCartStatus)&&(identical(other.createJobStatus, createJobStatus) || other.createJobStatus == createJobStatus)&&(identical(other.updateJobStatus, updateJobStatus) || other.updateJobStatus == updateJobStatus)&&(identical(other.deleteJobStatus, deleteJobStatus) || other.deleteJobStatus == deleteJobStatus));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(jobs),jobDetail,const DeepCollectionEquality().hash(reviews),const DeepCollectionEquality().hash(cartItems),const DeepCollectionEquality().hash(applications),addToCartStatus,removeFromCartStatus,createReviewStatus,updateCartStatus);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(jobs),jobDetail,const DeepCollectionEquality().hash(reviews),const DeepCollectionEquality().hash(cartItems),const DeepCollectionEquality().hash(applications),addToCartStatus,removeFromCartStatus,createReviewStatus,updateCartStatus,createJobStatus,updateJobStatus,deleteJobStatus);
 
 @override
 String toString() {
-  return 'JobMarketState(status: $status, jobs: $jobs, jobDetail: $jobDetail, reviews: $reviews, cartItems: $cartItems, applications: $applications, addToCartStatus: $addToCartStatus, removeFromCartStatus: $removeFromCartStatus, createReviewStatus: $createReviewStatus, updateCartStatus: $updateCartStatus)';
+  return 'JobMarketState(status: $status, jobs: $jobs, jobDetail: $jobDetail, reviews: $reviews, cartItems: $cartItems, applications: $applications, addToCartStatus: $addToCartStatus, removeFromCartStatus: $removeFromCartStatus, createReviewStatus: $createReviewStatus, updateCartStatus: $updateCartStatus, createJobStatus: $createJobStatus, updateJobStatus: $updateJobStatus, deleteJobStatus: $deleteJobStatus)';
 }
 
 
@@ -789,11 +1007,11 @@ abstract mixin class $JobMarketStateCopyWith<$Res>  {
   factory $JobMarketStateCopyWith(JobMarketState value, $Res Function(JobMarketState) _then) = _$JobMarketStateCopyWithImpl;
 @useResult
 $Res call({
- UIStatus status, List<JobPostingModel> jobs, JobDetailResponse? jobDetail, List<JobReviewEntity> reviews, List<UserCartModel> cartItems, List<UserJobModel> applications, UIStatus addToCartStatus, UIStatus removeFromCartStatus, UIStatus createReviewStatus, UIStatus updateCartStatus
+ UIStatus status, List<JobPostingModel> jobs, JobDetailResponse? jobDetail, List<JobReviewEntity> reviews, List<UserCartModel> cartItems, List<UserJobModel> applications, UIStatus addToCartStatus, UIStatus removeFromCartStatus, UIStatus createReviewStatus, UIStatus updateCartStatus, UIStatus createJobStatus, UIStatus updateJobStatus, UIStatus deleteJobStatus
 });
 
 
-$UIStatusCopyWith<$Res> get status;$UIStatusCopyWith<$Res> get addToCartStatus;$UIStatusCopyWith<$Res> get removeFromCartStatus;$UIStatusCopyWith<$Res> get createReviewStatus;$UIStatusCopyWith<$Res> get updateCartStatus;
+$UIStatusCopyWith<$Res> get status;$UIStatusCopyWith<$Res> get addToCartStatus;$UIStatusCopyWith<$Res> get removeFromCartStatus;$UIStatusCopyWith<$Res> get createReviewStatus;$UIStatusCopyWith<$Res> get updateCartStatus;$UIStatusCopyWith<$Res> get createJobStatus;$UIStatusCopyWith<$Res> get updateJobStatus;$UIStatusCopyWith<$Res> get deleteJobStatus;
 
 }
 /// @nodoc
@@ -806,7 +1024,7 @@ class _$JobMarketStateCopyWithImpl<$Res>
 
 /// Create a copy of JobMarketState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? jobs = null,Object? jobDetail = freezed,Object? reviews = null,Object? cartItems = null,Object? applications = null,Object? addToCartStatus = null,Object? removeFromCartStatus = null,Object? createReviewStatus = null,Object? updateCartStatus = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? jobs = null,Object? jobDetail = freezed,Object? reviews = null,Object? cartItems = null,Object? applications = null,Object? addToCartStatus = null,Object? removeFromCartStatus = null,Object? createReviewStatus = null,Object? updateCartStatus = null,Object? createJobStatus = null,Object? updateJobStatus = null,Object? deleteJobStatus = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UIStatus,jobs: null == jobs ? _self.jobs : jobs // ignore: cast_nullable_to_non_nullable
@@ -818,6 +1036,9 @@ as List<UserJobModel>,addToCartStatus: null == addToCartStatus ? _self.addToCart
 as UIStatus,removeFromCartStatus: null == removeFromCartStatus ? _self.removeFromCartStatus : removeFromCartStatus // ignore: cast_nullable_to_non_nullable
 as UIStatus,createReviewStatus: null == createReviewStatus ? _self.createReviewStatus : createReviewStatus // ignore: cast_nullable_to_non_nullable
 as UIStatus,updateCartStatus: null == updateCartStatus ? _self.updateCartStatus : updateCartStatus // ignore: cast_nullable_to_non_nullable
+as UIStatus,createJobStatus: null == createJobStatus ? _self.createJobStatus : createJobStatus // ignore: cast_nullable_to_non_nullable
+as UIStatus,updateJobStatus: null == updateJobStatus ? _self.updateJobStatus : updateJobStatus // ignore: cast_nullable_to_non_nullable
+as UIStatus,deleteJobStatus: null == deleteJobStatus ? _self.deleteJobStatus : deleteJobStatus // ignore: cast_nullable_to_non_nullable
 as UIStatus,
   ));
 }
@@ -865,6 +1086,33 @@ $UIStatusCopyWith<$Res> get updateCartStatus {
   
   return $UIStatusCopyWith<$Res>(_self.updateCartStatus, (value) {
     return _then(_self.copyWith(updateCartStatus: value));
+  });
+}/// Create a copy of JobMarketState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UIStatusCopyWith<$Res> get createJobStatus {
+  
+  return $UIStatusCopyWith<$Res>(_self.createJobStatus, (value) {
+    return _then(_self.copyWith(createJobStatus: value));
+  });
+}/// Create a copy of JobMarketState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UIStatusCopyWith<$Res> get updateJobStatus {
+  
+  return $UIStatusCopyWith<$Res>(_self.updateJobStatus, (value) {
+    return _then(_self.copyWith(updateJobStatus: value));
+  });
+}/// Create a copy of JobMarketState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UIStatusCopyWith<$Res> get deleteJobStatus {
+  
+  return $UIStatusCopyWith<$Res>(_self.deleteJobStatus, (value) {
+    return _then(_self.copyWith(deleteJobStatus: value));
   });
 }
 }
@@ -948,10 +1196,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UIStatus status,  List<JobPostingModel> jobs,  JobDetailResponse? jobDetail,  List<JobReviewEntity> reviews,  List<UserCartModel> cartItems,  List<UserJobModel> applications,  UIStatus addToCartStatus,  UIStatus removeFromCartStatus,  UIStatus createReviewStatus,  UIStatus updateCartStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UIStatus status,  List<JobPostingModel> jobs,  JobDetailResponse? jobDetail,  List<JobReviewEntity> reviews,  List<UserCartModel> cartItems,  List<UserJobModel> applications,  UIStatus addToCartStatus,  UIStatus removeFromCartStatus,  UIStatus createReviewStatus,  UIStatus updateCartStatus,  UIStatus createJobStatus,  UIStatus updateJobStatus,  UIStatus deleteJobStatus)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _JobMarketState() when $default != null:
-return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cartItems,_that.applications,_that.addToCartStatus,_that.removeFromCartStatus,_that.createReviewStatus,_that.updateCartStatus);case _:
+return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cartItems,_that.applications,_that.addToCartStatus,_that.removeFromCartStatus,_that.createReviewStatus,_that.updateCartStatus,_that.createJobStatus,_that.updateJobStatus,_that.deleteJobStatus);case _:
   return orElse();
 
 }
@@ -969,10 +1217,10 @@ return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cart
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UIStatus status,  List<JobPostingModel> jobs,  JobDetailResponse? jobDetail,  List<JobReviewEntity> reviews,  List<UserCartModel> cartItems,  List<UserJobModel> applications,  UIStatus addToCartStatus,  UIStatus removeFromCartStatus,  UIStatus createReviewStatus,  UIStatus updateCartStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UIStatus status,  List<JobPostingModel> jobs,  JobDetailResponse? jobDetail,  List<JobReviewEntity> reviews,  List<UserCartModel> cartItems,  List<UserJobModel> applications,  UIStatus addToCartStatus,  UIStatus removeFromCartStatus,  UIStatus createReviewStatus,  UIStatus updateCartStatus,  UIStatus createJobStatus,  UIStatus updateJobStatus,  UIStatus deleteJobStatus)  $default,) {final _that = this;
 switch (_that) {
 case _JobMarketState():
-return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cartItems,_that.applications,_that.addToCartStatus,_that.removeFromCartStatus,_that.createReviewStatus,_that.updateCartStatus);case _:
+return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cartItems,_that.applications,_that.addToCartStatus,_that.removeFromCartStatus,_that.createReviewStatus,_that.updateCartStatus,_that.createJobStatus,_that.updateJobStatus,_that.deleteJobStatus);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -989,10 +1237,10 @@ return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cart
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UIStatus status,  List<JobPostingModel> jobs,  JobDetailResponse? jobDetail,  List<JobReviewEntity> reviews,  List<UserCartModel> cartItems,  List<UserJobModel> applications,  UIStatus addToCartStatus,  UIStatus removeFromCartStatus,  UIStatus createReviewStatus,  UIStatus updateCartStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UIStatus status,  List<JobPostingModel> jobs,  JobDetailResponse? jobDetail,  List<JobReviewEntity> reviews,  List<UserCartModel> cartItems,  List<UserJobModel> applications,  UIStatus addToCartStatus,  UIStatus removeFromCartStatus,  UIStatus createReviewStatus,  UIStatus updateCartStatus,  UIStatus createJobStatus,  UIStatus updateJobStatus,  UIStatus deleteJobStatus)?  $default,) {final _that = this;
 switch (_that) {
 case _JobMarketState() when $default != null:
-return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cartItems,_that.applications,_that.addToCartStatus,_that.removeFromCartStatus,_that.createReviewStatus,_that.updateCartStatus);case _:
+return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cartItems,_that.applications,_that.addToCartStatus,_that.removeFromCartStatus,_that.createReviewStatus,_that.updateCartStatus,_that.createJobStatus,_that.updateJobStatus,_that.deleteJobStatus);case _:
   return null;
 
 }
@@ -1004,7 +1252,7 @@ return $default(_that.status,_that.jobs,_that.jobDetail,_that.reviews,_that.cart
 
 
 class _JobMarketState implements JobMarketState {
-  const _JobMarketState({this.status = const UIStatus.initial(), final  List<JobPostingModel> jobs = const [], this.jobDetail, final  List<JobReviewEntity> reviews = const [], final  List<UserCartModel> cartItems = const [], final  List<UserJobModel> applications = const [], this.addToCartStatus = const UIStatus.initial(), this.removeFromCartStatus = const UIStatus.initial(), this.createReviewStatus = const UIStatus.initial(), this.updateCartStatus = const UIStatus.initial()}): _jobs = jobs,_reviews = reviews,_cartItems = cartItems,_applications = applications;
+  const _JobMarketState({this.status = const UIStatus.initial(), final  List<JobPostingModel> jobs = const [], this.jobDetail, final  List<JobReviewEntity> reviews = const [], final  List<UserCartModel> cartItems = const [], final  List<UserJobModel> applications = const [], this.addToCartStatus = const UIStatus.initial(), this.removeFromCartStatus = const UIStatus.initial(), this.createReviewStatus = const UIStatus.initial(), this.updateCartStatus = const UIStatus.initial(), this.createJobStatus = const UIStatus.initial(), this.updateJobStatus = const UIStatus.initial(), this.deleteJobStatus = const UIStatus.initial()}): _jobs = jobs,_reviews = reviews,_cartItems = cartItems,_applications = applications;
   
 
 @override@JsonKey() final  UIStatus status;
@@ -1044,6 +1292,9 @@ class _JobMarketState implements JobMarketState {
 @override@JsonKey() final  UIStatus removeFromCartStatus;
 @override@JsonKey() final  UIStatus createReviewStatus;
 @override@JsonKey() final  UIStatus updateCartStatus;
+@override@JsonKey() final  UIStatus createJobStatus;
+@override@JsonKey() final  UIStatus updateJobStatus;
+@override@JsonKey() final  UIStatus deleteJobStatus;
 
 /// Create a copy of JobMarketState
 /// with the given fields replaced by the non-null parameter values.
@@ -1055,16 +1306,16 @@ _$JobMarketStateCopyWith<_JobMarketState> get copyWith => __$JobMarketStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _JobMarketState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._jobs, _jobs)&&(identical(other.jobDetail, jobDetail) || other.jobDetail == jobDetail)&&const DeepCollectionEquality().equals(other._reviews, _reviews)&&const DeepCollectionEquality().equals(other._cartItems, _cartItems)&&const DeepCollectionEquality().equals(other._applications, _applications)&&(identical(other.addToCartStatus, addToCartStatus) || other.addToCartStatus == addToCartStatus)&&(identical(other.removeFromCartStatus, removeFromCartStatus) || other.removeFromCartStatus == removeFromCartStatus)&&(identical(other.createReviewStatus, createReviewStatus) || other.createReviewStatus == createReviewStatus)&&(identical(other.updateCartStatus, updateCartStatus) || other.updateCartStatus == updateCartStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _JobMarketState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._jobs, _jobs)&&(identical(other.jobDetail, jobDetail) || other.jobDetail == jobDetail)&&const DeepCollectionEquality().equals(other._reviews, _reviews)&&const DeepCollectionEquality().equals(other._cartItems, _cartItems)&&const DeepCollectionEquality().equals(other._applications, _applications)&&(identical(other.addToCartStatus, addToCartStatus) || other.addToCartStatus == addToCartStatus)&&(identical(other.removeFromCartStatus, removeFromCartStatus) || other.removeFromCartStatus == removeFromCartStatus)&&(identical(other.createReviewStatus, createReviewStatus) || other.createReviewStatus == createReviewStatus)&&(identical(other.updateCartStatus, updateCartStatus) || other.updateCartStatus == updateCartStatus)&&(identical(other.createJobStatus, createJobStatus) || other.createJobStatus == createJobStatus)&&(identical(other.updateJobStatus, updateJobStatus) || other.updateJobStatus == updateJobStatus)&&(identical(other.deleteJobStatus, deleteJobStatus) || other.deleteJobStatus == deleteJobStatus));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_jobs),jobDetail,const DeepCollectionEquality().hash(_reviews),const DeepCollectionEquality().hash(_cartItems),const DeepCollectionEquality().hash(_applications),addToCartStatus,removeFromCartStatus,createReviewStatus,updateCartStatus);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_jobs),jobDetail,const DeepCollectionEquality().hash(_reviews),const DeepCollectionEquality().hash(_cartItems),const DeepCollectionEquality().hash(_applications),addToCartStatus,removeFromCartStatus,createReviewStatus,updateCartStatus,createJobStatus,updateJobStatus,deleteJobStatus);
 
 @override
 String toString() {
-  return 'JobMarketState(status: $status, jobs: $jobs, jobDetail: $jobDetail, reviews: $reviews, cartItems: $cartItems, applications: $applications, addToCartStatus: $addToCartStatus, removeFromCartStatus: $removeFromCartStatus, createReviewStatus: $createReviewStatus, updateCartStatus: $updateCartStatus)';
+  return 'JobMarketState(status: $status, jobs: $jobs, jobDetail: $jobDetail, reviews: $reviews, cartItems: $cartItems, applications: $applications, addToCartStatus: $addToCartStatus, removeFromCartStatus: $removeFromCartStatus, createReviewStatus: $createReviewStatus, updateCartStatus: $updateCartStatus, createJobStatus: $createJobStatus, updateJobStatus: $updateJobStatus, deleteJobStatus: $deleteJobStatus)';
 }
 
 
@@ -1075,11 +1326,11 @@ abstract mixin class _$JobMarketStateCopyWith<$Res> implements $JobMarketStateCo
   factory _$JobMarketStateCopyWith(_JobMarketState value, $Res Function(_JobMarketState) _then) = __$JobMarketStateCopyWithImpl;
 @override @useResult
 $Res call({
- UIStatus status, List<JobPostingModel> jobs, JobDetailResponse? jobDetail, List<JobReviewEntity> reviews, List<UserCartModel> cartItems, List<UserJobModel> applications, UIStatus addToCartStatus, UIStatus removeFromCartStatus, UIStatus createReviewStatus, UIStatus updateCartStatus
+ UIStatus status, List<JobPostingModel> jobs, JobDetailResponse? jobDetail, List<JobReviewEntity> reviews, List<UserCartModel> cartItems, List<UserJobModel> applications, UIStatus addToCartStatus, UIStatus removeFromCartStatus, UIStatus createReviewStatus, UIStatus updateCartStatus, UIStatus createJobStatus, UIStatus updateJobStatus, UIStatus deleteJobStatus
 });
 
 
-@override $UIStatusCopyWith<$Res> get status;@override $UIStatusCopyWith<$Res> get addToCartStatus;@override $UIStatusCopyWith<$Res> get removeFromCartStatus;@override $UIStatusCopyWith<$Res> get createReviewStatus;@override $UIStatusCopyWith<$Res> get updateCartStatus;
+@override $UIStatusCopyWith<$Res> get status;@override $UIStatusCopyWith<$Res> get addToCartStatus;@override $UIStatusCopyWith<$Res> get removeFromCartStatus;@override $UIStatusCopyWith<$Res> get createReviewStatus;@override $UIStatusCopyWith<$Res> get updateCartStatus;@override $UIStatusCopyWith<$Res> get createJobStatus;@override $UIStatusCopyWith<$Res> get updateJobStatus;@override $UIStatusCopyWith<$Res> get deleteJobStatus;
 
 }
 /// @nodoc
@@ -1092,7 +1343,7 @@ class __$JobMarketStateCopyWithImpl<$Res>
 
 /// Create a copy of JobMarketState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? jobs = null,Object? jobDetail = freezed,Object? reviews = null,Object? cartItems = null,Object? applications = null,Object? addToCartStatus = null,Object? removeFromCartStatus = null,Object? createReviewStatus = null,Object? updateCartStatus = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? jobs = null,Object? jobDetail = freezed,Object? reviews = null,Object? cartItems = null,Object? applications = null,Object? addToCartStatus = null,Object? removeFromCartStatus = null,Object? createReviewStatus = null,Object? updateCartStatus = null,Object? createJobStatus = null,Object? updateJobStatus = null,Object? deleteJobStatus = null,}) {
   return _then(_JobMarketState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UIStatus,jobs: null == jobs ? _self._jobs : jobs // ignore: cast_nullable_to_non_nullable
@@ -1104,6 +1355,9 @@ as List<UserJobModel>,addToCartStatus: null == addToCartStatus ? _self.addToCart
 as UIStatus,removeFromCartStatus: null == removeFromCartStatus ? _self.removeFromCartStatus : removeFromCartStatus // ignore: cast_nullable_to_non_nullable
 as UIStatus,createReviewStatus: null == createReviewStatus ? _self.createReviewStatus : createReviewStatus // ignore: cast_nullable_to_non_nullable
 as UIStatus,updateCartStatus: null == updateCartStatus ? _self.updateCartStatus : updateCartStatus // ignore: cast_nullable_to_non_nullable
+as UIStatus,createJobStatus: null == createJobStatus ? _self.createJobStatus : createJobStatus // ignore: cast_nullable_to_non_nullable
+as UIStatus,updateJobStatus: null == updateJobStatus ? _self.updateJobStatus : updateJobStatus // ignore: cast_nullable_to_non_nullable
+as UIStatus,deleteJobStatus: null == deleteJobStatus ? _self.deleteJobStatus : deleteJobStatus // ignore: cast_nullable_to_non_nullable
 as UIStatus,
   ));
 }
@@ -1152,6 +1406,33 @@ $UIStatusCopyWith<$Res> get updateCartStatus {
   
   return $UIStatusCopyWith<$Res>(_self.updateCartStatus, (value) {
     return _then(_self.copyWith(updateCartStatus: value));
+  });
+}/// Create a copy of JobMarketState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UIStatusCopyWith<$Res> get createJobStatus {
+  
+  return $UIStatusCopyWith<$Res>(_self.createJobStatus, (value) {
+    return _then(_self.copyWith(createJobStatus: value));
+  });
+}/// Create a copy of JobMarketState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UIStatusCopyWith<$Res> get updateJobStatus {
+  
+  return $UIStatusCopyWith<$Res>(_self.updateJobStatus, (value) {
+    return _then(_self.copyWith(updateJobStatus: value));
+  });
+}/// Create a copy of JobMarketState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UIStatusCopyWith<$Res> get deleteJobStatus {
+  
+  return $UIStatusCopyWith<$Res>(_self.deleteJobStatus, (value) {
+    return _then(_self.copyWith(deleteJobStatus: value));
   });
 }
 }

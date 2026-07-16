@@ -63,13 +63,13 @@ class JobCard extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                     ),
-                    const Text(
-                      'Full-time',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
+                    // const Text(
+                    //   'Full-time',
+                    //   style: TextStyle(
+                    //     fontSize: 12,
+                    //     color: AppColors.textSecondary,
+                    //   ),
+                    // ),
                   ],
                 ),
               ],

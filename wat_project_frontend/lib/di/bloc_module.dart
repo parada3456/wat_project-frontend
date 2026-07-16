@@ -126,6 +126,9 @@ abstract class BlocModule {
     ListApplicationsUseCase listApplicationsUseCase,
     ListJobReviewsUseCase listJobReviewsUseCase,
     UpdateCartStatusUseCase updateCartStatusUseCase,
+    CreateJobUseCase createJobUseCase,
+    UpdateJobUseCase updateJobUseCase,
+    DeleteJobUseCase deleteJobUseCase,
   ) => JobMarketBloc(
     listJobsUseCase: listJobsUseCase,
     getJobDetailUseCase: getJobDetailUseCase,
@@ -136,6 +139,9 @@ abstract class BlocModule {
     listApplicationsUseCase: listApplicationsUseCase,
     listJobReviewsUseCase: listJobReviewsUseCase,
     updateCartStatusUseCase: updateCartStatusUseCase,
+    createJobUseCase: createJobUseCase,
+    updateJobUseCase: updateJobUseCase,
+    deleteJobUseCase: deleteJobUseCase,
   );
 
   @injectable

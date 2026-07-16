@@ -8,6 +8,7 @@ import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_blo
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_card.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
+import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class JobSearchPage extends StatefulWidget {
@@ -162,6 +163,13 @@ class _JobSearchPageState extends State<JobSearchPage> {
               ],
             ),
           ),
+          floatingActionButton: GetIt.instance<AuthSessionManager>().isAdmin
+              ? FloatingActionButton(
+                  backgroundColor: AppColors.primary,
+                  child: const Icon(Icons.add, color: AppColors.white),
+                  onPressed: () => context.push('/jobs/create'),
+                )
+              : null,
         ),
       ),
     );
@@ -176,7 +184,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
       buttons: [
         AppPopupButton(
           label: 'OK', 
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(context),
         )
       ],
     );

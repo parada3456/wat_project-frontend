@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
-import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
 import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_event.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_state.dart';
