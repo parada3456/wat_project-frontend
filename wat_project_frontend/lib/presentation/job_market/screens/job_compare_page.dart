@@ -60,7 +60,7 @@ class _JobComparePageState extends State<JobComparePage> {
                   padding: const EdgeInsets.all(AppDimension.space32),
                   child: Text(
                     'NO MATCHING JOBS TO COMPARE.',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 8,
                       color: subtextColor,
                     ),
@@ -85,7 +85,7 @@ class _JobComparePageState extends State<JobComparePage> {
                         DataColumn(
                           label: Text(
                             'ATTRIBUTE',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 6,
                               fontWeight: FontWeight.bold,
                               color: textColor,
@@ -102,7 +102,7 @@ class _JobComparePageState extends State<JobComparePage> {
                                 children: [
                                   Text(
                                     (job.position ?? 'UNKNOWN POSITION').toUpperCase(),
-                                    style: GoogleFonts.pressStart2p(
+                                    style: GoogleFonts.notoSansThai(
                                       fontSize: 6,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.primary,
@@ -113,7 +113,7 @@ class _JobComparePageState extends State<JobComparePage> {
                                   const SizedBox(height: 2),
                                   Text(
                                     (job.employerTitle ?? 'UNKNOWN').toUpperCase(),
-                                    style: GoogleFonts.pressStart2p(
+                                    style: GoogleFonts.notoSansThai(
                                       fontSize: 5,
                                       color: subtextColor,
                                     ),
@@ -129,47 +129,47 @@ class _JobComparePageState extends State<JobComparePage> {
                       rows: [
                         DataRow(
                           cells: [
-                            DataCell(Text('EMPLOYER', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
-                            ...selectedJobs.map((j) => DataCell(Text((j.employerTitle ?? 'N/A').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                            DataCell(Text('EMPLOYER', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.employerTitle ?? 'N/A').toUpperCase(), style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor)))),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('AGENCY', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
-                            ...selectedJobs.map((j) => DataCell(Text((j.agencyName ?? 'DIRECT').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                            DataCell(Text('AGENCY', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.agencyName ?? 'DIRECT').toUpperCase(), style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor)))),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('MIN SALARY', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            DataCell(Text('MIN SALARY', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
                             ...selectedJobs.map(
                               (j) => DataCell(
                                 Text('\$${j.salaryRangeMin.toStringAsFixed(2)}/HR',
-                                    style: GoogleFonts.pressStart2p(fontSize: 6, color: AppColors.success, fontWeight: FontWeight.bold)),
+                                    style: GoogleFonts.notoSansThai(fontSize: 6, color: AppColors.success, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('MAX SALARY', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            DataCell(Text('MAX SALARY', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
                             ...selectedJobs.map(
                               (j) => DataCell(
                                 Text('\$${j.salaryRangeMax.toStringAsFixed(2)}/HR',
-                                    style: GoogleFonts.pressStart2p(fontSize: 6, color: AppColors.success, fontWeight: FontWeight.bold)),
+                                    style: GoogleFonts.notoSansThai(fontSize: 6, color: AppColors.success, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('POSITION TYPE', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
-                            ...selectedJobs.map((j) => DataCell(Text((j.positionType ?? 'N/A').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                            DataCell(Text('POSITION TYPE', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.positionType ?? 'N/A').toUpperCase(), style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor)))),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('SPONSOR', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            DataCell(Text('SPONSOR', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
                             ...selectedJobs.map(
                               (j) => DataCell(
                                 AppAssets.img(
@@ -183,24 +183,24 @@ class _JobComparePageState extends State<JobComparePage> {
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('LOCATION', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
+                            DataCell(Text('LOCATION', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
                             ...selectedJobs.map(
                               (j) => DataCell(
-                                Text('${j.locationCity ?? ''}, ${j.locationState ?? ''}'.toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)),
+                                Text('${j.locationCity ?? ''}, ${j.locationState ?? ''}'.toUpperCase(), style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor)),
                               ),
                             ),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('GROUP LOC', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
-                            ...selectedJobs.map((j) => DataCell(Text((j.groupLocation ?? 'N/A').toUpperCase(), style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                            DataCell(Text('GROUP LOC', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text((j.groupLocation ?? 'N/A').toUpperCase(), style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor)))),
                           ],
                         ),
                         DataRow(
                           cells: [
-                            DataCell(Text('SLOTS', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor))),
-                            ...selectedJobs.map((j) => DataCell(Text('${j.availableSlots}', style: GoogleFonts.pressStart2p(fontSize: 6, color: textColor)))),
+                            DataCell(Text('SLOTS', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor))),
+                            ...selectedJobs.map((j) => DataCell(Text('${j.availableSlots}', style: GoogleFonts.notoSansThai(fontSize: 6, color: textColor)))),
                           ],
                         ),
                       ],

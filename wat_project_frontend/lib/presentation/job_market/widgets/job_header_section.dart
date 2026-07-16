@@ -22,7 +22,7 @@ class JobHeaderSection extends StatelessWidget {
       children: [
         Text(
           (jobDetail.job.position ?? 'UNKNOWN POSITION').toUpperCase(),
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 12,
             fontWeight: FontWeight.bold,
             color: textColor,
@@ -32,7 +32,7 @@ class JobHeaderSection extends StatelessWidget {
         const SizedBox(height: AppDimension.space8),
         Text(
           (jobDetail.job.employerTitle ?? 'UNKNOWN EMPLOYER').toUpperCase(),
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 9,
             fontWeight: FontWeight.bold,
             color: subtextColor,
@@ -43,7 +43,7 @@ class JobHeaderSection extends StatelessWidget {
           const SizedBox(height: AppDimension.space8),
           Text(
             'AGENCY: ${jobDetail.job.agencyName!.toUpperCase()}',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               color: subtextColor,
               height: 1.5,
@@ -60,7 +60,7 @@ class JobHeaderSection extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 jobDetail.rating!.overallRate.toStringAsFixed(1),
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 9,
                   fontWeight: FontWeight.bold,
                   color: textColor,

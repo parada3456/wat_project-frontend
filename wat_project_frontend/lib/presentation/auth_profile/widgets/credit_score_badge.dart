@@ -32,7 +32,7 @@ class CreditScoreBadge extends StatelessWidget {
             children: [
               Text(
                 '$score',
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 14,
                   color: scoreColor,
                 ),
@@ -40,7 +40,7 @@ class CreditScoreBadge extends StatelessWidget {
               const SizedBox(height: AppDimension.space8),
               Text(
                 score >= 800 ? 'GOOD' : score >= 600 ? 'FAIR' : 'POOR',
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 7,
                   color: scoreColor,
                 ),
@@ -51,7 +51,7 @@ class CreditScoreBadge extends StatelessWidget {
         const SizedBox(height: AppDimension.space8),
         Text(
           'CREDIT SCORE',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 7,
             color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
           ),

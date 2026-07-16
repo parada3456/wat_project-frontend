@@ -34,7 +34,7 @@ class CreditHistoryPage extends StatelessWidget {
                 children: [
                   Text(
                     'CURRENT SCORE',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 8,
                       color: subtextColor,
                     ),
@@ -42,7 +42,7 @@ class CreditHistoryPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     '850',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
@@ -63,7 +63,7 @@ class CreditHistoryPage extends StatelessWidget {
                     ),
                     child: Text(
                       'EXCELLENT',
-                      style: GoogleFonts.pressStart2p(
+                      style: GoogleFonts.notoSansThai(
                         fontSize: 6,
                         fontWeight: FontWeight.bold,
                         color: AppColors.success,

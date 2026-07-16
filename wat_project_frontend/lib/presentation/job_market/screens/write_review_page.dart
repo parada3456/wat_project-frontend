@@ -115,8 +115,8 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 children: [
                   Text(
                     'HOW WAS YOUR EXPERIENCE?',
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 8,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: textColor,
                       height: 1.5,
@@ -134,8 +134,8 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   const SizedBox(height: AppDimension.space32),
                   Text(
                     'YOUR REVIEW',
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 8,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: textColor,
                     ),
@@ -145,15 +145,15 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     child: TextField(
                       controller: _reviewController,
                       maxLines: 5,
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 8,
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 12,
                         color: textColor,
                         height: 1.6,
                       ),
                       decoration: InputDecoration(
                         hintText: 'Share your work experience, housing conditions, or tips...',
-                        hintStyle: GoogleFonts.pressStart2p(
-                          fontSize: 7,
+                        hintStyle: GoogleFonts.notoSansThai(
+                          fontSize: 11,
                           color: subtextColor,
                           height: 1.6,
                         ),

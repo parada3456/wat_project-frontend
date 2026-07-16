@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
@@ -123,7 +124,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
               return Center(
                 child: Text(
                   message.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(fontSize: 7, color: AppColors.error),
+                  style: context.textTheme.headlineLarge?.copyWith(color: AppColors.error),
                 ),
               );
             }
@@ -222,8 +223,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 children: [
                   Text(
                     '${_selectedDate.day} ${_getMonthName(_selectedDate.month)}',
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 8,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: textColor,
                     ),
@@ -283,8 +284,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 alignment: Alignment.center,
                 child: Text(
                   'MY QUESTS',
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 7,
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                     color: _selectedTab == 'my_mission'
                         ? AppColors.black
@@ -309,8 +310,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 alignment: Alignment.center,
                 child: Text(
                   'EXPLORE',
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 7,
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                     color: _selectedTab == 'explore'
                         ? AppColors.black
@@ -427,8 +428,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         ),
         child: Text(
           label,
-          style: GoogleFonts.pressStart2p(
-            fontSize: 6,
+          style: GoogleFonts.notoSansThai(
+            fontSize: 11,
             fontWeight: FontWeight.bold,
             color: isSelected ? AppColors.black : AppColors.text(context),
           ),
@@ -452,8 +453,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
             children: [
               Text(
                 '${_months[_currentMonth.month - 1]} ${_currentMonth.year}',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 7,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
                   fontWeight: FontWeight.bold,
                   color: textColor,
                 ),
@@ -492,8 +493,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                     child: Center(
                       child: Text(
                         day,
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 6,
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: subtextColor,
                         ),
@@ -580,8 +581,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         alignment: Alignment.center,
         child: Text(
           '$day',
-          style: GoogleFonts.pressStart2p(
-            fontSize: 6,
+          style: GoogleFonts.notoSansThai(
+            fontSize: 11,
             fontWeight: (isSelected || dayMissions.isNotEmpty)
                 ? FontWeight.bold
                 : FontWeight.normal,

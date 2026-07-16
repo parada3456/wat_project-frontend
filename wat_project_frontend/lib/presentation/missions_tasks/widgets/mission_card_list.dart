@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/data/entities/mission/mission_entity.dart';
 import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
@@ -180,10 +181,7 @@ class _MissionCardListState extends State<MissionCardList> {
                 padding: const EdgeInsets.all(32),
                 child: Text(
                   (widget.emptyMessage ?? 'No missions available.').toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 7,
-                    color: subtextColor,
-                  ),
+                  style: context.textTheme.titleLarge
                 ),
               ),
             );
@@ -220,10 +218,7 @@ class _MissionCardListState extends State<MissionCardList> {
                   child: Center(
                     child: Text(
                       "YOU'VE SEEN ALL MISSIONS 🎉",
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 6,
-                        color: subtextColor,
-                      ),
+                      style: context.textTheme.displayLarge,
                     ),
                   ),
                 );

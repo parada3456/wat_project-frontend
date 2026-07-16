@@ -306,7 +306,7 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                           const SizedBox(height: AppDimension.space16),
                           Text(
                             'POSITION TYPE',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 7,
                               fontWeight: FontWeight.bold,
                               color: textColor,
@@ -330,7 +330,7 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                                 dropdownColor: isDark
                                     ? AppColors.darkSurface
                                     : AppColors.lightSurface,
-                                style: GoogleFonts.pressStart2p(
+                                style: GoogleFonts.notoSansThai(
                                   fontSize: 8,
                                   color: textColor,
                                 ),
@@ -439,7 +439,7 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                               Expanded(
                                 child: Text(
                                   'US SPONSOR REQUIRED',
-                                  style: GoogleFonts.pressStart2p(
+                                  style: GoogleFonts.notoSansThai(
                                     fontSize: 7,
                                     color: textColor,
                                     height: 1.5,
@@ -467,7 +467,7 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                         children: [
                           Text(
                             'JOB DESCRIPTION',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 7,
                               fontWeight: FontWeight.bold,
                               color: textColor,
@@ -478,14 +478,14 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                             child: TextField(
                               controller: _descriptionController,
                               maxLines: 4,
-                              style: GoogleFonts.pressStart2p(
+                              style: GoogleFonts.notoSansThai(
                                 fontSize: 7,
                                 color: textColor,
                                 height: 1.6,
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Provide details about the job, role, or requirements...',
-                                hintStyle: GoogleFonts.pressStart2p(
+                                hintStyle: GoogleFonts.notoSansThai(
                                   fontSize: 6,
                                   color: subtextColor,
                                   height: 1.6,

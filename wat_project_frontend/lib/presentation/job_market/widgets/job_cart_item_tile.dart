@@ -60,7 +60,7 @@ class JobCartItemTile extends StatelessWidget {
               children: [
                 Text(
                   title.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 8,
                     fontWeight: FontWeight.bold,
                     color: textColor,
@@ -70,7 +70,7 @@ class JobCartItemTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   company.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: subtextColor,
                   ),
@@ -88,14 +88,14 @@ class JobCartItemTile extends StatelessWidget {
                   value: 'Saved',
                   child: Text(
                     'SAVED',
-                    style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                    style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
                   ),
                 ),
                 PopupMenuItem(
                   value: 'Applied',
                   child: Text(
                     'APPLIED',
-                    style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                    style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
                   ),
                 ),
               ],
@@ -113,7 +113,7 @@ class JobCartItemTile extends StatelessWidget {
                   children: [
                     Text(
                       status.toUpperCase(),
-                      style: GoogleFonts.pressStart2p(
+                      style: GoogleFonts.notoSansThai(
                         fontSize: 6,
                         fontWeight: FontWeight.bold,
                         color: statusColor,
@@ -141,7 +141,7 @@ class JobCartItemTile extends StatelessWidget {
               ),
               child: Text(
                 status.toUpperCase(),
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 6,
                   fontWeight: FontWeight.bold,
                   color: statusColor,

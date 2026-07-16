@@ -109,8 +109,8 @@ class MissionDetailView extends StatelessWidget {
                   loadFailed: (msg, _) => (msg ?? 'Failed to load details').toUpperCase(),
                   orElse: () => 'NO DETAILS AVAILABLE',
                 ),
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 7,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
                   color: subtextColor,
                 ),
               ),
@@ -140,8 +140,8 @@ class MissionDetailView extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'QUEST TYPE: PHASE MISSION'.toUpperCase(),
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 6,
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: subtextColor,
                         ),
@@ -163,9 +163,9 @@ class MissionDetailView extends StatelessWidget {
                         ),
                         child: Text(
                           'YOUR CREATION',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.notoSansThai(
                             color: AppColors.primary,
-                            fontSize: 5,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -180,8 +180,8 @@ class MissionDetailView extends StatelessWidget {
                     Expanded(
                       child: Text(
                         detail.title.toUpperCase(),
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 10,
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: textColor,
                           height: 1.4,
@@ -193,8 +193,8 @@ class MissionDetailView extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       '$completedCount/$totalCount',
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 8,
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: AppColors.primary,
                       ),
@@ -224,8 +224,8 @@ class MissionDetailView extends StatelessWidget {
                 if (detail.description != null) ...[
                   Text(
                     detail.description!,
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 6,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 11,
                       color: subtextColor,
                       height: 1.8,
                     ),
@@ -237,8 +237,8 @@ class MissionDetailView extends StatelessWidget {
                   children: [
                     Text(
                       'CHECKLIST',
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 8,
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: textColor,
                       ),
@@ -246,8 +246,8 @@ class MissionDetailView extends StatelessWidget {
                     const Spacer(),
                     Text(
                       '$totalCount QUESTS',
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 6,
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 11,
                         color: subtextColor,
                       ),
                     ),

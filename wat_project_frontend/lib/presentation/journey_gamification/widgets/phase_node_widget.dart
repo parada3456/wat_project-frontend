@@ -58,7 +58,7 @@ class PhaseNodeWidget extends StatelessWidget {
                         )
                       : Text(
                           '$phaseNumber',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.notoSansThai(
                             fontSize: 8,
                             fontWeight: FontWeight.bold,
                             color: nodeColor,
@@ -80,7 +80,7 @@ class PhaseNodeWidget extends StatelessWidget {
                 children: [
                   Text(
                     'PHASE $phaseNumber'.toUpperCase(),
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 7,
                       fontWeight: FontWeight.bold,
                       color: isActive ? AppColors.primary : subtextColor,
@@ -89,7 +89,7 @@ class PhaseNodeWidget extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     title.toUpperCase(),
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 8,
                       fontWeight: FontWeight.bold,
                       color: isActive ? textColor : subtextColor,
@@ -100,7 +100,7 @@ class PhaseNodeWidget extends StatelessWidget {
                     const SizedBox(height: AppDimension.space8),
                     Text(
                       'current location. complete active quests to unlock the next region.',
-                      style: GoogleFonts.pressStart2p(
+                      style: GoogleFonts.notoSansThai(
                         fontSize: 6,
                         color: subtextColor,
                         height: 1.8,

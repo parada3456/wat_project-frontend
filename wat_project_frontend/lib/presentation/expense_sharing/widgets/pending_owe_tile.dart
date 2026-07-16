@@ -59,7 +59,7 @@ class PendingOweTile extends StatelessWidget {
               children: [
                 Text(
                   'OWE $personName'.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 7,
                     fontWeight: FontWeight.bold,
                     color: isOverdue ? AppColors.error : textColor,
@@ -69,7 +69,7 @@ class PendingOweTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'DUE $dueDate'.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: isOverdue ? AppColors.error : subtextColor,
                     fontWeight: isOverdue ? FontWeight.bold : FontWeight.normal,
@@ -81,7 +81,7 @@ class PendingOweTile extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             '\$${amount.toStringAsFixed(2)}',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               fontWeight: FontWeight.bold,
               color: isOverdue ? AppColors.error : textColor,

@@ -114,7 +114,7 @@ class ProfilePage extends StatelessWidget {
                               (message ?? 'An error occurred').toUpperCase(),
                           orElse: () => 'NO PROFILE DATA LOADED',
                         ),
-                        style: GoogleFonts.pressStart2p(fontSize: 8, color: textColor),
+                        style: GoogleFonts.notoSansThai(fontSize: 12, color: textColor),
                       ),
                     );
                   }
@@ -137,7 +137,7 @@ class ProfilePage extends StatelessWidget {
                           children: [
                             Text(
                               'MY PROFILE',
-                              style: GoogleFonts.pressStart2p(
+                              style: GoogleFonts.notoSansThai(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: textColor,
@@ -228,8 +228,8 @@ class ProfilePage extends StatelessWidget {
                                           .trim()
                                           .toUpperCase()
                                     : 'UNKNOWN PLAYER',
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 10,
+                                style: GoogleFonts.notoSansThai(
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: textColor,
                                   height: 1.5,
@@ -239,8 +239,8 @@ class ProfilePage extends StatelessWidget {
                               const SizedBox(height: AppDimension.space4),
                               Text(
                                 user.email.toLowerCase(),
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 7,
+                                style: GoogleFonts.notoSansThai(
+                                  fontSize: 11,
                                   color: subtextColor,
                                   height: 1.5,
                                 ),
@@ -252,8 +252,8 @@ class ProfilePage extends StatelessWidget {
                                 Text(
                                   '"${profile.bio!}"',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.pressStart2p(
-                                    fontSize: 7,
+                                  style: GoogleFonts.notoSansThai(
+                                    fontSize: 11,
                                     color: subtextColor,
                                     height: 1.8,
                                   ),
@@ -278,8 +278,8 @@ class ProfilePage extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 'CREDIT SCORE NOT ESTABLISHED YET',
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 7,
+                                style: GoogleFonts.notoSansThai(
+                                  fontSize: 11,
                                   color: AppColors.warning,
                                   height: 1.5,
                                 ),
@@ -323,8 +323,8 @@ class ProfilePage extends StatelessWidget {
                         state.badges.isEmpty
                             ? Text(
                                 'NO BADGES EARNED YET.',
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 8,
+                                style: GoogleFonts.notoSansThai(
+                                  fontSize: 12,
                                   color: subtextColor,
                                 ),
                               )
@@ -348,8 +348,8 @@ class ProfilePage extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         Text(
                                           badge.title.toUpperCase(),
-                                          style: GoogleFonts.pressStart2p(
-                                            fontSize: 7,
+                                          style: GoogleFonts.notoSansThai(
+                                            fontSize: 11,
                                             color: textColor,
                                           ),
                                         ),
@@ -366,8 +366,8 @@ class ProfilePage extends StatelessWidget {
                         state.creditHistory.isEmpty
                             ? Text(
                                 'NO CREDIT RECORDS FOUND.',
-                                style: GoogleFonts.pressStart2p(
-                                  fontSize: 8,
+                                style: GoogleFonts.notoSansThai(
+                                  fontSize: 12,
                                   color: subtextColor,
                                 ),
                               )
@@ -397,8 +397,8 @@ class ProfilePage extends StatelessWidget {
                                               Text(
                                                 (record.note ?? 'SCORE ADJUSTMENT')
                                                     .toUpperCase(),
-                                                style: GoogleFonts.pressStart2p(
-                                                  fontSize: 8,
+                                                style: GoogleFonts.notoSansThai(
+                                                  fontSize: 12,
                                                   color: textColor,
                                                   height: 1.5,
                                                 ),
@@ -409,8 +409,8 @@ class ProfilePage extends StatelessWidget {
                                                     .toLocal()
                                                     .toString()
                                                     .split(' ')[0],
-                                                style: GoogleFonts.pressStart2p(
-                                                  fontSize: 6,
+                                                style: GoogleFonts.notoSansThai(
+                                                  fontSize: 11,
                                                   color: subtextColor,
                                                 ),
                                               ),
@@ -421,8 +421,8 @@ class ProfilePage extends StatelessWidget {
                                           record.delta > 0
                                               ? '+${record.delta}'
                                               : '${record.delta}',
-                                          style: GoogleFonts.pressStart2p(
-                                            fontSize: 9,
+                                          style: GoogleFonts.notoSansThai(
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: deltaColor,
                                           ),

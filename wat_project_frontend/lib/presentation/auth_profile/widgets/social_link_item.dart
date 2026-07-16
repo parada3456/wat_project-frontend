@@ -42,7 +42,7 @@ class SocialLinkItem extends StatelessWidget {
           const SizedBox(width: AppDimension.space16),
           Text(
             username,
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 8,
               color: textColor,
             ),

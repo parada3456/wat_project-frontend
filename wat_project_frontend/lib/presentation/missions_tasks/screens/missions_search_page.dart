@@ -80,7 +80,7 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
               return Center(
                 child: Text(
                   message.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(fontSize: 7, color: AppColors.error),
+                  style: GoogleFonts.notoSansThai(fontSize: 7, color: AppColors.error),
                 ),
               );
             }
@@ -161,7 +161,7 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                                 child: Center(
                                   child: Text(
                                     filter,
-                                    style: GoogleFonts.pressStart2p(
+                                    style: GoogleFonts.notoSansThai(
                                       fontSize: 6,
                                       color: isSelected
                                           ? AppColors.black
@@ -189,7 +189,7 @@ class _MissionsSearchViewState extends State<MissionsSearchView> {
                       ? Center(
                           child: Text(
                             'NO QUESTS FOUND.',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 7,
                               color: subtextColor,
                             ),

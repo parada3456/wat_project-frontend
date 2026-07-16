@@ -53,7 +53,7 @@ class BadgeGridTile extends StatelessWidget {
           Text(
             title.toUpperCase(),
             textAlign: TextAlign.center,
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 6,
               fontWeight: FontWeight.bold,
               color: isEarned ? textColor : subtextColor,

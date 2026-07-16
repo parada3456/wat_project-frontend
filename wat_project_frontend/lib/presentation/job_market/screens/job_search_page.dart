@@ -134,8 +134,8 @@ class _JobSearchPageState extends State<JobSearchPage> {
                         return Center(
                           child: Text(
                             'NO JOBS FOUND.',
-                            style: GoogleFonts.pressStart2p(
-                              fontSize: 8,
+                            style: GoogleFonts.notoSansThai(
+                              fontSize: 12,
                               color: subtextColor,
                             ),
                           ),

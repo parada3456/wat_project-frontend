@@ -7,93 +7,106 @@ class AppTheme {
 
   // ─── Press Start 2P text theme ───
   static TextTheme _pixelTextTheme(Color color) {
-    // final base = GoogleFonts.pressStart2pTextTheme();
+    // final base = GoogleFonts.notoSansThaiTextTheme();
     final base = GoogleFonts.interTextTheme();
     return base.copyWith(
-      displayLarge: GoogleFonts.pressStart2p(
-        fontSize: 16,
+      displayLarge: GoogleFonts.notoSansThai(
+        fontSize: 34,             // ปรับเพิ่มจาก 16 -> ชัดเจนสะใจสไตล์เกม
+        fontWeight: FontWeight.bold, // เปลี่ยนเป็น Bold ให้เห็นชัดขึ้น
+        color: color,
+        height: 1.2,
+      ),
+      displayMedium: GoogleFonts.notoSansThai(
+        fontSize: 28,             // ปรับเพิ่มจาก 14
+        fontWeight: FontWeight.bold,
+        color: color,
+        height: 1.2,
+      ),
+      displaySmall: GoogleFonts.notoSansThai(
+        fontSize: 24,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w600,
+        color: color,
+        height: 1.2,
+      ),
+
+      // ─── Headline: หัวข้อย่อยประจำหน้า หรือชื่อเมนูหลัก ───
+      headlineLarge: GoogleFonts.notoSansThai(
+        fontSize: 22,             // ปรับเพิ่มจาก 14
+        fontWeight: FontWeight.w600,
+        color: color,
+        height: 1.3,
+      ),
+      headlineMedium: GoogleFonts.notoSansThai(
+        fontSize: 20,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w600,
+        color: color,
+        height: 1.3,
+      ),
+      headlineSmall: GoogleFonts.notoSansThai(
+        fontSize: 18,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w600,
+        color: color,
+        height: 1.3,
+      ),
+
+      // ─── Title: ชื่อไอเทม ชื่อการ์ด หรือหัวข้อในกล่อง UI ───
+      titleLarge: GoogleFonts.notoSansThai(
+        fontSize: 16,             // ปรับเพิ่มจาก 14 -> เป็นขนาดกำลังดีสำหรับหัวข้อย่อย
+        fontWeight: FontWeight.w500,
+        color: color,
+        height: 1.4,
+      ),
+      titleMedium: GoogleFonts.notoSansThai(
+        fontSize: 14,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w500,
+        color: color,
+        height: 1.4,
+      ),
+      titleSmall: GoogleFonts.notoSansThai(
+        fontSize: 13,             // ปรับเพิ่มจาก 10
+        fontWeight: FontWeight.w500,
+        color: color,
+        height: 1.4,
+      ),
+
+      // ─── Body: เนื้อหา รายละเอียดไอเทม คำอธิบายทั่วไป (อ่านง่าย ไม่ปวดตา) ───
+      bodyLarge: GoogleFonts.notoSansThai(
+        fontSize: 16,             // ปรับเพิ่มจาก 12 -> ขนาดมาตรฐานตัวหนังสือทั่วไป
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      displayMedium: GoogleFonts.pressStart2p(
-        fontSize: 14,
+      bodyMedium: GoogleFonts.notoSansThai(
+        fontSize: 14,             // ปรับเพิ่มจาก 11 -> ขนาดอ่านง่ายบนมือถือ
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      displaySmall: GoogleFonts.pressStart2p(
-        fontSize: 12,
+      bodySmall: GoogleFonts.notoSansThai(
+        fontSize: 12,             // ปรับเพิ่มจาก 9 -> ห้ามต่ำกว่า 12 สำหรับฟอนต์ไทย ไม่งั้นสระลอย/หัวฟอนต์จะกลืนอ่านไม่ออก
         fontWeight: FontWeight.w400,
         color: color,
-        height: 1.8,
+        height: 1.4,
       ),
-      headlineLarge: GoogleFonts.pressStart2p(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
+
+      // ─── Label: ตัวหนังสือบนปุ่ม คำอธิบายสั้นๆ หรือเลข Status ───
+      labelLarge: GoogleFonts.notoSansThai(
+        fontSize: 14,             // ปรับเพิ่มจาก 10 -> ขนาดตัวหนังสือบนปุ่มกดมาตรฐาน
+        fontWeight: FontWeight.w600, // หนาขึ้นเพื่อให้เห็นบนปุ่มชัดเจน
         color: color,
-        height: 1.8,
+        height: 1.2,
       ),
-      headlineMedium: GoogleFonts.pressStart2p(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+      labelMedium: GoogleFonts.notoSansThai(
+        fontSize: 12,             // ปรับเพิ่มจาก 8
+        fontWeight: FontWeight.w500,
         color: color,
-        height: 1.8,
+        height: 1.2,
       ),
-      headlineSmall: GoogleFonts.pressStart2p(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+      labelSmall: GoogleFonts.notoSansThai(
+        fontSize: 11,             // ปรับเพิ่มจาก 8
+        fontWeight: FontWeight.w500,
         color: color,
-        height: 1.8,
-      ),
-      titleLarge: GoogleFonts.pressStart2p(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: color,
-        height: 1.8,
-      ),
-      titleMedium: GoogleFonts.pressStart2p(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        color: color,
-        height: 1.8,
-      ),
-      titleSmall: GoogleFonts.pressStart2p(
-        fontSize: 10,
-        fontWeight: FontWeight.w400,
-        color: color,
-        height: 1.8,
-      ),
-      bodyLarge: GoogleFonts.pressStart2p(
-        fontSize: 12,
-        color: color,
-        height: 1.8,
-      ),
-      bodyMedium: GoogleFonts.inter(
-        fontSize: 10,
-        color: color,
-        height: 1.8,
-      ),
-      bodySmall: GoogleFonts.inter(
-        fontSize: 8,
-        color: color,
-        height: 1.8,
-      ),
-      labelLarge: GoogleFonts.pressStart2p(
-        fontSize: 10,
-        fontWeight: FontWeight.w400,
-        color: color,
-        height: 1.8,
-      ),
-      labelMedium: GoogleFonts.pressStart2p(
-        fontSize: 8,
-        color: color,
-        height: 1.8,
-      ),
-      labelSmall: GoogleFonts.inter(
-        fontSize: 7,
-        color: color,
-        height: 1.8,
+        height: 1.2,
       ),
     );
   }
@@ -146,7 +159,7 @@ class AppTheme {
       foregroundColor: AppColors.white,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: GoogleFonts.pressStart2p(
+      titleTextStyle: GoogleFonts.notoSansThai(
         fontSize: 12,
         color: AppColors.white,
         height: 1.8,
@@ -205,12 +218,12 @@ class AppTheme {
           width: AppDimension.pixelBorderWidth,
         ),
       ),
-      labelStyle: GoogleFonts.pressStart2p(
-        fontSize: 9,
+      labelStyle: GoogleFonts.notoSansThai(
+        fontSize: 12,
         color: AppColors.lightTextSecondary,
       ),
-      hintStyle: GoogleFonts.pressStart2p(
-        fontSize: 9,
+      hintStyle: GoogleFonts.notoSansThai(
+        fontSize: 12,
         color: AppColors.lightTextSecondary,
       ),
     ),
@@ -245,8 +258,8 @@ class AppTheme {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: AppColors.lightNavBar,
-      contentTextStyle: GoogleFonts.pressStart2p(
-        fontSize: 9,
+      contentTextStyle: GoogleFonts.notoSansThai(
+        fontSize: 12,
         color: AppColors.white,
       ),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -282,7 +295,7 @@ class AppTheme {
       foregroundColor: AppColors.darkTextPrimary,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: GoogleFonts.pressStart2p(
+      titleTextStyle: GoogleFonts.notoSansThai(
         fontSize: 12,
         color: AppColors.darkTextPrimary,
         height: 1.8,
@@ -341,12 +354,12 @@ class AppTheme {
           width: AppDimension.pixelBorderWidth,
         ),
       ),
-      labelStyle: GoogleFonts.pressStart2p(
-        fontSize: 9,
+      labelStyle: GoogleFonts.notoSansThai(
+        fontSize: 12,
         color: AppColors.darkTextSecondary,
       ),
-      hintStyle: GoogleFonts.pressStart2p(
-        fontSize: 9,
+      hintStyle: GoogleFonts.notoSansThai(
+        fontSize: 12,
         color: AppColors.darkTextSecondary,
       ),
     ),
@@ -381,8 +394,8 @@ class AppTheme {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: AppColors.darkSurface,
-      contentTextStyle: GoogleFonts.pressStart2p(
-        fontSize: 9,
+      contentTextStyle: GoogleFonts.notoSansThai(
+        fontSize: 12,
         color: AppColors.darkTextPrimary,
       ),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),

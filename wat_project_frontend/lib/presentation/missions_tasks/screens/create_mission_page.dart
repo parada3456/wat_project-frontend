@@ -264,7 +264,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
           alignment: Alignment.center,
           child: Text(
             '${index + 1}',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               fontWeight: FontWeight.bold,
               color: active ? AppColors.black : subtextColor,
@@ -274,7 +274,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
         const SizedBox(width: 8),
         Text(
           title.toUpperCase(),
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 7,
             fontWeight: active ? FontWeight.bold : FontWeight.normal,
             color: active ? textColor : subtextColor,
@@ -379,7 +379,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                         const SizedBox(height: AppDimension.space16),
                         Text(
                           'DESCRIPTION',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.notoSansThai(
                             fontSize: 7,
                             fontWeight: FontWeight.bold,
                             color: textColor,
@@ -390,14 +390,14 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           child: TextField(
                             controller: _descriptionController,
                             maxLines: 3,
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 7,
                               color: textColor,
                               height: 1.6,
                             ),
                             decoration: InputDecoration(
                               hintText: 'Provide details about this quest...',
-                              hintStyle: GoogleFonts.pressStart2p(
+                              hintStyle: GoogleFonts.notoSansThai(
                                 fontSize: 6,
                                 color: subtextColor,
                                 height: 1.6,
@@ -521,7 +521,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
                               'NO TASKS ADDED YET. MISSIONS REQUIRE AT LEAST ONE TASK.',
-                              style: GoogleFonts.pressStart2p(
+                              style: GoogleFonts.notoSansThai(
                                 fontSize: 6,
                                 color: subtextColor,
                                 height: 1.6,
@@ -555,7 +555,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                       children: [
                                         Text(
                                           'TASK #${index + 1}',
-                                          style: GoogleFonts.pressStart2p(
+                                          style: GoogleFonts.notoSansThai(
                                             fontSize: 7,
                                             fontWeight: FontWeight.bold,
                                             color: textColor,
@@ -651,7 +651,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                               const SizedBox(width: 8),
                               Text(
                                 'ADD TASK',
-                                style: GoogleFonts.pressStart2p(
+                                style: GoogleFonts.notoSansThai(
                                   fontSize: 7,
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.bold,
@@ -680,7 +680,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           ),
                           child: Text(
                             'BACK',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 8,
                               fontWeight: FontWeight.bold,
                               color: textColor,
@@ -728,7 +728,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
       children: [
         Text(
           label.toString().toUpperCase(),
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 7,
             fontWeight: FontWeight.bold,
             color: textColor,
@@ -746,7 +746,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
               initialValue: value,
               onChanged: onChanged,
               dropdownColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 7,
                 color: textColor,
               ),
@@ -804,7 +804,7 @@ class _MandatoryToggle extends StatelessWidget {
                 children: [
                   Text(
                     'MANDATORY QUEST',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 7,
                       fontWeight: FontWeight.bold,
                       color: textColor,
@@ -813,7 +813,7 @@ class _MandatoryToggle extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     'Users must complete this mission',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 5,
                       color: subtextColor,
                       height: 1.4,

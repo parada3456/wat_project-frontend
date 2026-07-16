@@ -52,7 +52,7 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
           children: [
             Text(
               'REVIEWS',
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
                 color: textColor,
@@ -79,21 +79,21 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
                       value: ReviewSortOption.newest,
                       child: Text(
                         'NEWEST FIRST',
-                        style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                        style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
                       ),
                     ),
                     PopupMenuItem(
                       value: ReviewSortOption.highestRating,
                       child: Text(
                         'HIGHEST RATING',
-                        style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                        style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
                       ),
                     ),
                     PopupMenuItem(
                       value: ReviewSortOption.lowestRating,
                       child: Text(
                         'LOWEST RATING',
-                        style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                        style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
                       ),
                     ),
                   ],
@@ -103,7 +103,7 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
                         : _sortOption == ReviewSortOption.highestRating
                             ? 'HIGHEST'
                             : 'LOWEST',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 8,
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,
@@ -120,7 +120,7 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
         else if (widget.reviews.isEmpty)
           Text(
             'NO REVIEWS YET. BE THE FIRST!',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               color: AppColors.textSub(context),
             ),

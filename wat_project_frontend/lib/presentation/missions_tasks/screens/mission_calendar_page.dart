@@ -54,7 +54,7 @@ class MissionCalendarView extends StatelessWidget {
               return Center(
                 child: Text(
                   message.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(fontSize: 7, color: AppColors.error),
+                  style: GoogleFonts.notoSansThai(fontSize: 7, color: AppColors.error),
                 ),
               );
             }
@@ -84,7 +84,7 @@ class MissionCalendarView extends StatelessWidget {
                     const SizedBox(height: AppDimension.space32),
                     Text(
                       'DEADLINES THIS MONTH',
-                      style: GoogleFonts.pressStart2p(
+                      style: GoogleFonts.notoSansThai(
                         fontSize: 8,
                         fontWeight: FontWeight.bold,
                         color: textColor,
@@ -97,7 +97,7 @@ class MissionCalendarView extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 24.0),
                           child: Text(
                             'NO DEADLINES THIS MONTH.',
-                            style: GoogleFonts.pressStart2p(
+                            style: GoogleFonts.notoSansThai(
                               fontSize: 7,
                               color: subtextColor,
                             ),

@@ -105,8 +105,8 @@ class _JobCartPageState extends State<JobCartPage> {
                 return Center(
                   child: Text(
                     'YOUR CART IS EMPTY.',
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 8,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 12,
                       color: subtextColor,
                     ),
                   ),
@@ -171,8 +171,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                       Expanded(
                                         child: Text(
                                           (job.position ?? 'UNKNOWN POSITION').toUpperCase(),
-                                          style: GoogleFonts.pressStart2p(
-                                            fontSize: 8,
+                                          style: GoogleFonts.notoSansThai(
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: textColor,
                                             height: 1.4,
@@ -193,8 +193,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                   ),
                                   Text(
                                     (job.employerTitle ?? 'UNKNOWN EMPLOYER').toUpperCase(),
-                                    style: GoogleFonts.pressStart2p(
-                                      fontSize: 6,
+                                    style: GoogleFonts.notoSansThai(
+                                      fontSize: 11,
                                       color: subtextColor,
                                     ),
                                   ),
@@ -209,8 +209,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                       const SizedBox(width: 6),
                                       Text(
                                         '${job.locationCity ?? 'N/A'}, ${job.locationState ?? 'N/A'}'.toUpperCase(),
-                                        style: GoogleFonts.pressStart2p(
-                                          fontSize: 6,
+                                        style: GoogleFonts.notoSansThai(
+                                          fontSize: 11,
                                           color: subtextColor,
                                         ),
                                       ),
@@ -227,8 +227,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                       const SizedBox(width: 6),
                                       Text(
                                         '\$${job.salaryRangeMin.toStringAsFixed(2)} - \$${job.salaryRangeMax.toStringAsFixed(2)}/HR',
-                                        style: GoogleFonts.pressStart2p(
-                                          fontSize: 6,
+                                        style: GoogleFonts.notoSansThai(
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.success,
                                         ),
@@ -252,14 +252,14 @@ class _JobCartPageState extends State<JobCartPage> {
                                             value: 'Saved',
                                             child: Text(
                                               'SAVED',
-                                              style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                                              style: GoogleFonts.notoSansThai(fontSize: 11, color: textColor),
                                             ),
                                           ),
                                           PopupMenuItem(
                                             value: 'Applied',
                                             child: Text(
                                               'APPLIED',
-                                              style: GoogleFonts.pressStart2p(fontSize: 7, color: textColor),
+                                              style: GoogleFonts.notoSansThai(fontSize: 11, color: textColor),
                                             ),
                                           ),
                                         ],
@@ -277,8 +277,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                             children: [
                                               Text(
                                                 item.status.name.toUpperCase(),
-                                                style: GoogleFonts.pressStart2p(
-                                                  fontSize: 6,
+                                                style: GoogleFonts.notoSansThai(
+                                                  fontSize: 11,
                                                   fontWeight: FontWeight.bold,
                                                   color: statusColor,
                                                 ),
@@ -305,8 +305,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                           ),
                                           child: Text(
                                             'SPONSOR',
-                                            style: GoogleFonts.pressStart2p(
-                                              fontSize: 6,
+                                            style: GoogleFonts.notoSansThai(
+                                              fontSize: 11,
                                               color: Colors.blue,
                                               fontWeight: FontWeight.bold,
                                             ),
