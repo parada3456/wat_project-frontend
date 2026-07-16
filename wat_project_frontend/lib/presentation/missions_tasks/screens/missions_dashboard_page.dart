@@ -103,7 +103,7 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.maybePop(context),
+          onPressed: () => context.canPop(),
         ),
         title: const Text(
           'Mission Explorer',

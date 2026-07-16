@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
@@ -69,7 +70,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
       type: AppPopupType.warning,
       title: title,
       message: message,
-      buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+      buttons: [AppPopupButton(label: 'OK', onPressed: () => context.pop())],
     );
   }
 
@@ -84,7 +85,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
           state.whenOrNull(
             createExpenseSuccess: () {
               setState(() => _isSubmitting = false);
-              Navigator.pop(context);
+              context.pop();
             },
             failure: (message) {
               setState(() => _isSubmitting = false);
@@ -93,7 +94,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                 type: AppPopupType.error,
                 title: 'Error',
                 message: message,
-                buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+                buttons: [AppPopupButton(label: 'OK', onPressed: () => context.pop())],
               );
             },
           );
@@ -105,7 +106,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             title: const Text('Add Expense', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700)),
           ),
