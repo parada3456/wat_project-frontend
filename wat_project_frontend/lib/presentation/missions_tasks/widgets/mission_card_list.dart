@@ -194,7 +194,7 @@ class _MissionCardListState extends State<MissionCardList> {
 
           // Initial error (no items yet)
           if (missions.isEmpty && isFailed) {
-            return ErrorView(
+            return ErrorPage(
               message:
                   errorMessage ?? 'Failed to load missions. Please try again.',
               onRetry: () => _listBloc.add(const ListFetchNextPage()),

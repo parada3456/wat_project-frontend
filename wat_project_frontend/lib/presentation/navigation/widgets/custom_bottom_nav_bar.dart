@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
+/// CustomBottomNavBar — Pixel RPG map toolbar.
+/// Hard-edged panel with top pixel border, asset-based icons, and
+/// a solid tile highlight for the active tab.
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -11,125 +15,117 @@ class CustomBottomNavBar extends StatelessWidget {
     required this.onTap,
   });
 
+  static const _tabs = [
+    _NavTab(label: 'HOME', activeIcon: AppAssets.iconHomeActive, icon: AppAssets.iconHome),
+    _NavTab(label: 'JOURNEY', activeIcon: AppAssets.iconMapActive, icon: AppAssets.iconMap),
+    _NavTab(label: 'EXPENSES', activeIcon: AppAssets.iconExpensesActive, icon: AppAssets.iconExpenses),
+    _NavTab(label: 'JOBS', activeIcon: AppAssets.iconJobsActive, icon: AppAssets.iconJobs),
+    _NavTab(label: 'PROFILE', activeIcon: AppAssets.iconProfileActive, icon: AppAssets.iconProfile),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? AppColors.darkBackground : AppColors.lightNavBar;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
-    // Premium theme-aware container
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : AppColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 20,
-            offset: const Offset(0, -4),
+        color: bgColor,
+        border: Border(
+          top: BorderSide(
+            color: borderColor,
+            width: AppDimension.pixelBorderWidth,
           ),
-        ],
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppDimension.radiusLarge),
-          topRight: Radius.circular(AppDimension.radiusLarge),
         ),
       ),
       child: SafeArea(
         top: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: SizedBox(
+          height: 64,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(
-                context: context,
-                index: 0,
-                icon: Icons.home_outlined,
-                activeIcon: Icons.home_rounded,
-                label: 'Home',
-              ),
-              _buildNavItem(
-                context: context,
-                index: 1,
-                icon: Icons.map_outlined,
-                activeIcon: Icons.map_rounded,
-                label: 'Journey',
-              ),
-              _buildNavItem(
-                context: context,
-                index: 2,
-                icon: Icons.receipt_long_outlined,
-                activeIcon: Icons.receipt_long_rounded,
-                label: 'Expenses',
-              ),
-              _buildNavItem(
-                context: context,
-                index: 3,
-                icon: Icons.work_outline_rounded,
-                activeIcon: Icons.work_rounded,
-                label: 'Jobs',
-              ),
-              _buildNavItem(
-                context: context,
-                index: 4,
-                icon: Icons.person_outline_rounded,
-                activeIcon: Icons.person_rounded,
-                label: 'Profile',
-              ),
-            ],
+            children: List.generate(_tabs.length, (i) {
+              return Expanded(
+                child: _PixelNavItem(
+                  tab: _tabs[i],
+                  isSelected: currentIndex == i,
+                  onTap: () => onTap(i),
+                  borderColor: borderColor,
+                ),
+              );
+            }),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildNavItem({
-    required BuildContext context,
-    required int index,
-    required IconData icon,
-    required IconData activeIcon,
-    required String label,
-  }) {
-    final isSelected = currentIndex == index;
-    final theme = Theme.of(context);
+class _NavTab {
+  final String label;
+  final String icon;
+  final String activeIcon;
+  const _NavTab({
+    required this.label,
+    required this.icon,
+    required this.activeIcon,
+  });
+}
+
+class _PixelNavItem extends StatelessWidget {
+  final _NavTab tab;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Color borderColor;
+
+  const _PixelNavItem({
+    required this.tab,
+    required this.isSelected,
+    required this.onTap,
+    required this.borderColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final activeColor = AppColors.primary;
-    final inactiveColor = theme.brightness == Brightness.dark
-        ? Colors.grey[500]!
-        : Colors.grey[400]!;
+    final inactiveColor =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightBorder;
+    final selectedBg = activeColor.withValues(alpha: isDark ? 0.15 : 0.1);
 
     return Semantics(
-      label: '$label tab',
+      label: '${tab.label} tab',
       selected: isSelected,
-      container: true,
-      child: InkWell(
-        onTap: () => onTap(index),
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+      child: GestureDetector(
+        onTap: onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          duration: const Duration(milliseconds: 120),
           decoration: BoxDecoration(
-            color: isSelected
-                ? activeColor.withOpacity(0.08)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+            color: isSelected ? selectedBg : Colors.transparent,
+            border: isSelected
+                ? Border(
+                    top: BorderSide(
+                      color: activeColor,
+                      width: AppDimension.pixelBorderWidth,
+                    ),
+                  )
+                : null,
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AnimatedScale(
-                scale: isSelected ? 1.15 : 1.0,
-                duration: const Duration(milliseconds: 200),
-                child: Icon(
-                  isSelected ? activeIcon : icon,
-                  color: isSelected ? activeColor : inactiveColor,
-                  size: 24,
-                ),
+              AppAssets.img(
+                isSelected ? tab.activeIcon : tab.icon,
+                size: 20,
+                color: isSelected ? activeColor : inactiveColor,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppDimension.space4),
               Text(
-                label,
-                style: theme.textTheme.bodyMedium?.copyWith(
+                tab.label,
+                style: GoogleFonts.pressStart2p(
+                  fontSize: 6,
                   color: isSelected ? activeColor : inactiveColor,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  fontSize: 12,
+                  height: 1.5,
                 ),
               ),
             ],

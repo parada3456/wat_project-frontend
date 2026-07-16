@@ -60,7 +60,7 @@ class _ExpenseHistoryPageState extends State<ExpenseHistoryPage> {
               title: 'Error',
               message: state.message,
               buttons: [
-                AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context)),
+                AppPopupButton(label: 'OK', onPressed: () => context.pop()),
               ],
             );
           }

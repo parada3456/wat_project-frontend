@@ -13,48 +13,37 @@ class ProfilePage extends StatelessWidget {
 
   void _showDeleteAccountDialog(BuildContext context, ProfileBloc profileBloc) {
     final passwordController = TextEditingController();
-    showDialog<void>(
+    AppPopup.show<void>(
       context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Delete Account'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'This action is permanent and cannot be undone. Please enter your password to confirm account deletion.',
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Current Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              onPressed: () {
-                final password = passwordController.text.trim();
-                if (password.isNotEmpty) {
-                  profileBloc.add(DeleteAccountSubmittedEvent(password));
-                  Navigator.pop(dialogContext);
-                }
-              },
-              child: const Text('Delete'),
-            ),
-          ],
-        );
-      },
+      title: 'Delete Account',
+      message: 'This action is permanent and cannot be undone. Please enter your password to confirm account deletion.',
+      type: AppPopupType.error,
+      content: TextField(
+        controller: passwordController,
+        obscureText: true,
+        decoration: const InputDecoration(
+          labelText: 'Current Password',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      buttons: [
+        const AppPopupButton(
+          label: 'Cancel',
+        ),
+        AppPopupButton(
+          label: 'Delete',
+          isPrimary: true,
+          color: Colors.red,
+          autoPop: false,
+          onPressed: () {
+            final password = passwordController.text.trim();
+            if (password.isNotEmpty) {
+              profileBloc.add(DeleteAccountSubmittedEvent(password));
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+      ],
     );
   }
 

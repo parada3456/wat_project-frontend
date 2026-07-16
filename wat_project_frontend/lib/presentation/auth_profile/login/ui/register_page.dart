@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
@@ -59,9 +61,9 @@ class _RegisterPageState extends State<RegisterPage> {
           if (phases.isNotEmpty && mounted) {
             setState(() {
               _phases = phases.map((p) => {
-                'id': p.phaseId,
-                'name': p.title,
-              }).toList();
+                    'id': p.phaseId,
+                    'name': p.title,
+                  }).toList();
               if (!_phases.any((p) => p['id'] == _selectedPhase)) {
                 _selectedPhase = _phases.first['id'];
               }
@@ -71,6 +73,8 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     } catch (_) {}
   }
+
+  @override
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
@@ -81,24 +85,15 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
-    final DateTime? picked = await showDatePicker(
+  Future<void> _selectDate(
+    BuildContext context,
+    TextEditingController controller,
+  ) async {
+    final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primary,
-              onPrimary: AppColors.white,
-              onSurface: AppColors.textPrimary,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
     if (picked != null) {
       setState(() {
@@ -118,7 +113,9 @@ class _RegisterPageState extends State<RegisterPage> {
     final status = state.status;
     if (status is UILoadFailed && status.apiError != null) {
       try {
-        return status.apiError!.details.firstWhere((e) => e.field == field).reason;
+        return status.apiError!.details
+            .firstWhere((e) => e.field == field)
+            .reason;
       } catch (_) {
         return null;
       }
@@ -126,31 +123,85 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
+  void _validateAndNext(LoginState state) {
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final arrivalDate = _arrivalDateController.text.trim();
+    final jobStartDate = _jobStartDateController.text.trim();
+
+    setState(() {
+      _usernameError = null;
+      _emailError = null;
+      _passwordError = null;
+      _arrivalDateError = null;
+      _jobStartDateError = null;
+    });
+
+    var isValid = true;
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (username.isEmpty) {
+      _usernameError = 'Username is required';
+      isValid = false;
+    }
+    if (email.isEmpty) {
+      _emailError = 'Email is required';
+      isValid = false;
+    } else if (!emailRegex.hasMatch(email)) {
+      _emailError = 'Enter a valid email format';
+      isValid = false;
+    }
+    if (password.isEmpty) {
+      _passwordError = 'Password is required';
+      isValid = false;
+    } else if (password.length < 8) {
+      _passwordError = 'Password must be at least 8 characters';
+      isValid = false;
+    }
+    if (_selectedPhase != 'phase-1') {
+      if (arrivalDate.isEmpty) {
+        _arrivalDateError = 'Arrival Date is required';
+        isValid = false;
+      }
+      if (jobStartDate.isEmpty) {
+        _jobStartDateError = 'Job Start Date is required';
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      setState(() {});
+      return;
+    }
+    setState(() => _showOtpStep = true);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? AppColors.darkBackground : AppColors.lightBackground;
+    final textColor = isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final subtextColor = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.lightBorder;
+
     return BlocProvider(
       create: (context) => getIt<LoginBloc>(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
             onPressed: () {
               if (_showOtpStep) {
                 setState(() => _showOtpStep = false);
               } else {
-                Navigator.pop(context);
+                context.pop();
               }
             },
           ),
           title: Text(
-            _showOtpStep ? 'Verify OTP' : 'Create Account',
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
+            _showOtpStep ? 'VERIFY OTP' : 'CREATE ACCOUNT',
           ),
         ),
         body: SafeArea(
@@ -161,7 +212,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(status.message ?? 'Registration failed'),
-                    backgroundColor: Colors.red,
                   ),
                 );
               } else if (status is UILoadSuccess) {
@@ -175,7 +225,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       label: 'OK',
                       isPrimary: true,
                       onPressed: () {
-                        Navigator.of(context).pop(); // dismiss popup
+                        context.pop();
                         context.push('/home');
                       },
                     ),
@@ -187,286 +237,257 @@ class _RegisterPageState extends State<RegisterPage> {
               final isLoading = state.status is UILoading;
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
+                padding: const EdgeInsets.all(AppDimension.space24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: AppDimension.space32),
+                    const SizedBox(height: AppDimension.space16),
                     if (!_showOtpStep) ...[
-                      // Register Form Step
-                      WatInputField(
-                        label: 'Username',
-                        hint: 'Enter your username',
-                        controller: _usernameController,
-                        errorText: _getError(state, 'username'),
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        onChanged: (_) {
-                          if (_usernameError != null) setState(() => _usernameError = null);
-                        },
+                      PixelDialogBox(
+                        title: 'PLAYER INFO',
+                        child: Column(
+                          children: [
+                            WatInputField(
+                              label: 'Username',
+                              hint: 'enter your username',
+                              controller: _usernameController,
+                              errorText: _getError(state, 'username'),
+                              autocorrect: false,
+                              enableSuggestions: false,
+                              onChanged: (_) {
+                                if (_usernameError != null) {
+                                  setState(() => _usernameError = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: AppDimension.space16),
+                            WatInputField(
+                              label: 'Email',
+                              hint: 'username@email.com',
+                              controller: _emailController,
+                              errorText: _getError(state, 'email'),
+                              autocorrect: false,
+                              enableSuggestions: false,
+                              keyboardType: TextInputType.emailAddress,
+                              onChanged: (_) {
+                                if (_emailError != null) {
+                                  setState(() => _emailError = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: AppDimension.space16),
+                            WatInputField(
+                              label: 'Password',
+                              hint: 'enter your password',
+                              controller: _passwordController,
+                              obscureText: _obscurePassword,
+                              autocorrect: false,
+                              enableSuggestions: false,
+                              errorText: _getError(state, 'password'),
+                              suffixIcon: GestureDetector(
+                                onTap: () => setState(
+                                  () => _obscurePassword = !_obscurePassword,
+                                ),
+                                child: AppAssets.img(
+                                  _obscurePassword
+                                      ? AppAssets.iconPassword
+                                      : AppAssets.iconCheck,
+                                  size: 18,
+                                  color: subtextColor,
+                                ),
+                              ),
+                              onChanged: (_) {
+                                if (_passwordError != null) {
+                                  setState(() => _passwordError = null);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: AppDimension.space16),
-                      WatInputField(
-                        label: 'Email',
-                        hint: 'username@email.com',
-                        controller: _emailController,
-                        errorText: _getError(state, 'email'),
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: (_) {
-                          if (_emailError != null) setState(() => _emailError = null);
-                        },
-                      ),
-                      const SizedBox(height: AppDimension.space16),
-                      WatInputField(
-                        label: 'Password',
-                        hint: 'Enter your password',
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        errorText: _getError(state, 'password'),
-                        suffixIcon: GestureDetector(
-                          onTap: () => setState(() => _obscurePassword = !_obscurePassword),
-                          child: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        onChanged: (_) {
-                          if (_passwordError != null) setState(() => _passwordError = null);
-                        },
-                      ),
-                      const SizedBox(height: AppDimension.space16),
-                      const Text(
-                        'Phase Selector',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: AppDimension.space4),
-                      DropdownButtonFormField<String>(
-                        value: _selectedPhase,
-                        dropdownColor: AppColors.surface,
-                        decoration: InputDecoration(
-                          hintText: 'Select your phase',
-                          fillColor: AppColors.backgroundAlt,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        ),
-                        items: _phases
-                            .map((p) => DropdownMenuItem<String>(
-                                  value: p['id'],
-                                  child: Text(p['name']!),
-                                ))
-                            .toList(),
-                        onChanged: (val) {
-                          setState(() {
-                            _selectedPhase = val;
-                          });
-                        },
-                      ),
-                      if (_selectedPhase != 'phase-1') ...[
-                        const SizedBox(height: AppDimension.space16),
-                        GestureDetector(
-                          onTap: () => _selectDate(context, _arrivalDateController),
-                          child: AbsorbPointer(
-                            child: WatInputField(
-                              label: 'Arrival Date',
-                              hint: 'YYYY-MM-DD',
-                              controller: _arrivalDateController,
-                              errorText: _getError(state, 'arrivalDate'),
+                      PixelDialogBox(
+                        title: 'PHASE SELECT',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Phase dropdown in pixel style
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: borderColor,
+                                  width: AppDimension.pixelBorderWidth,
+                                ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppDimension.space12,
+                              ),
+                              child: DropdownButton<String>(
+                                value: _selectedPhase,
+                                isExpanded: true,
+                                dropdownColor: isDark
+                                    ? AppColors.darkSurface
+                                    : AppColors.lightSurface,
+                                underline: const SizedBox.shrink(),
+                                style: GoogleFonts.pressStart2p(
+                                  fontSize: 9,
+                                  color: textColor,
+                                ),
+                                items: _phases.map((p) {
+                                  return DropdownMenuItem<String>(
+                                    value: p['id'],
+                                    child: Text(p['name']!),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                  setState(() => _selectedPhase = val);
+                                },
+                              ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: AppDimension.space16),
-                        GestureDetector(
-                          onTap: () => _selectDate(context, _jobStartDateController),
-                          child: AbsorbPointer(
-                            child: WatInputField(
-                              label: 'Job Start Date',
-                              hint: 'YYYY-MM-DD',
-                              controller: _jobStartDateController,
-                              errorText: _getError(state, 'jobStartDate'),
+                            const SizedBox(height: AppDimension.space16),
+                            GestureDetector(
+                              onTap: () =>
+                                  _selectDate(context, _arrivalDateController),
+                              child: AbsorbPointer(
+                                child: WatInputField(
+                                  label: _selectedPhase == 'phase-1'
+                                      ? 'Arrival Date (Optional)'
+                                      : 'Arrival Date',
+                                  hint: 'YYYY-MM-DD',
+                                  controller: _arrivalDateController,
+                                  errorText: _getError(state, 'arrivalDate'),
+                                  suffixIcon: AppAssets.img(
+                                    AppAssets.iconCalendar,
+                                    size: 18,
+                                    color: subtextColor,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ] else ...[
-                        const SizedBox(height: AppDimension.space16),
-                        GestureDetector(
-                          onTap: () => _selectDate(context, _arrivalDateController),
-                          child: AbsorbPointer(
-                            child: WatInputField(
-                              label: 'Arrival Date (Optional)',
-                              hint: 'YYYY-MM-DD',
-                              controller: _arrivalDateController,
-                              errorText: _getError(state, 'arrivalDate'),
+                            const SizedBox(height: AppDimension.space16),
+                            GestureDetector(
+                              onTap: () => _selectDate(
+                                context,
+                                _jobStartDateController,
+                              ),
+                              child: AbsorbPointer(
+                                child: WatInputField(
+                                  label: _selectedPhase == 'phase-1'
+                                      ? 'Job Start Date (Optional)'
+                                      : 'Job Start Date',
+                                  hint: 'YYYY-MM-DD',
+                                  controller: _jobStartDateController,
+                                  errorText: _getError(state, 'jobStartDate'),
+                                  suffixIcon: AppAssets.img(
+                                    AppAssets.iconCalendar,
+                                    size: 18,
+                                    color: subtextColor,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(height: AppDimension.space16),
-                        GestureDetector(
-                          onTap: () => _selectDate(context, _jobStartDateController),
-                          child: AbsorbPointer(
-                            child: WatInputField(
-                              label: 'Job Start Date (Optional)',
-                              hint: 'YYYY-MM-DD',
-                              controller: _jobStartDateController,
-                              errorText: _getError(state, 'jobStartDate'),
-                            ),
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: AppDimension.space32),
+                      ),
+                      const SizedBox(height: AppDimension.space24),
                       WatButton(
-                        label: 'Next',
+                        label: 'Next >',
                         isLoading: isLoading,
-                        onPressed: () {
-                          final username = _usernameController.text.trim();
-                          final email = _emailController.text.trim();
-                          final password = _passwordController.text.trim();
-                          final arrivalDate = _arrivalDateController.text.trim();
-                          final jobStartDate = _jobStartDateController.text.trim();
-
-                          setState(() {
-                            _usernameError = null;
-                            _emailError = null;
-                            _passwordError = null;
-                            _arrivalDateError = null;
-                            _jobStartDateError = null;
-                          });
-
-                          bool isValid = true;
-                          final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-                          if (username.isEmpty) {
-                            _usernameError = 'Username is required';
-                            isValid = false;
-                          }
-
-                          if (email.isEmpty) {
-                            _emailError = 'Email is required';
-                            isValid = false;
-                          } else if (!emailRegex.hasMatch(email)) {
-                            _emailError = 'Enter a valid email format';
-                            isValid = false;
-                          }
-
-                          if (password.isEmpty) {
-                            _passwordError = 'Password is required';
-                            isValid = false;
-                          } else if (password.length < 8) {
-                            _passwordError = 'Password must be at least 8 characters';
-                            isValid = false;
-                          }
-
-                          if (_selectedPhase != 'phase-1') {
-                            if (arrivalDate.isEmpty) {
-                              _arrivalDateError = 'Arrival Date is required';
-                              isValid = false;
-                            }
-                            if (jobStartDate.isEmpty) {
-                              _jobStartDateError = 'Job Start Date is required';
-                              isValid = false;
-                            }
-                          }
-
-                          if (!isValid) {
-                            setState(() {});
-                            return;
-                          }
-
-                          // Proceed to OTP step
-                          setState(() => _showOtpStep = true);
-                        },
+                        onPressed: () => _validateAndNext(state),
                       ),
                     ] else ...[
-                      // OTP Verification Step
-                      const Text(
-                        'Email Verification',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                      // ─── OTP Step ───
+                      PixelDialogBox(
+                        title: 'VERIFY EMAIL',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'We sent a 6-digit code to:',
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 8,
+                                color: subtextColor,
+                                height: 2.0,
+                              ),
+                            ),
+                            const SizedBox(height: AppDimension.space8),
+                            Text(
+                              _emailController.text,
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 8,
+                                color: AppColors.primary,
+                                height: 1.8,
+                              ),
+                            ),
+                            const SizedBox(height: AppDimension.space24),
+                            WatInputField(
+                              label: 'OTP Code',
+                              hint: 'enter 6-digit code',
+                              controller: _otpController,
+                              errorText: _getError(state, 'otp'),
+                              autocorrect: false,
+                              enableSuggestions: false,
+                              keyboardType: TextInputType.number,
+                              onChanged: (_) {
+                                if (_otpError != null) {
+                                  setState(() => _otpError = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: AppDimension.space24),
+                            WatButton(
+                              label: 'Verify & Sign Up',
+                              isLoading: isLoading,
+                              onPressed: () {
+                                final otp = _otpController.text.trim();
+                                if (otp != '123456') {
+                                  setState(() {
+                                    _otpError = 'Invalid OTP. Use 123456';
+                                  });
+                                  return;
+                                }
+                                context.read<LoginBloc>().add(
+                                      RegisterSubmittedEvent(
+                                        email: _emailController.text.trim(),
+                                        password:
+                                            _passwordController.text.trim(),
+                                        firstName:
+                                            _usernameController.text.trim(),
+                                        lastName: '',
+                                      ),
+                                    );
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'We sent a 6-digit verification code to ${_emailController.text}. Please enter it below to verify.',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: AppDimension.space32),
-                      WatInputField(
-                        label: 'OTP Code',
-                        hint: 'Enter 123456 to verify',
-                        controller: _otpController,
-                        errorText: _getError(state, 'otp'),
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        keyboardType: TextInputType.number,
-                        onChanged: (_) {
-                          if (_otpError != null) setState(() => _otpError = null);
-                        },
-                      ),
-                      const SizedBox(height: AppDimension.space32),
-                      WatButton(
-                        label: 'Verify & Sign Up',
-                        isLoading: isLoading,
-                        onPressed: () {
-                          final otp = _otpController.text.trim();
-                          if (otp != '123456') {
-                            setState(() {
-                              _otpError = 'Invalid OTP. Please use 123456';
-                            });
-                            return;
-                          }
-
-                          final username = _usernameController.text.trim();
-                          final email = _emailController.text.trim();
-                          final password = _passwordController.text.trim();
-
-                          context.read<LoginBloc>().add(
-                                RegisterSubmittedEvent(
-                                  email: email,
-                                  password: password,
-                                  firstName: username,
-                                  lastName: '',
-                                ),
-                              );
-                        },
                       ),
                     ],
-                    const SizedBox(height: AppDimension.space32),
+                    const SizedBox(height: AppDimension.space24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Already have an account? ",
-                          style: TextStyle(color: AppColors.textSecondary),
+                        Text(
+                          'HAVE ACCOUNT?  ',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 7,
+                            color: subtextColor,
+                            height: 1.8,
+                          ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: const Text(
-                            'SignIn',
-                            style: TextStyle(
+                          onTap: () => context.pop(),
+                          child: Text(
+                            'SIGN IN',
+                            style: GoogleFonts.pressStart2p(
+                              fontSize: 7,
                               color: AppColors.primary,
-                              fontWeight: FontWeight.w700,
+                              height: 1.8,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppDimension.space50),
+                    const SizedBox(height: AppDimension.space32),
                   ],
                 ),
               );

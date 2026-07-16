@@ -60,7 +60,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
                 title: 'Error',
                 message: message,
                 buttons: [
-                  AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))
+                  AppPopupButton(label: 'OK', onPressed: () => context.pop())
                 ],
               );
             },
@@ -73,7 +73,7 @@ class _ExpenseDetailsPageState extends State<ExpenseDetailsPage> {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             title: const Text(
               'Expense Details',
