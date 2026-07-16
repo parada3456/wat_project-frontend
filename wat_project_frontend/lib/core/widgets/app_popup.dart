@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
@@ -99,21 +100,13 @@ class AppPopup extends StatelessWidget {
             Text(
               title.toUpperCase(),
               textAlign: TextAlign.center,
-              style: GoogleFonts.pressStart2p(
-                fontSize: 10,
-                color: textColor,
-                height: 1.8,
-              ),
+              style: context.textTheme.titleLarge,
             ),
             const SizedBox(height: AppDimension.space8),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
-                fontSize: 8,
-                color: subtextColor,
-                height: 2.0,
-              ),
+              style: context.textTheme.bodyMedium,
             ),
             if (content != null) ...[
               const SizedBox(height: AppDimension.space12),

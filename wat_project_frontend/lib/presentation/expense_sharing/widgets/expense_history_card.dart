@@ -54,7 +54,7 @@ class ExpenseHistoryCard extends StatelessWidget {
               children: [
                 Text(
                   title.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 7,
                     fontWeight: FontWeight.bold,
                     color: textColor,
@@ -66,7 +66,7 @@ class ExpenseHistoryCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   date.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: subtextColor,
                   ),
@@ -80,7 +80,7 @@ class ExpenseHistoryCard extends StatelessWidget {
             children: [
               Text(
                 '\$${amount.toStringAsFixed(2)}',
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 7,
                   fontWeight: FontWeight.bold,
                   color: textColor,
@@ -90,7 +90,7 @@ class ExpenseHistoryCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'YOU PAID',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 5,
                     color: AppColors.primary,
                     fontWeight: FontWeight.bold,

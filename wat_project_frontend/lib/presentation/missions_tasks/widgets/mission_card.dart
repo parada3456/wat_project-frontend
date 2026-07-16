@@ -71,7 +71,7 @@ class MissionCard extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               'LOCKED',
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 6,
                 fontWeight: FontWeight.bold,
                 color: subtextColor,
@@ -100,7 +100,7 @@ class MissionCard extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               'DONE',
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 6,
                 fontWeight: FontWeight.bold,
                 color: AppColors.success,
@@ -119,7 +119,7 @@ class MissionCard extends StatelessWidget {
         ),
         child: Text(
           '$completedTasks/$totalTasks',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 6,
             fontWeight: FontWeight.bold,
             color: AppColors.primary,
@@ -140,7 +140,7 @@ class MissionCard extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               'OVERDUE',
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 6,
                 fontWeight: FontWeight.bold,
                 color: AppColors.error,
@@ -166,7 +166,7 @@ class MissionCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           title.toUpperCase(),
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.notoSansThai(
                             fontSize: 8,
                             fontWeight: FontWeight.bold,
                             color: textColor,
@@ -185,7 +185,7 @@ class MissionCard extends StatelessWidget {
                         ),
                         child: Text(
                           '$bonusPoints EXP',
-                          style: GoogleFonts.pressStart2p(
+                          style: GoogleFonts.notoSansThai(
                             fontSize: 5,
                             fontWeight: FontWeight.bold,
                             color: AppColors.secondary,
@@ -205,7 +205,7 @@ class MissionCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         resolvedLocation,
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.notoSansThai(
                           fontSize: 6,
                           color: subtextColor,
                         ),
@@ -217,7 +217,7 @@ class MissionCard extends StatelessWidget {
                     children: [
                       Text(
                         'DUE: ',
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.notoSansThai(
                           fontSize: 6,
                           fontWeight: FontWeight.bold,
                           color: subtextColor,
@@ -225,7 +225,7 @@ class MissionCard extends StatelessWidget {
                       ),
                       Text(
                         deadline,
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.notoSansThai(
                           fontSize: 6,
                           color: subtextColor,
                         ),

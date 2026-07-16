@@ -50,7 +50,7 @@ class CreditHistoryRow extends StatelessWidget {
               children: [
                 Text(
                   title.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 7,
                     fontWeight: FontWeight.bold,
                     color: textColor,
@@ -60,7 +60,7 @@ class CreditHistoryRow extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   date,
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: subtextColor,
                   ),
@@ -71,7 +71,7 @@ class CreditHistoryRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             '${isPositive ? '+' : ''}$delta',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 8,
               fontWeight: FontWeight.bold,
               color: deltaColor,

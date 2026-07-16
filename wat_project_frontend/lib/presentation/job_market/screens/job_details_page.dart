@@ -206,8 +206,8 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                   const SizedBox(width: 8),
                   Text(
                     'WRITE REVIEW',
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 7,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 11,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
                     ),
@@ -226,7 +226,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                 return Center(
                   child: Text(
                     'JOB NOT FOUND.',
-                    style: GoogleFonts.pressStart2p(fontSize: 8, color: textColor),
+                    style: GoogleFonts.notoSansThai(fontSize: 12, color: textColor),
                   ),
                 );
               }
@@ -261,8 +261,8 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                         width: double.infinity,
                         child: Text(
                           jobDetail.job.description ?? 'No description provided.',
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 7,
+                          style: GoogleFonts.notoSansThai(
+                            fontSize: 11,
                             color: textColor,
                             height: 1.8,
                           ),
@@ -271,7 +271,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                       const SizedBox(height: AppDimension.space16),
                       Text(
                         'SCRAPED: $scrapeStr | UPDATED: $updateStr'.toUpperCase(),
-                        style: GoogleFonts.pressStart2p(
+                        style: GoogleFonts.notoSansThai(
                           fontSize: 5,
                           color: subtextColor,
                           height: 1.5,

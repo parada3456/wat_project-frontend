@@ -24,7 +24,7 @@ class JobPreviewItem extends StatelessWidget {
           Expanded(
             child: Text(
               title.toUpperCase(),
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 8,
                 fontWeight: FontWeight.bold,
                 color: textColor,

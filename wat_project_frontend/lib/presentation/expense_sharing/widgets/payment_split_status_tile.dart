@@ -51,7 +51,7 @@ class PaymentSplitStatusTile extends StatelessWidget {
               children: [
                 Text(
                   name.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 7,
                     fontWeight: FontWeight.bold,
                     color: textColor,
@@ -61,7 +61,7 @@ class PaymentSplitStatusTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   isPaid ? 'PAID' : 'PENDING',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: isPaid ? AppColors.success : subtextColor,
                     fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class PaymentSplitStatusTile extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             '\$${amount.toStringAsFixed(2)}',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               fontWeight: FontWeight.bold,
               color: textColor,

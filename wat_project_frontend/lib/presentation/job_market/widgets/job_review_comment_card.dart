@@ -32,7 +32,7 @@ class JobReviewCommentCard extends StatelessWidget {
             children: [
               Text(
                 author.toUpperCase(),
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 8,
                   fontWeight: FontWeight.bold,
                   color: textColor,
@@ -40,7 +40,7 @@ class JobReviewCommentCard extends StatelessWidget {
               ),
               Text(
                 date,
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 6,
                   color: subtextColor,
                 ),
@@ -52,7 +52,7 @@ class JobReviewCommentCard extends StatelessWidget {
           const SizedBox(height: AppDimension.space12),
           Text(
             comment,
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               color: textColor,
               height: 1.8,

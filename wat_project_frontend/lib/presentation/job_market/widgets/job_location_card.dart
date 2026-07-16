@@ -22,7 +22,7 @@ class JobLocationCard extends StatelessWidget {
       children: [
         Text(
           'LOCATION DETAILS',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 10,
             fontWeight: FontWeight.bold,
             color: textColor,
@@ -45,7 +45,7 @@ class JobLocationCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '${jobDetail.job.locationCity ?? 'N/A'}, ${jobDetail.job.locationState ?? 'N/A'}'.toUpperCase(),
-                      style: GoogleFonts.pressStart2p(
+                      style: GoogleFonts.notoSansThai(
                         fontSize: 8,
                         fontWeight: FontWeight.bold,
                         color: textColor,
@@ -59,7 +59,7 @@ class JobLocationCard extends StatelessWidget {
                 const SizedBox(height: AppDimension.space12),
                 Text(
                   'GROUP LOCATION: ${jobDetail.job.groupLocation!.toUpperCase()}',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 7,
                     color: subtextColor,
                     height: 1.5,

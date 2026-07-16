@@ -32,7 +32,7 @@ class SettingsToggleTile extends StatelessWidget {
               children: [
                 Text(
                   title.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 8,
                     fontWeight: FontWeight.bold,
                     color: textColor,
@@ -42,7 +42,7 @@ class SettingsToggleTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: subtextColor,
                     height: 1.8,

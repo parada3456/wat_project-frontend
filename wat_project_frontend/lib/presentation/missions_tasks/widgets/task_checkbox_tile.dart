@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 class TaskCheckboxTile extends StatelessWidget {
@@ -47,22 +48,13 @@ class TaskCheckboxTile extends StatelessWidget {
               children: [
                 Text(
                   title.toUpperCase(),
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 7,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                    height: 1.4,
-                  ),
+                  style: context.textTheme.headlineSmall
                 ),
                 if (subtitle != null) ...[
                   const SizedBox(height: 6),
                   Text(
                     subtitle!,
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 6,
-                      color: subtextColor,
-                      height: 1.6,
-                    ),
+                    style: context.textTheme.bodyLarge
                   ),
                 ],
               ],

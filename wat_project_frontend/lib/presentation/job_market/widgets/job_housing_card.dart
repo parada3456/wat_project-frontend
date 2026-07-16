@@ -22,7 +22,7 @@ class JobHousingCard extends StatelessWidget {
       children: [
         Text(
           'HOUSING',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 10,
             fontWeight: FontWeight.bold,
             color: textColor,
@@ -44,7 +44,7 @@ class JobHousingCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     'HOUSING PROVIDED',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 8,
                       fontWeight: FontWeight.bold,
                       color: textColor,
@@ -55,7 +55,7 @@ class JobHousingCard extends StatelessWidget {
               const SizedBox(height: AppDimension.space12),
               Text(
                 'COST: \$${housing.weeklyRate.toStringAsFixed(2)}/WEEK',
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 7,
                   color: subtextColor,
                   height: 1.8,
@@ -65,7 +65,7 @@ class JobHousingCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'DEPOSIT: \$${housing.deposit.toStringAsFixed(2)}',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 7,
                     color: subtextColor,
                     height: 1.8,

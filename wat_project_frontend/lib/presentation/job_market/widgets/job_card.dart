@@ -66,8 +66,8 @@ class JobCard extends StatelessWidget {
           const SizedBox(height: AppDimension.space12),
           Text(
             (job.position ?? 'UNKNOWN POSITION').toUpperCase(),
-            style: GoogleFonts.pressStart2p(
-              fontSize: 9,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               color: textColor,
               height: 1.5,
@@ -76,8 +76,8 @@ class JobCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             (job.employerTitle ?? '').toUpperCase(),
-            style: GoogleFonts.pressStart2p(
-              fontSize: 7,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 11,
               color: subtextColor,
               height: 1.5,
             ),
@@ -99,8 +99,8 @@ class JobCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         location.toUpperCase(),
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 6,
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 11,
                           color: subtextColor,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -115,8 +115,8 @@ class JobCard extends StatelessWidget {
                 children: [
                   Text(
                     '\$${salary.toStringAsFixed(2)}/HR',
-                    style: GoogleFonts.pressStart2p(
-                      fontSize: 10,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
                     ),

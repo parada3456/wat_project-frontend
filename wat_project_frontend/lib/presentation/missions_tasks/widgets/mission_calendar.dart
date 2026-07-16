@@ -23,7 +23,7 @@ class MissionCalendar extends StatelessWidget {
             children: [
               Text(
                 'JUNE 2026',
-                style: GoogleFonts.pressStart2p(
+                style: GoogleFonts.notoSansThai(
                   fontSize: 8,
                   fontWeight: FontWeight.bold,
                   color: textColor,
@@ -81,7 +81,7 @@ class MissionCalendar extends StatelessWidget {
                 child: Center(
                   child: Text(
                     '$day',
-                    style: GoogleFonts.pressStart2p(
+                    style: GoogleFonts.notoSansThai(
                       fontSize: 6,
                       fontWeight: isDeadline ? FontWeight.bold : FontWeight.normal,
                       color: isDeadline ? AppColors.primary : textColor,

@@ -61,8 +61,8 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
           appBar: AppBar(
             title: const Text('YOUR JOURNEY'),
             bottom: TabBar(
-              labelStyle: GoogleFonts.pressStart2p(fontSize: 6, fontWeight: FontWeight.bold),
-              unselectedLabelStyle: GoogleFonts.pressStart2p(fontSize: 6),
+              labelStyle: GoogleFonts.notoSansThai(fontSize: 11, fontWeight: FontWeight.bold),
+              unselectedLabelStyle: GoogleFonts.notoSansThai(fontSize: 11),
               labelColor: AppColors.primary,
               unselectedLabelColor: AppColors.textSub(context),
               indicatorColor: AppColors.primary,
@@ -118,8 +118,8 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
             return Center(
               child: Text(
                 'FAILED TO LOAD REGIONS: ${state.message.toUpperCase()}',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 7,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
                   color: AppColors.textSub(context),
                 ),
               ),
@@ -128,8 +128,8 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
           return Center(
             child: Text(
               'NO REGIONS UNLOCKED YET.',
-              style: GoogleFonts.pressStart2p(
-                fontSize: 7,
+              style: GoogleFonts.notoSansThai(
+                fontSize: 11,
                 color: AppColors.textSub(context),
               ),
             ),

@@ -137,8 +137,8 @@ class HomeView extends StatelessWidget {
               children: [
                 Text(
                   'ACTIVE QUESTS',
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 10,
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: textColor,
                   ),
@@ -149,8 +149,8 @@ class HomeView extends StatelessWidget {
                     children: [
                       Text(
                         'VIEW ALL ',
-                        style: GoogleFonts.pressStart2p(
-                          fontSize: 7,
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 11,
                           color: AppColors.primary,
                         ),
                       ),
@@ -203,18 +203,18 @@ class HomeView extends StatelessWidget {
               children: [
                 Text(
                   'DEMO MODE ACTIVE',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primary,
-                    fontSize: 8,
+                    fontSize: 12,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Server offline. Using cached data.',
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     color: AppColors.textSub(context),
-                    fontSize: 6,
+                    fontSize: 11,
                     height: 1.5,
                   ),
                 ),
@@ -257,7 +257,7 @@ class HomeView extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             name.isNotEmpty ? name[0].toUpperCase() : 'T',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
@@ -271,8 +271,8 @@ class HomeView extends StatelessWidget {
             children: [
               Text(
                 'HI, ${name.toUpperCase()}!',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 10,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: textColor,
                   height: 1.5,
@@ -281,8 +281,8 @@ class HomeView extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 'Welcome back to your adventure.',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 7,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
                   color: subtextColor,
                   height: 1.5,
                 ),
@@ -326,8 +326,8 @@ class HomeView extends StatelessWidget {
                 ),
                 child: Text(
                   'PHASE $currentProgress OF $totalPhases',
-                  style: GoogleFonts.pressStart2p(
-                    fontSize: 7,
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primary,
                   ),
@@ -343,8 +343,8 @@ class HomeView extends StatelessWidget {
           const SizedBox(height: AppDimension.space16),
           Text(
             phase.title.toUpperCase(),
-            style: GoogleFonts.pressStart2p(
-              fontSize: 10,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: textColor,
               height: 1.5,
@@ -354,8 +354,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               phase.description!,
-              style: GoogleFonts.pressStart2p(
-                fontSize: 7,
+              style: GoogleFonts.notoSansThai(
+                fontSize: 11,
                 color: subtextColor,
                 height: 1.8,
               ),
@@ -387,15 +387,15 @@ class HomeView extends StatelessWidget {
             children: [
               Text(
                 'JOURNEY STATUS',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 6,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
                   color: subtextColor,
                 ),
               ),
               Text(
                 '${(progressFraction * 100).toInt()}% COMPLETED',
-                style: GoogleFonts.pressStart2p(
-                  fontSize: 6,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
                   fontWeight: FontWeight.bold,
                   color: textColor,
                 ),
@@ -420,8 +420,8 @@ class HomeView extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             'ALL DONE FOR THIS PHASE!',
-            style: GoogleFonts.pressStart2p(
-              fontSize: 9,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               color: AppColors.text(context),
             ),
@@ -429,8 +429,8 @@ class HomeView extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'No active quests in this phase. Keep it up!',
-            style: GoogleFonts.pressStart2p(
-              fontSize: 7,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 11,
               color: AppColors.textSub(context),
               height: 1.5,
             ),
@@ -457,8 +457,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'UNABLE TO LOAD HOME DASHBOARD',
-              style: GoogleFonts.pressStart2p(
-                fontSize: 9,
+              style: GoogleFonts.notoSansThai(
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
                 color: AppColors.text(context),
                 height: 1.5,
@@ -468,8 +468,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               message.toUpperCase(),
-              style: GoogleFonts.pressStart2p(
-                fontSize: 7,
+              style: GoogleFonts.notoSansThai(
+                fontSize: 11,
                 color: AppColors.textSub(context),
                 height: 1.8,
               ),

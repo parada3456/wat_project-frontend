@@ -92,7 +92,7 @@ class JobStatsGrid extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 5,
                     color: subtextColor,
                   ),
@@ -102,7 +102,7 @@ class JobStatsGrid extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   value,
-                  style: GoogleFonts.pressStart2p(
+                  style: GoogleFonts.notoSansThai(
                     fontSize: 6,
                     color: textColor,
                     fontWeight: FontWeight.bold,

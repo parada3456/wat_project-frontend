@@ -12,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'PROFILE SCREEN',
-          style: GoogleFonts.pressStart2p(
+          style: GoogleFonts.notoSansThai(
             fontSize: 10,
             color: AppColors.text(context),
           ),

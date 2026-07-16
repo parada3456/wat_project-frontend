@@ -49,7 +49,7 @@ class LeaderboardRow extends StatelessWidget {
             width: 24,
             child: Text(
               '$rank',
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 8,
                 fontWeight: FontWeight.bold,
                 color: rankColor,
@@ -86,7 +86,7 @@ class LeaderboardRow extends StatelessWidget {
           Expanded(
             child: Text(
               name.toUpperCase(),
-              style: GoogleFonts.pressStart2p(
+              style: GoogleFonts.notoSansThai(
                 fontSize: 7,
                 fontWeight: FontWeight.bold,
                 color: textColor,
@@ -98,7 +98,7 @@ class LeaderboardRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             '$points PTS',
-            style: GoogleFonts.pressStart2p(
+            style: GoogleFonts.notoSansThai(
               fontSize: 7,
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
