@@ -193,10 +193,10 @@ abstract class AppDimension {
   // Pixel theme uses 0 radius (hard corners)
   static const double radiusNone = 0.0;
   // Keep legacy values for any remaining usage during migration:
-  static const double radiusSmall = 0.0;
-  static const double radiusMedium = 0.0;
-  static const double radiusLarge = 0.0;
-  static const double radiusExtraLarge = 0.0;
+  static const double radiusSmall = 4.0;
+  static const double radiusMedium = 8.0;
+  static const double radiusLarge = 16.0;
+  static const double radiusExtraLarge = 9999;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

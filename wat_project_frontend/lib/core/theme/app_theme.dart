@@ -10,89 +10,102 @@ class AppTheme {
     final base = GoogleFonts.notoSansThaiTextTheme();
     return base.copyWith(
       displayLarge: GoogleFonts.notoSansThai(
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
+        fontSize: 34,             // ปรับเพิ่มจาก 16 -> ชัดเจนสะใจสไตล์เกม
+        fontWeight: FontWeight.bold, // เปลี่ยนเป็น Bold ให้เห็นชัดขึ้น
         color: color,
-        height: 1.4,
+        height: 1.2,
       ),
       displayMedium: GoogleFonts.notoSansThai(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
+        fontSize: 28,             // ปรับเพิ่มจาก 14
+        fontWeight: FontWeight.bold,
         color: color,
-        height: 1.4,
+        height: 1.2,
       ),
       displaySmall: GoogleFonts.notoSansThai(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+        fontSize: 24,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w600,
         color: color,
-        height: 1.4,
+        height: 1.2,
       ),
+
+      // ─── Headline: หัวข้อย่อยประจำหน้า หรือชื่อเมนูหลัก ───
       headlineLarge: GoogleFonts.notoSansThai(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
+        fontSize: 22,             // ปรับเพิ่มจาก 14
+        fontWeight: FontWeight.w600,
         color: color,
-        height: 1.4,
+        height: 1.3,
       ),
       headlineMedium: GoogleFonts.notoSansThai(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+        fontSize: 20,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w600,
         color: color,
-        height: 1.4,
+        height: 1.3,
       ),
       headlineSmall: GoogleFonts.notoSansThai(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+        fontSize: 18,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w600,
         color: color,
-        height: 1.4,
+        height: 1.3,
       ),
+
+      // ─── Title: ชื่อไอเทม ชื่อการ์ด หรือหัวข้อในกล่อง UI ───
       titleLarge: GoogleFonts.notoSansThai(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
+        fontSize: 16,             // ปรับเพิ่มจาก 14 -> เป็นขนาดกำลังดีสำหรับหัวข้อย่อย
+        fontWeight: FontWeight.w500,
         color: color,
         height: 1.4,
       ),
       titleMedium: GoogleFonts.notoSansThai(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
+        fontSize: 14,             // ปรับเพิ่มจาก 12
+        fontWeight: FontWeight.w500,
         color: color,
         height: 1.4,
       ),
       titleSmall: GoogleFonts.notoSansThai(
-        fontSize: 10,
-        fontWeight: FontWeight.w400,
+        fontSize: 13,             // ปรับเพิ่มจาก 10
+        fontWeight: FontWeight.w500,
         color: color,
         height: 1.4,
       ),
+
+      // ─── Body: เนื้อหา รายละเอียดไอเทม คำอธิบายทั่วไป (อ่านง่าย ไม่ปวดตา) ───
       bodyLarge: GoogleFonts.notoSansThai(
-        fontSize: 12,
+        fontSize: 16,             // ปรับเพิ่มจาก 12 -> ขนาดมาตรฐานตัวหนังสือทั่วไป
+        fontWeight: FontWeight.w400,
         color: color,
         height: 1.4,
       ),
       bodyMedium: GoogleFonts.notoSansThai(
-        fontSize: 11,
-        color: color,
-        height: 1.4,
-      ),
-      bodySmall: GoogleFonts.notoSansThai(
-        fontSize: 9,
-        color: color,
-        height: 1.4,
-      ),
-      labelLarge: GoogleFonts.notoSansThai(
-        fontSize: 10,
+        fontSize: 14,             // ปรับเพิ่มจาก 11 -> ขนาดอ่านง่ายบนมือถือ
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.4,
       ),
-      labelMedium: GoogleFonts.notoSansThai(
-        fontSize: 8,
+      bodySmall: GoogleFonts.notoSansThai(
+        fontSize: 12,             // ปรับเพิ่มจาก 9 -> ห้ามต่ำกว่า 12 สำหรับฟอนต์ไทย ไม่งั้นสระลอย/หัวฟอนต์จะกลืนอ่านไม่ออก
+        fontWeight: FontWeight.w400,
         color: color,
         height: 1.4,
       ),
-      labelSmall: GoogleFonts.notoSansThai(
-        fontSize: 8,
+
+      // ─── Label: ตัวหนังสือบนปุ่ม คำอธิบายสั้นๆ หรือเลข Status ───
+      labelLarge: GoogleFonts.notoSansThai(
+        fontSize: 14,             // ปรับเพิ่มจาก 10 -> ขนาดตัวหนังสือบนปุ่มกดมาตรฐาน
+        fontWeight: FontWeight.w600, // หนาขึ้นเพื่อให้เห็นบนปุ่มชัดเจน
         color: color,
-        height: 1.4,
+        height: 1.2,
+      ),
+      labelMedium: GoogleFonts.notoSansThai(
+        fontSize: 12,             // ปรับเพิ่มจาก 8
+        fontWeight: FontWeight.w500,
+        color: color,
+        height: 1.2,
+      ),
+      labelSmall: GoogleFonts.notoSansThai(
+        fontSize: 11,             // ปรับเพิ่มจาก 8
+        fontWeight: FontWeight.w500,
+        color: color,
+        height: 1.2,
       ),
     );
   }
