@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wat_project_frontend/data/entities/job_review/review/job_review_entity.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_review_comment_card.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 enum ReviewSortOption { newest, highestRating, lowestRating }
 
 class JobReviewsSection extends StatefulWidget {
   final List<JobReviewEntity> reviews;
   final bool isLoading;
+  final VoidCallback? onWriteReview;
 
   const JobReviewsSection({
     super.key,
     required this.reviews,
     required this.isLoading,
+    this.onWriteReview,
   });
 
   @override
@@ -47,14 +50,15 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
           children: [
             const Text(
               'Reviews',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
             Row(
               children: [
-                const Icon(Icons.sort_outlined, size: 18, color: AppColors.primary),
+                const Icon(
+                  Icons.sort_outlined,
+                  size: 18,
+                  color: AppColors.primary,
+                ),
                 const SizedBox(width: 4),
                 PopupMenuButton<ReviewSortOption>(
                   initialValue: _sortOption,
@@ -81,8 +85,8 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
                     _sortOption == ReviewSortOption.newest
                         ? 'Newest'
                         : _sortOption == ReviewSortOption.highestRating
-                            ? 'Highest'
-                            : 'Lowest',
+                        ? 'Highest'
+                        : 'Lowest',
                     style: const TextStyle(
                       fontSize: 14,
                       color: AppColors.primary,
@@ -94,6 +98,10 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
             ),
           ],
         ),
+        if (widget.onWriteReview != null) ...[
+          const SizedBox(height: AppDimension.space16),
+          WatButton(label: 'Write a Review', onPressed: widget.onWriteReview),
+        ],
         const SizedBox(height: AppDimension.space16),
         if (widget.isLoading && widget.reviews.isEmpty)
           const Center(child: CircularProgressIndicator())
@@ -105,9 +113,7 @@ class _JobReviewsSectionState extends State<JobReviewsSection> {
         else
           ...sortedReviews.map(
             (r) => Padding(
-              padding: const EdgeInsets.only(
-                bottom: AppDimension.space16,
-              ),
+              padding: const EdgeInsets.only(bottom: AppDimension.space16),
               child: JobReviewCommentCard(
                 author: r.userId,
                 date: _formatDate(r.createdAt),

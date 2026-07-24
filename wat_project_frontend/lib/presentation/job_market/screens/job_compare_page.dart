@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobComparePage extends StatefulWidget {
   final List<String> jobIds;
@@ -74,11 +74,15 @@ class _JobComparePageState extends State<JobComparePage> {
                 child: Card(
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                    borderRadius: BorderRadius.circular(
+                      AppDimension.radiusMedium,
+                    ),
                   ),
                   color: AppColors.background,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: AppDimension.space16),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppDimension.space16,
+                    ),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
@@ -99,7 +103,9 @@ class _JobComparePageState extends State<JobComparePage> {
                           ...selectedJobs.map(
                             (job) => DataColumn(
                               label: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 150),
+                                constraints: const BoxConstraints(
+                                  maxWidth: 150,
+                                ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -131,52 +137,102 @@ class _JobComparePageState extends State<JobComparePage> {
                         rows: [
                           DataRow(
                             cells: [
-                              const DataCell(Text('Employer', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.employerTitle ?? 'N/A'))),
+                              const DataCell(
+                                Text(
+                                  'Employer',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              ...selectedJobs.map(
+                                (j) => DataCell(Text(j.employerTitle ?? 'N/A')),
+                              ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Agency', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.agencyName ?? 'Direct'))),
+                              const DataCell(
+                                Text(
+                                  'Agency',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              ...selectedJobs.map(
+                                (j) => DataCell(Text(j.agencyName ?? 'Direct')),
+                              ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Min Salary', style: TextStyle(fontWeight: FontWeight.w600))),
+                              const DataCell(
+                                Text(
+                                  'Min Salary',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
                               ...selectedJobs.map(
                                 (j) => DataCell(
-                                  Text('\$${j.salaryRangeMin.toStringAsFixed(2)}/hr',
-                                      style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    '\$${j.salaryRangeMin.toStringAsFixed(2)}/hr',
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Max Salary', style: TextStyle(fontWeight: FontWeight.w600))),
+                              const DataCell(
+                                Text(
+                                  'Max Salary',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
                               ...selectedJobs.map(
                                 (j) => DataCell(
-                                  Text('\$${j.salaryRangeMax.toStringAsFixed(2)}/hr',
-                                      style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    '\$${j.salaryRangeMax.toStringAsFixed(2)}/hr',
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Position Type', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.positionType ?? 'N/A'))),
+                              const DataCell(
+                                Text(
+                                  'Position Type',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              ...selectedJobs.map(
+                                (j) => DataCell(Text(j.positionType ?? 'N/A')),
+                              ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Visa Sponsor', style: TextStyle(fontWeight: FontWeight.w600))),
+                              const DataCell(
+                                Text(
+                                  'Visa Sponsor',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
                               ...selectedJobs.map(
                                 (j) => DataCell(
                                   Icon(
-                                    j.usSponsor ? Icons.check_circle : Icons.cancel,
-                                    color: j.usSponsor ? Colors.green : Colors.red,
+                                    j.usSponsor
+                                        ? Icons.check_circle
+                                        : Icons.cancel,
+                                    color: j.usSponsor
+                                        ? Colors.green
+                                        : Colors.red,
                                     size: 20,
                                   ),
                                 ),
@@ -185,24 +241,45 @@ class _JobComparePageState extends State<JobComparePage> {
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Location', style: TextStyle(fontWeight: FontWeight.w600))),
+                              const DataCell(
+                                Text(
+                                  'Location',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
                               ...selectedJobs.map(
                                 (j) => DataCell(
-                                  Text('${j.locationCity ?? ''}, ${j.locationState ?? ''}'),
+                                  Text(
+                                    '${j.locationCity ?? ''}, ${j.locationState ?? ''}',
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Group Location', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text(j.groupLocation ?? 'N/A'))),
+                              const DataCell(
+                                Text(
+                                  'Group Location',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              ...selectedJobs.map(
+                                (j) => DataCell(Text(j.groupLocation ?? 'N/A')),
+                              ),
                             ],
                           ),
                           DataRow(
                             cells: [
-                              const DataCell(Text('Available Slots', style: TextStyle(fontWeight: FontWeight.w600))),
-                              ...selectedJobs.map((j) => DataCell(Text('${j.availableSlots}'))),
+                              const DataCell(
+                                Text(
+                                  'Available Slots',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              ...selectedJobs.map(
+                                (j) => DataCell(Text('${j.availableSlots}')),
+                              ),
                             ],
                           ),
                         ],

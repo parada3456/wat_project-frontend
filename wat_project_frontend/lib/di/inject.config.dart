@@ -149,6 +149,8 @@ import 'package:wat_project_frontend/domain/usecases/friend_usecases.dart'
     as _i807;
 import 'package:wat_project_frontend/domain/usecases/gamification/get_badges_usecase.dart'
     as _i882;
+import 'package:wat_project_frontend/domain/usecases/gamification/get_friends_credit_score_leaderboard_usecase.dart'
+    as _i848;
 import 'package:wat_project_frontend/domain/usecases/gamification/get_leaderboard_usecase.dart'
     as _i229;
 import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart'
@@ -253,8 +255,6 @@ import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_blo
     as _i533;
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart'
     as _i1054;
-import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart'
-    as _i282;
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart'
     as _i928;
 import 'package:wat_project_frontend/presentation/notifications/bloc/notifications_bloc.dart'
@@ -441,6 +441,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1069.PayExpenseSplitUseCase>(
       () => _i1069.PayExpenseSplitUseCase(gh<_i1052.ExpenseRepository>()),
     );
+    gh.factory<_i848.GetFriendsCreditScoreLeaderboardUseCase>(
+      () => _i848.GetFriendsCreditScoreLeaderboardUseCase(
+        gh<_i381.JourneyRepository>(),
+      ),
+    );
     gh.factory<_i229.GetLeaderboardUseCase>(
       () => _i229.GetLeaderboardUseCase(gh<_i381.JourneyRepository>()),
     );
@@ -514,9 +519,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i455.UserRepository>(
       () => repositoryModule.userRepository(gh<_i399.UserRepoImpl>()),
-    );
-    gh.factory<_i282.CreateMissionBloc>(
-      () => blocModule.createMissionBloc(gh<_i936.CreateMissionUseCase>()),
     );
     gh.factory<_i392.NotificationsBloc>(
       () => blocModule.notificationsBloc(
@@ -655,6 +657,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i936.JoinMissionUseCase>(),
         gh<_i624.GetProfileUseCase>(),
         gh<_i936.ListAllMissionsUseCase>(),
+        gh<_i936.CreateMissionUseCase>(),
       ),
     );
     gh.factory<_i1031.LoginBloc>(

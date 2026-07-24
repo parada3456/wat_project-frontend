@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/login_header.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -173,9 +173,13 @@ class _LoginViewState extends State<LoginView> {
                       enableSuggestions: false,
                       errorText: _getError(state, 'password'),
                       suffixIcon: GestureDetector(
-                        onTap: () => setState(() => _obscurePassword = !_obscurePassword),
+                        onTap: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
                         child: Icon(
-                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: AppColors.textSecondary,
                         ),
                       ),
@@ -268,7 +272,9 @@ class _LoginViewState extends State<LoginView> {
                         minimumSize: const Size(double.infinity, 45),
                         side: const BorderSide(color: AppColors.divider),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                          borderRadius: BorderRadius.circular(
+                            AppDimension.radiusSmall,
+                          ),
                         ),
                         backgroundColor: AppColors.surface,
                       ),
@@ -279,11 +285,12 @@ class _LoginViewState extends State<LoginView> {
                             'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png',
                             height: 18,
                             width: 18,
-                            errorBuilder: (context, error, stackTrace) => const Icon(
-                              Icons.login,
-                              size: 18,
-                              color: AppColors.textPrimary,
-                            ),
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(
+                                  Icons.login,
+                                  size: 18,
+                                  color: AppColors.textPrimary,
+                                ),
                           ),
                           const SizedBox(width: 12),
                           const Text(
@@ -350,9 +357,7 @@ class _LoginViewState extends State<LoginView> {
     }
 
     if (mounted) {
-      context.read<LoginBloc>().add(
-            GoogleLoginSubmittedEvent(idToken),
-          );
+      context.read<LoginBloc>().add(GoogleLoginSubmittedEvent(idToken));
     }
   }
 }

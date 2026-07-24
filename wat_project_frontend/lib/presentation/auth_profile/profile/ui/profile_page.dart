@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/credit_score_badge.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -289,7 +289,12 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                             TextButton(
-                              onPressed: () => context.push('/profile/edit'),
+                              onPressed: () async {
+                                final res = await context.push<bool>('/profile/edit');
+                                if (res == true && context.mounted) {
+                                  profileBloc.add(const GetProfileEvent());
+                                }
+                              },
                               child: const Text('Edit Profile'),
                             ),
                           ],

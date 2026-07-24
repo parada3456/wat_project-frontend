@@ -12,7 +12,10 @@ void main() {
               child: ElevatedButton(
                 onPressed: () {
                   if (child is AppPopup) {
-                    showDialog<void>(context: context, builder: (context) => child);
+                    showDialog<void>(
+                      context: context,
+                      builder: (context) => child,
+                    );
                   }
                 },
                 child: const Text('Show Dialog'),

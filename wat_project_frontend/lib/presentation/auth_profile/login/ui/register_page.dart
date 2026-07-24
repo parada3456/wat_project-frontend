@@ -8,7 +8,7 @@ import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -53,24 +53,21 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       final usecase = getIt<ListJourneyPhasesUseCase>();
       final result = await usecase();
-      result.fold(
-        (failure) {},
-        (phases) {
-          if (phases.isNotEmpty && mounted) {
-            setState(() {
-              _phases = phases.map((p) => {
-                'id': p.phaseId,
-                'name': p.title,
-              }).toList();
-              if (!_phases.any((p) => p['id'] == _selectedPhase)) {
-                _selectedPhase = _phases.first['id'];
-              }
-            });
-          }
-        },
-      );
+      result.fold((failure) {}, (phases) {
+        if (phases.isNotEmpty && mounted) {
+          setState(() {
+            _phases = phases
+                .map((p) => {'id': p.phaseId, 'name': p.title})
+                .toList();
+            if (!_phases.any((p) => p['id'] == _selectedPhase)) {
+              _selectedPhase = _phases.first['id'];
+            }
+          });
+        }
+      });
     } catch (_) {}
   }
+
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
@@ -81,7 +78,10 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _selectDate(
+    BuildContext context,
+    TextEditingController controller,
+  ) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -111,14 +111,18 @@ class _RegisterPageState extends State<RegisterPage> {
     if (field == 'username' && _usernameError != null) return _usernameError;
     if (field == 'email' && _emailError != null) return _emailError;
     if (field == 'password' && _passwordError != null) return _passwordError;
-    if (field == 'arrivalDate' && _arrivalDateError != null) return _arrivalDateError;
-    if (field == 'jobStartDate' && _jobStartDateError != null) return _jobStartDateError;
+    if (field == 'arrivalDate' && _arrivalDateError != null)
+      return _arrivalDateError;
+    if (field == 'jobStartDate' && _jobStartDateError != null)
+      return _jobStartDateError;
     if (field == 'otp' && _otpError != null) return _otpError;
 
     final status = state.status;
     if (status is UILoadFailed && status.apiError != null) {
       try {
-        return status.apiError!.details.firstWhere((e) => e.field == field).reason;
+        return status.apiError!.details
+            .firstWhere((e) => e.field == field)
+            .reason;
       } catch (_) {
         return null;
       }
@@ -187,7 +191,9 @@ class _RegisterPageState extends State<RegisterPage> {
               final isLoading = state.status is UILoading;
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimension.space32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimension.space32,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -202,7 +208,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         autocorrect: false,
                         enableSuggestions: false,
                         onChanged: (_) {
-                          if (_usernameError != null) setState(() => _usernameError = null);
+                          if (_usernameError != null)
+                            setState(() => _usernameError = null);
                         },
                       ),
                       const SizedBox(height: AppDimension.space16),
@@ -215,7 +222,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         enableSuggestions: false,
                         keyboardType: TextInputType.emailAddress,
                         onChanged: (_) {
-                          if (_emailError != null) setState(() => _emailError = null);
+                          if (_emailError != null)
+                            setState(() => _emailError = null);
                         },
                       ),
                       const SizedBox(height: AppDimension.space16),
@@ -228,14 +236,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         enableSuggestions: false,
                         errorText: _getError(state, 'password'),
                         suffixIcon: GestureDetector(
-                          onTap: () => setState(() => _obscurePassword = !_obscurePassword),
+                          onTap: () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
                           child: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             color: AppColors.textSecondary,
                           ),
                         ),
                         onChanged: (_) {
-                          if (_passwordError != null) setState(() => _passwordError = null);
+                          if (_passwordError != null)
+                            setState(() => _passwordError = null);
                         },
                       ),
                       const SizedBox(height: AppDimension.space16),
@@ -256,16 +269,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           fillColor: AppColors.backgroundAlt,
                           filled: true,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                            borderRadius: BorderRadius.circular(
+                              AppDimension.radiusSmall,
+                            ),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
                         ),
                         items: _phases
-                            .map((p) => DropdownMenuItem<String>(
-                                  value: p['id'],
-                                  child: Text(p['name']!),
-                                ))
+                            .map(
+                              (p) => DropdownMenuItem<String>(
+                                value: p['id'],
+                                child: Text(p['name']!),
+                              ),
+                            )
                             .toList(),
                         onChanged: (val) {
                           setState(() {
@@ -276,7 +296,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_selectedPhase != 'phase-1') ...[
                         const SizedBox(height: AppDimension.space16),
                         GestureDetector(
-                          onTap: () => _selectDate(context, _arrivalDateController),
+                          onTap: () =>
+                              _selectDate(context, _arrivalDateController),
                           child: AbsorbPointer(
                             child: WatInputField(
                               label: 'Arrival Date',
@@ -288,7 +309,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(height: AppDimension.space16),
                         GestureDetector(
-                          onTap: () => _selectDate(context, _jobStartDateController),
+                          onTap: () =>
+                              _selectDate(context, _jobStartDateController),
                           child: AbsorbPointer(
                             child: WatInputField(
                               label: 'Job Start Date',
@@ -301,7 +323,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ] else ...[
                         const SizedBox(height: AppDimension.space16),
                         GestureDetector(
-                          onTap: () => _selectDate(context, _arrivalDateController),
+                          onTap: () =>
+                              _selectDate(context, _arrivalDateController),
                           child: AbsorbPointer(
                             child: WatInputField(
                               label: 'Arrival Date (Optional)',
@@ -313,7 +336,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(height: AppDimension.space16),
                         GestureDetector(
-                          onTap: () => _selectDate(context, _jobStartDateController),
+                          onTap: () =>
+                              _selectDate(context, _jobStartDateController),
                           child: AbsorbPointer(
                             child: WatInputField(
                               label: 'Job Start Date (Optional)',
@@ -332,8 +356,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           final username = _usernameController.text.trim();
                           final email = _emailController.text.trim();
                           final password = _passwordController.text.trim();
-                          final arrivalDate = _arrivalDateController.text.trim();
-                          final jobStartDate = _jobStartDateController.text.trim();
+                          final arrivalDate = _arrivalDateController.text
+                              .trim();
+                          final jobStartDate = _jobStartDateController.text
+                              .trim();
 
                           setState(() {
                             _usernameError = null;
@@ -344,7 +370,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           });
 
                           bool isValid = true;
-                          final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                          final emailRegex = RegExp(
+                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          );
 
                           if (username.isEmpty) {
                             _usernameError = 'Username is required';
@@ -363,7 +391,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             _passwordError = 'Password is required';
                             isValid = false;
                           } else if (password.length < 8) {
-                            _passwordError = 'Password must be at least 8 characters';
+                            _passwordError =
+                                'Password must be at least 8 characters';
                             isValid = false;
                           }
 
@@ -415,7 +444,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         enableSuggestions: false,
                         keyboardType: TextInputType.number,
                         onChanged: (_) {
-                          if (_otpError != null) setState(() => _otpError = null);
+                          if (_otpError != null)
+                            setState(() => _otpError = null);
                         },
                       ),
                       const SizedBox(height: AppDimension.space32),
@@ -436,13 +466,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           final password = _passwordController.text.trim();
 
                           context.read<LoginBloc>().add(
-                                RegisterSubmittedEvent(
-                                  email: email,
-                                  password: password,
-                                  firstName: username,
-                                  lastName: '',
-                                ),
-                              );
+                            RegisterSubmittedEvent(
+                              email: email,
+                              password: password,
+                              firstName: username,
+                              lastName: '',
+                            ),
+                          );
                         },
                       ),
                     ],

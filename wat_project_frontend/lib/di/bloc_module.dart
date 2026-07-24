@@ -24,7 +24,6 @@ import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_blo
 
 // Module 4 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
-import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart';
 
 // Module 5 BLoC & UseCases
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart';
@@ -154,6 +153,7 @@ abstract class BlocModule {
     JoinMissionUseCase joinMissionUseCase,
     GetProfileUseCase getProfileUseCase,
     ListAllMissionsUseCase listAllMissionsUseCase,
+    CreateMissionUseCase createMissionUseCase,
   ) => MissionTaskBloc(
     listMyMissionsUseCase,
     getMissionDetailUseCase,
@@ -163,12 +163,8 @@ abstract class BlocModule {
     joinMissionUseCase,
     getProfileUseCase,
     listAllMissionsUseCase,
+    createMissionUseCase,
   );
-
-  @injectable
-  CreateMissionBloc createMissionBloc(
-    CreateMissionUseCase createMissionUseCase,
-  ) => CreateMissionBloc(createMissionUseCase);
 
   @injectable
   JourneyGamificationBloc journeyGamificationBloc(

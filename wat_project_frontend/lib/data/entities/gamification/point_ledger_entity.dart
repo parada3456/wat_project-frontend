@@ -34,7 +34,8 @@ class PointLedgerEntity {
     required this.createdAt,
   });
 
-  factory PointLedgerEntity.fromJson(Map<String, dynamic> json) =>  _$PointLedgerEntityFromJson(json);
+  factory PointLedgerEntity.fromJson(Map<String, dynamic> json) =>
+      _$PointLedgerEntityFromJson(json);
   Map<String, dynamic> toJson() => _$PointLedgerEntityToJson(this);
 
   PointLedgerModel toModel() => PointLedgerModel(

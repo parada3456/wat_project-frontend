@@ -55,7 +55,7 @@ extension MissionTaskEventPatterns on MissionTaskEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( MissionsTasksListRequested value)?  listRequested,TResult Function( MissionTaskDetailRequested value)?  detailRequested,TResult Function( MissionTaskProofSubmitted value)?  proofSubmitted,TResult Function( MissionTaskToggleRequested value)?  toggleRequested,TResult Function( ExploreMissionsRequested value)?  exploreMissionsRequested,TResult Function( JoinMissionRequested value)?  joinMissionRequested,TResult Function( FilterMissionsRequested value)?  filterMissionsRequested,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( MissionsTasksListRequested value)?  listRequested,TResult Function( MissionTaskDetailRequested value)?  detailRequested,TResult Function( MissionTaskProofSubmitted value)?  proofSubmitted,TResult Function( MissionTaskToggleRequested value)?  toggleRequested,TResult Function( ExploreMissionsRequested value)?  exploreMissionsRequested,TResult Function( JoinMissionRequested value)?  joinMissionRequested,TResult Function( FilterMissionsRequested value)?  filterMissionsRequested,TResult Function( CreateMissionSubmitted value)?  createMissionSubmitted,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case MissionsTasksListRequested() when listRequested != null:
@@ -65,7 +65,8 @@ return proofSubmitted(_that);case MissionTaskToggleRequested() when toggleReques
 return toggleRequested(_that);case ExploreMissionsRequested() when exploreMissionsRequested != null:
 return exploreMissionsRequested(_that);case JoinMissionRequested() when joinMissionRequested != null:
 return joinMissionRequested(_that);case FilterMissionsRequested() when filterMissionsRequested != null:
-return filterMissionsRequested(_that);case _:
+return filterMissionsRequested(_that);case CreateMissionSubmitted() when createMissionSubmitted != null:
+return createMissionSubmitted(_that);case _:
   return orElse();
 
 }
@@ -83,7 +84,7 @@ return filterMissionsRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( MissionsTasksListRequested value)  listRequested,required TResult Function( MissionTaskDetailRequested value)  detailRequested,required TResult Function( MissionTaskProofSubmitted value)  proofSubmitted,required TResult Function( MissionTaskToggleRequested value)  toggleRequested,required TResult Function( ExploreMissionsRequested value)  exploreMissionsRequested,required TResult Function( JoinMissionRequested value)  joinMissionRequested,required TResult Function( FilterMissionsRequested value)  filterMissionsRequested,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( MissionsTasksListRequested value)  listRequested,required TResult Function( MissionTaskDetailRequested value)  detailRequested,required TResult Function( MissionTaskProofSubmitted value)  proofSubmitted,required TResult Function( MissionTaskToggleRequested value)  toggleRequested,required TResult Function( ExploreMissionsRequested value)  exploreMissionsRequested,required TResult Function( JoinMissionRequested value)  joinMissionRequested,required TResult Function( FilterMissionsRequested value)  filterMissionsRequested,required TResult Function( CreateMissionSubmitted value)  createMissionSubmitted,}){
 final _that = this;
 switch (_that) {
 case MissionsTasksListRequested():
@@ -93,7 +94,8 @@ return proofSubmitted(_that);case MissionTaskToggleRequested():
 return toggleRequested(_that);case ExploreMissionsRequested():
 return exploreMissionsRequested(_that);case JoinMissionRequested():
 return joinMissionRequested(_that);case FilterMissionsRequested():
-return filterMissionsRequested(_that);case _:
+return filterMissionsRequested(_that);case CreateMissionSubmitted():
+return createMissionSubmitted(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -110,7 +112,7 @@ return filterMissionsRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( MissionsTasksListRequested value)?  listRequested,TResult? Function( MissionTaskDetailRequested value)?  detailRequested,TResult? Function( MissionTaskProofSubmitted value)?  proofSubmitted,TResult? Function( MissionTaskToggleRequested value)?  toggleRequested,TResult? Function( ExploreMissionsRequested value)?  exploreMissionsRequested,TResult? Function( JoinMissionRequested value)?  joinMissionRequested,TResult? Function( FilterMissionsRequested value)?  filterMissionsRequested,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( MissionsTasksListRequested value)?  listRequested,TResult? Function( MissionTaskDetailRequested value)?  detailRequested,TResult? Function( MissionTaskProofSubmitted value)?  proofSubmitted,TResult? Function( MissionTaskToggleRequested value)?  toggleRequested,TResult? Function( ExploreMissionsRequested value)?  exploreMissionsRequested,TResult? Function( JoinMissionRequested value)?  joinMissionRequested,TResult? Function( FilterMissionsRequested value)?  filterMissionsRequested,TResult? Function( CreateMissionSubmitted value)?  createMissionSubmitted,}){
 final _that = this;
 switch (_that) {
 case MissionsTasksListRequested() when listRequested != null:
@@ -120,7 +122,8 @@ return proofSubmitted(_that);case MissionTaskToggleRequested() when toggleReques
 return toggleRequested(_that);case ExploreMissionsRequested() when exploreMissionsRequested != null:
 return exploreMissionsRequested(_that);case JoinMissionRequested() when joinMissionRequested != null:
 return joinMissionRequested(_that);case FilterMissionsRequested() when filterMissionsRequested != null:
-return filterMissionsRequested(_that);case _:
+return filterMissionsRequested(_that);case CreateMissionSubmitted() when createMissionSubmitted != null:
+return createMissionSubmitted(_that);case _:
   return null;
 
 }
@@ -137,7 +140,7 @@ return filterMissionsRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  listRequested,TResult Function( String missionId)?  detailRequested,TResult Function( String missionId,  File? file)?  proofSubmitted,TResult Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult Function()?  exploreMissionsRequested,TResult Function( String missionId)?  joinMissionRequested,TResult Function( bool? showMandatory)?  filterMissionsRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  listRequested,TResult Function( String missionId)?  detailRequested,TResult Function( String missionId,  File? file)?  proofSubmitted,TResult Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult Function()?  exploreMissionsRequested,TResult Function( String missionId)?  joinMissionRequested,TResult Function( bool? showMandatory)?  filterMissionsRequested,TResult Function( CreateMissionRequest request)?  createMissionSubmitted,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case MissionsTasksListRequested() when listRequested != null:
 return listRequested();case MissionTaskDetailRequested() when detailRequested != null:
@@ -146,7 +149,8 @@ return proofSubmitted(_that.missionId,_that.file);case MissionTaskToggleRequeste
 return toggleRequested(_that.userMissionId,_that.taskId,_that.completed);case ExploreMissionsRequested() when exploreMissionsRequested != null:
 return exploreMissionsRequested();case JoinMissionRequested() when joinMissionRequested != null:
 return joinMissionRequested(_that.missionId);case FilterMissionsRequested() when filterMissionsRequested != null:
-return filterMissionsRequested(_that.showMandatory);case _:
+return filterMissionsRequested(_that.showMandatory);case CreateMissionSubmitted() when createMissionSubmitted != null:
+return createMissionSubmitted(_that.request);case _:
   return orElse();
 
 }
@@ -164,7 +168,7 @@ return filterMissionsRequested(_that.showMandatory);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  listRequested,required TResult Function( String missionId)  detailRequested,required TResult Function( String missionId,  File? file)  proofSubmitted,required TResult Function( String userMissionId,  String taskId,  bool completed)  toggleRequested,required TResult Function()  exploreMissionsRequested,required TResult Function( String missionId)  joinMissionRequested,required TResult Function( bool? showMandatory)  filterMissionsRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  listRequested,required TResult Function( String missionId)  detailRequested,required TResult Function( String missionId,  File? file)  proofSubmitted,required TResult Function( String userMissionId,  String taskId,  bool completed)  toggleRequested,required TResult Function()  exploreMissionsRequested,required TResult Function( String missionId)  joinMissionRequested,required TResult Function( bool? showMandatory)  filterMissionsRequested,required TResult Function( CreateMissionRequest request)  createMissionSubmitted,}) {final _that = this;
 switch (_that) {
 case MissionsTasksListRequested():
 return listRequested();case MissionTaskDetailRequested():
@@ -173,7 +177,8 @@ return proofSubmitted(_that.missionId,_that.file);case MissionTaskToggleRequeste
 return toggleRequested(_that.userMissionId,_that.taskId,_that.completed);case ExploreMissionsRequested():
 return exploreMissionsRequested();case JoinMissionRequested():
 return joinMissionRequested(_that.missionId);case FilterMissionsRequested():
-return filterMissionsRequested(_that.showMandatory);case _:
+return filterMissionsRequested(_that.showMandatory);case CreateMissionSubmitted():
+return createMissionSubmitted(_that.request);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -190,7 +195,7 @@ return filterMissionsRequested(_that.showMandatory);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  listRequested,TResult? Function( String missionId)?  detailRequested,TResult? Function( String missionId,  File? file)?  proofSubmitted,TResult? Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult? Function()?  exploreMissionsRequested,TResult? Function( String missionId)?  joinMissionRequested,TResult? Function( bool? showMandatory)?  filterMissionsRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  listRequested,TResult? Function( String missionId)?  detailRequested,TResult? Function( String missionId,  File? file)?  proofSubmitted,TResult? Function( String userMissionId,  String taskId,  bool completed)?  toggleRequested,TResult? Function()?  exploreMissionsRequested,TResult? Function( String missionId)?  joinMissionRequested,TResult? Function( bool? showMandatory)?  filterMissionsRequested,TResult? Function( CreateMissionRequest request)?  createMissionSubmitted,}) {final _that = this;
 switch (_that) {
 case MissionsTasksListRequested() when listRequested != null:
 return listRequested();case MissionTaskDetailRequested() when detailRequested != null:
@@ -199,7 +204,8 @@ return proofSubmitted(_that.missionId,_that.file);case MissionTaskToggleRequeste
 return toggleRequested(_that.userMissionId,_that.taskId,_that.completed);case ExploreMissionsRequested() when exploreMissionsRequested != null:
 return exploreMissionsRequested();case JoinMissionRequested() when joinMissionRequested != null:
 return joinMissionRequested(_that.missionId);case FilterMissionsRequested() when filterMissionsRequested != null:
-return filterMissionsRequested(_that.showMandatory);case _:
+return filterMissionsRequested(_that.showMandatory);case CreateMissionSubmitted() when createMissionSubmitted != null:
+return createMissionSubmitted(_that.request);case _:
   return null;
 
 }
@@ -608,9 +614,75 @@ as bool?,
 }
 
 /// @nodoc
+
+
+class CreateMissionSubmitted implements MissionTaskEvent {
+  const CreateMissionSubmitted({required this.request});
+  
+
+ final  CreateMissionRequest request;
+
+/// Create a copy of MissionTaskEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CreateMissionSubmittedCopyWith<CreateMissionSubmitted> get copyWith => _$CreateMissionSubmittedCopyWithImpl<CreateMissionSubmitted>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateMissionSubmitted&&(identical(other.request, request) || other.request == request));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,request);
+
+@override
+String toString() {
+  return 'MissionTaskEvent.createMissionSubmitted(request: $request)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CreateMissionSubmittedCopyWith<$Res> implements $MissionTaskEventCopyWith<$Res> {
+  factory $CreateMissionSubmittedCopyWith(CreateMissionSubmitted value, $Res Function(CreateMissionSubmitted) _then) = _$CreateMissionSubmittedCopyWithImpl;
+@useResult
+$Res call({
+ CreateMissionRequest request
+});
+
+
+
+
+}
+/// @nodoc
+class _$CreateMissionSubmittedCopyWithImpl<$Res>
+    implements $CreateMissionSubmittedCopyWith<$Res> {
+  _$CreateMissionSubmittedCopyWithImpl(this._self, this._then);
+
+  final CreateMissionSubmitted _self;
+  final $Res Function(CreateMissionSubmitted) _then;
+
+/// Create a copy of MissionTaskEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? request = null,}) {
+  return _then(CreateMissionSubmitted(
+request: null == request ? _self.request : request // ignore: cast_nullable_to_non_nullable
+as CreateMissionRequest,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$MissionTaskState {
 
- UIStatus get status; List<MissionModel> get missions; MissionModel? get detail; List<MissionModel> get exploreMissions; List<MissionModel> get allMissions; String? get currentPhaseId; bool? get isFilterMandatory;
+ UIStatus get status; List<MissionModel> get missions; MissionModel? get detail; List<MissionModel> get exploreMissions; List<MissionModel> get allMissions; String? get currentPhaseId; bool? get isFilterMandatory; MissionModel? get createdMission;
 /// Create a copy of MissionTaskState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -621,16 +693,16 @@ $MissionTaskStateCopyWith<MissionTaskState> get copyWith => _$MissionTaskStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MissionTaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.missions, missions)&&(identical(other.detail, detail) || other.detail == detail)&&const DeepCollectionEquality().equals(other.exploreMissions, exploreMissions)&&const DeepCollectionEquality().equals(other.allMissions, allMissions)&&(identical(other.currentPhaseId, currentPhaseId) || other.currentPhaseId == currentPhaseId)&&(identical(other.isFilterMandatory, isFilterMandatory) || other.isFilterMandatory == isFilterMandatory));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MissionTaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.missions, missions)&&(identical(other.detail, detail) || other.detail == detail)&&const DeepCollectionEquality().equals(other.exploreMissions, exploreMissions)&&const DeepCollectionEquality().equals(other.allMissions, allMissions)&&(identical(other.currentPhaseId, currentPhaseId) || other.currentPhaseId == currentPhaseId)&&(identical(other.isFilterMandatory, isFilterMandatory) || other.isFilterMandatory == isFilterMandatory)&&(identical(other.createdMission, createdMission) || other.createdMission == createdMission));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(missions),detail,const DeepCollectionEquality().hash(exploreMissions),const DeepCollectionEquality().hash(allMissions),currentPhaseId,isFilterMandatory);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(missions),detail,const DeepCollectionEquality().hash(exploreMissions),const DeepCollectionEquality().hash(allMissions),currentPhaseId,isFilterMandatory,createdMission);
 
 @override
 String toString() {
-  return 'MissionTaskState(status: $status, missions: $missions, detail: $detail, exploreMissions: $exploreMissions, allMissions: $allMissions, currentPhaseId: $currentPhaseId, isFilterMandatory: $isFilterMandatory)';
+  return 'MissionTaskState(status: $status, missions: $missions, detail: $detail, exploreMissions: $exploreMissions, allMissions: $allMissions, currentPhaseId: $currentPhaseId, isFilterMandatory: $isFilterMandatory, createdMission: $createdMission)';
 }
 
 
@@ -641,7 +713,7 @@ abstract mixin class $MissionTaskStateCopyWith<$Res>  {
   factory $MissionTaskStateCopyWith(MissionTaskState value, $Res Function(MissionTaskState) _then) = _$MissionTaskStateCopyWithImpl;
 @useResult
 $Res call({
- UIStatus status, List<MissionModel> missions, MissionModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory
+ UIStatus status, List<MissionModel> missions, MissionModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory, MissionModel? createdMission
 });
 
 
@@ -658,7 +730,7 @@ class _$MissionTaskStateCopyWithImpl<$Res>
 
 /// Create a copy of MissionTaskState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? missions = null,Object? detail = freezed,Object? exploreMissions = null,Object? allMissions = null,Object? currentPhaseId = freezed,Object? isFilterMandatory = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? missions = null,Object? detail = freezed,Object? exploreMissions = null,Object? allMissions = null,Object? currentPhaseId = freezed,Object? isFilterMandatory = freezed,Object? createdMission = freezed,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UIStatus,missions: null == missions ? _self.missions : missions // ignore: cast_nullable_to_non_nullable
@@ -667,7 +739,8 @@ as MissionModel?,exploreMissions: null == exploreMissions ? _self.exploreMission
 as List<MissionModel>,allMissions: null == allMissions ? _self.allMissions : allMissions // ignore: cast_nullable_to_non_nullable
 as List<MissionModel>,currentPhaseId: freezed == currentPhaseId ? _self.currentPhaseId : currentPhaseId // ignore: cast_nullable_to_non_nullable
 as String?,isFilterMandatory: freezed == isFilterMandatory ? _self.isFilterMandatory : isFilterMandatory // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,createdMission: freezed == createdMission ? _self.createdMission : createdMission // ignore: cast_nullable_to_non_nullable
+as MissionModel?,
   ));
 }
 /// Create a copy of MissionTaskState
@@ -761,10 +834,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory,  MissionModel? createdMission)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MissionTaskState() when $default != null:
-return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory);case _:
+return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory,_that.createdMission);case _:
   return orElse();
 
 }
@@ -782,10 +855,10 @@ return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory,  MissionModel? createdMission)  $default,) {final _that = this;
 switch (_that) {
 case _MissionTaskState():
-return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory);case _:
+return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory,_that.createdMission);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -802,10 +875,10 @@ return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UIStatus status,  List<MissionModel> missions,  MissionModel? detail,  List<MissionModel> exploreMissions,  List<MissionModel> allMissions,  String? currentPhaseId,  bool? isFilterMandatory,  MissionModel? createdMission)?  $default,) {final _that = this;
 switch (_that) {
 case _MissionTaskState() when $default != null:
-return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory);case _:
+return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_that.allMissions,_that.currentPhaseId,_that.isFilterMandatory,_that.createdMission);case _:
   return null;
 
 }
@@ -817,7 +890,7 @@ return $default(_that.status,_that.missions,_that.detail,_that.exploreMissions,_
 
 
 class _MissionTaskState implements MissionTaskState {
-  const _MissionTaskState({this.status = const UIStatus.initial(), final  List<MissionModel> missions = const [], this.detail, final  List<MissionModel> exploreMissions = const [], final  List<MissionModel> allMissions = const [], this.currentPhaseId, this.isFilterMandatory}): _missions = missions,_exploreMissions = exploreMissions,_allMissions = allMissions;
+  const _MissionTaskState({this.status = const UIStatus.initial(), final  List<MissionModel> missions = const [], this.detail, final  List<MissionModel> exploreMissions = const [], final  List<MissionModel> allMissions = const [], this.currentPhaseId, this.isFilterMandatory, this.createdMission}): _missions = missions,_exploreMissions = exploreMissions,_allMissions = allMissions;
   
 
 @override@JsonKey() final  UIStatus status;
@@ -845,6 +918,7 @@ class _MissionTaskState implements MissionTaskState {
 
 @override final  String? currentPhaseId;
 @override final  bool? isFilterMandatory;
+@override final  MissionModel? createdMission;
 
 /// Create a copy of MissionTaskState
 /// with the given fields replaced by the non-null parameter values.
@@ -856,16 +930,16 @@ _$MissionTaskStateCopyWith<_MissionTaskState> get copyWith => __$MissionTaskStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MissionTaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._missions, _missions)&&(identical(other.detail, detail) || other.detail == detail)&&const DeepCollectionEquality().equals(other._exploreMissions, _exploreMissions)&&const DeepCollectionEquality().equals(other._allMissions, _allMissions)&&(identical(other.currentPhaseId, currentPhaseId) || other.currentPhaseId == currentPhaseId)&&(identical(other.isFilterMandatory, isFilterMandatory) || other.isFilterMandatory == isFilterMandatory));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MissionTaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._missions, _missions)&&(identical(other.detail, detail) || other.detail == detail)&&const DeepCollectionEquality().equals(other._exploreMissions, _exploreMissions)&&const DeepCollectionEquality().equals(other._allMissions, _allMissions)&&(identical(other.currentPhaseId, currentPhaseId) || other.currentPhaseId == currentPhaseId)&&(identical(other.isFilterMandatory, isFilterMandatory) || other.isFilterMandatory == isFilterMandatory)&&(identical(other.createdMission, createdMission) || other.createdMission == createdMission));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_missions),detail,const DeepCollectionEquality().hash(_exploreMissions),const DeepCollectionEquality().hash(_allMissions),currentPhaseId,isFilterMandatory);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_missions),detail,const DeepCollectionEquality().hash(_exploreMissions),const DeepCollectionEquality().hash(_allMissions),currentPhaseId,isFilterMandatory,createdMission);
 
 @override
 String toString() {
-  return 'MissionTaskState(status: $status, missions: $missions, detail: $detail, exploreMissions: $exploreMissions, allMissions: $allMissions, currentPhaseId: $currentPhaseId, isFilterMandatory: $isFilterMandatory)';
+  return 'MissionTaskState(status: $status, missions: $missions, detail: $detail, exploreMissions: $exploreMissions, allMissions: $allMissions, currentPhaseId: $currentPhaseId, isFilterMandatory: $isFilterMandatory, createdMission: $createdMission)';
 }
 
 
@@ -876,7 +950,7 @@ abstract mixin class _$MissionTaskStateCopyWith<$Res> implements $MissionTaskSta
   factory _$MissionTaskStateCopyWith(_MissionTaskState value, $Res Function(_MissionTaskState) _then) = __$MissionTaskStateCopyWithImpl;
 @override @useResult
 $Res call({
- UIStatus status, List<MissionModel> missions, MissionModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory
+ UIStatus status, List<MissionModel> missions, MissionModel? detail, List<MissionModel> exploreMissions, List<MissionModel> allMissions, String? currentPhaseId, bool? isFilterMandatory, MissionModel? createdMission
 });
 
 
@@ -893,7 +967,7 @@ class __$MissionTaskStateCopyWithImpl<$Res>
 
 /// Create a copy of MissionTaskState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? missions = null,Object? detail = freezed,Object? exploreMissions = null,Object? allMissions = null,Object? currentPhaseId = freezed,Object? isFilterMandatory = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? missions = null,Object? detail = freezed,Object? exploreMissions = null,Object? allMissions = null,Object? currentPhaseId = freezed,Object? isFilterMandatory = freezed,Object? createdMission = freezed,}) {
   return _then(_MissionTaskState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UIStatus,missions: null == missions ? _self._missions : missions // ignore: cast_nullable_to_non_nullable
@@ -902,7 +976,8 @@ as MissionModel?,exploreMissions: null == exploreMissions ? _self._exploreMissio
 as List<MissionModel>,allMissions: null == allMissions ? _self._allMissions : allMissions // ignore: cast_nullable_to_non_nullable
 as List<MissionModel>,currentPhaseId: freezed == currentPhaseId ? _self.currentPhaseId : currentPhaseId // ignore: cast_nullable_to_non_nullable
 as String?,isFilterMandatory: freezed == isFilterMandatory ? _self.isFilterMandatory : isFilterMandatory // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,createdMission: freezed == createdMission ? _self.createdMission : createdMission // ignore: cast_nullable_to_non_nullable
+as MissionModel?,
   ));
 }
 

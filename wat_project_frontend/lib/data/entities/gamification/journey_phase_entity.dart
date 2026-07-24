@@ -25,7 +25,8 @@ class JourneyPhaseEntity {
     required this.updatedAt,
   });
 
-  factory JourneyPhaseEntity.fromJson(Map<String, dynamic> json) => _$JourneyPhaseEntityFromJson(json);
+  factory JourneyPhaseEntity.fromJson(Map<String, dynamic> json) =>
+      _$JourneyPhaseEntityFromJson(json);
   Map<String, dynamic> toJson() => _$JourneyPhaseEntityToJson(this);
 
   JourneyPhaseModel toModel() => JourneyPhaseModel(

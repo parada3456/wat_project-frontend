@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/review_stars_row.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobHeaderSection extends StatelessWidget {
   final JobDetailResponse jobDetail;
 
-  const JobHeaderSection({
-    super.key,
-    required this.jobDetail,
-  });
+  const JobHeaderSection({super.key, required this.jobDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,8 @@ class JobHeaderSection extends StatelessWidget {
             color: AppColors.textSecondary,
           ),
         ),
-        if (jobDetail.job.agencyName != null && jobDetail.job.agencyName!.isNotEmpty) ...[
+        if (jobDetail.job.agencyName != null &&
+            jobDetail.job.agencyName!.isNotEmpty) ...[
           const SizedBox(height: AppDimension.space4),
           Text(
             'Agency: ${jobDetail.job.agencyName}',
@@ -48,9 +46,7 @@ class JobHeaderSection extends StatelessWidget {
         if (jobDetail.rating != null)
           Row(
             children: [
-              ReviewStarsRow(
-                rating: jobDetail.rating!.overallRate.toDouble(),
-              ),
+              ReviewStarsRow(rating: jobDetail.rating!.overallRate.toDouble()),
               const SizedBox(width: 8),
               Text(
                 jobDetail.rating!.overallRate.toStringAsFixed(1),

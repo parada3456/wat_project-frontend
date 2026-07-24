@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobCartItemTile extends StatelessWidget {
   final String title;
@@ -68,14 +68,8 @@ class JobCartItemTile extends StatelessWidget {
             PopupMenuButton<String>(
               onSelected: onStatusChanged,
               itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: 'Saved',
-                  child: Text('Saved'),
-                ),
-                const PopupMenuItem(
-                  value: 'Applied',
-                  child: Text('Applied'),
-                ),
+                const PopupMenuItem(value: 'Saved', child: Text('Saved')),
+                const PopupMenuItem(value: 'Applied', child: Text('Applied')),
               ],
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

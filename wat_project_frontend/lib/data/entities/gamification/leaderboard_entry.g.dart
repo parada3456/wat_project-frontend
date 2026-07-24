@@ -9,8 +9,7 @@ part of 'leaderboard_entry.dart';
 LeaderboardEntry _$LeaderboardEntryFromJson(Map<String, dynamic> json) =>
     LeaderboardEntry(
       rank: (json['rank'] as num).toInt(),
-      userId: json['user_id'] as String,
-      name: json['name'] as String,
+      user: ShortUserEntity.fromJson(json['user'] as Map<String, dynamic>),
       points: (json['points'] as num).toInt(),
       streak: (json['streak'] as num).toInt(),
       badges: (json['badges'] as List<dynamic>)
@@ -21,8 +20,7 @@ LeaderboardEntry _$LeaderboardEntryFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$LeaderboardEntryToJson(LeaderboardEntry instance) =>
     <String, dynamic>{
       'rank': instance.rank,
-      'user_id': instance.userId,
-      'name': instance.name,
+      'user': instance.user,
       'points': instance.points,
       'streak': instance.streak,
       'badges': instance.badges,

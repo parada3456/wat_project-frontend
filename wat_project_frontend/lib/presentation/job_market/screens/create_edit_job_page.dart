@@ -8,7 +8,7 @@ import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class CreateEditJobPage extends StatelessWidget {
   final String? jobId;
@@ -66,8 +66,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
     super.initState();
     if (isEdit) {
       context.read<JobMarketBloc>().add(
-            JobMarketEvent.getJobDetail(jobId: widget.jobId!),
-          );
+        JobMarketEvent.getJobDetail(jobId: widget.jobId!),
+      );
     } else {
       _initialized = true;
     }
@@ -185,12 +185,10 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
 
     if (isEdit) {
       context.read<JobMarketBloc>().add(
-            JobMarketEvent.updateJob(id: widget.jobId!, job: job),
-          );
+        JobMarketEvent.updateJob(id: widget.jobId!, job: job),
+      );
     } else {
-      context.read<JobMarketBloc>().add(
-            JobMarketEvent.createJob(job: job),
-          );
+      context.read<JobMarketBloc>().add(JobMarketEvent.createJob(job: job));
     }
   }
 
@@ -203,7 +201,9 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
           previous.updateJobStatus != current.updateJobStatus ||
           previous.jobDetail != current.jobDetail,
       listener: (context, state) {
-        if (isEdit && state.status is UILoadSuccess && state.jobDetail != null) {
+        if (isEdit &&
+            state.status is UILoadSuccess &&
+            state.jobDetail != null) {
           _populateFields(state.jobDetail!.job.toModel());
         }
 
@@ -215,11 +215,12 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
             'The job has been created successfully.',
             onConfirm: () {
               context.pop();
-              context.pop();
+              context.pop(true);
             },
           );
         } else if (state.createJobStatus is UILoadFailed) {
-          final msg = (state.createJobStatus as UILoadFailed).message ??
+          final msg =
+              (state.createJobStatus as UILoadFailed).message ??
               'Failed to create job.';
           _showPopup(context, AppPopupType.error, 'Error', msg);
         }
@@ -232,11 +233,12 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
             'The job has been updated successfully.',
             onConfirm: () {
               context.pop();
-              context.pop();
+              context.pop(true);
             },
           );
         } else if (state.updateJobStatus is UILoadFailed) {
-          final msg = (state.updateJobStatus as UILoadFailed).message ??
+          final msg =
+              (state.updateJobStatus as UILoadFailed).message ??
               'Failed to update job.';
           _showPopup(context, AppPopupType.error, 'Error', msg);
         }
@@ -267,7 +269,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                 );
               }
 
-              final isSaving = state.createJobStatus is UILoading ||
+              final isSaving =
+                  state.createJobStatus is UILoading ||
                   state.updateJobStatus is UILoading;
 
               return SingleChildScrollView(
@@ -331,22 +334,20 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                               });
                             }
                           },
-                          items: <String>[
-                            'Full-time',
-                            'Part-time',
-                            'Seasonal',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                          items: <String>['Full-time', 'Part-time', 'Seasonal']
+                              .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                );
+                              })
+                              .toList(),
                         ),
                       ),
                     ),
@@ -463,7 +464,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                             controller: _descriptionController,
                             maxLines: 4,
                             decoration: const InputDecoration(
-                              hintText: 'Provide details about the job, role, or requirements...',
+                              hintText:
+                                  'Provide details about the job, role, or requirements...',
                               hintStyle: TextStyle(
                                 fontSize: 15,
                                 color: AppColors.textSecondary,

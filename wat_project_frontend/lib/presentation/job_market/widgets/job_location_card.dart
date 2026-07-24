@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobLocationCard extends StatelessWidget {
   final JobDetailResponse jobDetail;
 
-  const JobLocationCard({
-    super.key,
-    required this.jobDetail,
-  });
+  const JobLocationCard({super.key, required this.jobDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +14,7 @@ class JobLocationCard extends StatelessWidget {
       children: [
         const Text(
           'Location Details',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: AppDimension.space8),
         Container(
@@ -35,7 +29,10 @@ class JobLocationCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.location_on_outlined, color: AppColors.primary),
+                  const Icon(
+                    Icons.location_on_outlined,
+                    color: AppColors.primary,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -48,7 +45,8 @@ class JobLocationCard extends StatelessWidget {
                   ),
                 ],
               ),
-              if (jobDetail.job.groupLocation != null && jobDetail.job.groupLocation!.isNotEmpty) ...[
+              if (jobDetail.job.groupLocation != null &&
+                  jobDetail.job.groupLocation!.isNotEmpty) ...[
                 const SizedBox(height: AppDimension.space8),
                 Text(
                   'Group Location: ${jobDetail.job.groupLocation}',

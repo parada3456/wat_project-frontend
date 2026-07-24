@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/usecases/mission_usecases.dart';
@@ -19,6 +20,7 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
   final ToggleTaskUseCase _toggleTaskUseCase;
   final JoinMissionUseCase _joinMissionUseCase;
   final GetProfileUseCase _getProfileUseCase;
+  final CreateMissionUseCase _createMissionUseCase;
 
   MissionTaskBloc(
     this._listMyMissionsUseCase,
@@ -29,6 +31,7 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     this._joinMissionUseCase,
     this._getProfileUseCase,
     this._listAllMissionsUseCase,
+    this._createMissionUseCase,
   ) : super(const MissionTaskState()) {
     on<MissionsTasksListRequested>(_onMissionsTasksListRequested);
     on<MissionTaskDetailRequested>(_onMissionTaskDetailRequested);
@@ -37,6 +40,7 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     on<ExploreMissionsRequested>(_onExploreMissionsRequested);
     on<JoinMissionRequested>(_onJoinMissionRequested);
     on<FilterMissionsRequested>(_onFilterMissionsRequested);
+    on<CreateMissionSubmitted>(_onCreateMissionSubmitted);
   }
 
   Future<void> _onMissionsTasksListRequested(
@@ -251,5 +255,24 @@ class MissionTaskBloc extends Bloc<MissionTaskEvent, MissionTaskState> {
     Emitter<MissionTaskState> emit,
   ) async {
     emit(state.copyWith(isFilterMandatory: event.showMandatory));
+  }
+
+  Future<void> _onCreateMissionSubmitted(
+    CreateMissionSubmitted event,
+    Emitter<MissionTaskState> emit,
+  ) async {
+    emit(state.copyWith(status: const UIStatus.loading()));
+    final result = await _createMissionUseCase(event.request);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (mission) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(message: 'MISSION_CREATED'),
+          createdMission: mission,
+        ),
+      ),
+    );
   }
 }

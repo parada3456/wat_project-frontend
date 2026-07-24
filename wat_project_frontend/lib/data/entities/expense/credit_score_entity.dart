@@ -21,7 +21,8 @@ class CreditScoreEntity {
     required this.lastUpdated,
   });
 
-  factory CreditScoreEntity.fromJson(Map<String, dynamic> json) => _$CreditScoreEntityFromJson(json);
+  factory CreditScoreEntity.fromJson(Map<String, dynamic> json) =>
+      _$CreditScoreEntityFromJson(json);
   Map<String, dynamic> toJson() => _$CreditScoreEntityToJson(this);
 
   CreditScoreModel toModel() => CreditScoreModel(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobPreviewItem extends StatelessWidget {
   final String title;

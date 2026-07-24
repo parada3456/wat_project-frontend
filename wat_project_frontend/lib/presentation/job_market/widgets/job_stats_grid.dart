@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_detail_response.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobStatsGrid extends StatelessWidget {
   final JobDetailResponse jobDetail;
 
-  const JobStatsGrid({
-    super.key,
-    required this.jobDetail,
-  });
+  const JobStatsGrid({super.key, required this.jobDetail});
 
   String _formatDate(DateTime? date) {
     if (date == null) return 'N/A';

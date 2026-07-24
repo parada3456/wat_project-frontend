@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/di/inject.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class PaymentSubmissionPage extends StatefulWidget {
   final String expenseId;
@@ -46,7 +44,9 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
         type: AppPopupType.error,
         title: 'Error',
         message: 'Failed to select image: $e',
-        buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+        buttons: [
+          AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context)),
+        ],
       );
     }
   }
@@ -64,7 +64,9 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
         type: AppPopupType.warning,
         title: 'Required',
         message: 'Please select or capture a payment receipt slip.',
-        buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+        buttons: [
+          AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context)),
+        ],
       );
       return;
     }
@@ -72,19 +74,18 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
     setState(() => _isUploading = true);
 
     context.read<ExpenseSharingBloc>().add(
-      PayExpenseSplitSubmitted(
-        expenseId: widget.expenseId,
-        splitId: widget.splitId,
-        file: _selectedFile!,
-      ),
-    );
+          ExpenseSharingEvent.payExpenseSplitSubmitted(
+            expenseId: widget.expenseId,
+            splitId: widget.splitId,
+            file: _selectedFile!,
+          ),
+        );
   }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = GetIt.instance<ExpenseSharingBloc>();
-    return BlocProvider.value(
-      value: bloc,
+    return BlocProvider<ExpenseSharingBloc>(
+      create: (context) => getIt<ExpenseSharingBloc>(),
       child: BlocListener<ExpenseSharingBloc, ExpenseSharingState>(
         listener: (context, state) {
           state.whenOrNull(
@@ -113,7 +114,12 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
                 type: AppPopupType.error,
                 title: 'Submission Failed',
                 message: message,
-                buttons: [AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context))],
+                buttons: [
+                  AppPopupButton(
+                    label: 'OK',
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               );
             },
           );
@@ -152,7 +158,10 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
                   const SizedBox(height: AppDimension.space8),
                   const Text(
                     'Please upload a screenshot of your bank transfer receipt.',
-                    style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: AppDimension.space32),
                   GestureDetector(
@@ -168,7 +177,9 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
                         border: Border.all(
                           color: AppColors.surface,
                           width: 2,
-                          style: _selectedFile == null ? BorderStyle.solid : BorderStyle.none,
+                          style: _selectedFile == null
+                              ? BorderStyle.solid
+                              : BorderStyle.none,
                         ),
                       ),
                       child: _selectedFile != null
@@ -189,9 +200,14 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
                                   top: 8,
                                   right: 8,
                                   child: CircleAvatar(
-                                    backgroundColor: Colors.black.withValues(alpha: 0.5),
+                                    backgroundColor: Colors.black.withValues(
+                                      alpha: 0.5,
+                                    ),
                                     child: IconButton(
-                                      icon: const Icon(Icons.close, color: Colors.white),
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                      ),
                                       onPressed: _clearImage,
                                     ),
                                   ),
@@ -236,7 +252,9 @@ class _PaymentSubmissionPageState extends State<PaymentSubmissionPage> {
                         style: TextStyle(color: AppColors.textSecondary),
                       ),
                       Text(
-                        widget.splitId.length > 8 ? widget.splitId.substring(0, 8) : widget.splitId,
+                        widget.splitId.length > 8
+                            ? widget.splitId.substring(0, 8)
+                            : widget.splitId,
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ],

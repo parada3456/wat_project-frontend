@@ -36,7 +36,8 @@ class ExpenseTransactionEntity {
     required this.updatedAt,
   });
 
-  factory ExpenseTransactionEntity.fromJson(Map<String, dynamic> json) =>_$ExpenseTransactionEntityFromJson(json);
+  factory ExpenseTransactionEntity.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseTransactionEntityFromJson(json);
   Map<String, dynamic> toJson() => _$ExpenseTransactionEntityToJson(this);
 
   ExpenseTransactionModel toModel() => ExpenseTransactionModel(

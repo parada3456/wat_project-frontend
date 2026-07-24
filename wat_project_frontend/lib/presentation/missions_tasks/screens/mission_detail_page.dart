@@ -1,12 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/task_checkbox_tile.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 
@@ -25,9 +29,59 @@ class MissionDetailPage extends StatelessWidget {
   }
 }
 
-class MissionDetailView extends StatelessWidget {
+class MissionDetailView extends StatefulWidget {
   final String missionId;
   const MissionDetailView({super.key, required this.missionId});
+
+  @override
+  State<MissionDetailView> createState() => _MissionDetailViewState();
+}
+
+class _MissionDetailViewState extends State<MissionDetailView> {
+  File? _pickedFile;
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final picker = ImagePicker();
+      final picked = await picker.pickImage(source: source);
+      if (picked != null) {
+        setState(() {
+          _pickedFile = File(picked.path);
+        });
+      }
+    } catch (_) {}
+  }
+
+  void _showImagePickerModal() {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: AppColors.primary),
+              title: const Text('Camera'),
+              onTap: () {
+                Navigator.of(ctx).pop();
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: AppColors.primary),
+              title: const Text('Gallery'),
+              onTap: () {
+                Navigator.of(ctx).pop();
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +131,7 @@ class MissionDetailView extends StatelessWidget {
                       isPrimary: true,
                       onPressed: () {
                         Navigator.of(context).pop();
-                        context.read<MissionTaskBloc>().add(
-                          MissionTaskDetailRequested(missionId),
-                        );
+                        context.pop(true);
                       },
                     ),
                   ],
@@ -117,6 +169,7 @@ class MissionDetailView extends StatelessWidget {
 
           final currentUserId = getIt<AuthSessionManager>().userId;
           final isCreator = detail.createdBy == currentUserId;
+          final isUploadRequired = detail.verificationType == VerificationType.upload;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
@@ -212,6 +265,8 @@ class MissionDetailView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimension.space16),
+                _MissionMetadataCard(mission: detail, userMission: detail.userMission),
+                const SizedBox(height: AppDimension.space16),
                 if (detail.description != null) ...[
                   Text(
                     detail.description!,
@@ -281,6 +336,82 @@ class MissionDetailView extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
+
+                if (isUploadRequired &&
+                    detail.userMission?.status != UserMissionStatus.completed &&
+                    detail.userMission?.status != UserMissionStatus.pendingVerification) ...[
+                  const SizedBox(height: AppDimension.space16),
+                  const Text(
+                    'Upload Proof',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: AppDimension.space12),
+                  GestureDetector(
+                    onTap: _showImagePickerModal,
+                    child: Container(
+                      height: 140,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundAlt,
+                        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.5),
+                          style: BorderStyle.solid,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: _pickedFile != null
+                          ? Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(AppDimension.radiusMedium - 1),
+                                  child: Image.file(
+                                    _pickedFile!,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: InkWell(
+                                    onTap: () => setState(() => _pickedFile = null),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(Icons.close, color: Colors.white, size: 18),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.cloud_upload_outlined, size: 36, color: AppColors.primary),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Tap to select image proof',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                ],
+
                 const SizedBox(height: AppDimension.space50),
               ],
             ),
@@ -299,17 +430,34 @@ class MissionDetailView extends StatelessWidget {
           final allDone = totalCount > 0 && completedCount == totalCount;
           final isCompleted =
               detail.userMission?.status == UserMissionStatus.completed;
+          final isPending =
+              detail.userMission?.status == UserMissionStatus.pendingVerification;
+          final isUploadRequired =
+              detail.verificationType == VerificationType.upload;
+
+          final canSubmit = allDone &&
+              !isCompleted &&
+              !isPending &&
+              (!isUploadRequired || _pickedFile != null);
+
+          String buttonLabel = 'Mark Mission as Done';
+          if (isCompleted) {
+            buttonLabel = 'Completed';
+          } else if (isPending) {
+            buttonLabel = 'Pending Verification';
+          }
 
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(AppDimension.space32),
               child: WatButton(
-                label: isCompleted ? 'Completed' : 'Mark Mission as Done',
-                onPressed: allDone && !isCompleted
+                label: buttonLabel,
+                onPressed: canSubmit
                     ? () {
                         context.read<MissionTaskBloc>().add(
                           MissionTaskEvent.proofSubmitted(
                             missionId: detail.missionId,
+                            file: _pickedFile,
                           ),
                         );
                       }
@@ -319,6 +467,149 @@ class MissionDetailView extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _MissionMetadataCard extends StatelessWidget {
+  final MissionModel mission;
+  final UserMissionModel? userMission;
+
+  const _MissionMetadataCard({
+    required this.mission,
+    this.userMission,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final dueDate = userMission?.calculatedDueDate;
+    final formattedDueDate = dueDate != null
+        ? DateFormat('d MMM yyyy').format(dueDate)
+        : 'No deadline';
+
+    final vTypeStr = mission.verificationType.name;
+    final formattedVType = vTypeStr[0].toUpperCase() + vTypeStr.substring(1);
+
+    final userStatusStr = userMission?.status.name;
+
+    return Container(
+      padding: const EdgeInsets.all(AppDimension.space16),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundAlt,
+        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+        border: Border.all(color: AppColors.surfaceAlt),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildMetaItem(
+                icon: Icons.calendar_today_outlined,
+                label: 'Due Date',
+                value: formattedDueDate,
+              ),
+              _buildMetaItem(
+                icon: Icons.star_outline,
+                label: 'Base Points',
+                value: '${mission.basePoints} ✦',
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildMetaItem(
+                icon: Icons.verified_outlined,
+                label: 'Verification',
+                value: formattedVType,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Type',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: mission.isMandatory
+                          ? AppColors.error.withOpacity(0.1)
+                          : AppColors.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      mission.isMandatory ? 'Mandatory' : 'Optional',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: mission.isMandatory ? AppColors.error : AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          if (mission.location != null && mission.location!.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            _buildMetaItem(
+              icon: Icons.location_on_outlined,
+              label: 'Location',
+              value: mission.location!,
+            ),
+          ],
+          if (userStatusStr != null) ...[
+            const SizedBox(height: 12),
+            _buildMetaItem(
+              icon: Icons.info_outline,
+              label: 'Status',
+              value: userStatusStr.replaceAll('_', ' ').toUpperCase(),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetaItem({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 18, color: AppColors.primary),
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/domain/models/auth/auth_model.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
 class MockAuthApiService extends Mock implements AuthApiService {}
 
 void main() {
@@ -25,7 +26,9 @@ void main() {
 
   group('AuthSessionManager.isAdmin Tests', () {
     String createJwt(Map<String, dynamic> claims) {
-      final header = base64.encode(utf8.encode(jsonEncode({'alg': 'HS256', 'typ': 'JWT'})));
+      final header = base64.encode(
+        utf8.encode(jsonEncode({'alg': 'HS256', 'typ': 'JWT'})),
+      );
       final payload = base64.encode(utf8.encode(jsonEncode(claims)));
       return '$header.$payload.signature';
     }

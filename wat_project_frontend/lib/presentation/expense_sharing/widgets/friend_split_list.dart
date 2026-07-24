@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/widgets/friendship_mock.dart' show FriendshipMock;
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/presentation/expense_sharing/widgets/friendship_mock.dart'
+    show FriendshipMock;
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class FriendSplitList extends StatelessWidget {
   final List<FriendshipMock> filteredFriends;
@@ -60,19 +61,31 @@ class FriendSplitList extends StatelessWidget {
                   height: 44,
                   child: TextField(
                     controller: oweController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     textAlign: TextAlign.end,
                     readOnly: equalSplit,
                     decoration: InputDecoration(
-                      prefixText: selectedCurrency == 'USD' ? '\$ ' : '$selectedCurrency ',
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      prefixText: selectedCurrency == 'USD'
+                          ? '\$ '
+                          : '$selectedCurrency ',
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                        borderRadius: BorderRadius.circular(
+                          AppDimension.radiusSmall,
+                        ),
                       ),
                       fillColor: equalSplit ? Colors.grey[100] : Colors.white,
                       filled: true,
                     ),
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
             ],

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -100,7 +100,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           isPrimary: true,
                           onPressed: () {
                             Navigator.of(context).pop();
-                            context.pop();
+                            context.pop(true);
                           },
                         ),
                       ],

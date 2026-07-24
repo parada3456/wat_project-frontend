@@ -26,4 +26,8 @@ class MissionTaskEvent with _$MissionTaskEvent {
 
   const factory MissionTaskEvent.filterMissionsRequested(bool? showMandatory) =
       FilterMissionsRequested;
+
+  const factory MissionTaskEvent.createMissionSubmitted({
+    required CreateMissionRequest request,
+  }) = CreateMissionSubmitted;
 }

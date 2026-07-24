@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_housing_entity.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobHousingCard extends StatelessWidget {
   final JobHousingEntity housing;
 
-  const JobHousingCard({
-    super.key,
-    required this.housing,
-  });
+  const JobHousingCard({super.key, required this.housing});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +14,7 @@ class JobHousingCard extends StatelessWidget {
       children: [
         const Text(
           'Housing',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: AppDimension.space8),
         Container(
@@ -39,10 +33,7 @@ class JobHousingCard extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     'Housing Provided',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

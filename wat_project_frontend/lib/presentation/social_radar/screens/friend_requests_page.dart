@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/presentation/social_radar/widgets/friend_request_action_tile.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class FriendRequestsPage extends StatelessWidget {
   const FriendRequestsPage({super.key});

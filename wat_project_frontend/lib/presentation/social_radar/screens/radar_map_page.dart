@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/presentation/social_radar/widgets/radar_user_marker.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class RadarMapPage extends StatelessWidget {
   const RadarMapPage({super.key});

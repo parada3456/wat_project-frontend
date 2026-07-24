@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_task_request.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
-import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 
 class CreateMissionPage extends StatelessWidget {
@@ -17,8 +17,8 @@ class CreateMissionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CreateMissionBloc>(
-      create: (_) => getIt<CreateMissionBloc>(),
+    return BlocProvider<MissionTaskBloc>(
+      create: (_) => getIt<MissionTaskBloc>(),
       child: const _CreateMissionView(),
     );
   }
@@ -76,22 +76,18 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
     try {
       final usecase = getIt<ListJourneyPhasesUseCase>();
       final result = await usecase();
-      result.fold(
-        (failure) {},
-        (phases) {
-          if (phases.isNotEmpty && mounted) {
-            setState(() {
-              _phases = phases.map((p) => {
-                'id': p.phaseId,
-                'name': p.title,
-              }).toList();
-              if (!_phases.any((p) => p['id'] == _selectedPhaseId)) {
-                _selectedPhaseId = _phases.first['id']!;
-              }
-            });
-          }
-        },
-      );
+      result.fold((failure) {}, (phases) {
+        if (phases.isNotEmpty && mounted) {
+          setState(() {
+            _phases = phases
+                .map((p) => {'id': p.phaseId, 'name': p.title})
+                .toList();
+            if (!_phases.any((p) => p['id'] == _selectedPhaseId)) {
+              _selectedPhaseId = _phases.first['id']!;
+            }
+          });
+        }
+      });
     } catch (_) {}
   }
 
@@ -162,8 +158,8 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
       taskList: taskList,
     );
 
-    context.read<CreateMissionBloc>().add(
-      CreateMissionEvent.submitted(request: request),
+    context.read<MissionTaskBloc>().add(
+      MissionTaskEvent.createMissionSubmitted(request: request),
     );
   }
 
@@ -230,7 +226,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CreateMissionBloc, CreateMissionState>(
+    return BlocListener<MissionTaskBloc, MissionTaskState>(
       listener: (context, state) {
         if (state.status is UILoadSuccess &&
             (state.status as UILoadSuccess).message == 'MISSION_CREATED') {
@@ -245,7 +241,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                 isPrimary: true,
                 onPressed: () {
                   Navigator.of(context).pop();
-                  context.pop();
+                  context.pop(true);
                 },
               ),
             ],
@@ -293,8 +289,9 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                 children: [
                   // Step Indicator
                   Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: AppDimension.space16),
+                    padding: const EdgeInsets.only(
+                      bottom: AppDimension.space16,
+                    ),
                     child: Row(
                       children: [
                         _buildStepIndicator(0, 'Details', _currentStep >= 0),
@@ -344,8 +341,8 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           label: 'Phase',
                           value: _selectedPhaseId,
                           items: _phases.map((p) => p['id']!).toList(),
-                          itemLabel: (id) => _phases
-                              .firstWhere((p) => p['id'] == id)['name']!,
+                          itemLabel: (id) =>
+                              _phases.firstWhere((p) => p['id'] == id)['name']!,
                           onChanged: (v) =>
                               setState(() => _selectedPhaseId = v!),
                         ),
@@ -381,8 +378,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           label: 'Verification Type',
                           value: _verificationType,
                           items: _verificationTypes,
-                          itemLabel: (v) =>
-                              v[0].toUpperCase() + v.substring(1),
+                          itemLabel: (v) => v[0].toUpperCase() + v.substring(1),
                           onChanged: (v) =>
                               setState(() => _verificationType = v!),
                         ),
@@ -404,8 +400,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           label: 'Due Date Type',
                           value: _dueDateType,
                           items: _dueDateTypes,
-                          itemLabel: (v) =>
-                              v[0].toUpperCase() + v.substring(1),
+                          itemLabel: (v) => v[0].toUpperCase() + v.substring(1),
                           onChanged: (v) => setState(() {
                             _dueDateType = v!;
                             _fixedDueDateController.clear();
@@ -533,14 +528,13 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                                   ? () {
                                                       setState(() {
                                                         final temp =
-                                                            _taskControllers[
-                                                                index];
-                                                        _taskControllers[
-                                                            index] =
-                                                            _taskControllers[
-                                                                index - 1];
-                                                        _taskControllers[
-                                                            index - 1] = temp;
+                                                            _taskControllers[index];
+                                                        _taskControllers[index] =
+                                                            _taskControllers[index -
+                                                                1];
+                                                        _taskControllers[index -
+                                                                1] =
+                                                            temp;
                                                       });
                                                     }
                                                   : null,
@@ -550,20 +544,20 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                                 Icons.arrow_downward,
                                                 size: 20,
                                               ),
-                                              onPressed: index <
+                                              onPressed:
+                                                  index <
                                                       _taskControllers.length -
                                                           1
                                                   ? () {
                                                       setState(() {
                                                         final temp =
-                                                            _taskControllers[
-                                                                index];
-                                                        _taskControllers[
-                                                            index] =
-                                                            _taskControllers[
-                                                                index + 1];
-                                                        _taskControllers[
-                                                            index + 1] = temp;
+                                                            _taskControllers[index];
+                                                        _taskControllers[index] =
+                                                            _taskControllers[index +
+                                                                1];
+                                                        _taskControllers[index +
+                                                                1] =
+                                                            temp;
                                                       });
                                                     }
                                                   : null,
@@ -680,15 +674,19 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                         ),
                         const SizedBox(width: AppDimension.space16),
                         Expanded(
-                          child: BlocBuilder<CreateMissionBloc, CreateMissionState>(
-                            builder: (context, state) {
-                              final isLoading = state.status is UILoading;
-                              return _SubmitButton(
-                                isLoading: isLoading,
-                                onPressed: isLoading ? null : _onSubmit,
-                              );
-                            },
-                          ),
+                          child:
+                              BlocBuilder<
+                                MissionTaskBloc,
+                                MissionTaskState
+                              >(
+                                builder: (context, state) {
+                                  final isLoading = state.status is UILoading;
+                                  return _SubmitButton(
+                                    isLoading: isLoading,
+                                    onPressed: isLoading ? null : _onSubmit,
+                                  );
+                                },
+                              ),
                         ),
                       ],
                     ),

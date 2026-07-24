@@ -1,12 +1,10 @@
-
-
 part of 'job_market_bloc.dart';
 
 @freezed
 abstract class JobMarketState with _$JobMarketState {
   const factory JobMarketState({
     @Default(UIStatus.initial()) UIStatus status,
-    
+
     // Core data cache for the feature
     @Default([]) List<JobPostingModel> jobs,
     JobDetailResponse? jobDetail,

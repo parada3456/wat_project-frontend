@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
-import 'package:wat_project_frontend/core/widgets/app_popup.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobCartPage extends StatefulWidget {
   const JobCartPage({super.key});
@@ -39,17 +39,23 @@ class _JobCartPageState extends State<JobCartPage> {
         listener: (context, state) {
           // 1. Check for Load Failures across different operations
           if (state.status is UILoadFailed) {
-            final msg = (state.status as UILoadFailed).message ?? 'An error occurred loading your cart.';
+            final msg =
+                (state.status as UILoadFailed).message ??
+                'An error occurred loading your cart.';
             _showErrorPopup(context, msg);
           }
-          
+
           if (state.removeFromCartStatus is UILoadFailed) {
-            final msg = (state.removeFromCartStatus as UILoadFailed).message ?? 'Failed to remove job.';
+            final msg =
+                (state.removeFromCartStatus as UILoadFailed).message ??
+                'Failed to remove job.';
             _showErrorPopup(context, msg);
           }
-          
+
           if (state.updateCartStatus is UILoadFailed) {
-            final msg = (state.updateCartStatus as UILoadFailed).message ?? 'Failed to update status.';
+            final msg =
+                (state.updateCartStatus as UILoadFailed).message ??
+                'Failed to update status.';
             _showErrorPopup(context, msg);
           }
 
@@ -90,7 +96,9 @@ class _JobCartPageState extends State<JobCartPage> {
                         foregroundColor: AppColors.white,
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                          borderRadius: BorderRadius.circular(
+                            AppDimension.radiusMedium,
+                          ),
                         ),
                         elevation: 0,
                       ),
@@ -120,7 +128,7 @@ class _JobCartPageState extends State<JobCartPage> {
               if (state.status is UILoading && state.cartItems.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
               }
-              
+
               if (state.cartItems.isEmpty) {
                 return const Center(
                   child: Text(
@@ -138,7 +146,7 @@ class _JobCartPageState extends State<JobCartPage> {
                       const SizedBox(height: AppDimension.space12),
                   itemBuilder: (context, index) {
                     final item = state.cartItems[index];
-                    
+
                     // Match corresponding job info
                     final job = state.jobs.firstWhere(
                       (j) => j.jobId == item.jobId,
@@ -153,7 +161,9 @@ class _JobCartPageState extends State<JobCartPage> {
                     return Card(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
+                        borderRadius: BorderRadius.circular(
+                          AppDimension.radiusMedium,
+                        ),
                       ),
                       color: AppColors.white,
                       child: Padding(
@@ -182,13 +192,16 @@ class _JobCartPageState extends State<JobCartPage> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: InkWell(
-                                onTap: () => context.push('/jobs/${item.jobId}'),
+                                onTap: () =>
+                                    context.push('/jobs/${item.jobId}'),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: Text(
@@ -207,7 +220,9 @@ class _JobCartPageState extends State<JobCartPage> {
                                             size: 22,
                                           ),
                                           onPressed: () => _bloc.add(
-                                            JobMarketEvent.removeJobFromCart(cartItemId: item.cartId),
+                                            JobMarketEvent.removeJobFromCart(
+                                              cartItemId: item.cartId,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -222,18 +237,29 @@ class _JobCartPageState extends State<JobCartPage> {
                                     const SizedBox(height: 12),
                                     Row(
                                       children: [
-                                        const Icon(Icons.location_on_outlined, size: 16, color: AppColors.primary),
+                                        const Icon(
+                                          Icons.location_on_outlined,
+                                          size: 16,
+                                          color: AppColors.primary,
+                                        ),
                                         const SizedBox(width: 4),
                                         Text(
                                           '${job.locationCity ?? 'N/A'}, ${job.locationState ?? 'N/A'}',
-                                          style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: AppColors.textSecondary,
+                                          ),
                                         ),
                                       ],
                                     ),
                                     const SizedBox(height: 6),
                                     Row(
                                       children: [
-                                        const Icon(Icons.monetization_on_outlined, size: 16, color: Colors.green),
+                                        const Icon(
+                                          Icons.monetization_on_outlined,
+                                          size: 16,
+                                          color: Colors.green,
+                                        ),
                                         const SizedBox(width: 4),
                                         Text(
                                           '\$${job.salaryRangeMin.toStringAsFixed(2)} - \$${job.salaryRangeMax.toStringAsFixed(2)}/hr',
@@ -247,7 +273,8 @@ class _JobCartPageState extends State<JobCartPage> {
                                     ),
                                     const SizedBox(height: 16),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         PopupMenuButton<String>(
                                           onSelected: (newStatus) => _bloc.add(
@@ -258,31 +285,45 @@ class _JobCartPageState extends State<JobCartPage> {
                                           ),
                                           itemBuilder: (context) => [
                                             const PopupMenuItem(
-                                              value: 'saved',
+                                              value: 'Saved',
                                               child: Text('Saved'),
                                             ),
                                             const PopupMenuItem(
-                                              value: 'applied',
+                                              value: 'Applied',
                                               child: Text('Applied'),
                                             ),
                                           ],
                                           child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 6,
+                                            ),
                                             decoration: BoxDecoration(
-                                              color: item.status == CartStatus.applied
-                                                  ? Colors.green.withValues(alpha: 0.1)
-                                                  : AppColors.primary.withValues(alpha: 0.1),
-                                              borderRadius: BorderRadius.circular(12),
+                                              color:
+                                                  item.status ==
+                                                      CartStatus.applied
+                                                  ? Colors.green.withValues(
+                                                      alpha: 0.1,
+                                                    )
+                                                  : AppColors.primary
+                                                        .withValues(alpha: 0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
-                                                  item.status.name[0].toUpperCase() + item.status.name.substring(1),
+                                                  item.status.name[0]
+                                                          .toUpperCase() +
+                                                      item.status.name
+                                                          .substring(1),
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
-                                                    color: item.status == CartStatus.applied
+                                                    color:
+                                                        item.status ==
+                                                            CartStatus.applied
                                                         ? Colors.green
                                                         : AppColors.primary,
                                                   ),
@@ -291,7 +332,9 @@ class _JobCartPageState extends State<JobCartPage> {
                                                 Icon(
                                                   Icons.arrow_drop_down,
                                                   size: 14,
-                                                  color: item.status == CartStatus.applied
+                                                  color:
+                                                      item.status ==
+                                                          CartStatus.applied
                                                       ? Colors.green
                                                       : AppColors.primary,
                                                 ),
@@ -301,10 +344,16 @@ class _JobCartPageState extends State<JobCartPage> {
                                         ),
                                         if (job.usSponsor)
                                           Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
                                             decoration: BoxDecoration(
-                                              color: Colors.blue.withValues(alpha: 0.1),
-                                              borderRadius: BorderRadius.circular(8),
+                                              color: Colors.blue.withValues(
+                                                alpha: 0.1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
                                             child: const Text(
                                               'Sponsor',
@@ -341,12 +390,7 @@ class _JobCartPageState extends State<JobCartPage> {
       type: AppPopupType.error,
       title: 'Error',
       message: message,
-      buttons: [
-        AppPopupButton(
-          label: 'OK', 
-          onPressed: () => context.pop(),
-        )
-      ],
+      buttons: [AppPopupButton(label: 'OK', onPressed: () => context.pop())],
     );
   }
 }

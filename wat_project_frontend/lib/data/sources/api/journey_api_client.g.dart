@@ -145,6 +145,43 @@ class _JourneyApiService implements JourneyApiService {
   }
 
   @override
+  Future<PaginationResponse<UserCreditEntity>> getFriendsCreditScoreLeaderboard(
+    int? page,
+    int? pageSize,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<PaginationResponse<UserCreditEntity>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'leaderboard/friends/credit-score',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginationResponse<UserCreditEntity> _value;
+    try {
+      _value = PaginationResponse<UserCreditEntity>.fromJson(
+        _result.data!,
+        (json) => UserCreditEntity.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<PaginationResponse<UserBadgeEntity>> listBadges() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

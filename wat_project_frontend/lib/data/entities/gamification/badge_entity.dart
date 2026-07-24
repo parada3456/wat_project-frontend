@@ -25,7 +25,8 @@ class BadgeEntity {
     required this.createdAt,
   });
 
-  factory BadgeEntity.fromJson(Map<String, dynamic> json) => _$BadgeEntityFromJson(json);
+  factory BadgeEntity.fromJson(Map<String, dynamic> json) =>
+      _$BadgeEntityFromJson(json);
   Map<String, dynamic> toJson() => _$BadgeEntityToJson(this);
 
   BadgeModel toModel() => BadgeModel(
