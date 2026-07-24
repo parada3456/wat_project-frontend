@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
@@ -9,6 +10,8 @@ import 'package:wat_project_frontend/presentation/missions_tasks/bloc/calendar_b
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_calendar.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class MissionCalendarPage extends StatelessWidget {
@@ -36,6 +39,9 @@ class MissionCalendarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return Scaffold(
       backgroundColor: AppColors.backgroundAlt,
       body: SafeArea(

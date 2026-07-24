@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/job_review/create_review_request.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
@@ -21,15 +23,15 @@ class WriteReviewPage extends StatefulWidget {
 class _WriteReviewPageState extends State<WriteReviewPage> {
   final _reviewController = TextEditingController();
   final _tipsController = TextEditingController();
-  double _rating = 5.0;
-  double _scoreAgency = 5.0;
-  double _scoreJob = 5.0;
-  double _scoreCoworkers = 5.0;
-  double _scoreTown = 5.0;
-  double _scoreHours = 5.0;
-  double _scoreHousing = 5.0;
-  double _scoreSecondJobFeasibility = 5.0;
-  double _scoreOvertimeAvailability = 5.0;
+  double _rating = 0.0;
+  double _scoreAgency = 0.0;
+  double _scoreJob = 0.0;
+  double _scoreCoworkers = 0.0;
+  double _scoreTown = 0.0;
+  double _scoreHours = 0.0;
+  double _scoreHousing = 0.0;
+  double _scoreSecondJobFeasibility = 0.0;
+  double _scoreOvertimeAvailability = 0.0;
   late final JobMarketBloc _bloc;
 
   @override
@@ -112,6 +114,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return BlocProvider.value(
       value: _bloc,
       child: BlocListener<JobMarketBloc, JobMarketState>(
@@ -119,7 +124,6 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             previous.createReviewStatus != current.createReviewStatus,
         listener: (context, state) {
           if (state.createReviewStatus is UILoadSuccess) {
-            // Dismiss current page upon successful post submission
             context.pop();
           } else if (state.createReviewStatus is UILoadFailed) {
             final msg =
@@ -137,41 +141,37 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.bg(context),
           appBar: AppBar(
-            backgroundColor: AppColors.background,
-            elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+              icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
               onPressed: () => context.pop(),
             ),
-            title: const Text(
-              'Write a Review',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            title: const Text('WRITE REVIEW'),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppDimension.space32),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimension.space24,
+                vertical: AppDimension.space32,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'How was your experience?',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                  Text(
+                    'HOW WAS YOUR EXPERIENCE?',
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      height: 1.5,
                     ),
                   ),
                   const SizedBox(height: AppDimension.space16),
                   Center(
                     child: ReviewStarsRow(
                       rating: _rating,
-                      size: 40,
+                      size: 32,
                       isInteractive: true,
                       onRatingChanged: (val) => setState(() => _rating = val),
                     ),
@@ -236,16 +236,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     ),
                   ),
                   const SizedBox(height: AppDimension.space8),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundAlt,
-                      borderRadius: BorderRadius.circular(
-                        AppDimension.radiusSmall,
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimension.space16,
-                    ),
+                  PixelBorderContainer(
                     child: TextField(
                       controller: _reviewController,
                       maxLines: 5,
@@ -294,7 +285,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppDimension.space50),
+                  const SizedBox(height: AppDimension.space48),
                   BlocBuilder<JobMarketBloc, JobMarketState>(
                     buildWhen: (previous, current) =>
                         previous.createReviewStatus !=
@@ -307,7 +298,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: AppDimension.space50),
+                  const SizedBox(height: AppDimension.space48),
                 ],
               ),
             ),

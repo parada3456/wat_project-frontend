@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
@@ -57,7 +59,7 @@ class JobCard extends StatelessWidget {
     final int displayReviewCount =
         reviewCount ?? (5 + (job.jobId.hashCode % 50));
 
-    return GestureDetector(
+    return PixelBorderContainer(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(AppDimension.space16),

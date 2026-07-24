@@ -5,10 +5,13 @@ import 'package:wat_project_frontend/domain/models/paged_model.dart';
 import 'package:wat_project_frontend/presentation/widgets/paginated_list_view.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/job_card.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
@@ -53,6 +56,12 @@ class _JobSearchPageState extends State<JobSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = AppColors.bg(context);
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
+
     return BlocProvider.value(
       value: _bloc,
       child: BlocListener<JobMarketBloc, JobMarketState>(
@@ -61,16 +70,13 @@ class _JobSearchPageState extends State<JobSearchPage> {
             previous.addToCartStatus != current.addToCartStatus ||
             previous.jobs != current.jobs,
         listener: (context, state) {
-          // Synchronize cached local jobs whenever the state updates successfully
           if (state.status is UILoadSuccess || state.jobs.isNotEmpty) {
             setState(() {
               _allJobs = state.jobs;
-              // Maintain active search filter when background updates happen
               _onSearch();
             });
           }
 
-          // Handle root data loading failures
           if (state.status is UILoadFailed) {
             final msg =
                 (state.status as UILoadFailed).message ??
@@ -78,7 +84,6 @@ class _JobSearchPageState extends State<JobSearchPage> {
             _showPopup(context, AppPopupType.error, 'Error', msg);
           }
 
-          // Handle targeted one-off side effects (Add to Cart actions)
           if (state.addToCartStatus is UILoadSuccess) {
             _showPopup(
               context,
@@ -96,7 +101,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.backgroundAlt,
+          backgroundColor: bgColor,
           appBar: AppBar(
             backgroundColor: AppColors.background,
             elevation: 0,
@@ -109,9 +114,10 @@ class _JobSearchPageState extends State<JobSearchPage> {
             ),
             actions: [
               IconButton(
-                icon: const Icon(
-                  Icons.shopping_cart_outlined,
-                  color: AppColors.textPrimary,
+                icon: AppAssets.img(
+                  AppAssets.iconCart,
+                  size: 20,
+                  color: textColor,
                 ),
                 onPressed: () => context.push('/jobs/cart'),
               ),
@@ -120,32 +126,37 @@ class _JobSearchPageState extends State<JobSearchPage> {
           body: SafeArea(
             child: Column(
               children: [
+                // Search panel
                 Container(
                   padding: const EdgeInsets.all(AppDimension.space16),
-                  color: AppColors.background,
+                  color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
                   child: WatInputField(
                     label: 'Search Jobs',
                     hint: 'Position, city, or employer...',
                     controller: _searchController,
-                    suffixIcon: const Icon(
-                      Icons.search,
-                      color: AppColors.textSecondary,
+                    suffixIcon: AppAssets.img(
+                      AppAssets.iconSearch,
+                      size: 20,
+                      color: subtextColor,
                     ),
                   ),
                 ),
+                // Results list
                 Expanded(
                   child: BlocBuilder<JobMarketBloc, JobMarketState>(
                     builder: (context, state) {
-                      // Show primary spinner if it's explicitly loading and local list cache is dry
                       if (state.status is UILoading && _allJobs.isEmpty) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
                       if (_filteredJobs.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            'No jobs found.',
-                            style: TextStyle(color: AppColors.textSecondary),
+                            'NO JOBS FOUND.',
+                            style: GoogleFonts.notoSansThai(
+                              fontSize: 12,
+                              color: subtextColor,
+                            ),
                           ),
                         );
                       }

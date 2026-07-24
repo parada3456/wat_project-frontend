@@ -1,27 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 enum AppPopupType { success, error, warning, info, none }
 
 class AppPopupButton {
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isPrimary;
   final Color? color;
+  final String? path;
+  final Map<String, String>? pathParameters;
+  final Map<String, String>? queryParameters;
+  final Object? extra;
+  final bool replacement;
+  final bool autoPop;
 
   const AppPopupButton({
     required this.label,
-    required this.onPressed,
+    this.onPressed,
     this.isPrimary = false,
     this.color,
+    this.path,
+    this.pathParameters,
+    this.queryParameters,
+    this.extra,
+    this.replacement = false,
+    this.autoPop = true,
   });
 }
 
+/// AppPopup — Pixel RPG dialog box (NPC speech / system alert style).
 class AppPopup extends StatelessWidget {
   final String title;
   final String message;
   final AppPopupType type;
   final List<AppPopupButton> buttons;
+  final Widget? content;
 
   const AppPopup({
     super.key,
@@ -29,6 +49,7 @@ class AppPopup extends StatelessWidget {
     required this.message,
     required this.buttons,
     this.type = AppPopupType.none,
+    this.content,
   }) : assert(
          buttons.length >= 1 && buttons.length <= 3,
          'AppPopup must have between 1 and 3 buttons',
@@ -41,69 +62,58 @@ class AppPopup extends StatelessWidget {
     AppPopupType type = AppPopupType.none,
     required List<AppPopupButton> buttons,
     bool barrierDismissible = true,
+    Widget? content,
   }) {
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
+      barrierColor: Colors.black.withValues(alpha: 0.75),
       builder: (context) => AppPopup(
         title: title,
         message: message,
         type: type,
         buttons: buttons,
+        content: content,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor =
+        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final subtextColor =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
 
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimension.radiusLarge),
-      ),
-      backgroundColor: isDark ? const Color(0xFF1E1E1E) : AppColors.white,
-      elevation: 8,
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 340),
-        padding: const EdgeInsets.all(AppDimension.paddingMedium),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      child: PixelDialogBox(
+        title: _typeLabel(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (type != AppPopupType.none) ...[
-              _buildIcon(context),
-              const SizedBox(height: AppDimension.space16),
+              _buildTypeIndicator(context),
+              const SizedBox(height: AppDimension.space12),
             ],
             Text(
-              title,
+              title.toUpperCase(),
               textAlign: TextAlign.center,
-              style:
-                  theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? AppColors.white : AppColors.blackText,
-                  ) ??
-                  TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? AppColors.white : AppColors.blackText,
-                  ),
+              style: context.textTheme.titleLarge,
             ),
-            const SizedBox(height: AppDimension.space10),
+            const SizedBox(height: AppDimension.space8),
             Text(
               message,
               textAlign: TextAlign.center,
-              style:
-                  theme.textTheme.bodyMedium?.copyWith(
-                    color: isDark ? Colors.grey[300] : AppColors.textSecondary,
-                  ) ??
-                  TextStyle(
-                    fontSize: 14,
-                    color: isDark ? Colors.grey[300] : AppColors.textSecondary,
-                  ),
+              style: context.textTheme.bodyMedium,
             ),
-            const SizedBox(height: AppDimension.space32),
+            if (content != null) ...[
+              const SizedBox(height: AppDimension.space12),
+              content!,
+            ],
+            const SizedBox(height: AppDimension.space20),
             _buildButtons(context),
           ],
         ),
@@ -111,41 +121,45 @@ class AppPopup extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(BuildContext context) {
-    IconData iconData;
-    Color iconColor;
-    Color bgColor;
-
+  String? _typeLabel() {
     switch (type) {
       case AppPopupType.success:
-        iconData = Icons.check_circle_outline_rounded;
-        iconColor = Colors.green;
-        bgColor = Colors.green.withOpacity(0.1);
-        break;
+        return 'SYSTEM';
       case AppPopupType.error:
-        iconData = Icons.error_outline_rounded;
-        iconColor = AppColors.error;
-        bgColor = AppColors.error.withOpacity(0.1);
-        break;
+        return 'ERROR';
       case AppPopupType.warning:
-        iconData = Icons.warning_amber_rounded;
-        iconColor = Colors.amber[800]!;
-        bgColor = Colors.amber.withOpacity(0.1);
-        break;
+        return 'WARNING';
       case AppPopupType.info:
-        iconData = Icons.info_outline_rounded;
-        iconColor = Colors.blue;
-        bgColor = Colors.blue.withOpacity(0.1);
-        break;
+        return 'INFO';
       case AppPopupType.none:
-        return const SizedBox.shrink();
+        return null;
     }
+  }
+
+  Widget _buildTypeIndicator(BuildContext context) {
+    final (String symbol, Color color) = switch (type) {
+      AppPopupType.success => ('OK', AppColors.success),
+      AppPopupType.error => ('!!', AppColors.error),
+      AppPopupType.warning => ('??', AppColors.warning),
+      AppPopupType.info => ('>>', AppColors.info),
+      AppPopupType.none => ('', Colors.transparent),
+    };
 
     return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-      child: Icon(iconData, color: iconColor, size: 36),
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        border: Border.all(color: color, width: AppDimension.pixelBorderWidth),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        symbol,
+        style: GoogleFonts.pressStart2p(
+          fontSize: 14,
+          color: color,
+          height: 1.5,
+        ),
+      ),
     );
   }
 
@@ -153,32 +167,32 @@ class AppPopup extends StatelessWidget {
     if (buttons.length == 3) {
       return Column(
         mainAxisSize: MainAxisSize.min,
-        children: buttons.map((button) {
-          final isLast = button == buttons.last;
+        children: buttons.map((b) {
+          final isLast = b == buttons.last;
           return Padding(
-            padding: EdgeInsets.only(bottom: isLast ? 0 : AppDimension.space10),
+            padding: EdgeInsets.only(
+              bottom: isLast ? 0 : AppDimension.space8,
+            ),
             child: SizedBox(
               width: double.infinity,
-              child: _buildSingleButton(context, button),
+              child: _buildSingleButton(context, b),
             ),
           );
         }).toList(),
       );
     }
 
-    // 1 or 2 buttons
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: buttons.map((button) {
-        final isFirst = button == buttons.first;
+      children: buttons.map((b) {
+        final isFirst = b == buttons.first;
         final isMulti = buttons.length > 1;
         return Expanded(
           child: Padding(
             padding: EdgeInsets.only(
-              right: isFirst && isMulti ? AppDimension.space10 / 2 : 0,
-              left: !isFirst && isMulti ? AppDimension.space10 / 2 : 0,
+              right: isFirst && isMulti ? AppDimension.space4 : 0,
+              left: !isFirst && isMulti ? AppDimension.space4 : 0,
             ),
-            child: _buildSingleButton(context, button),
+            child: _buildSingleButton(context, b),
           ),
         );
       }).toList(),
@@ -186,45 +200,43 @@ class AppPopup extends StatelessWidget {
   }
 
   Widget _buildSingleButton(BuildContext context, AppPopupButton button) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    void action() {
+      // if (button.autoPop) context.pop();
+      button.onPressed?.call();
+      if (button.path != null) {
+        var url = button.path!;
+        if (button.pathParameters != null) {
+          button.pathParameters!.forEach((key, value) {
+            url = url.replaceAll(':$key', Uri.encodeComponent(value));
+          });
+        }
+        if (button.queryParameters != null &&
+            button.queryParameters!.isNotEmpty) {
+          final uri = Uri.parse(url);
+          final combined = {...uri.queryParameters, ...button.queryParameters!};
+          url = uri.replace(queryParameters: combined).toString();
+        }
+        if (button.replacement) {
+          context.replace(url, extra: button.extra);
+        } else {
+          context.push(url, extra: button.extra);
+        }
+      }
+    }
 
     if (button.isPrimary) {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: button.color ?? AppColors.primary,
-          foregroundColor: AppColors.white,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: AppDimension.space12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-          ),
-        ),
-        onPressed: button.onPressed,
-        child: Text(
-          button.label,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+      return WatButton(
+        label: button.label,
+        onPressed: action,
+        backgroundColor: button.color ?? AppColors.primary,
+        textColor: AppColors.black,
       );
     } else {
-      return OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor:
-              button.color ??
-              (isDark ? Colors.grey[300] : AppColors.textPrimary),
-          side: BorderSide(
-            color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
-          ),
-          padding: const EdgeInsets.symmetric(vertical: AppDimension.space12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-          ),
-        ),
-        onPressed: button.onPressed,
-        child: Text(
-          button.label,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
+      return WatButton.outlined(
+        label: button.label,
+        onPressed: action,
+        borderColor: button.color,
+        textColor: button.color,
       );
     }
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class CreditHistoryRow extends StatelessWidget {
   final String title;
@@ -16,57 +19,63 @@ class CreditHistoryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = delta > 0;
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-      ),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final deltaColor = isPositive ? AppColors.success : AppColors.error;
+
+    return PixelBorderContainer(
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(AppDimension.space8),
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
-              color: isPositive
-                  ? Colors.green.withOpacity(0.1)
-                  : AppColors.error.withOpacity(0.1),
-              shape: BoxShape.circle,
+              color: deltaColor.withValues(alpha: 0.15),
+              border: Border.all(
+                color: deltaColor,
+                width: AppDimension.pixelBorderWidth,
+              ),
             ),
-            child: Icon(
-              isPositive ? Icons.trending_up : Icons.trending_down,
-              color: isPositive ? Colors.green : AppColors.error,
-              size: 20,
+            alignment: Alignment.center,
+            child: AppAssets.img(
+              isPositive ? AppAssets.iconAdd : AppAssets.iconClose,
+              size: 16,
+              color: deltaColor,
             ),
           ),
-          const SizedBox(width: AppDimension.space16),
+          const SizedBox(width: AppDimension.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                  title.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    height: 1.4,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   date,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.textSecondary,
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 6,
+                    color: subtextColor,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Text(
             '${isPositive ? '+' : ''}$delta',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: isPositive ? Colors.green : AppColors.error,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 8,
+              fontWeight: FontWeight.bold,
+              color: deltaColor,
             ),
           ),
         ],

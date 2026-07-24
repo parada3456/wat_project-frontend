@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
@@ -87,18 +89,6 @@ class _RegisterPageState extends State<RegisterPage> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primary,
-              onPrimary: AppColors.white,
-              onSurface: AppColors.textPrimary,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
     if (picked != null) {
       setState(() {
@@ -130,31 +120,85 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
+  void _validateAndNext(LoginState state) {
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final arrivalDate = _arrivalDateController.text.trim();
+    final jobStartDate = _jobStartDateController.text.trim();
+
+    setState(() {
+      _usernameError = null;
+      _emailError = null;
+      _passwordError = null;
+      _arrivalDateError = null;
+      _jobStartDateError = null;
+    });
+
+    var isValid = true;
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (username.isEmpty) {
+      _usernameError = 'Username is required';
+      isValid = false;
+    }
+    if (email.isEmpty) {
+      _emailError = 'Email is required';
+      isValid = false;
+    } else if (!emailRegex.hasMatch(email)) {
+      _emailError = 'Enter a valid email format';
+      isValid = false;
+    }
+    if (password.isEmpty) {
+      _passwordError = 'Password is required';
+      isValid = false;
+    } else if (password.length < 8) {
+      _passwordError = 'Password must be at least 8 characters';
+      isValid = false;
+    }
+    if (_selectedPhase != 'phase-1') {
+      if (arrivalDate.isEmpty) {
+        _arrivalDateError = 'Arrival Date is required';
+        isValid = false;
+      }
+      if (jobStartDate.isEmpty) {
+        _jobStartDateError = 'Job Start Date is required';
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      setState(() {});
+      return;
+    }
+    setState(() => _showOtpStep = true);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? AppColors.darkBackground : AppColors.lightBackground;
+    final textColor = isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final subtextColor = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.lightBorder;
+
     return BlocProvider(
       create: (context) => getIt<LoginBloc>(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
             onPressed: () {
               if (_showOtpStep) {
                 setState(() => _showOtpStep = false);
               } else {
-                Navigator.pop(context);
+                context.pop();
               }
             },
           ),
           title: Text(
-            _showOtpStep ? 'Verify OTP' : 'Create Account',
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
+            _showOtpStep ? 'VERIFY OTP' : 'CREATE ACCOUNT',
           ),
         ),
         body: SafeArea(
@@ -165,7 +209,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(status.message ?? 'Registration failed'),
-                    backgroundColor: Colors.red,
                   ),
                 );
               } else if (status is UILoadSuccess) {
@@ -179,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       label: 'OK',
                       isPrimary: true,
                       onPressed: () {
-                        Navigator.of(context).pop(); // dismiss popup
+                        context.pop();
                         context.push('/home');
                       },
                     ),
@@ -197,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: AppDimension.space32),
+                    const SizedBox(height: AppDimension.space16),
                     if (!_showOtpStep) ...[
                       // Register Form Step
                       WatInputField(
@@ -350,7 +393,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                       const SizedBox(height: AppDimension.space32),
                       WatButton(
-                        label: 'Next',
+                        label: 'Next >',
                         isLoading: isLoading,
                         onPressed: () {
                           final username = _usernameController.text.trim();
@@ -417,13 +460,61 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ] else ...[
-                      // OTP Verification Step
-                      const Text(
-                        'Email Verification',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                      // ─── OTP Step ───
+                      PixelDialogBox(
+                        title: 'VERIFY EMAIL',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'We sent a 6-digit code to:',
+                              style: context.textTheme.labelMedium?.copyWith(color: subtextColor,),
+                            ),
+                            const SizedBox(height: AppDimension.space8),
+                            Text(
+                              _emailController.text,
+                              style: context.textTheme.labelMedium?.copyWith(color: AppColors.primary,),
+                            ),
+                            const SizedBox(height: AppDimension.space24),
+                            WatInputField(
+                              label: 'OTP Code',
+                              hint: 'enter 6-digit code',
+                              controller: _otpController,
+                              errorText: _getError(state, 'otp'),
+                              autocorrect: false,
+                              enableSuggestions: false,
+                              keyboardType: TextInputType.number,
+                              onChanged: (_) {
+                                if (_otpError != null) {
+                                  setState(() => _otpError = null);
+                                }
+                              },
+                            ),
+                            const SizedBox(height: AppDimension.space24),
+                            WatButton(
+                              label: 'Verify & Sign Up',
+                              isLoading: isLoading,
+                              onPressed: () {
+                                final otp = _otpController.text.trim();
+                                if (otp != '123456') {
+                                  setState(() {
+                                    _otpError = 'Invalid OTP. Use 123456';
+                                  });
+                                  return;
+                                }
+                                context.read<LoginBloc>().add(
+                                      RegisterSubmittedEvent(
+                                        email: _emailController.text.trim(),
+                                        password:
+                                            _passwordController.text.trim(),
+                                        firstName:
+                                            _usernameController.text.trim(),
+                                        lastName: '',
+                                      ),
+                                    );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -476,27 +567,24 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ],
-                    const SizedBox(height: AppDimension.space32),
+                    const SizedBox(height: AppDimension.space24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Already have an account? ",
-                          style: TextStyle(color: AppColors.textSecondary),
+                        Text(
+                          'HAVE ACCOUNT?  ',
+                          style: context.textTheme.labelSmall?.copyWith(color: subtextColor,),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: const Text(
-                            'SignIn',
-                            style: TextStyle(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          onTap: () => context.pop(),
+                          child: Text(
+                            'SIGN IN',
+                            style: context.textTheme.labelSmall?.copyWith(color: AppColors.primary,),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppDimension.space50),
+                    const SizedBox(height: AppDimension.space32),
                   ],
                 ),
               );

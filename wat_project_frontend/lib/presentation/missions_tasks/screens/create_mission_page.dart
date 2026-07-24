@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_task_request.dart';
 import 'package:wat_project_frontend/di/inject.dart';
@@ -10,6 +11,10 @@ import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 
 class CreateMissionPage extends StatelessWidget {
@@ -32,13 +37,17 @@ class _CreateMissionView extends StatefulWidget {
 }
 
 class _CreateMissionViewState extends State<_CreateMissionView> {
-  final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _locationController = TextEditingController();
   final _pointsController = TextEditingController();
   final _fixedDueDateController = TextEditingController();
   final _relativeDaysController = TextEditingController();
+
+  String? _titleError;
+  String? _pointsError;
+  String? _relativeDaysError;
+  String? _fixedDueDateError;
 
   bool _isMandatory = false;
   String _verificationType = 'none';
@@ -68,6 +77,8 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
     if (!_isAdmin) {
       _pointsController.text = '100';
       _isMandatory = false;
+    } else {
+      _pointsController.text = '100';
     }
     _loadPhases();
   }
@@ -106,9 +117,46 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
     super.dispose();
   }
 
-  void _onSubmit() {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+  bool _validateForm() {
+    setState(() {
+      _titleError = null;
+      _pointsError = null;
+      _relativeDaysError = null;
+      _fixedDueDateError = null;
+    });
 
+    bool isValid = true;
+
+    if (_titleController.text.trim().isEmpty) {
+      setState(() => _titleError = 'Title is required');
+      isValid = false;
+    }
+
+    if (_isAdmin) {
+      final points = int.tryParse(_pointsController.text.trim());
+      if (points == null || points < 0) {
+        setState(() => _pointsError = 'Invalid points value');
+        isValid = false;
+      }
+    }
+
+    if (_dueDateType == 'fixed' && _selectedDueDate == null) {
+      setState(() => _fixedDueDateError = 'Please select a date');
+      isValid = false;
+    }
+
+    if (_dueDateType == 'relative') {
+      final days = int.tryParse(_relativeDaysController.text.trim());
+      if (days == null || days < 0) {
+        setState(() => _relativeDaysError = 'Invalid days offset');
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  }
+
+  void _onSubmit() {
     if (_taskControllers.isEmpty) {
       AppPopup.show<void>(
         context: context,
@@ -123,6 +171,25 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
         ],
       );
       return;
+    }
+
+    // Verify all tasks have a title
+    for (final task in _taskControllers) {
+      if (task['title']!.text.trim().isEmpty) {
+        AppPopup.show<void>(
+          context: context,
+          title: 'Error',
+          message: 'All tasks must have a title.',
+          type: AppPopupType.error,
+          buttons: [
+            AppPopupButton(
+              label: 'Dismiss',
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+        return;
+      }
     }
 
     final taskList = _taskControllers.map((t) {
@@ -146,12 +213,10 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
       basePoints: _isAdmin
           ? (int.tryParse(_pointsController.text.trim()) ?? 100)
           : 100,
-      isMandatory: _isAdmin ? _isMandatory : false,
+      isMandatory: _isMandatory,
       verificationType: _verificationType,
       dueDateType: _dueDateType,
-      fixedDueDate: _dueDateType == 'fixed' && _selectedDueDate != null
-          ? _selectedDueDate!.toIso8601String()
-          : null,
+      fixedDueDate: _selectedDueDate?.toIso8601String(),
       relativeDaysOffset: _dueDateType == 'relative'
           ? int.tryParse(_relativeDaysController.text.trim())
           : null,
@@ -164,33 +229,25 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
   }
 
   Future<void> _pickDate() async {
-    final now = DateTime.now();
-    final picked = await showDatePicker(
+    final date = await showDatePicker(
       context: context,
-      initialDate: _selectedDueDate ?? now.add(const Duration(days: 7)),
-      firstDate: now,
-      lastDate: now.add(const Duration(days: 365 * 3)),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
-            primary: AppColors.primary,
-            onPrimary: AppColors.white,
-            onSurface: AppColors.textPrimary,
-          ),
-        ),
-        child: child!,
-      ),
+      initialDate: _selectedDueDate ?? DateTime.now().add(const Duration(days: 7)),
+      firstDate: DateTime.now().subtract(const Duration(days: 30)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
-    if (picked != null) {
+    if (date != null) {
       setState(() {
-        _selectedDueDate = picked;
+        _selectedDueDate = date;
         _fixedDueDateController.text =
-            '${picked.day}/${picked.month}/${picked.year}';
+            '${date.day}/${date.month}/${date.year}';
       });
     }
   }
 
-  Widget _buildStepIndicator(int step, String title, bool active) {
+  Widget _buildStepIndicator(int index, String title, bool active) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -198,26 +255,29 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: active ? AppColors.primary : AppColors.surface,
-            shape: BoxShape.circle,
+            color: active ? AppColors.primary : Colors.transparent,
+            border: Border.all(
+              color: active ? AppColors.primary : subtextColor,
+              width: AppDimension.pixelBorderWidth,
+            ),
           ),
           alignment: Alignment.center,
           child: Text(
-            '${step + 1}',
-            style: TextStyle(
-              color: active ? AppColors.white : AppColors.textSecondary,
-              fontSize: 12,
+            '${index + 1}',
+            style: GoogleFonts.notoSansThai(
+              fontSize: 7,
               fontWeight: FontWeight.bold,
+              color: active ? AppColors.black : subtextColor,
             ),
           ),
         ),
         const SizedBox(width: 8),
         Text(
-          title,
-          style: TextStyle(
-            color: active ? AppColors.textPrimary : AppColors.textSecondary,
+          title.toUpperCase(),
+          style: GoogleFonts.notoSansThai(
+            fontSize: 7,
             fontWeight: active ? FontWeight.bold : FontWeight.normal,
-            fontSize: 13,
+            color: active ? textColor : subtextColor,
           ),
         ),
       ],
@@ -263,21 +323,13 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.backgroundAlt,
+        backgroundColor: AppColors.bg(context),
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
             onPressed: () => context.pop(),
           ),
-          title: const Text(
-            'Create Mission',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          title: const Text('CREATE QUEST'),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -294,51 +346,51 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                     ),
                     child: Row(
                       children: [
-                        _buildStepIndicator(0, 'Details', _currentStep >= 0),
-                        Expanded(
-                          child: Container(
-                            height: 2,
-                            margin: const EdgeInsets.symmetric(horizontal: 12),
-                            color: _currentStep >= 1
-                                ? AppColors.primary
-                                : AppColors.surface,
+                        WatInputField(
+                          label: 'Quest Title',
+                          hint: 'e.g. Onboarding Tasks',
+                          controller: _titleController,
+                          errorText: _titleError,
+                        ),
+                        const SizedBox(height: AppDimension.space16),
+                        Text(
+                          'DESCRIPTION',
+                          style: GoogleFonts.notoSansThai(
+                            fontSize: 7,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
                           ),
                         ),
-                        _buildStepIndicator(1, 'Tasks', _currentStep >= 1),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppDimension.space8),
-                  if (_currentStep == 0) ...[
-                    _SectionCard(
-                      title: 'Basic Information',
-                      icon: Icons.info_outline,
-                      children: [
-                        _buildTextField(
-                          controller: _titleController,
-                          label: 'Mission Title',
-                          hint: 'e.g. Complete onboarding tasks',
-                          validator: (v) => (v == null || v.trim().isEmpty)
-                              ? 'Title is required'
-                              : null,
+                        const SizedBox(height: AppDimension.space8),
+                        PixelBorderContainer(
+                          child: TextField(
+                            controller: _descriptionController,
+                            maxLines: 3,
+                            style: GoogleFonts.notoSansThai(
+                              fontSize: 7,
+                              color: textColor,
+                              height: 1.6,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Provide details about this quest...',
+                              hintStyle: GoogleFonts.notoSansThai(
+                                fontSize: 6,
+                                color: subtextColor,
+                                height: 1.6,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: AppDimension.space16),
-                        _buildTextField(
-                          controller: _descriptionController,
-                          label: 'Description (optional)',
-                          hint: 'Brief description of this mission',
-                          maxLines: 3,
-                        ),
-                        const SizedBox(height: AppDimension.space16),
-                        _buildTextField(
+                        WatInputField(
+                          label: 'Location (Optional)',
+                          hint: 'e.g. Cedar Point Park',
                           controller: _locationController,
-                          label: 'Location (optional)',
-                          hint: 'e.g. Bangkok Office',
-                          prefixIcon: Icons.location_on_outlined,
                         ),
                         const SizedBox(height: AppDimension.space16),
-                        _buildDropdownField<String>(
-                          label: 'Phase',
+                        _buildDropdownField(
+                          label: 'Journey Region / Phase',
                           value: _selectedPhaseId,
                           items: _phases.map((p) => p['id']!).toList(),
                           itemLabel: (id) =>
@@ -348,34 +400,23 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppDimension.space16),
-                    _SectionCard(
-                      title: 'Settings',
-                      icon: Icons.tune_outlined,
+                  ),
+                  const SizedBox(height: AppDimension.space16),
+                  PixelDialogBox(
+                    title: 'QUEST SETTINGS',
+                    child: Column(
                       children: [
-                        _buildTextField(
-                          controller: _pointsController,
-                          label: 'Base Points',
+                        WatInputField(
+                          label: 'Base EXP Points',
                           hint: '100',
+                          controller: _pointsController,
                           keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          prefixIcon: Icons.star_outline,
                           enabled: _isAdmin,
-                          validator: (v) {
-                            if (v == null || v.trim().isEmpty) {
-                              return 'Points are required';
-                            }
-                            if ((int.tryParse(v.trim()) ?? -1) < 0) {
-                              return 'Enter a valid number';
-                            }
-                            return null;
-                          },
+                          errorText: _pointsError,
                         ),
                         const SizedBox(height: AppDimension.space16),
-                        _buildDropdownField<String>(
-                          label: 'Verification Type',
+                        _buildDropdownField(
+                          label: 'Verification Method',
                           value: _verificationType,
                           items: _verificationTypes,
                           itemLabel: (v) => v[0].toUpperCase() + v.substring(1),
@@ -391,13 +432,14 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppDimension.space16),
-                    _SectionCard(
-                      title: 'Due Date',
-                      icon: Icons.calendar_today_outlined,
+                  ),
+                  const SizedBox(height: AppDimension.space16),
+                  PixelDialogBox(
+                    title: 'DUE DATE PARAMETERS',
+                    child: Column(
                       children: [
-                        _buildDropdownField<String>(
-                          label: 'Due Date Type',
+                        _buildDropdownField(
+                          label: 'Due Date Category',
                           value: _dueDateType,
                           items: _dueDateTypes,
                           itemLabel: (v) => v[0].toUpperCase() + v.substring(1),
@@ -413,72 +455,52 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           GestureDetector(
                             onTap: _pickDate,
                             child: AbsorbPointer(
-                              child: _buildTextField(
-                                controller: _fixedDueDateController,
+                              child: WatInputField(
                                 label: 'Fixed Due Date',
-                                hint: 'Tap to select date',
-                                prefixIcon: Icons.event_outlined,
+                                hint: 'Tap to select calendar...',
+                                controller: _fixedDueDateController,
+                                errorText: _fixedDueDateError,
                               ),
                             ),
                           ),
                         ] else ...[
-                          _buildTextField(
-                            controller: _relativeDaysController,
+                          WatInputField(
                             label: 'Days from trigger',
                             hint: 'e.g. 7',
+                            controller: _relativeDaysController,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            prefixIcon: Icons.access_time_outlined,
+                            errorText: _relativeDaysError,
                           ),
                         ],
                       ],
                     ),
-                    const SizedBox(height: AppDimension.space32),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            setState(() {
-                              _currentStep = 1;
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppDimension.radiusMedium,
-                            ),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          'Next: Add Tasks',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ] else ...[
-                    _SectionCard(
-                      title: 'Tasks',
-                      icon: Icons.checklist_outlined,
+                  ),
+                  const SizedBox(height: AppDimension.space32),
+                  WatButton(
+                    label: 'Next: Add Tasks',
+                    onPressed: () {
+                      if (_validateForm()) {
+                        setState(() {
+                          _currentStep = 1;
+                        });
+                      }
+                    },
+                  ),
+                ] else ...[
+                  PixelDialogBox(
+                    title: 'TASKS CHECKLIST',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (_taskControllers.isEmpty) ...[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              'No tasks added yet. Missions must have at least one task.',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: AppColors.textSecondary,
+                              'NO TASKS ADDED YET. MISSIONS REQUIRE AT LEAST ONE TASK.',
+                              style: GoogleFonts.notoSansThai(
+                                fontSize: 6,
+                                color: subtextColor,
+                                height: 1.6,
                               ),
                             ),
                           ),
@@ -492,15 +514,13 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                             itemBuilder: (context, index) {
                               final controllers = _taskControllers[index];
                               return Container(
-                                padding: const EdgeInsets.all(
-                                  AppDimension.space12,
-                                ),
+                                padding: const EdgeInsets.all(AppDimension.space12),
                                 decoration: BoxDecoration(
-                                  color: AppColors.backgroundAlt,
-                                  borderRadius: BorderRadius.circular(
-                                    AppDimension.radiusSmall,
+                                  color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+                                  border: Border.all(
+                                    color: borderColor,
+                                    width: AppDimension.pixelBorderWidth,
                                   ),
-                                  border: Border.all(color: AppColors.surface),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -510,20 +530,18 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Task #${index + 1}',
-                                          style: const TextStyle(
+                                          'TASK #${index + 1}',
+                                          style: GoogleFonts.notoSansThai(
+                                            fontSize: 7,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 14,
+                                            color: textColor,
                                           ),
                                         ),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             IconButton(
-                                              icon: const Icon(
-                                                Icons.arrow_upward,
-                                                size: 20,
-                                              ),
+                                              icon: const Icon(Icons.arrow_upward, size: 16),
                                               onPressed: index > 0
                                                   ? () {
                                                       setState(() {
@@ -546,36 +564,29 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                               ),
                                               onPressed:
                                                   index <
-                                                      _taskControllers.length -
-                                                          1
+                                                      _taskControllers.length - 1
                                                   ? () {
                                                       setState(() {
                                                         final temp =
                                                             _taskControllers[index];
-                                                        _taskControllers[index] =
-                                                            _taskControllers[index +
-                                                                1];
-                                                        _taskControllers[index +
-                                                                1] =
-                                                            temp;
+                                                        _taskControllers[index] = _taskControllers[index +1];
+                                                        _taskControllers[index + 1] = temp;
                                                       });
                                                     }
                                                   : null,
                                             ),
                                             IconButton(
-                                              icon: const Icon(
-                                                Icons.delete_outline,
+                                              icon: AppAssets.img(
+                                                AppAssets.iconDelete,
+                                                size: 16,
                                                 color: AppColors.error,
                                               ),
                                               onPressed: () {
                                                 setState(() {
                                                   final removed =
-                                                      _taskControllers.removeAt(
-                                                        index,
-                                                      );
+                                                      _taskControllers.removeAt(index);
                                                   removed['title']?.dispose();
-                                                  removed['description']
-                                                      ?.dispose();
+                                                  removed['description']?.dispose();
                                                 });
                                               },
                                             ),
@@ -583,20 +594,17 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                         ),
                                       ],
                                     ),
-                                    _buildTextField(
-                                      controller: controllers['title']!,
+                                    const SizedBox(height: 8),
+                                    WatInputField(
                                       label: 'Task Title',
-                                      hint: 'e.g. Read the guide',
-                                      validator: (v) =>
-                                          (v == null || v.trim().isEmpty)
-                                          ? 'Task title is required'
-                                          : null,
+                                      hint: 'e.g. Submit visa photo',
+                                      controller: controllers['title']!,
                                     ),
                                     const SizedBox(height: AppDimension.space8),
-                                    _buildTextField(
+                                    WatInputField(
+                                      label: 'Task Description (Optional)',
+                                      hint: 'Brief details...',
                                       controller: controllers['description']!,
-                                      label: 'Task Description (optional)',
-                                      hint: 'What to do for this task',
                                     ),
                                   ],
                                 ),
@@ -605,61 +613,30 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           ),
                         ],
                         const SizedBox(height: AppDimension.space16),
-                        SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              setState(() {
-                                _taskControllers.add({
-                                  'title': TextEditingController(),
-                                  'description': TextEditingController(),
-                                });
+                        OutlinedButton(
+                          onPressed: () {
+                            setState(() {
+                              _taskControllers.add({
+                                'title': TextEditingController(),
+                                'description': TextEditingController(),
                               });
-                            },
-                            icon: const Icon(
-                              Icons.add,
-                              color: AppColors.primary,
-                            ),
-                            label: const Text(
-                              'Add Task',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: AppColors.primary),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  AppDimension.radiusSmall,
-                                ),
-                              ),
-                            ),
+                            });
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: AppColors.primary, width: AppDimension.pixelBorderWidth),
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppDimension.space32),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 52,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                setState(() {
-                                  _currentStep = 0;
-                                });
-                              },
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.primary,
-                                side: const BorderSide(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppAssets.img(AppAssets.iconAdd, size: 14, color: AppColors.primary),
+                              const SizedBox(width: 8),
+                              Text(
+                                'ADD TASK',
+                                style: GoogleFonts.notoSansThai(
+                                  fontSize: 7,
                                   color: AppColors.primary,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    AppDimension.radiusMedium,
-                                  ),
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               child: const Text(
@@ -690,10 +667,49 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                         ),
                       ],
                     ),
-                  ],
-                  const SizedBox(height: AppDimension.space50),
+                  ),
+                  const SizedBox(height: AppDimension.space32),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            setState(() {
+                              _currentStep = 0;
+                            });
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: textColor, width: AppDimension.pixelBorderWidth),
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: Text(
+                            'BACK',
+                            style: GoogleFonts.notoSansThai(
+                              fontSize: 8,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: AppDimension.space16),
+                      Expanded(
+                        child: BlocBuilder<CreateMissionBloc, CreateMissionState>(
+                          builder: (context, state) {
+                            final isLoading = state.status is UILoading;
+                            return _SubmitButton(
+                              isLoading: isLoading,
+                              onPressed: isLoading ? null : _onSubmit,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
-              ),
+                const SizedBox(height: AppDimension.space50),
+              ],
             ),
           ),
         ),
@@ -701,187 +717,60 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
+  Widget _buildDropdownField({
     required String label,
-    required String hint,
-    int maxLines = 1,
-    TextInputType keyboardType = TextInputType.text,
-    List<TextInputFormatter>? inputFormatters,
-    IconData? prefixIcon,
-    String? Function(String?)? validator,
-    bool enabled = true,
+    required String value,
+    required List<String> items,
+    required String Function(String) itemLabel,
+    required ValueChanged<String?> onChanged,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textSecondary,
-          ),
-        ),
-        const SizedBox(height: AppDimension.space8),
-        TextFormField(
-          controller: controller,
-          maxLines: maxLines,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          validator: validator,
-          enabled: enabled,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: const TextStyle(color: Color(0xFFAAAAAA), fontSize: 14),
-            prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon, color: AppColors.primary, size: 20)
-                : null,
-            filled: true,
-            fillColor: enabled ? AppColors.background : AppColors.backgroundAlt,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: AppDimension.space16,
-              vertical: AppDimension.space12,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(color: AppColors.surface),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(color: AppColors.surface),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(
-                color: AppColors.primary,
-                width: 1.5,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(color: AppColors.error),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+    final textColor = AppColors.text(context);
+    final borderColor = AppColors.border(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-  Widget _buildDropdownField<T>({
-    required String label,
-    required T value,
-    required List<T> items,
-    required String Function(T) itemLabel,
-    required ValueChanged<T?> onChanged,
-  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textSecondary,
+          label.toString().toUpperCase(),
+          style: GoogleFonts.notoSansThai(
+            fontSize: 7,
+            fontWeight: FontWeight.bold,
+            color: textColor,
           ),
         ),
         const SizedBox(height: AppDimension.space8),
-        DropdownButtonFormField<T>(
-          value: value,
-          onChanged: onChanged,
-          items: items
-              .map(
-                (item) => DropdownMenuItem<T>(
-                  value: item,
-                  child: Text(itemLabel(item)),
-                ),
-              )
-              .toList(),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppColors.background,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: AppDimension.space16,
-              vertical: AppDimension.space12,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(color: AppColors.surface),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(color: AppColors.surface),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-              borderSide: const BorderSide(
-                color: AppColors.primary,
-                width: 1.5,
+        Container(
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+            border: Border.all(color: borderColor, width: AppDimension.pixelBorderWidth),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimension.space12),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField<String>(
+              initialValue: value,
+              onChanged: onChanged,
+              dropdownColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+              style: GoogleFonts.notoSansThai(
+                fontSize: 7,
+                color: textColor,
+              ),
+              items: items
+                  .map(
+                    (item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(itemLabel(item)),
+                    ),
+                  )
+                  .toList(),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
               ),
             ),
           ),
         ),
       ],
-    );
-  }
-}
-
-// ──────────────────────────────────────────────
-// Supporting Widgets
-// ──────────────────────────────────────────────
-
-class _SectionCard extends StatelessWidget {
-  const _SectionCard({
-    required this.title,
-    required this.icon,
-    required this.children,
-  });
-
-  final String title;
-  final IconData icon;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(AppDimension.space16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: AppColors.primary, size: 18),
-              const SizedBox(width: AppDimension.space8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppDimension.space16),
-          ...children,
-        ],
-      ),
     );
   }
 }
@@ -895,13 +784,18 @@ class _MandatoryToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = onChanged != null;
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundAlt,
-        borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+        color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+        border: Border.all(color: borderColor, width: AppDimension.pixelBorderWidth),
       ),
       padding: const EdgeInsets.symmetric(
-        horizontal: AppDimension.space16,
+        horizontal: AppDimension.space12,
         vertical: AppDimension.space12,
       ),
       child: Opacity(
@@ -909,31 +803,33 @@ class _MandatoryToggle extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Mandatory',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'MANDATORY QUEST',
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 7,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
                   ),
-                ),
-                SizedBox(height: 2),
-                Text(
-                  'Users must complete this mission',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+                  const SizedBox(height: 4),
+                  Text(
+                    'Users must complete this mission',
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 5,
+                      color: subtextColor,
+                      height: 1.4,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: AppColors.primary,
             ),
           ],
         ),
@@ -950,33 +846,10 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-          ),
-          elevation: 0,
-        ),
-        child: isLoading
-            ? const SizedBox(
-                height: 22,
-                width: 22,
-                child: CircularProgressIndicator(
-                  color: AppColors.white,
-                  strokeWidth: 2.5,
-                ),
-              )
-            : const Text(
-                'Create Mission',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-              ),
-      ),
+    return WatButton(
+      label: 'CREATE QUEST',
+      isLoading: isLoading,
+      onPressed: onPressed,
     );
   }
 }

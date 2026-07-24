@@ -21,23 +21,18 @@ class ReviewStarsRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         final starRating = index + 1.0;
-        IconData icon;
-        Color color;
-
-        if (rating >= starRating) {
-          icon = Icons.star;
-          color = Colors.orange;
-        } else if (rating >= starRating - 0.5) {
-          icon = Icons.star_half;
-          color = Colors.orange;
-        } else {
-          icon = Icons.star_border;
-          color = AppColors.secondary;
-        }
+        final isFilled = rating >= starRating || (rating >= starRating - 0.5);
 
         return GestureDetector(
           onTap: isInteractive ? () => onRatingChanged?.call(starRating) : null,
-          child: Icon(icon, size: size, color: color),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 2.0),
+            child: AppAssets.img(
+              isFilled ? AppAssets.iconStar : AppAssets.iconStarEmpty,
+              size: size,
+              color: isFilled ? AppColors.secondary : Colors.grey[500],
+            ),
+          ),
         );
       }),
     );

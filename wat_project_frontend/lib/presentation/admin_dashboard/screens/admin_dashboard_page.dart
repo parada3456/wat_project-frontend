@@ -638,43 +638,39 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
 
   void _showRejectionDialog(BuildContext context, String userMissionId) {
     final reasonController = TextEditingController();
-    showDialog<void>(
+    AppPopup.show<void>(
       context: context,
-      builder: (diagContext) => AlertDialog(
-        title: const Text('Reject Submission'),
-        content: TextField(
-          controller: reasonController,
-          decoration: const InputDecoration(
-            hintText: 'Enter rejection reason (optional)...',
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 3,
+      title: 'Reject Submission',
+      message: 'Please enter a rejection reason (optional).',
+      type: AppPopupType.warning,
+      content: TextField(
+        controller: reasonController,
+        decoration: const InputDecoration(
+          hintText: 'Enter rejection reason (optional)...',
+          border: OutlineInputBorder(),
         ),
-        actions: [
-          TextButton(
-            child: const Text('Cancel'),
-            onPressed: () => Navigator.pop(diagContext),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.error,
-              foregroundColor: AppColors.onError,
-            ),
-            child: const Text('Reject'),
-            onPressed: () {
-              final reason = reasonController.text.trim();
-              context.read<AdminDashboardBloc>().add(
-                AdminVerifyMissionSubmitted(
-                  userMissionId: userMissionId,
-                  approved: false,
-                  reason: reason.isEmpty ? null : reason,
-                ),
-              );
-              Navigator.pop(diagContext);
-            },
-          ),
-        ],
+        maxLines: 3,
       ),
+      buttons: [
+        const AppPopupButton(
+          label: 'Cancel',
+        ),
+        AppPopupButton(
+          label: 'Reject',
+          isPrimary: true,
+          color: AppColors.error,
+          onPressed: () {
+            final reason = reasonController.text.trim();
+            context.read<AdminDashboardBloc>().add(
+                  AdminVerifyMissionSubmitted(
+                    userMissionId: userMissionId,
+                    approved: false,
+                    reason: reason.isEmpty ? null : reason,
+                  ),
+                );
+          },
+        ),
+      ],
     );
   }
 
@@ -683,76 +679,76 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
     final reasonController = TextEditingController();
     final formKey = GlobalKey<FormState>();
 
-    showDialog<void>(
+    AppPopup.show<void>(
       context: context,
-      builder: (diagContext) => AlertDialog(
-        title: const Text('Adjust User Points'),
-        content: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: deltaController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  signed: true,
-                ),
-                decoration: const InputDecoration(
-                  labelText: 'Points Delta (e.g. +50 or -20)',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (val) {
-                  if (val == null || val.isEmpty)
-                    return 'Delta points required';
-                  if (int.tryParse(val) == null)
-                    return 'Must be a valid integer';
-                  return null;
-                },
+      title: 'Adjust User Points',
+      message: 'Enter points adjustment details.',
+      type: AppPopupType.info,
+      content: Form(
+        key: formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: deltaController,
+              keyboardType: const TextInputType.numberWithOptions(
+                signed: true,
               ),
-              const SizedBox(height: AppDimension.space16),
-              TextFormField(
-                controller: reasonController,
-                decoration: const InputDecoration(
-                  labelText: 'Reason',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty)
-                    return 'Reason is required';
-                  return null;
-                },
+              decoration: const InputDecoration(
+                labelText: 'Points Delta (e.g. +50 or -20)',
+                border: OutlineInputBorder(),
               ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text('Cancel'),
-            onPressed: () => Navigator.pop(diagContext),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.onPrimary,
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return 'Delta points required';
+                }
+                if (int.tryParse(val) == null) {
+                  return 'Must be a valid integer';
+                }
+                return null;
+              },
             ),
-            child: const Text('Submit'),
-            onPressed: () {
-              if (formKey.currentState?.validate() ?? false) {
-                final delta = int.parse(deltaController.text);
-                final reason = reasonController.text.trim();
-                context.read<AdminDashboardBloc>().add(
-                  AdminAdjustPointsSubmitted(
-                    userId: userId,
-                    pointsDelta: delta,
-                    reason: reason,
-                  ),
-                );
-                Navigator.pop(diagContext);
-              }
-            },
-          ),
-        ],
+            const SizedBox(height: AppDimension.space16),
+            TextFormField(
+              controller: reasonController,
+              decoration: const InputDecoration(
+                labelText: 'Reason',
+                border: OutlineInputBorder(),
+              ),
+              validator: (val) {
+                if (val == null || val.trim().isEmpty) {
+                  return 'Reason is required';
+                }
+                return null;
+              },
+            ),
+          ],
+        ),
       ),
+      buttons: [
+        const AppPopupButton(
+          label: 'Cancel',
+        ),
+        AppPopupButton(
+          label: 'Submit',
+          isPrimary: true,
+          autoPop: false,
+          onPressed: () {
+            if (formKey.currentState?.validate() ?? false) {
+              final delta = int.parse(deltaController.text);
+              final reason = reasonController.text.trim();
+              context.read<AdminDashboardBloc>().add(
+                    AdminAdjustPointsSubmitted(
+                      userId: userId,
+                      pointsDelta: delta,
+                      reason: reason,
+                    ),
+                  );
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
@@ -95,7 +97,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
           state.whenOrNull(
             createExpenseSuccess: () {
               setState(() => _isSubmitting = false);
-              Navigator.pop(context);
+              context.pop();
             },
             failure: (message) {
               setState(() => _isSubmitting = false);
@@ -121,7 +123,7 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
             title: const Text(
               'Add Expense',

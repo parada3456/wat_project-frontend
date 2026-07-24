@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/presentation/job_market/widgets/review_stars_row.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
@@ -18,13 +20,10 @@ class JobReviewCommentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        border: Border.all(color: AppColors.surfaceAlt),
-      ),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+
+    return PixelBorderContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,31 +31,31 @@ class JobReviewCommentCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                author,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                author.toUpperCase(),
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
               ),
               Text(
                 date,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 6,
+                  color: subtextColor,
                 ),
               ),
             ],
           ),
           const SizedBox(height: AppDimension.space8),
-          ReviewStarsRow(rating: rating, size: 16),
+          ReviewStarsRow(rating: rating, size: 12),
           const SizedBox(height: AppDimension.space12),
           Text(
             comment,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.textPrimary,
-              height: 1.5,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 7,
+              color: textColor,
+              height: 1.8,
             ),
           ),
         ],

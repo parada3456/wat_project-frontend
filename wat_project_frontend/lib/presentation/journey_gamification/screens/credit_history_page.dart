@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/profile/bloc/profile_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/credit_history_row.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 

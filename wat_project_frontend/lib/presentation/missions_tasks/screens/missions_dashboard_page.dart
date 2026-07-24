@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/core/utils/date_formatter.dart';
 import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/domain/models/paged_model.dart';
@@ -14,6 +17,9 @@ import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_filter_and_toggle_row.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_dashboard_calendar_card.dart';
 import 'package:wat_project_frontend/presentation/widgets/paginated_list_view.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card_list.dart';
+import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class MissionsDashboardPage extends StatelessWidget {
@@ -38,9 +44,9 @@ class MissionsDashboardView extends StatefulWidget {
 }
 
 class _MissionsDashboardViewState extends State<MissionsDashboardView> {
-  String _selectedTab = 'my_mission'; // 'my_mission' or 'explore'
-  String _selectedView = 'list'; // 'list' or 'calendar'
-  String _selectedFilter = 'all'; // 'all', 'recommended', or 'personal'
+  String _selectedTab = 'my_mission';
+  String _selectedView = 'list';
+  String _selectedFilter = 'all';
 
   // Explore tab sort and filter state
   String _exploreSort = 'none'; // 'none', 'asc', 'desc'
@@ -74,26 +80,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.maybePop(context),
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
+          onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Mission Explorer',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-          ),
-        ),
+        title: const Text('MISSION BOARD'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconSearch, size: 20, color: textColor),
             onPressed: () => context.push('/missions/search'),
           ),
         ],
@@ -107,15 +107,20 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                 state.missions.isEmpty &&
                 state.exploreMissions.isEmpty) {
               return const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: PixelLoadingDots(color: AppColors.primary),
               );
             }
 
             if (state.status is UILoadFailed &&
                 state.missions.isEmpty &&
                 state.exploreMissions.isEmpty) {
-              final message = (state.status as UILoadFailed).message;
-              return Center(child: Text(message ?? 'Failed to load missions'));
+              final message = (state.status as UILoadFailed).message ?? 'Failed to load missions';
+              return Center(
+                child: Text(
+                  message.toUpperCase(),
+                  style: context.textTheme.headlineLarge?.copyWith(color: AppColors.error),
+                ),
+              );
             }
 
             return _selectedView == 'list'
@@ -124,31 +129,24 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
           },
         ),
       ),
-      floatingActionButton: _selectedView == 'list'
-          ? FloatingActionButton.extended(
-              onPressed: () async {
-                final res = await context.push<bool>('/missions/create');
-                if (res == true && context.mounted) {
-                  context.read<MissionTaskBloc>()
-                    ..add(const MissionsTasksListRequested())
-                    ..add(const ExploreMissionsRequested());
-                }
-              },
-              backgroundColor: AppColors.surface,
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              icon: const Icon(Icons.add, color: AppColors.textPrimary),
-              label: const Text(
-                'Add Mission',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            )
-          : null,
+      // floatingActionButton: _selectedView == 'list'
+          // ? FloatingActionButton.extended(
+          //     onPressed: () async {
+          //       final res = await context.push<bool>('/missions/create');
+          //       if (res == true && context.mounted) {
+          //         context.read<MissionTaskBloc>()
+          //           ..add(const MissionsTasksListRequested())
+          //           ..add(const ExploreMissionsRequested());
+          //       }
+          //     },
+          //     backgroundColor: AppColors.surface,
+          //     elevation: 4,
+          //     shape: const RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.zero,
+          //     ),
+          //     child: AppAssets.img(AppAssets.iconAdd, size: 20, color: textColor),
+          //   )
+          // : null,
     );
   }
 
@@ -286,6 +284,8 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
       return DateFormatter.isSameDay(dueDate, _selectedDate);
     }).toList();
 
+    final textColor = AppColors.text(context);
+
     return Column(
       children: [
         Padding(
@@ -333,30 +333,10 @@ class _MissionsDashboardViewState extends State<MissionsDashboardView> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  TextButton.icon(
+                  WatButton(
+                    label: 'New Mission',
+                    width: 130,
                     onPressed: () => context.push('/missions/create'),
-                    icon: const Icon(
-                      Icons.add,
-                      size: 18,
-                      color: AppColors.textPrimary,
-                    ),
-                    label: const Text(
-                      'New Mission',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      backgroundColor: AppColors.surface,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
                   ),
                 ],
               ),

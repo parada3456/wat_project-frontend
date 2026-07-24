@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class CreditScoreBadge extends StatelessWidget {
   final int score;
@@ -8,47 +11,50 @@ class CreditScoreBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Color scoreColor;
     if (score >= 800) {
-      scoreColor = Colors.green;
+      scoreColor = AppColors.success;
     } else if (score >= 600) {
-      scoreColor = Colors.orange;
+      scoreColor = AppColors.warning;
     } else {
       scoreColor = AppColors.error;
     }
 
     return Column(
       children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox(
-              width: 80,
-              height: 80,
-              child: CircularProgressIndicator(
-                value: score / 1000,
-                strokeWidth: 8,
-                backgroundColor: AppColors.surface,
-                valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
+        PixelBorderContainer(
+          width: 100,
+          height: 80,
+          borderColor: scoreColor,
+          padding: const EdgeInsets.symmetric(vertical: AppDimension.space12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '$score',
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 14,
+                  color: scoreColor,
+                ),
               ),
-            ),
-            Text(
-              '$score',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
+              const SizedBox(height: AppDimension.space8),
+              Text(
+                score >= 800 ? 'GOOD' : score >= 600 ? 'FAIR' : 'POOR',
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 7,
+                  color: scoreColor,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: AppDimension.space8),
-        const Text(
-          'Credit Score',
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textSecondary,
+        Text(
+          'CREDIT SCORE',
+          style: GoogleFonts.notoSansThai(
+            fontSize: 7,
+            color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
           ),
         ),
       ],

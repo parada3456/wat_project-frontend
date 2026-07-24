@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
@@ -35,24 +36,20 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = AppColors.bg(context);
+    final textColor = AppColors.text(context);
+    final borderColor = AppColors.border(context);
+
     return BlocProvider(
       create: (context) => getIt<ProfileBloc>()..add(const GetProfileEvent()),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
-          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
             onPressed: () => context.pop(),
           ),
-          title: const Text(
-            'Edit Profile',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          title: const Text('EDIT PROFILE'),
         ),
         body: SafeArea(
           child: BlocConsumer<ProfileBloc, ProfileState>(
@@ -124,13 +121,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: AppDimension.space32,
+                  horizontal: AppDimension.space24,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: AppDimension.space32),
-                    // Profile Image area
+                    const SizedBox(height: AppDimension.space24),
+                    // Profile Image area in Pixel frame
                     Center(
                       child: Stack(
                         children: [
@@ -138,22 +135,23 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
-                              shape: BoxShape.circle,
+                              color: AppColors.panel(context),
+                              border: Border.all(
+                                color: borderColor,
+                                width: AppDimension.pixelBorderWidth,
+                              ),
                               image: _avatarController.text.isNotEmpty
                                   ? DecorationImage(
-                                      image: NetworkImage(
-                                        _avatarController.text,
-                                      ),
+                                      image: NetworkImage(_avatarController.text),
                                       fit: BoxFit.cover,
                                     )
                                   : null,
                             ),
                             child: _avatarController.text.isEmpty
-                                ? const Icon(
-                                    Icons.person,
+                                ? AppAssets.img(
+                                    AppAssets.iconCharacter,
                                     size: 50,
-                                    color: AppColors.white,
+                                    color: textColor,
                                   )
                                 : null,
                           ),
@@ -161,17 +159,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             bottom: 0,
                             right: 0,
                             child: Container(
-                              padding: const EdgeInsets.all(
-                                AppDimension.space8,
-                              ),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.all(AppDimension.space4),
+                              decoration: BoxDecoration(
                                 color: AppColors.primary,
-                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: borderColor,
+                                  width: AppDimension.pixelBorderWidth,
+                                ),
                               ),
-                              child: const Icon(
-                                Icons.edit,
-                                size: 17,
-                                color: AppColors.white,
+                              child: AppAssets.img(
+                                AppAssets.iconEdit,
+                                size: 12,
+                                color: AppColors.black,
                               ),
                             ),
                           ),
@@ -179,34 +178,41 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       ),
                     ),
                     const SizedBox(height: AppDimension.space32),
-                    // Inputs
-                    WatInputField(
-                      label: 'FirstName',
-                      hint: 'Enter First Name',
-                      controller: _firstNameController,
+                    // Inputs in PixelDialogBox
+                    PixelDialogBox(
+                      title: 'EDIT PLAYER INFO',
+                      child: Column(
+                        children: [
+                          WatInputField(
+                            label: 'First Name',
+                            hint: 'enter first name',
+                            controller: _firstNameController,
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Last Name',
+                            hint: 'enter last name',
+                            controller: _lastNameController,
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Bio',
+                            hint: 'tell us about yourself',
+                            controller: _bioController,
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatInputField(
+                            label: 'Avatar Url',
+                            hint: 'enter image url',
+                            controller: _avatarController,
+                            onChanged: (val) {
+                              setState(() {}); // refresh preview image
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'LastName',
-                      hint: 'Enter Last Name',
-                      controller: _lastNameController,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'Bio',
-                      hint: 'Tell us about yourself',
-                      controller: _bioController,
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    WatInputField(
-                      label: 'AvatarUrl',
-                      hint: 'Enter Image URL',
-                      controller: _avatarController,
-                      onChanged: (val) {
-                        setState(() {}); // refresh preview image
-                      },
-                    ),
-                    const SizedBox(height: AppDimension.space32),
+                    const SizedBox(height: AppDimension.space24),
                     // Save Button
                     WatButton(
                       label: 'Save Changes',
@@ -216,13 +222,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           _wasSaving = true;
                         });
                         context.read<ProfileBloc>().add(
-                          UpdateProfileSubmittedEvent(
-                            firstName: _firstNameController.text.trim(),
-                            lastName: _lastNameController.text.trim(),
-                            bio: _bioController.text.trim(),
-                            avatarUrl: _avatarController.text.trim(),
-                          ),
-                        );
+                              UpdateProfileSubmittedEvent(
+                                firstName: _firstNameController.text.trim(),
+                                lastName: _lastNameController.text.trim(),
+                                bio: _bioController.text.trim(),
+                                avatarUrl: _avatarController.text.trim(),
+                              ),
+                            );
                       },
                     ),
                     const SizedBox(height: AppDimension.space32),

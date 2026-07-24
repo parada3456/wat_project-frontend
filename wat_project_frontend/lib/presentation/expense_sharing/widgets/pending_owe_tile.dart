@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class PendingOweTile extends StatelessWidget {
   final String personName;
@@ -17,56 +20,72 @@ class PendingOweTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: isOverdue
-            ? AppColors.error.withOpacity(0.05)
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        border: Border.all(
-          color: isOverdue ? AppColors.error : AppColors.surfaceAlt,
-        ),
-      ),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
+    final tileBorderColor = isOverdue ? AppColors.error : borderColor;
+    final tileBgColor = isOverdue
+        ? AppColors.error.withValues(alpha: 0.15)
+        : (isDark ? AppColors.darkSurface : AppColors.lightSurface);
+
+    return PixelBorderContainer(
+      borderColor: tileBorderColor,
+      backgroundColor: tileBgColor,
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: AppColors.surface,
-            child: const Icon(Icons.person, color: AppColors.white),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+              border: Border.all(
+                color: tileBorderColor,
+                width: AppDimension.pixelBorderWidth,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: AppAssets.img(
+              AppAssets.iconCharacter,
+              size: 16,
+              color: isOverdue ? AppColors.error : textColor,
+            ),
           ),
-          const SizedBox(width: AppDimension.space16),
+          const SizedBox(width: AppDimension.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Owe $personName',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                  'OWE $personName'.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: isOverdue ? AppColors.error : textColor,
+                    height: 1.4,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  'Due $dueDate',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isOverdue
-                        ? AppColors.error
-                        : AppColors.textSecondary,
-                    fontWeight: isOverdue ? FontWeight.w700 : FontWeight.w400,
+                  'DUE $dueDate'.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 6,
+                    color: isOverdue ? AppColors.error : subtextColor,
+                    fontWeight: isOverdue ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Text(
             '\$${amount.toStringAsFixed(2)}',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: isOverdue ? AppColors.error : AppColors.textPrimary,
+            style: GoogleFonts.notoSansThai(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+              color: isOverdue ? AppColors.error : textColor,
             ),
           ),
         ],

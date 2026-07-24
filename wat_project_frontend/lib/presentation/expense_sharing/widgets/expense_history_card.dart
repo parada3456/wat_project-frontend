@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class ExpenseHistoryCard extends StatelessWidget {
   final String title;
@@ -19,76 +22,82 @@ class ExpenseHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
+    return PixelBorderContainer(
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(AppDimension.space12),
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+              color: AppColors.primary.withValues(alpha: 0.15),
+              border: Border.all(
+                color: AppColors.primary,
+                width: AppDimension.pixelBorderWidth,
+              ),
             ),
-            child: Icon(
+            alignment: Alignment.center,
+            child: AppAssets.img(
               _getCategoryIcon(category),
               color: AppColors.primary,
-              size: 24,
+              size: 20,
             ),
           ),
-          const SizedBox(width: AppDimension.space16),
+          const SizedBox(width: AppDimension.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+                  title.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    height: 1.4,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  date,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.textSecondary,
+                  date.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 6,
+                    color: subtextColor,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 '\$${amount.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 7,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
               ),
-              if (isOwner)
-                const Text(
-                  'You paid',
-                  style: TextStyle(
-                    fontSize: 12,
+              if (isOwner) ...[
+                const SizedBox(height: 4),
+                Text(
+                  'YOU PAID',
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 5,
                     color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+              ],
             ],
           ),
         ],
@@ -96,16 +105,16 @@ class ExpenseHistoryCard extends StatelessWidget {
     );
   }
 
-  IconData _getCategoryIcon(String category) {
+  String _getCategoryIcon(String category) {
     switch (category.toLowerCase()) {
       case 'food':
-        return Icons.restaurant_outlined;
+        return AppAssets.iconCart;
       case 'housing':
-        return Icons.home_outlined;
+        return AppAssets.iconHome;
       case 'travel':
-        return Icons.flight_outlined;
+        return AppAssets.iconLocation;
       default:
-        return Icons.receipt_long_outlined;
+        return AppAssets.iconExpenses;
     }
   }
 }

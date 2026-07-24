@@ -4,12 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/task_checkbox_tile.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
@@ -85,18 +88,21 @@ class _MissionDetailViewState extends State<MissionDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = AppColors.border(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.bg(context),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: AppAssets.img(AppAssets.iconBack, size: 20, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.info_outline, color: AppColors.textPrimary),
+            icon: AppAssets.img(AppAssets.iconInfo, size: 20, color: textColor),
             onPressed: () {},
           ),
         ],
@@ -145,7 +151,7 @@ class _MissionDetailViewState extends State<MissionDetailView> {
 
           if (detail == null && state.status is UILoading) {
             return const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+              child: PixelLoadingDots(color: AppColors.primary),
             );
           }
 
@@ -153,8 +159,12 @@ class _MissionDetailViewState extends State<MissionDetailView> {
             return Center(
               child: Text(
                 state.status.maybeWhen(
-                  loadFailed: (msg, _) => msg ?? 'Failed to load details',
-                  orElse: () => 'No details available',
+                  loadFailed: (msg, _) => (msg ?? 'Failed to load details').toUpperCase(),
+                  orElse: () => 'NO DETAILS AVAILABLE',
+                ),
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 11,
+                  color: subtextColor,
                 ),
               ),
             );
@@ -173,7 +183,7 @@ class _MissionDetailViewState extends State<MissionDetailView> {
 
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
-              horizontal: AppDimension.space32,
+              horizontal: AppDimension.space24,
               vertical: AppDimension.space16,
             ),
             child: Column(
@@ -181,46 +191,37 @@ class _MissionDetailViewState extends State<MissionDetailView> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      'Phase Mission: ${detail.title}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary,
+                    Expanded(
+                      child: Text(
+                        'QUEST TYPE: PHASE MISSION'.toUpperCase(),
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: subtextColor,
+                        ),
                       ),
                     ),
                     if (isCreator) ...[
                       const SizedBox(width: AppDimension.space8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: AppDimension.space8,
-                          vertical: 2,
+                          horizontal: 6,
+                          vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          color: AppColors.primary.withValues(alpha: 0.15),
                           border: Border.all(
-                            color: AppColors.primary.withOpacity(0.3),
+                            color: AppColors.primary,
+                            width: AppDimension.pixelBorderWidth,
                           ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(
-                              Icons.person_pin,
-                              color: AppColors.primary,
-                              size: 12,
-                            ),
-                            SizedBox(width: 4),
-                            Text(
-                              'Created by You',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          'YOUR CREATION',
+                          style: GoogleFonts.notoSansThai(
+                            color: AppColors.primary,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -232,36 +233,45 @@ class _MissionDetailViewState extends State<MissionDetailView> {
                   children: [
                     Expanded(
                       child: Text(
-                        detail.title,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                        detail.title.toUpperCase(),
+                        style: GoogleFonts.notoSansThai(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                          height: 1.4,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    const SizedBox(width: 8),
                     Text(
                       '$completedCount/$totalCount',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                         color: AppColors.primary,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppDimension.space16),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    backgroundColor: AppColors.surfaceAlt,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      AppColors.primary,
+                // Retro flat progress bar
+                Container(
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+                    border: Border.all(
+                      color: borderColor,
+                      width: AppDimension.pixelBorderWidth,
                     ),
-                    minHeight: 8,
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: progress,
+                    child: Container(
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppDimension.space16),
@@ -270,10 +280,10 @@ class _MissionDetailViewState extends State<MissionDetailView> {
                 if (detail.description != null) ...[
                   Text(
                     detail.description!,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                      height: 1.4,
+                    style: GoogleFonts.notoSansThai(
+                      fontSize: 11,
+                      color: subtextColor,
+                      height: 1.8,
                     ),
                   ),
                   const SizedBox(height: AppDimension.space32),
@@ -281,33 +291,30 @@ class _MissionDetailViewState extends State<MissionDetailView> {
 
                 Row(
                   children: [
-                    const Text(
-                      'Tasks Checklist',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                    Text(
+                      'CHECKLIST',
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
                       ),
                     ),
                     const Spacer(),
                     Text(
-                      '$totalCount items',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
+                      '$totalCount QUESTS',
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 11,
+                        color: subtextColor,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppDimension.space16),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.circular(
-                      AppDimension.radiusMedium,
-                    ),
-                    border: Border.all(color: AppColors.surfaceAlt),
+                PixelBorderContainer(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimension.space12,
+                    vertical: AppDimension.space4,
                   ),
                   child: Column(
                     children: tasks.map((task) {
@@ -330,7 +337,7 @@ class _MissionDetailViewState extends State<MissionDetailView> {
                             },
                           ),
                           if (index < tasks.length - 1)
-                            const Divider(height: 1, indent: 56),
+                            Divider(height: 1, color: borderColor),
                         ],
                       );
                     }).toList(),
@@ -449,7 +456,10 @@ class _MissionDetailViewState extends State<MissionDetailView> {
 
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(AppDimension.space32),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimension.space24,
+                vertical: AppDimension.space16,
+              ),
               child: WatButton(
                 label: buttonLabel,
                 onPressed: canSubmit

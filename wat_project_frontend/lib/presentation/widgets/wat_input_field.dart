@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
 
-class WatInputField extends StatelessWidget {
+/// WatInputField — Pixel RPG styled text input.
+/// Hard-corner border that changes color on focus. Error state in red pixel font.
+class WatInputField extends StatefulWidget {
   final String label;
   final String hint;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final TextEditingController? controller;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
@@ -12,12 +16,18 @@ class WatInputField extends StatelessWidget {
   final bool autocorrect;
   final bool enableSuggestions;
   final TextInputType? keyboardType;
+  final int? maxLines;
+  final bool enabled;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final VoidCallback? onEditingComplete;
 
   const WatInputField({
     super.key,
     required this.label,
     required this.hint,
     this.suffixIcon,
+    this.prefixIcon,
     this.controller,
     this.obscureText = false,
     this.onChanged,
@@ -25,66 +35,128 @@ class WatInputField extends StatelessWidget {
     this.autocorrect = true,
     this.enableSuggestions = true,
     this.keyboardType,
+    this.maxLines = 1,
+    this.enabled = true,
+    this.focusNode,
+    this.textInputAction,
+    this.onEditingComplete,
   });
 
   @override
+  State<WatInputField> createState() => _WatInputFieldState();
+}
+
+class _WatInputFieldState extends State<WatInputField> {
+  late final FocusNode _focusNode;
+  bool _hasFocus = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.addListener(() {
+      setState(() => _hasFocus = _focusNode.hasFocus);
+    });
+  }
+
+  @override
+  void dispose() {
+    if (widget.focusNode == null) _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final Color borderColor = widget.errorText != null
+        ? AppColors.error
+        : _hasFocus
+            ? AppColors.primary
+            : (isDark ? AppColors.darkBorder : AppColors.lightBorder);
+
+    final Color bgColor =
+        isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt;
+    final Color textColor =
+        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final Color hintColor =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final Color labelColor =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ─── Label ───
         Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-            color: AppColors.textPrimary,
-          ),
+          widget.label.toUpperCase(),
+          style: context.textTheme.labelMedium?.copyWith(color: labelColor,),
         ),
         const SizedBox(height: AppDimension.space4),
-        Container(
-          height: 45,
-          padding: const EdgeInsets.symmetric(horizontal: AppDimension.space16),
+
+        // ─── Input box with pixel border ───
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
           decoration: BoxDecoration(
-            color: AppColors.backgroundAlt,
-            borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
-            border: errorText != null
-                ? Border.all(color: Colors.red.shade300)
-                : null,
+            color: bgColor,
+            border: Border.all(
+              color: borderColor,
+              width: AppDimension.pixelBorderWidth,
+            ),
           ),
           child: Row(
             children: [
+              if (widget.prefixIcon != null) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimension.space8,
+                  ),
+                  child: widget.prefixIcon!,
+                ),
+              ],
               Expanded(
                 child: TextField(
-                  controller: controller,
-                  obscureText: obscureText,
-                  onChanged: onChanged,
-                  autocorrect: autocorrect,
-                  enableSuggestions: enableSuggestions,
-                  keyboardType: keyboardType,
+                  controller: widget.controller,
+                  obscureText: widget.obscureText,
+                  onChanged: widget.onChanged,
+                  autocorrect: widget.autocorrect,
+                  enableSuggestions: widget.enableSuggestions,
+                  keyboardType: widget.keyboardType,
+                  maxLines: widget.obscureText ? 1 : widget.maxLines,
+                  enabled: widget.enabled,
+                  focusNode: _focusNode,
+                  textInputAction: widget.textInputAction,
+                  onEditingComplete: widget.onEditingComplete,
+                  style: context.textTheme.bodySmall?.copyWith(color: textColor,),
                   decoration: InputDecoration(
-                    hintText: hint,
-                    hintStyle: const TextStyle(
-                      fontSize: 15,
-                      color: AppColors.textSecondary,
-                    ),
+                    hintText: widget.hint,
+                    hintStyle: context.textTheme.labelLarge?.copyWith(color: hintColor,),
                     border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppDimension.space12,
+                      vertical: AppDimension.space12,
+                    ),
                     isDense: true,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: AppColors.textPrimary,
                   ),
                 ),
               ),
-              if (suffixIcon != null) suffixIcon!,
+              if (widget.suffixIcon != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimension.space8,
+                  ),
+                  child: widget.suffixIcon!,
+                ),
             ],
           ),
         ),
-        if (errorText != null) ...[
-          const SizedBox(height: 4),
+
+        // ─── Error text ───
+        if (widget.errorText != null) ...[
+          const SizedBox(height: AppDimension.space4),
           Text(
-            errorText!,
-            style: TextStyle(fontSize: 12, color: Colors.red.shade400),
+            '! ${widget.errorText!}',
+            style: context.textTheme.labelSmall?.copyWith(color: AppColors.error,),
           ),
         ],
       ],

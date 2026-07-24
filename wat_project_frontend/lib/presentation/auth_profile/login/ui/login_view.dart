@@ -3,15 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/core/extension/extension.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/widgets/login_header.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/auth_profile/login/bloc/login_bloc.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -34,38 +38,34 @@ class _LoginViewState extends State<LoginView> {
 
   void _showForgotPasswordDialog() {
     final emailController = TextEditingController();
-    showDialog<void>(
+    AppPopup.show<void>(
       context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Forgot Password'),
-          content: TextField(
-            controller: emailController,
-            decoration: const InputDecoration(
-              labelText: 'Email Address',
-              hintText: 'Enter your email',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final email = emailController.text.trim();
-                if (email.isNotEmpty) {
-                  context.read<LoginBloc>().add(
-                    ForgotPasswordSubmittedEvent(email),
-                  );
-                  Navigator.pop(dialogContext);
-                }
-              },
-              child: const Text('Submit'),
-            ),
-          ],
-        );
-      },
+      title: 'Forgot Password',
+      message: 'Enter your email address to reset your password.',
+      type: AppPopupType.info,
+      content: WatInputField(
+        label: 'Email Address',
+        hint: 'enter your email',
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+      ),
+      buttons: [
+        const AppPopupButton(label: 'Cancel'),
+        AppPopupButton(
+          label: 'Submit',
+          isPrimary: true,
+          autoPop: false,
+          onPressed: () {
+            final email = emailController.text.trim();
+            if (email.isNotEmpty) {
+              context
+                  .read<LoginBloc>()
+                  .add(ForgotPasswordSubmittedEvent(email));
+              context.pop();
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -88,9 +88,18 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor =
+        isDark ? AppColors.darkBackground : AppColors.lightBackground;
+    final textColor =
+        isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final subtextColor =
+        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final borderColor =
+        isDark ? AppColors.darkBorder : AppColors.lightBorder;
+
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        print('status: ${state.status}');
         state.status.whenOrNull(
           loadFailed: (message, apiError) {
             AppPopup.show<void>(
@@ -101,7 +110,7 @@ class _LoginViewState extends State<LoginView> {
               buttons: [
                 AppPopupButton(
                   label: 'Dismiss',
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => context.pop(),
                 ),
               ],
             );
@@ -117,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
                   label: 'OK',
                   isPrimary: true,
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    context.pop();
                     context.push('/home');
                   },
                 ),
@@ -127,7 +136,7 @@ class _LoginViewState extends State<LoginView> {
         );
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: bgColor,
         body: SafeArea(
           child: BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
@@ -292,38 +301,69 @@ class _LoginViewState extends State<LoginView> {
                                   color: AppColors.textPrimary,
                                 ),
                           ),
-                          const SizedBox(width: 12),
-                          const Text(
-                            'Sign in with Google',
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                            ),
+                          const SizedBox(height: AppDimension.space20),
+                          WatButton(
+                            label: 'Sign In',
+                            isLoading: state.status is UILoading,
+                            onPressed: () => _submit(context),
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          // OR divider
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Divider(
+                                  color: borderColor,
+                                  thickness: AppDimension.pixelBorderWidth,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppDimension.space8,
+                                ),
+                                child: Text(
+                                  'OR',
+                                  style: context.textTheme.labelMedium?.copyWith(color: subtextColor,),
+                                ),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  color: borderColor,
+                                  thickness: AppDimension.pixelBorderWidth,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppDimension.space16),
+                          WatButton.outlined(
+                            label: 'Sign in with Google',
+                            onPressed: () => _handleGoogleSignIn(),
+                            borderColor: borderColor,
+                            textColor: textColor,
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: AppDimension.space32),
+
+                    const SizedBox(height: AppDimension.space20),
+                    // ─── Register link ───
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Don't have an account? ",
-                          style: TextStyle(color: AppColors.textSecondary),
+                        Text(
+                          "NO ACCOUNT?  ",
+                          style: context.textTheme.labelSmall?.copyWith(color: subtextColor,),
                         ),
                         GestureDetector(
                           onTap: () => context.push('/register'),
-                          child: const Text(
-                            'SignUp',
-                            style: TextStyle(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          child: Text(
+                            'SIGN UP',
+                            style: context.textTheme.labelSmall?.copyWith(color: AppColors.primary,),
                           ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: AppDimension.space32),
                   ],
                 ),
               );
@@ -334,28 +374,59 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Future<String?> getGoogleIdToken() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+  void _submit(BuildContext context) {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
+    setState(() {
+      _emailError = null;
+      _passwordError = null;
+    });
+
+    var isValid = true;
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (email.isEmpty) {
+      _emailError = 'Email is required';
+      isValid = false;
+    } else if (!emailRegex.hasMatch(email)) {
+      _emailError = 'Enter a valid email format';
+      isValid = false;
+    }
+
+    if (password.isEmpty) {
+      _passwordError = 'Password is required';
+      isValid = false;
+    } else if (password.length < 8) {
+      _passwordError = 'Password must be at least 8 characters';
+      isValid = false;
+    }
+
+    if (isValid) {
+      context.read<LoginBloc>().add(LoginSubmittedEvent(email, password));
+    } else {
+      setState(() {});
+    }
+  }
+
+  Future<String?> getGoogleIdToken() async {
+    final googleSignIn = GoogleSignIn.instance;
     try {
       await googleSignIn.initialize();
-      final GoogleSignInAccount googleUser = await googleSignIn.authenticate(
+      final googleUser = await googleSignIn.authenticate(
         scopeHint: ['email'],
       );
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      final googleAuth = googleUser.authentication;
       return googleAuth.idToken;
     } catch (error) {
-      print('Google Sign-In Error: $error');
+      debugPrint('Google Sign-In Error: $error');
       return null;
     }
   }
 
   void _handleGoogleSignIn() async {
     final idToken = await getGoogleIdToken();
-    if (idToken == null) {
-      return;
-    }
-
+    if (idToken == null) return;
     if (mounted) {
       context.read<LoginBloc>().add(GoogleLoginSubmittedEvent(idToken));
     }

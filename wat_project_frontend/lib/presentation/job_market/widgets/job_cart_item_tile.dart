@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobCartItemTile extends StatelessWidget {
   final String title;
@@ -20,81 +23,96 @@ class JobCartItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isApplied = status.toLowerCase() == 'applied';
-    return Container(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppDimension.radiusMedium),
-      ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = AppColors.text(context);
+    final subtextColor = AppColors.textSub(context);
+    final borderColor = AppColors.border(context);
+
+    final statusBg = isApplied
+        ? AppColors.success.withValues(alpha: 0.15)
+        : AppColors.primary.withValues(alpha: 0.15);
+    final statusColor = isApplied ? AppColors.success : AppColors.primary;
+
+    return PixelBorderContainer(
+      padding: const EdgeInsets.all(AppDimension.space12),
       child: Row(
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 36,
+            height: 36,
             decoration: BoxDecoration(
-              color: AppColors.surfaceAlt,
-              borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+              color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
+              border: Border.all(
+                color: borderColor,
+                width: AppDimension.pixelBorderWidth,
+              ),
             ),
-            child: const Icon(
-              Icons.business,
-              color: AppColors.primary,
+            alignment: Alignment.center,
+            child: AppAssets.img(
+              AppAssets.iconJobs,
               size: 20,
+              color: AppColors.primary,
             ),
           ),
-          const SizedBox(width: AppDimension.space16),
+          const SizedBox(width: AppDimension.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                  title.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    height: 1.4,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  company,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+                  company.toUpperCase(),
+                  style: GoogleFonts.notoSansThai(
+                    fontSize: 6,
+                    color: subtextColor,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           if (onStatusChanged != null)
             PopupMenuButton<String>(
               onSelected: onStatusChanged,
+              color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
               itemBuilder: (context) => [
                 const PopupMenuItem(value: 'Saved', child: Text('Saved')),
                 const PopupMenuItem(value: 'Applied', child: Text('Applied')),
               ],
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                 decoration: BoxDecoration(
-                  color: isApplied
-                      ? Colors.green.withValues(alpha: 0.1)
-                      : AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: statusBg,
+                  border: Border.all(
+                    color: statusColor,
+                    width: AppDimension.pixelBorderWidth,
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      status,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: isApplied ? Colors.green : AppColors.primary,
+                      status.toUpperCase(),
+                      style: GoogleFonts.notoSansThai(
+                        fontSize: 6,
+                        fontWeight: FontWeight.bold,
+                        color: statusColor,
                       ),
                     ),
                     const SizedBox(width: 4),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      size: 12,
-                      color: isApplied ? Colors.green : AppColors.primary,
+                    AppAssets.img(
+                      AppAssets.iconBack, // flipped/styled arrow
+                      size: 8,
+                      color: statusColor,
                     ),
                   ],
                 ),
@@ -102,27 +120,29 @@ class JobCartItemTile extends StatelessWidget {
             )
           else
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
-                color: isApplied
-                    ? Colors.green.withValues(alpha: 0.1)
-                    : AppColors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: statusBg,
+                border: Border.all(
+                  color: statusColor,
+                  width: AppDimension.pixelBorderWidth,
+                ),
               ),
               child: Text(
-                status,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: isApplied ? Colors.green : AppColors.primary,
+                status.toUpperCase(),
+                style: GoogleFonts.notoSansThai(
+                  fontSize: 6,
+                  fontWeight: FontWeight.bold,
+                  color: statusColor,
                 ),
               ),
             ),
+          const SizedBox(width: 8),
           IconButton(
-            icon: const Icon(
-              Icons.delete_outline,
-              color: AppColors.error,
+            icon: AppAssets.img(
+              AppAssets.iconDelete,
               size: 20,
+              color: AppColors.error,
             ),
             onPressed: onDelete,
           ),
