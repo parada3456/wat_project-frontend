@@ -10,5 +10,6 @@ abstract class MissionTaskState with _$MissionTaskState {
     @Default([]) List<MissionModel> allMissions,
     String? currentPhaseId,
     bool? isFilterMandatory,
+    MissionModel? createdMission,
   }) = _MissionTaskState;
 }

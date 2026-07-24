@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/domain/models/paged_model.dart';
+import 'package:wat_project_frontend/presentation/widgets/paginated_list_view.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +14,7 @@ import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobSearchPage extends StatefulWidget {
   const JobSearchPage({super.key});
@@ -75,22 +78,40 @@ class _JobSearchPageState extends State<JobSearchPage> {
           }
 
           if (state.status is UILoadFailed) {
-            final msg = (state.status as UILoadFailed).message ?? 'An error occurred loading jobs.';
+            final msg =
+                (state.status as UILoadFailed).message ??
+                'An error occurred loading jobs.';
             _showPopup(context, AppPopupType.error, 'Error', msg);
           }
 
           if (state.addToCartStatus is UILoadSuccess) {
-            _showPopup(context, AppPopupType.success, 'Added to Cart', 'Job has been saved to your cart.');
+            _showPopup(
+              context,
+              AppPopupType.success,
+              'Added to Cart',
+              'Job has been saved to your cart.',
+            );
+            // Refresh list after dynamic cart mutation updates status signatures
             _bloc.add(const JobMarketEvent.listJobs(filters: {}));
           } else if (state.addToCartStatus is UILoadFailed) {
-            final msg = (state.addToCartStatus as UILoadFailed).message ?? 'Failed to add job to cart.';
+            final msg =
+                (state.addToCartStatus as UILoadFailed).message ??
+                'Failed to add job to cart.';
             _showPopup(context, AppPopupType.error, 'Error', msg);
           }
         },
         child: Scaffold(
           backgroundColor: bgColor,
           appBar: AppBar(
-            title: const Text('JOB BOARD'),
+            backgroundColor: AppColors.background,
+            elevation: 0,
+            title: const Text(
+              'Job & Reviews',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             actions: [
               IconButton(
                 icon: AppAssets.img(
@@ -125,9 +146,7 @@ class _JobSearchPageState extends State<JobSearchPage> {
                   child: BlocBuilder<JobMarketBloc, JobMarketState>(
                     builder: (context, state) {
                       if (state.status is UILoading && _allJobs.isEmpty) {
-                        return const Center(
-                          child: PixelLoadingDots(color: AppColors.primary),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (_filteredJobs.isEmpty) {
@@ -142,16 +161,32 @@ class _JobSearchPageState extends State<JobSearchPage> {
                         );
                       }
 
-                      return ListView.separated(
+                      return PaginatedListView<JobPostingModel>(
                         padding: const EdgeInsets.all(AppDimension.space16),
-                        itemCount: _filteredJobs.length,
+                        fetchPage: (page, pageSize) async {
+                          return PagedModel<JobPostingModel>.fromResponse(
+                            updatedItems: _filteredJobs,
+                            serverCurrentPage: page,
+                            totalPages: 1,
+                            pageSize: pageSize,
+                          );
+                        },
+                        initialItems: _filteredJobs,
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: AppDimension.space16),
-                        itemBuilder: (context, index) {
-                          final job = _filteredJobs[index];
+                        emptyMessage: 'No jobs found.',
+                        itemBuilder: (context, job) {
                           return JobCard(
                             job: job,
-                            onTap: () => context.push('/jobs/${job.jobId}'),
+                            onTap: () async {
+                              final res =
+                                  await context.push<bool>('/jobs/${job.jobId}');
+                              if (res == true && context.mounted) {
+                                _bloc.add(
+                                  const JobMarketEvent.listJobs(filters: {}),
+                                );
+                              }
+                            },
                             onAddToCart: () => _bloc.add(
                               JobMarketEvent.addJobToCart(jobId: job.jobId),
                             ),
@@ -165,31 +200,15 @@ class _JobSearchPageState extends State<JobSearchPage> {
             ),
           ),
           floatingActionButton: GetIt.instance<AuthSessionManager>().isAdmin
-              ? GestureDetector(
-                  onTap: () => context.push('/jobs/create'),
-                  child: Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      border: Border.all(
-                        color: borderColor,
-                        width: AppDimension.pixelBorderWidth,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: borderColor.withValues(alpha: 0.8),
-                          offset: const Offset(4, 4),
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: AppAssets.img(
-                      AppAssets.iconAdd,
-                      size: 24,
-                      color: AppColors.black,
-                    ),
-                  ),
+              ? FloatingActionButton(
+                  backgroundColor: AppColors.primary,
+                  child: const Icon(Icons.add, color: AppColors.white),
+                  onPressed: () async {
+                    final res = await context.push<bool>('/jobs/create');
+                    if (res == true && context.mounted) {
+                      _bloc.add(const JobMarketEvent.listJobs(filters: {}));
+                    }
+                  },
                 )
               : null,
         ),
@@ -197,17 +216,19 @@ class _JobSearchPageState extends State<JobSearchPage> {
     );
   }
 
-  void _showPopup(BuildContext context, AppPopupType type, String title, String message) {
+  void _showPopup(
+    BuildContext context,
+    AppPopupType type,
+    String title,
+    String message,
+  ) {
     AppPopup.show<void>(
       context: context,
       type: type,
       title: title,
       message: message,
       buttons: [
-        AppPopupButton(
-          label: 'OK',
-          onPressed: () => context.pop(),
-        )
+        AppPopupButton(label: 'OK', onPressed: () => context.pop(context)),
       ],
     );
   }

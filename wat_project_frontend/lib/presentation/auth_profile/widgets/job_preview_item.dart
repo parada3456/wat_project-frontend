@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobPreviewItem extends StatelessWidget {
   final String title;

@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:wat_project_frontend/data/entities/gamification/journey_phase_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/leaderboard_entry.dart';
 import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_credit_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/user_phase_history_entity.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/gamification/phase_transition_result.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 
@@ -27,6 +28,12 @@ abstract class JourneyApiService {
   Future<List<LeaderboardEntry>> getLeaderboard(
     @Query('scope') String? scope,
     @Query('job_id') String? jobId,
+  );
+
+  @GET('leaderboard/friends/credit-score')
+  Future<PaginationResponse<UserCreditEntity>> getFriendsCreditScoreLeaderboard(
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
   );
 
   @GET('user/badges')

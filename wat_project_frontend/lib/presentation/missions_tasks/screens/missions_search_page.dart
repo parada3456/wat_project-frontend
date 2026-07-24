@@ -9,7 +9,7 @@ import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_ta
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class MissionsSearchPage extends StatelessWidget {
   const MissionsSearchPage({super.key});

@@ -10,7 +10,10 @@ class UpdateJobUseCase {
 
   UpdateJobUseCase(this._repository);
 
-  Future<Either<Failure, JobPostingModel>> call(String id, JobPostingModel job) async {
+  Future<Either<Failure, JobPostingModel>> call(
+    String id,
+    JobPostingModel job,
+  ) async {
     try {
       final updatedJob = await _repository.updateJob(id, job);
       return Right(updatedJob.toModel());

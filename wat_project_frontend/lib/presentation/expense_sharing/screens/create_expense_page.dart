@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/di/inject.dart';
+import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_bloc.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/widgets/expense_form_fields.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/widgets/equal_split_toggle.dart';
 import 'package:wat_project_frontend/presentation/expense_sharing/widgets/friend_split_list.dart';
@@ -33,11 +33,17 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
     _bloc = GetIt.instance<ExpenseSharingBloc>();
     _formController.amountController.addListener(_onAmountOrSplitChanged);
     _formController.searchController.addListener(_onSearchChanged);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _onAmountOrSplitChanged());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _onAmountOrSplitChanged(),
+    );
   }
 
   void _onAmountOrSplitChanged() => _formController.updateSplitAmounts();
-  void _onSearchChanged() => setState(() => _searchQuery = _formController.searchController.text.trim().toLowerCase());
+  void _onSearchChanged() => setState(
+    () => _searchQuery = _formController.searchController.text
+        .trim()
+        .toLowerCase(),
+  );
 
   @override
   void dispose() {
@@ -48,7 +54,9 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
   Future<void> _selectDueDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: _formController.selectedDueDate ?? DateTime.now().add(const Duration(days: 7)),
+      initialDate:
+          _formController.selectedDueDate ??
+          DateTime.now().add(const Duration(days: 7)),
       firstDate: DateTime.now().subtract(const Duration(days: 30)),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
@@ -70,16 +78,20 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
       type: AppPopupType.warning,
       title: title,
       message: message,
-      buttons: [AppPopupButton(label: 'OK', onPressed: () => context.pop())],
+      buttons: [
+        AppPopupButton(label: 'OK', onPressed: () => Navigator.pop(context)),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final filteredFriends = allFriendsMock.where((f) => f.name.toLowerCase().contains(_searchQuery)).toList();
+    final filteredFriends = allFriendsMock
+        .where((f) => f.name.toLowerCase().contains(_searchQuery))
+        .toList();
 
-    return BlocProvider.value(
-      value: _bloc,
+    return BlocProvider<ExpenseSharingBloc>(
+      create: (context) => getIt<ExpenseSharingBloc>(),
       child: BlocListener<ExpenseSharingBloc, ExpenseSharingState>(
         listener: (context, state) {
           state.whenOrNull(
@@ -94,7 +106,12 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                 type: AppPopupType.error,
                 title: 'Error',
                 message: message,
-                buttons: [AppPopupButton(label: 'OK', onPressed: () => context.pop())],
+                buttons: [
+                  AppPopupButton(
+                    label: 'OK',
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               );
             },
           );
@@ -108,11 +125,20 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
               icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
               onPressed: () => context.pop(),
             ),
-            title: const Text('Add Expense', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700)),
+            title: const Text(
+              'Add Expense',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimension.space16, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimension.space16,
+                vertical: 24.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -143,18 +169,27 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                     controller: _formController.searchController,
                     decoration: InputDecoration(
                       hintText: 'Search friends by name...',
-                      prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: AppColors.textSecondary,
+                      ),
                       contentPadding: const EdgeInsets.symmetric(vertical: 12),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                        borderRadius: BorderRadius.circular(
+                          AppDimension.radiusSmall,
+                        ),
                         borderSide: BorderSide(color: Colors.grey[300]!),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                        borderRadius: BorderRadius.circular(
+                          AppDimension.radiusSmall,
+                        ),
                         borderSide: BorderSide(color: Colors.grey[300]!),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                        borderRadius: BorderRadius.circular(
+                          AppDimension.radiusSmall,
+                        ),
                         borderSide: const BorderSide(color: AppColors.primary),
                       ),
                       filled: true,
@@ -162,7 +197,14 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                     ),
                   ),
                   const SizedBox(height: AppDimension.space16),
-                  const Text('Split Details', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                  const Text(
+                    'Split Details',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
                   const SizedBox(height: AppDimension.space8),
                   FriendSplitList(
                     filteredFriends: filteredFriends,
@@ -183,7 +225,11 @@ class _CreateExpensePageState extends State<CreateExpensePage> {
                     },
                   ),
                   const SizedBox(height: AppDimension.space32),
-                  WatButton(label: 'Create Bill', isLoading: _isSubmitting, onPressed: _submit),
+                  WatButton(
+                    label: 'Create Bill',
+                    isLoading: _isSubmitting,
+                    onPressed: _submit,
+                  ),
                   const SizedBox(height: AppDimension.space50),
                 ],
               ),

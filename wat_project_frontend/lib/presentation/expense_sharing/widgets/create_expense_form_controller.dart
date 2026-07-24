@@ -52,7 +52,9 @@ class CreateExpenseFormController {
     }
   }
 
-  CreateExpenseRequest? validateAndCreateRequest(void Function(String, String) onError) {
+  CreateExpenseRequest? validateAndCreateRequest(
+    void Function(String, String) onError,
+  ) {
     final title = titleController.text.trim();
     final totalAmount = double.tryParse(amountController.text) ?? 0.0;
 
@@ -78,7 +80,10 @@ class CreateExpenseFormController {
     }
 
     if (splits.isEmpty) {
-      onError('Validation', 'Please split with at least one member with amount > 0.');
+      onError(
+        'Validation',
+        'Please split with at least one member with amount > 0.',
+      );
       return null;
     }
 
@@ -89,7 +94,9 @@ class CreateExpenseFormController {
       currency: selectedCurrency,
       dueDate: dueDateStr,
       splits: splits,
-      memo: memoController.text.trim().isEmpty ? 'General' : memoController.text.trim(),
+      memo: memoController.text.trim().isEmpty
+          ? 'General'
+          : memoController.text.trim(),
     );
   }
 }

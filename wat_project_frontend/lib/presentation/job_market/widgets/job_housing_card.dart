@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/entities/job_review/job/job_housing_entity.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobHousingCard extends StatelessWidget {
   final JobHousingEntity housing;
 
-  const JobHousingCard({
-    super.key,
-    required this.housing,
-  });
+  const JobHousingCard({super.key, required this.housing});
 
   @override
   Widget build(BuildContext context) {

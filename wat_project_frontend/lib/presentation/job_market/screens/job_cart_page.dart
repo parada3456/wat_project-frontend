@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
+import 'package:wat_project_frontend/domain/models/job_models.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
+import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/job_models.dart';
@@ -9,7 +14,7 @@ import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_bloc.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobCartPage extends StatefulWidget {
   const JobCartPage({super.key});
@@ -46,15 +51,21 @@ class _JobCartPageState extends State<JobCartPage> {
             previous.updateCartStatus != current.updateCartStatus,
         listener: (context, state) {
           if (state.status is UILoadFailed) {
-            final msg = (state.status as UILoadFailed).message ?? 'An error occurred loading your cart.';
+            final msg =
+                (state.status as UILoadFailed).message ??
+                'An error occurred loading your cart.';
             _showErrorPopup(context, msg);
           }
           if (state.removeFromCartStatus is UILoadFailed) {
-            final msg = (state.removeFromCartStatus as UILoadFailed).message ?? 'Failed to remove job.';
+            final msg =
+                (state.removeFromCartStatus as UILoadFailed).message ??
+                'Failed to remove job.';
             _showErrorPopup(context, msg);
           }
           if (state.updateCartStatus is UILoadFailed) {
-            final msg = (state.updateCartStatus as UILoadFailed).message ?? 'Failed to update status.';
+            final msg =
+                (state.updateCartStatus as UILoadFailed).message ??
+                'Failed to update status.';
             _showErrorPopup(context, msg);
           }
           if (state.removeFromCartStatus is UILoadSuccess) {

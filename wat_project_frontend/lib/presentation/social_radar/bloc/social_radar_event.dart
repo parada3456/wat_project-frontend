@@ -8,7 +8,8 @@ class SocialRadarEvent with _$SocialRadarEvent {
   const factory SocialRadarEvent.getRadarUsers() = GetRadarUsers;
   const factory SocialRadarEvent.listPendingRequests() = ListPendingRequests;
   const factory SocialRadarEvent.listFriends() = ListFriends;
-  const factory SocialRadarEvent.sendFriendRequest(String targetUserId) = SendFriendRequest;
+  const factory SocialRadarEvent.sendFriendRequest(String targetUserId) =
+      SendFriendRequest;
   const factory SocialRadarEvent.respondToFriendRequest({
     required String friendshipId,
     required bool accept,

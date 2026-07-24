@@ -39,7 +39,8 @@ class ExpenseSplitEntity {
     required this.updatedAt,
   });
 
-  factory ExpenseSplitEntity.fromJson(Map<String, dynamic> json) => _$ExpenseSplitEntityFromJson(json);
+  factory ExpenseSplitEntity.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseSplitEntityFromJson(json);
   Map<String, dynamic> toJson() => _$ExpenseSplitEntityToJson(this);
 
   ExpenseSplitModel toModel() => ExpenseSplitModel(

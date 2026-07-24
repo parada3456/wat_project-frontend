@@ -7,6 +7,9 @@ part 'notifications_state.freezed.dart';
 class NotificationsState with _$NotificationsState {
   const factory NotificationsState.initial() = NotificationsInitial;
   const factory NotificationsState.loading() = NotificationsLoading;
-  const factory NotificationsState.success(List<NotificationModel> notifications) = NotificationsSuccess;
-  const factory NotificationsState.failure(String errorMessage) = NotificationsFailure;
+  const factory NotificationsState.success(
+    List<NotificationModel> notifications,
+  ) = NotificationsSuccess;
+  const factory NotificationsState.failure(String errorMessage) =
+      NotificationsFailure;
 }

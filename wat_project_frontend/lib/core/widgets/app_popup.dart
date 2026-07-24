@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/extension/extension.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 enum AppPopupType { success, error, warning, info, none }
 

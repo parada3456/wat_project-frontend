@@ -14,10 +14,18 @@ class SocialRadarState with _$SocialRadarState {
     required List<FriendshipModel> friends,
     required List<FriendshipModel> pendingRequests,
   }) = SocialRadarLoadSuccess;
-  const factory SocialRadarState.radarUsersLoadSuccess(List<RadarEntry> radarUsers) = RadarUsersLoadSuccess;
-  const factory SocialRadarState.pendingRequestsLoadSuccess(List<FriendshipModel> pendingRequests) = PendingRequestsLoadSuccess;
-  const factory SocialRadarState.friendsLoadSuccess(List<FriendshipModel> friends) = FriendsLoadSuccess;
-  const factory SocialRadarState.sendFriendRequestSuccess() = SendFriendRequestSuccess;
-  const factory SocialRadarState.respondToFriendRequestSuccess() = RespondToFriendRequestSuccess;
+  const factory SocialRadarState.radarUsersLoadSuccess(
+    List<RadarEntry> radarUsers,
+  ) = RadarUsersLoadSuccess;
+  const factory SocialRadarState.pendingRequestsLoadSuccess(
+    List<FriendshipModel> pendingRequests,
+  ) = PendingRequestsLoadSuccess;
+  const factory SocialRadarState.friendsLoadSuccess(
+    List<FriendshipModel> friends,
+  ) = FriendsLoadSuccess;
+  const factory SocialRadarState.sendFriendRequestSuccess() =
+      SendFriendRequestSuccess;
+  const factory SocialRadarState.respondToFriendRequestSuccess() =
+      RespondToFriendRequestSuccess;
   const factory SocialRadarState.removeFriendSuccess() = RemoveFriendSuccess;
 }

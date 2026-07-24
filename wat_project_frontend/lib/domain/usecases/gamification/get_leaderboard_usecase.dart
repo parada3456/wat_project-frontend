@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/core/error/failures.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
+import 'package:wat_project_frontend/data/entities/gamification/leaderboard_entry.dart';
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart';
 
 @injectable

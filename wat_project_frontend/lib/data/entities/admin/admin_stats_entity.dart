@@ -21,7 +21,8 @@ class AdminStatsEntity {
     required this.totalPointsAwarded,
   });
 
-  factory AdminStatsEntity.fromJson(Map<String, dynamic> json) => _$AdminStatsEntityFromJson(json);
+  factory AdminStatsEntity.fromJson(Map<String, dynamic> json) =>
+      _$AdminStatsEntityFromJson(json);
   Map<String, dynamic> toJson() => _$AdminStatsEntityToJson(this);
 
   AdminStatsModel toModel() => AdminStatsModel(

@@ -9,11 +9,9 @@ class ExpenseDetailResponse {
   final ExpenseTransactionEntity transaction;
   final List<String> splits;
 
-  ExpenseDetailResponse({
-    required this.transaction,
-    required this.splits,
-    });
+  ExpenseDetailResponse({required this.transaction, required this.splits});
 
-  factory ExpenseDetailResponse.fromJson(Map<String, dynamic> json) => _$ExpenseDetailResponseFromJson(json);
+  factory ExpenseDetailResponse.fromJson(Map<String, dynamic> json) =>
+      _$ExpenseDetailResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ExpenseDetailResponseToJson(this);
 }

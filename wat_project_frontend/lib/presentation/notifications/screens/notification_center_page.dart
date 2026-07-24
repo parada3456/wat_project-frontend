@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/presentation/notifications/widgets/notification_item_tile.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class NotificationCenterPage extends StatelessWidget {
   const NotificationCenterPage({super.key});

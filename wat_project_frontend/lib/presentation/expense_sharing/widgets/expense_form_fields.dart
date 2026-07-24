@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class ExpenseFormFields extends StatelessWidget {
   final TextEditingController titleController;
@@ -50,7 +50,9 @@ class ExpenseFormFields extends StatelessWidget {
                     label: 'Total Amount',
                     hint: '0.00',
                     controller: amountController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppDimension.space12),
@@ -73,7 +75,9 @@ class ExpenseFormFields extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                          borderRadius: BorderRadius.circular(
+                            AppDimension.radiusSmall,
+                          ),
                           border: Border.all(color: Colors.grey[300]!),
                         ),
                         child: DropdownButtonHideUnderline(
@@ -81,10 +85,17 @@ class ExpenseFormFields extends StatelessWidget {
                             value: selectedCurrency,
                             isExpanded: true,
                             items: const ['USD', 'THB', 'EUR', 'JPY', 'GBP']
-                                .map((c) => DropdownMenuItem(
-                                      value: c,
-                                      child: Text(c, style: TextStyle(fontWeight: FontWeight.bold)),
-                                    ))
+                                .map(
+                                  (c) => DropdownMenuItem(
+                                    value: c,
+                                    child: Text(
+                                      c,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
                                 .toList(),
                             onChanged: onCurrencyChanged,
                           ),
@@ -134,7 +145,9 @@ class ExpenseFormFields extends StatelessWidget {
                     foregroundColor: AppColors.primary,
                     side: const BorderSide(color: AppColors.primary),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimension.radiusSmall),
+                      borderRadius: BorderRadius.circular(
+                        AppDimension.radiusSmall,
+                      ),
                     ),
                   ),
                   onPressed: onSelectDueDate,

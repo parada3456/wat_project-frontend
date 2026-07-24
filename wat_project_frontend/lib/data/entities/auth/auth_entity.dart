@@ -21,7 +21,8 @@ class AuthEntity {
     required this.expiresAt,
   });
 
-  factory AuthEntity.fromJson(Map<String, dynamic> json) => _$AuthEntityFromJson(json);
+  factory AuthEntity.fromJson(Map<String, dynamic> json) =>
+      _$AuthEntityFromJson(json);
   Map<String, dynamic> toJson() => _$AuthEntityToJson(this);
 
   AuthModel toModel() => AuthModel(

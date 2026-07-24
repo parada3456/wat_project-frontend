@@ -26,7 +26,8 @@ class FriendshipEntity {
     required this.updatedAt,
   });
 
-  factory FriendshipEntity.fromJson(Map<String, dynamic> json) => _$FriendshipEntityFromJson(json);
+  factory FriendshipEntity.fromJson(Map<String, dynamic> json) =>
+      _$FriendshipEntityFromJson(json);
   Map<String, dynamic> toJson() => _$FriendshipEntityToJson(this);
 
   FriendshipModel toModel() => FriendshipModel(

@@ -1,11 +1,13 @@
 import 'package:injectable/injectable.dart';
 import 'package:wat_project_frontend/data/entities/gamification/journey_phase_entity.dart';
+import 'package:wat_project_frontend/data/entities/gamification/leaderboard_entry.dart';
 import 'package:wat_project_frontend/data/entities/gamification/user_phase_history_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/user_badge_entity.dart';
 import 'package:wat_project_frontend/data/entities/gamification/point_ledger_entity.dart';
 import 'package:wat_project_frontend/domain/repositories/journey_repository.dart';
+import 'package:wat_project_frontend/data/entities/gamification/user_credit_entity.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/pagination_response.dart';
 import 'package:wat_project_frontend/data/sources/api/journey_api_client.dart';
-import 'package:wat_project_frontend/data/sources/api/api_model/gamification/leaderboard_entry.dart';
 
 @injectable
 class JourneyRepoImpl implements JourneyRepository {
@@ -37,6 +39,14 @@ class JourneyRepoImpl implements JourneyRepository {
     String? jobId,
   ) async {
     return _api.getLeaderboard(scope, jobId);
+  }
+
+  @override
+  Future<PaginationResponse<UserCreditEntity>> getFriendsCreditScoreLeaderboard({
+    int? page,
+    int? pageSize,
+  }) async {
+    return _api.getFriendsCreditScoreLeaderboard(page, pageSize);
   }
 
   @override

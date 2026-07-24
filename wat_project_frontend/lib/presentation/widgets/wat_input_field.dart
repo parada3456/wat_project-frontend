@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/core/extension/extension.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
 
 /// WatInputField — Pixel RPG styled text input.
 /// Hard-corner border that changes color on focus. Error state in red pixel font.

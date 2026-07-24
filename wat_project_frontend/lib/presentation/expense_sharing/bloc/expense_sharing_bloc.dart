@@ -1,8 +1,14 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:wat_project_frontend/domain/usecases/admin_usecases.dart';
 import 'package:wat_project_frontend/domain/usecases/expense_usecases.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_event.dart';
-import 'package:wat_project_frontend/presentation/expense_sharing/bloc/expense_sharing_state.dart';
+import 'package:wat_project_frontend/domain/models/expense_models.dart';
+import 'package:wat_project_frontend/data/sources/api/api_model/expense/create_expense_request.dart';
+
+part 'expense_sharing_event.dart';
+part 'expense_sharing_state.dart';
+part 'expense_sharing_bloc.freezed.dart';
 
 class ExpenseSharingBloc
     extends Bloc<ExpenseSharingEvent, ExpenseSharingState> {
@@ -40,7 +46,8 @@ class ExpenseSharingBloc
     final result = await _listExpensesUseCase();
     result.fold(
       (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
-      (expenses) => emit(ExpenseSharingState.listExpensesSuccess(expenses: expenses)),
+      (expenses) =>
+          emit(ExpenseSharingState.listExpensesSuccess(expenses: expenses)),
     );
   }
 
@@ -64,7 +71,9 @@ class ExpenseSharingBloc
     final result = await _getExpenseDetailUseCase(event.id);
     result.fold(
       (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
-      (detail) => emit(ExpenseSharingState.getExpenseDetailSuccess(expenseDetail: detail)),
+      (detail) => emit(
+        ExpenseSharingState.getExpenseDetailSuccess(expenseDetail: detail),
+      ),
     );
   }
 
@@ -88,7 +97,9 @@ class ExpenseSharingBloc
     final result = await _listPendingSplitsUseCase();
     result.fold(
       (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
-      (splits) => emit(ExpenseSharingState.listPendingSplitsSuccess(pendingSplits: splits)),
+      (splits) => emit(
+        ExpenseSharingState.listPendingSplitsSuccess(pendingSplits: splits),
+      ),
     );
   }
 
@@ -119,7 +130,8 @@ class ExpenseSharingBloc
     );
     result.fold(
       (failure) => emit(ExpenseSharingState.failure(message: failure.message)),
-      (_) => emit(const ExpenseSharingState.approveExpenseSplitPaymentSuccess()),
+      (_) =>
+          emit(const ExpenseSharingState.approveExpenseSplitPaymentSuccess()),
     );
   }
 }

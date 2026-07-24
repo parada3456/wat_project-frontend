@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JobCartItemTile extends StatelessWidget {
   final String title;
@@ -84,20 +85,8 @@ class JobCartItemTile extends StatelessWidget {
               onSelected: onStatusChanged,
               color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
               itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'Saved',
-                  child: Text(
-                    'SAVED',
-                    style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'Applied',
-                  child: Text(
-                    'APPLIED',
-                    style: GoogleFonts.notoSansThai(fontSize: 7, color: textColor),
-                  ),
-                ),
+                const PopupMenuItem(value: 'Saved', child: Text('Saved')),
+                const PopupMenuItem(value: 'Applied', child: Text('Applied')),
               ],
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),

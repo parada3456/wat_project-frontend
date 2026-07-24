@@ -9,7 +9,10 @@ class PatchJobUseCase {
 
   PatchJobUseCase(this._repository);
 
-  Future<Either<Failure, void>> call(String id, Map<String, dynamic> body) async {
+  Future<Either<Failure, void>> call(
+    String id,
+    Map<String, dynamic> body,
+  ) async {
     try {
       await _repository.patchJob(id, body);
       return const Right(null);

@@ -29,9 +29,11 @@ import 'package:wat_project_frontend/presentation/social_radar/screens/friend_re
 import 'package:wat_project_frontend/presentation/social_radar/screens/friends_list_page.dart';
 import 'package:wat_project_frontend/presentation/social_radar/screens/radar_map_page.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
-import 'package:wat_project_frontend/presentation/navigation/screens/main_shell_page.dart';
 import 'package:wat_project_frontend/presentation/home/screens/home_page.dart';
 import 'package:wat_project_frontend/presentation/admin_dashboard/screens/admin_dashboard_page.dart';
+
+import 'package:wat_project_frontend/presentation/home/screens/main_shell_page.dart';
+import 'package:wat_project_frontend/presentation/expense_sharing/screens/expense_dashboard_page.dart';
 
 class AppRouter {
   final AuthSessionManager _authManager;
@@ -41,55 +43,56 @@ class AppRouter {
   late final router = GoRouter(
     initialLocation: '/login',
     refreshListenable: _authManager.sessionNotifier,
-    // redirect: (context, state) {
-    //   final isLoggedIn = _authManager.currentSession != null;
-    //   final isLoggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/register';
-
-    //   if (!isLoggedIn && !isLoggingIn) {
-    //     print('Redirecting to login page');
-    //     return '/login';
-    //   }
-    //   if (isLoggedIn && isLoggingIn) {
-    //     print("Redirecting to home page");
-    //     return '/home';
-    //   }
-    //   return null;
-    // },
     routes: [
-      // GoRoute(
-      //   path: '/home',
-      //   builder: (context, state) => const HomePage(),
-      // ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterPage(),
       ),
-      // GoRoute(
-      //   path: '/register',
-      //   builder: (context, state) => const RegisterPage2(),
-      // ),
-      ShellRoute(
-        builder: (context, state, child) {
-          return MainShellPage(child: child);
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainShellPage(navigationShell: navigationShell);
         },
-        routes: [
-          GoRoute(path: '/home', builder: (context, state) => const HomePage()),
-          GoRoute(
-            path: '/journey',
-            builder: (context, state) => const JourneyTimelinePage(),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/expenses',
-            builder: (context, state) => const ExpenseHistoryPage(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/journey',
+                builder: (context, state) => const JourneyTimelinePage(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/jobs',
-            builder: (context, state) => const JobSearchPage(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/expenses',
+                builder: (context, state) => const ExpenseDashboardPage(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/profile',
-            builder: (context, state) => const ProfilePage(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/jobs',
+                builder: (context, state) => const JobSearchPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/profile',
+                builder: (context, state) => const ProfilePage(),
+              ),
+            ],
           ),
         ],
       ),
@@ -148,6 +151,10 @@ class AppRouter {
       GoRoute(
         path: '/radar',
         builder: (context, state) => const RadarMapPage(),
+      ),
+      GoRoute(
+        path: '/expenses/history',
+        builder: (context, state) => const ExpenseHistoryPage(),
       ),
       GoRoute(
         path: '/expenses/new',

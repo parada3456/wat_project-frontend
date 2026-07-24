@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class EqualSplitToggle extends StatelessWidget {
   final bool equalSplit;
@@ -30,10 +30,7 @@ class EqualSplitToggle extends StatelessWidget {
             SizedBox(height: 2),
             Text(
               'Auto-calculate equal shares',
-              style: TextStyle(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
             ),
           ],
         ),

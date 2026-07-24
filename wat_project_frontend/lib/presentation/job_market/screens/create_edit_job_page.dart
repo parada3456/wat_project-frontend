@@ -10,7 +10,7 @@ import 'package:wat_project_frontend/presentation/job_market/bloc/job_market_blo
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class CreateEditJobPage extends StatelessWidget {
   final String? jobId;
@@ -68,8 +68,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
     super.initState();
     if (isEdit) {
       context.read<JobMarketBloc>().add(
-            JobMarketEvent.getJobDetail(jobId: widget.jobId!),
-          );
+        JobMarketEvent.getJobDetail(jobId: widget.jobId!),
+      );
     } else {
       _initialized = true;
     }
@@ -187,12 +187,10 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
 
     if (isEdit) {
       context.read<JobMarketBloc>().add(
-            JobMarketEvent.updateJob(id: widget.jobId!, job: job),
-          );
+        JobMarketEvent.updateJob(id: widget.jobId!, job: job),
+      );
     } else {
-      context.read<JobMarketBloc>().add(
-            JobMarketEvent.createJob(job: job),
-          );
+      context.read<JobMarketBloc>().add(JobMarketEvent.createJob(job: job));
     }
   }
 
@@ -211,7 +209,9 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
           previous.updateJobStatus != current.updateJobStatus ||
           previous.jobDetail != current.jobDetail,
       listener: (context, state) {
-        if (isEdit && state.status is UILoadSuccess && state.jobDetail != null) {
+        if (isEdit &&
+            state.status is UILoadSuccess &&
+            state.jobDetail != null) {
           _populateFields(state.jobDetail!.job.toModel());
         }
 
@@ -223,11 +223,12 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
             'Job posting created successfully.',
             onConfirm: () {
               context.pop();
-              context.pop();
+              context.pop(true);
             },
           );
         } else if (state.createJobStatus is UILoadFailed) {
-          final msg = (state.createJobStatus as UILoadFailed).message ??
+          final msg =
+              (state.createJobStatus as UILoadFailed).message ??
               'Failed to create job.';
           _showPopup(context, AppPopupType.error, 'Error', msg);
         }
@@ -240,11 +241,12 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
             'Job posting updated successfully.',
             onConfirm: () {
               context.pop();
-              context.pop();
+              context.pop(true);
             },
           );
         } else if (state.updateJobStatus is UILoadFailed) {
-          final msg = (state.updateJobStatus as UILoadFailed).message ??
+          final msg =
+              (state.updateJobStatus as UILoadFailed).message ??
               'Failed to update job.';
           _showPopup(context, AppPopupType.error, 'Error', msg);
         }
@@ -267,7 +269,8 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                 );
               }
 
-              final isSaving = state.createJobStatus is UILoading ||
+              final isSaving =
+                  state.createJobStatus is UILoading ||
                   state.updateJobStatus is UILoading;
 
               return SingleChildScrollView(
@@ -289,126 +292,148 @@ class _CreateEditJobViewState extends State<_CreateEditJobView> {
                             controller: _positionController,
                             errorText: _positionError,
                           ),
-                          const SizedBox(height: AppDimension.space16),
-                          WatInputField(
-                            label: 'Employer / Business Title',
-                            hint: 'e.g. Cedar Point',
-                            controller: _employerController,
-                            errorText: _employerError,
-                          ),
-                          const SizedBox(height: AppDimension.space16),
-                          WatInputField(
-                            label: 'Agency Name',
-                            hint: 'e.g. OEG',
-                            controller: _agencyController,
-                            errorText: _agencyError,
-                          ),
-                          const SizedBox(height: AppDimension.space16),
-                          Text(
-                            'POSITION TYPE',
-                            style: GoogleFonts.notoSansThai(
-                              fontSize: 7,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
-                            ),
-                          ),
-                          const SizedBox(height: AppDimension.space8),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: borderColor,
-                                width: AppDimension.pixelBorderWidth,
-                              ),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppDimension.space12,
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: _positionType,
-                                isExpanded: true,
-                                dropdownColor: isDark
-                                    ? AppColors.darkSurface
-                                    : AppColors.lightSurface,
-                                style: GoogleFonts.notoSansThai(
-                                  fontSize: 8,
-                                  color: textColor,
-                                ),
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      _positionType = newValue;
-                                    });
-                                  }
-                                },
-                                items: <String>[
-                                  'Full-time',
-                                  'Part-time',
-                                  'Seasonal',
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value.toUpperCase()),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    PixelDialogBox(
-                      title: 'JOB LOCATION',
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: WatInputField(
-                                  label: 'City',
-                                  hint: 'e.g. Sandusky',
-                                  controller: _cityController,
-                                  errorText: _cityError,
-                                ),
-                              ),
-                              const SizedBox(width: AppDimension.space12),
-                              Expanded(
-                                child: WatInputField(
-                                  label: 'State',
-                                  hint: 'e.g. OH',
-                                  controller: _stateController,
-                                  errorText: _stateError,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: AppDimension.space16),
-                          WatInputField(
-                            label: 'Group / Housing Location',
-                            hint: 'e.g. Sandusky, OH area',
-                            controller: _groupLocationController,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppDimension.space16),
-                    PixelDialogBox(
-                      title: 'NUMBERS & REQUISITIONS',
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: WatInputField(
-                                  label: 'Salary Min (\$/hr)',
-                                  hint: '15.00',
-                                  controller: _salaryMinController,
-                                  errorText: _salaryMinError,
-                                  keyboardType: const TextInputType.numberWithOptions(
-                                    decimal: true,
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              setState(() {
+                                _positionType = newValue;
+                              });
+                            }
+                          },
+                          items: <String>['Full-time', 'Part-time', 'Seasonal']
+                              .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: AppColors.textPrimary,
+                                    ),
                                   ),
-                                ),
+                                );
+                              })
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: WatInputField(
+                            label: 'City',
+                            hint: 'e.g. Sandusky',
+                            controller: _cityController,
+                            errorText: _cityError,
+                          ),
+                        ),
+                        const SizedBox(width: AppDimension.space16),
+                        Expanded(
+                          child: WatInputField(
+                            label: 'State',
+                            hint: 'e.g. OH',
+                            controller: _stateController,
+                            errorText: _stateError,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    WatInputField(
+                      label: 'Group Location / Housing Location',
+                      hint: 'e.g. Sandusky, OH area',
+                      controller: _groupLocationController,
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: WatInputField(
+                            label: 'Salary Min (\$ / hour)',
+                            hint: '15.00',
+                            controller: _salaryMinController,
+                            errorText: _salaryMinError,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppDimension.space16),
+                        Expanded(
+                          child: WatInputField(
+                            label: 'Salary Max (\$ / hour)',
+                            hint: '18.00',
+                            controller: _salaryMaxController,
+                            errorText: _salaryMaxError,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    WatInputField(
+                      label: 'Available Slots',
+                      hint: 'e.g. 5',
+                      controller: _slotsController,
+                      errorText: _slotsError,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Requires US Sponsor Verification',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Switch(
+                          value: _usSponsor,
+                          activeThumbColor: AppColors.primary,
+                          onChanged: (val) {
+                            setState(() {
+                              _usSponsor = val;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppDimension.space16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Job Description',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: AppDimension.space4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimension.space16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.backgroundAlt,
+                            borderRadius: BorderRadius.circular(
+                              AppDimension.radiusSmall,
+                            ),
+                          ),
+                          child: TextField(
+                            controller: _descriptionController,
+                            maxLines: 4,
+                            decoration: const InputDecoration(
+                              hintText:
+                                  'Provide details about the job, role, or requirements...',
+                              hintStyle: TextStyle(
+                                fontSize: 15,
+                                color: AppColors.textSecondary,
                               ),
                               const SizedBox(width: AppDimension.space12),
                               Expanded(

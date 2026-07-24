@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/presentation/social_radar/widgets/friend_card.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class FriendsListPage extends StatelessWidget {
   const FriendsListPage({super.key});

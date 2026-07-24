@@ -1,11 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:wat_project_frontend/data/entities/gamification/leaderboard_entry.dart';
+import 'package:wat_project_frontend/domain/models/journey_models.dart';
 import 'package:wat_project_frontend/domain/usecases/journey_usecases.dart';
 import 'package:wat_project_frontend/domain/usecases/gamification_usecases.dart';
-import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_event.dart';
-import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_state.dart';
 
-class JourneyGamificationBloc
-    extends Bloc<JourneyGamificationEvent, JourneyGamificationState> {
+part 'journey_gamification_event.dart';
+part 'journey_gamification_state.dart';
+part 'journey_gamification_bloc.freezed.dart';
+
+class JourneyGamificationBloc extends Bloc<JourneyGamificationEvent, JourneyGamificationState> {
   final ListJourneyPhasesUseCase _listJourneyPhasesUseCase;
   final AdvancePhaseUseCase _advancePhaseUseCase;
   final GetJourneyHistoryUseCase _getJourneyHistoryUseCase;

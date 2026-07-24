@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 /// LoginHeader — Pixel RPG title screen logo block.
 /// Renders the WAT logo with a pixel border frame and Press Start 2P title.

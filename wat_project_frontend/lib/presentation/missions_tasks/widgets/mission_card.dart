@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/domain/models/mission_models.dart';
+<<<<<<< HEAD
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
+=======
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/utils/theme_constants.dart';
+>>>>>>> develop
 
 class MissionCard extends StatelessWidget {
   final MissionModel mission;

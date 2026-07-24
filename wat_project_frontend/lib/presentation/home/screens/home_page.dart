@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/data/mappers/mission_mapper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/di/inject.dart';
+import 'package:wat_project_frontend/domain/models/mission_models.dart';
+import 'package:wat_project_frontend/domain/models/paged_model.dart';
 import 'package:wat_project_frontend/domain/models/user_models.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
+import 'package:wat_project_frontend/domain/repositories/mission_repository.dart';
+import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/presentation/home/bloc/home_bloc.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card.dart';
+import 'package:wat_project_frontend/presentation/widgets/paginated_list_view.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/missions_tasks/widgets/mission_card_list.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 
 class HomePage extends StatelessWidget {
@@ -171,11 +179,42 @@ class HomeView extends StatelessWidget {
             else
               SizedBox(
                 height: 420,
-                child: MissionCardList(
-                  feedType: MissionFeedType.my,
+                child: PaginatedListView<MissionModel>(
+                  // Homepage preview: fetch only page 1 with pageSize=3,
+                  // limit=3 stops any further fetch once we have 3 items.
+                  fetchPage: (page, pageSize) async {
+                    final repo = getIt<MissionRepository>();
+                    final response = await repo.listMyMissions(
+                      page: page,
+                      pageSize: pageSize,
+                    );
+                    final models =
+                        response.data.map((e) => e.toModel()).toList();
+                    return PagedModel<MissionModel>.fromResponse(
+                      updatedItems: models,
+                      serverCurrentPage: page,
+                      totalPages: response.pagination?.totalPages ??
+                          (models.length == pageSize ? page + 1 : page),
+                      pageSize: pageSize,
+                    );
+                  },
+                  initialItems: data.phaseMissions,
                   pageSize: 3,
+                  limit: 3,
                   padding: EdgeInsets.zero,
-                  missions: data.phaseMissions,
+                  emptyMessage: 'No active missions.',
+                  itemBuilder: (context, mission) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: InkWell(
+                      onTap: () => context.push(
+                        '/missions/detail',
+                        extra: mission.missionId,
+                      ),
+                      borderRadius:
+                          BorderRadius.circular(AppDimension.radiusMedium),
+                      child: MissionCard(mission: mission),
+                    ),
+                  ),
                 ),
               ),
           ],

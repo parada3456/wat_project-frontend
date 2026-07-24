@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class ExpenseHeaderCard extends StatelessWidget {
   final String title;
@@ -41,7 +41,10 @@ class ExpenseHeaderCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               'Transaction Date: $formattedTransactionDate',
-              style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.textSecondary,
+              ),
             ),
             const Divider(height: 32),
             Row(
@@ -69,7 +72,10 @@ class ExpenseHeaderCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),

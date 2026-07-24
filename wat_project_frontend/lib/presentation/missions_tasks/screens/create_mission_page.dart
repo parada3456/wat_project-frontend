@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wat_project_frontend/core/widgets/pixel_border_container.dart';
 import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_mission_request.dart';
@@ -8,10 +9,11 @@ import 'package:wat_project_frontend/data/sources/api/api_model/mission/create_t
 import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/ui_status/ui_status.dart';
 import 'package:wat_project_frontend/domain/usecases/journey/list_journey_phases_usecase.dart';
-import 'package:wat_project_frontend/presentation/missions_tasks/bloc/create_mission_bloc.dart';
+import 'package:wat_project_frontend/presentation/missions_tasks/bloc/mission_task_bloc.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_input_field.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/core/widgets/app_popup.dart';
 import 'package:wat_project_frontend/domain/services/auth_manager.dart';
 
@@ -20,8 +22,8 @@ class CreateMissionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CreateMissionBloc>(
-      create: (_) => getIt<CreateMissionBloc>(),
+    return BlocProvider<MissionTaskBloc>(
+      create: (_) => getIt<MissionTaskBloc>(),
       child: const _CreateMissionView(),
     );
   }
@@ -85,22 +87,18 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
     try {
       final usecase = getIt<ListJourneyPhasesUseCase>();
       final result = await usecase();
-      result.fold(
-        (failure) {},
-        (phases) {
-          if (phases.isNotEmpty && mounted) {
-            setState(() {
-              _phases = phases.map((p) => {
-                'id': p.phaseId,
-                'name': p.title,
-              }).toList();
-              if (!_phases.any((p) => p['id'] == _selectedPhaseId)) {
-                _selectedPhaseId = _phases.first['id']!;
-              }
-            });
-          }
-        },
-      );
+      result.fold((failure) {}, (phases) {
+        if (phases.isNotEmpty && mounted) {
+          setState(() {
+            _phases = phases
+                .map((p) => {'id': p.phaseId, 'name': p.title})
+                .toList();
+            if (!_phases.any((p) => p['id'] == _selectedPhaseId)) {
+              _selectedPhaseId = _phases.first['id']!;
+            }
+          });
+        }
+      });
     } catch (_) {}
   }
 
@@ -225,7 +223,9 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
       taskList: taskList,
     );
 
-    context.read<CreateMissionBloc>().add(CreateMissionEvent.submitted(request: request));
+    context.read<MissionTaskBloc>().add(
+      MissionTaskEvent.createMissionSubmitted(request: request),
+    );
   }
 
   Future<void> _pickDate() async {
@@ -286,12 +286,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = AppColors.text(context);
-    final subtextColor = AppColors.textSub(context);
-    final borderColor = AppColors.border(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return BlocListener<CreateMissionBloc, CreateMissionState>(
+    return BlocListener<MissionTaskBloc, MissionTaskState>(
       listener: (context, state) {
         if (state.status is UILoadSuccess &&
             (state.status as UILoadSuccess).message == 'MISSION_CREATED') {
@@ -306,7 +301,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                 isPrimary: true,
                 onPressed: () {
                   Navigator.of(context).pop();
-                  context.pop();
+                  context.pop(true);
                 },
               ),
             ],
@@ -338,37 +333,18 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppDimension.space16,
-              vertical: AppDimension.space24,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppDimension.space16),
-                  child: Row(
-                    children: [
-                      _buildStepIndicator(0, 'Details', _currentStep >= 0),
-                      Expanded(
-                        child: Container(
-                          height: 2,
-                          margin: const EdgeInsets.symmetric(horizontal: 12),
-                          color: _currentStep >= 1
-                              ? AppColors.primary
-                              : borderColor,
-                        ),
-                      ),
-                      _buildStepIndicator(1, 'Tasks', _currentStep >= 1),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppDimension.space8),
-                if (_currentStep == 0) ...[
-                  PixelDialogBox(
-                    title: 'BASIC INFORMATION',
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.all(AppDimension.space16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Step Indicator
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: AppDimension.space16,
+                    ),
+                    child: Row(
                       children: [
                         WatInputField(
                           label: 'Quest Title',
@@ -417,8 +393,8 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           label: 'Journey Region / Phase',
                           value: _selectedPhaseId,
                           items: _phases.map((p) => p['id']!).toList(),
-                          itemLabel: (id) => _phases
-                              .firstWhere((p) => p['id'] == id)['name']!,
+                          itemLabel: (id) =>
+                              _phases.firstWhere((p) => p['id'] == id)['name']!,
                           onChanged: (v) =>
                               setState(() => _selectedPhaseId = v!),
                         ),
@@ -443,7 +419,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           label: 'Verification Method',
                           value: _verificationType,
                           items: _verificationTypes,
-                          itemLabel: (v) => v.toUpperCase(),
+                          itemLabel: (v) => v[0].toUpperCase() + v.substring(1),
                           onChanged: (v) =>
                               setState(() => _verificationType = v!),
                         ),
@@ -466,7 +442,7 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                           label: 'Due Date Category',
                           value: _dueDateType,
                           items: _dueDateTypes,
-                          itemLabel: (v) => v.toUpperCase(),
+                          itemLabel: (v) => v[0].toUpperCase() + v.substring(1),
                           onChanged: (v) => setState(() {
                             _dueDateType = v!;
                             _fixedDueDateController.clear();
@@ -572,22 +548,28 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                                         final temp =
                                                             _taskControllers[index];
                                                         _taskControllers[index] =
-                                                            _taskControllers[index - 1];
-                                                        _taskControllers[index - 1] = temp;
+                                                            _taskControllers[index -
+                                                                1];
+                                                        _taskControllers[index -
+                                                                1] =
+                                                            temp;
                                                       });
                                                     }
                                                   : null,
                                             ),
                                             IconButton(
-                                              icon: const Icon(Icons.arrow_downward, size: 16),
-                                              onPressed: index <
+                                              icon: const Icon(
+                                                Icons.arrow_downward,
+                                                size: 20,
+                                              ),
+                                              onPressed:
+                                                  index <
                                                       _taskControllers.length - 1
                                                   ? () {
                                                       setState(() {
                                                         final temp =
                                                             _taskControllers[index];
-                                                        _taskControllers[index] =
-                                                            _taskControllers[index + 1];
+                                                        _taskControllers[index] = _taskControllers[index +1];
                                                         _taskControllers[index + 1] = temp;
                                                       });
                                                     }
@@ -657,8 +639,31 @@ class _CreateMissionViewState extends State<_CreateMissionView> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
+                              child: const Text(
+                                'Back',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
                           ),
+                        ),
+                        const SizedBox(width: AppDimension.space16),
+                        Expanded(
+                          child:
+                              BlocBuilder<
+                                MissionTaskBloc,
+                                MissionTaskState
+                              >(
+                                builder: (context, state) {
+                                  final isLoading = state.status is UILoading;
+                                  return _SubmitButton(
+                                    isLoading: isLoading,
+                                    onPressed: isLoading ? null : _onSubmit,
+                                  );
+                                },
+                              ),
                         ),
                       ],
                     ),

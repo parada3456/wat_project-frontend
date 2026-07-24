@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/domain/models/expense_models.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class ExpenseSplitsList extends StatelessWidget {
   final List<ExpenseSplitModel> splits;
@@ -35,8 +35,12 @@ class ExpenseSplitsList extends StatelessWidget {
       itemCount: splits.length,
       itemBuilder: (context, index) {
         final split = splits[index];
-        final statusText = split.paymentStatus.name[0].toUpperCase() + split.paymentStatus.name.substring(1);
-        final approvalText = split.approvalStatus.name[0].toUpperCase() + split.approvalStatus.name.substring(1);
+        final statusText =
+            split.paymentStatus.name[0].toUpperCase() +
+            split.paymentStatus.name.substring(1);
+        final approvalText =
+            split.approvalStatus.name[0].toUpperCase() +
+            split.approvalStatus.name.substring(1);
 
         return Card(
           elevation: 0,
@@ -55,8 +59,17 @@ class ExpenseSplitsList extends StatelessWidget {
                     CircleAvatar(
                       backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                       child: Text(
-                        split.userId.substring(split.userId.length > 5 ? split.userId.length - 2 : 0).toUpperCase(),
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary),
+                        split.userId
+                            .substring(
+                              split.userId.length > 5
+                                  ? split.userId.length - 2
+                                  : 0,
+                            )
+                            .toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -66,19 +79,30 @@ class ExpenseSplitsList extends StatelessWidget {
                         children: [
                           Text(
                             'User ID: ${split.userId}',
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
                           ),
                           Text(
                             'Owe: $currency ${split.oweAmount.toStringAsFixed(2)}',
-                            style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                            style: const TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(split.paymentStatus).withValues(alpha: 0.1),
+                        color: _getStatusColor(
+                          split.paymentStatus,
+                        ).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -98,12 +122,18 @@ class ExpenseSplitsList extends StatelessWidget {
                   children: [
                     Text(
                       'Approval: $approvalText',
-                      style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     if (split.settledAt != null)
                       Text(
                         'Settled: ${formatDate(split.settledAt)}',
-                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                   ],
                 ),

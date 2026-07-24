@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wat_project_frontend/core/extension/extension.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 /// WatButton — Pixel RPG styled button.
 /// Hard corners, double-pixel border, press-down animation.

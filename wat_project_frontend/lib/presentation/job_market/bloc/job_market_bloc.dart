@@ -53,7 +53,6 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
        _updateJobUseCase = updateJobUseCase,
        _deleteJobUseCase = deleteJobUseCase,
        super(const JobMarketState()) {
-    
     on<ListJobsEvent>(_onListJobs);
     on<GetJobDetailEvent>(_onGetJobDetail);
     on<AddJobToCartEvent>(_onAddJobToCart);
@@ -75,8 +74,12 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listJobsUseCase(event.filters);
     result.fold(
-      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
-      (jobs) => emit(state.copyWith(status: const UIStatus.loadSuccess(), jobs: jobs)),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (jobs) => emit(
+        state.copyWith(status: const UIStatus.loadSuccess(), jobs: jobs),
+      ),
     );
   }
 
@@ -87,8 +90,15 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _getJobDetailUseCase(event.jobId);
     result.fold(
-      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
-      (jobDetail) => emit(state.copyWith(status: const UIStatus.loadSuccess(), jobDetail: jobDetail)),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (jobDetail) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(),
+          jobDetail: jobDetail,
+        ),
+      ),
     );
   }
 
@@ -99,7 +109,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(addToCartStatus: const UIStatus.loading()));
     final result = await _addJobToCartUseCase(event.jobId);
     result.fold(
-      (failure) => emit(state.copyWith(addToCartStatus: UIStatus.loadFailed(message: failure.message))),
+      (failure) => emit(
+        state.copyWith(
+          addToCartStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
       (_) {
         emit(state.copyWith(addToCartStatus: const UIStatus.loadSuccess()));
         add(const JobMarketEvent.listCartItems());
@@ -114,8 +128,15 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listCartItemsUseCase();
     result.fold(
-      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
-      (cartItems) => emit(state.copyWith(status: const UIStatus.loadSuccess(), cartItems: cartItems)),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (cartItems) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(),
+          cartItems: cartItems,
+        ),
+      ),
     );
   }
 
@@ -126,9 +147,15 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(removeFromCartStatus: const UIStatus.loading()));
     final result = await _removeJobFromCartUseCase(event.cartItemId);
     result.fold(
-      (failure) => emit(state.copyWith(removeFromCartStatus: UIStatus.loadFailed(message: failure.message))),
+      (failure) => emit(
+        state.copyWith(
+          removeFromCartStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
       (_) {
-        emit(state.copyWith(removeFromCartStatus: const UIStatus.loadSuccess()));
+        emit(
+          state.copyWith(removeFromCartStatus: const UIStatus.loadSuccess()),
+        );
         add(const JobMarketEvent.listCartItems());
       },
     );
@@ -141,7 +168,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(createReviewStatus: const UIStatus.loading()));
     final result = await _createJobReviewUseCase(event.request);
     result.fold(
-      (failure) => emit(state.copyWith(createReviewStatus: UIStatus.loadFailed(message: failure.message))),
+      (failure) => emit(
+        state.copyWith(
+          createReviewStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
       (_) {
         emit(state.copyWith(createReviewStatus: const UIStatus.loadSuccess()));
         add(JobMarketEvent.listJobReviews(jobId: event.request.jobId));
@@ -156,8 +187,15 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listApplicationsUseCase();
     result.fold(
-      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
-      (applications) => emit(state.copyWith(status: const UIStatus.loadSuccess(), applications: applications)),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (applications) => emit(
+        state.copyWith(
+          status: const UIStatus.loadSuccess(),
+          applications: applications,
+        ),
+      ),
     );
   }
 
@@ -170,8 +208,12 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(status: const UIStatus.loading()));
     final result = await _listJobReviewsUseCase(event.jobId);
     result.fold(
-      (failure) => emit(state.copyWith(status: UIStatus.loadFailed(message: failure.message))),
-      (reviews) => emit(state.copyWith(status: const UIStatus.loadSuccess(), reviews: reviews)),
+      (failure) => emit(
+        state.copyWith(status: UIStatus.loadFailed(message: failure.message)),
+      ),
+      (reviews) => emit(
+        state.copyWith(status: const UIStatus.loadSuccess(), reviews: reviews),
+      ),
     );
   }
 
@@ -182,8 +224,13 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(updateCartStatus: const UIStatus.loading()));
     final result = await _updateCartStatusUseCase(event.cartId, event.status);
     result.fold(
-      (failure) => emit(state.copyWith(updateCartStatus: UIStatus.loadFailed(message: failure.message))),
-      (_) => emit(state.copyWith(updateCartStatus: const UIStatus.loadSuccess())),
+      (failure) => emit(
+        state.copyWith(
+          updateCartStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
+      (_) =>
+          emit(state.copyWith(updateCartStatus: const UIStatus.loadSuccess())),
     );
   }
 
@@ -194,7 +241,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(createJobStatus: const UIStatus.loading()));
     final result = await _createJobUseCase(event.job);
     result.fold(
-      (failure) => emit(state.copyWith(createJobStatus: UIStatus.loadFailed(message: failure.message))),
+      (failure) => emit(
+        state.copyWith(
+          createJobStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
       (_) {
         emit(state.copyWith(createJobStatus: const UIStatus.loadSuccess()));
         add(const JobMarketEvent.listJobs(filters: {}));
@@ -209,7 +260,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(updateJobStatus: const UIStatus.loading()));
     final result = await _updateJobUseCase(event.id, event.job);
     result.fold(
-      (failure) => emit(state.copyWith(updateJobStatus: UIStatus.loadFailed(message: failure.message))),
+      (failure) => emit(
+        state.copyWith(
+          updateJobStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
       (_) {
         emit(state.copyWith(updateJobStatus: const UIStatus.loadSuccess()));
         add(const JobMarketEvent.listJobs(filters: {}));
@@ -224,7 +279,11 @@ class JobMarketBloc extends Bloc<JobMarketEvent, JobMarketState> {
     emit(state.copyWith(deleteJobStatus: const UIStatus.loading()));
     final result = await _deleteJobUseCase(event.id);
     result.fold(
-      (failure) => emit(state.copyWith(deleteJobStatus: UIStatus.loadFailed(message: failure.message))),
+      (failure) => emit(
+        state.copyWith(
+          deleteJobStatus: UIStatus.loadFailed(message: failure.message),
+        ),
+      ),
       (_) {
         emit(state.copyWith(deleteJobStatus: const UIStatus.loadSuccess()));
         add(const JobMarketEvent.listJobs(filters: {}));

@@ -5,13 +5,14 @@ import 'package:wat_project_frontend/di/inject.dart';
 import 'package:wat_project_frontend/domain/repositories/user_repository.dart';
 import 'package:wat_project_frontend/domain/models/journey_models.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_bloc.dart';
-import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_event.dart';
-import 'package:wat_project_frontend/presentation/journey_gamification/bloc/journey_gamification_state.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/phase_node_widget.dart';
+import 'package:wat_project_frontend/presentation/journey_gamification/screens/badges_page.dart';
+import 'package:wat_project_frontend/presentation/journey_gamification/screens/leaderboard_page.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/leaderboard_row.dart';
 import 'package:wat_project_frontend/presentation/journey_gamification/widgets/badge_grid_tile.dart';
 import 'package:wat_project_frontend/presentation/widgets/wat_button.dart';
-import 'package:wat_project_frontend/utils/theme_constants.dart';
+import 'package:wat_project_frontend/core/utils/theme_constants.dart';
 
 class JourneyTimelinePage extends StatefulWidget {
   const JourneyTimelinePage({super.key});
@@ -78,8 +79,8 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
             child: TabBarView(
               children: [
                 _buildTimelineTab(),
-                _buildLeaderboardTab(),
-                _buildBadgesTab(),
+                const LeaderboardPage(),
+                const BadgesPage(),
               ],
             ),
           ),
@@ -168,63 +169,6 @@ class _JourneyTimelinePageState extends State<JourneyTimelinePage> {
               const SizedBox(height: AppDimension.space48),
             ],
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLeaderboardTab() {
-    return ListView.separated(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      itemCount: 10,
-      separatorBuilder: (context, index) =>
-          const SizedBox(height: AppDimension.space8),
-      itemBuilder: (context, index) {
-        return LeaderboardRow(
-          rank: index + 1,
-          name: index == 2 ? 'You (John Doe)' : 'Student ${index + 1}',
-          points: 5000 - (index * 200),
-          isCurrentUser: index == 2,
-        );
-      },
-    );
-  }
-
-  Widget _buildBadgesTab() {
-    return GridView.builder(
-      padding: const EdgeInsets.all(AppDimension.space16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: AppDimension.space16,
-        crossAxisSpacing: AppDimension.space16,
-        childAspectRatio: 1.0,
-      ),
-      itemCount: 8,
-      itemBuilder: (context, index) {
-        final titles = [
-          'Early Bird',
-          'Visa Pro',
-          'First Friend',
-          'Debt Free',
-          'Workaholic',
-          'Explorer',
-          'Top Scorer',
-          'Program Completer',
-        ];
-        final icons = [
-          AppAssets.iconCalendar,
-          AppAssets.iconSponsor,
-          AppAssets.iconFriend,
-          AppAssets.iconSalary,
-          AppAssets.iconJobs,
-          AppAssets.iconLocation,
-          AppAssets.iconBadge,
-          AppAssets.iconBadge,
-        ];
-        return BadgeGridTile(
-          title: titles[index],
-          iconAsset: icons[index],
-          isEarned: index < 3,
         );
       },
     );
